@@ -3,13 +3,14 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
+using Redbean.Define;
 using UnityEngine.UI;
 
 namespace Redbean.Extension
 {
 	public static class UiExtenstion
 	{
-		public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = 200) =>
+		public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = Balance.DoubleButtonPrevention) =>
 			inputThrottle > 0 
 				? button.onClick.AsObservable().Share().ThrottleFirst(TimeSpan.FromMilliseconds(inputThrottle)) 
 				: button.onClick.AsObservable().Share();

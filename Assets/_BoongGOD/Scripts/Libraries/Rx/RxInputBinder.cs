@@ -2,17 +2,20 @@ using System;
 using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Base;
+using Redbean.Define;
 using UnityEngine;
 
 namespace Redbean.Rx
 {
 	public class RxInputBinder : ISingleton
     {
-    	private readonly Subject<KeyCode> keyObservable = new();
-    	public Observable<KeyCode> KeyObservable => keyObservable.Share();
+    	private readonly Subject<KeyCode> onKeyInputDetected = new();
+    	public Observable<KeyCode> OnKeyInputDetected => 
+		    onKeyInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.DoubleInputPrevention));
     	
-    	private readonly Subject<TouchPhase> mouseAndTouchObservable = new();
-    	public Observable<TouchPhase> MouseAndTouchObservable => mouseAndTouchObservable.Share();
+    	private readonly Subject<(TouchPhase type, Vector3 position)> onMouseAndTouchInputDetected = new();
+    	public Observable<(TouchPhase type, Vector3 position)> OnMouseAndTouchInputDetected => 
+		    onMouseAndTouchInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.DoubleInputPrevention));
     
     	private readonly CompositeDisposable disposables = new();
     	private int mouseCode = -1;
@@ -24,7 +27,7 @@ namespace Redbean.Rx
     			UniTask.Void(DetectingAsync);
     		}).AddTo(disposables);
     
-    		KeyObservable.Subscribe(_ =>
+    		OnKeyInputDetected.Subscribe(_ =>
     		{
     			if (!$"{_}".Contains("Mouse"))
     				return;
@@ -50,18 +53,21 @@ namespace Redbean.Rx
     		if (mouseCode > -1)
     		{
     			if (Input.GetMouseButtonDown(mouseCode))
-    				mouseAndTouchObservable.OnNext(TouchPhase.Began);
+    				onMouseAndTouchInputDetected.OnNext((TouchPhase.Began, Input.mousePosition));
     			
     			if (Input.GetMouseButtonUp(mouseCode))
-    				mouseAndTouchObservable.OnNext(TouchPhase.Ended);	
-			    
-			    if (Input.GetMouseButton(mouseCode))
-				    mouseAndTouchObservable.OnNext(TouchPhase.Stationary);	
+    				onMouseAndTouchInputDetected.OnNext((TouchPhase.Ended, Input.mousePosition));	
     		}
     
     		if (Input.touchCount > 0)
-    			mouseAndTouchObservable.OnNext(Input.GetTouch(0).phase);
-    	}
+		    {
+			    var touch = Input.GetTouch(0);
+			    if (touch.phase is TouchPhase.Stationary or TouchPhase.Moved)
+				    return;
+				    
+			    onMouseAndTouchInputDetected.OnNext((touch.phase, touch.position));
+		    }
+	    }
     
     	private UniTask FindKeyCodeAsync()
     	{
@@ -71,7 +77,7 @@ namespace Redbean.Rx
     			if (!Input.GetKeyDown(keyCode))
     				continue;
     
-    			keyObservable.OnNext(keyCode);
+    			onKeyInputDetected.OnNext(keyCode);
     			return UniTask.CompletedTask;
     		}
 		    

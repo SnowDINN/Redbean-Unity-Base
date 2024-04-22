@@ -12,23 +12,24 @@ public class Example : MonoBase
 	[SerializeField] private Button button;
 	[SerializeField] private Image image;
 
-	private const string FillToken = "FillToken";
+	private const string FillToken = "TOKEN_FILL_AMOUNT";
+	private const string IndexData = "INDEXS";
+	private string index;
 	
 	private void Start()
 	{
+		index = this.GetSingleton<RxDataBinder>().Get<string>(IndexData);
+		
 		button.AsButtonObservable().Subscribe(_ =>
 		{
+			index += "1";
+			index.Save(IndexData);
 			UniTask.Void(ActiveFill, GenerateCancellationToken(FillToken).Token);
 		}).AddTo(this);
 
-		Singleton.Get<RxInputBinder>().KeyObservable.Subscribe(_ =>
+		this.GetSingleton<RxDataBinder>().OnDataChanged.Subscribe(_ =>
 		{
-			Debug.Log(_);
-		}).AddTo(this);
-
-		Singleton.Get<RxInputBinder>().MouseAndTouchObservable.Subscribe(_ =>
-		{
-			Debug.Log(_);
+			Debug.Log(_.value);
 		}).AddTo(this);
 	}
 
