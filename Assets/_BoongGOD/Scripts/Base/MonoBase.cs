@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Redbean.Extension;
 using UnityEngine;
@@ -7,14 +8,16 @@ namespace Redbean.Base
 {
 	public class MonoBase : MonoBehaviour, IDisposable
 	{
-		protected CancellationTokenSource DestroyCancellation;
+		protected Dictionary<string, CancellationTokenSource> Cancellations = new();
+		protected CancellationTokenSource DestroyCancellation = new();
 
-		protected CancellationTokenSource CancellationTokenRefresh()
+		protected CancellationTokenSource GenerateCancellationToken(string tokenName)
 		{
-			DestroyCancellation?.CancelAndDispose();
-			DestroyCancellation = new CancellationTokenSource();
+			if (Cancellations.ContainsKey(tokenName))
+				Cancellations[tokenName].CancelAndDispose();
+			Cancellations[tokenName] = new CancellationTokenSource();
 
-			return DestroyCancellation;
+			return Cancellations[tokenName];
 		}
 
 		protected virtual void OnDestroy()
@@ -24,6 +27,9 @@ namespace Redbean.Base
 
 		public void Dispose()
 		{
+			foreach (var cancellation in Cancellations)
+				Cancellations[cancellation.Key].CancelAndDispose();
+			
 			DestroyCancellation?.CancelAndDispose();
 		}
 	}	

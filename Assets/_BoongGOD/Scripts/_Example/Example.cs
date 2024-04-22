@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Base;
 using Redbean.Extension;
+using Redbean.Rx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,20 +11,22 @@ public class Example : MonoBase
 {
 	[SerializeField] private Button button;
 	[SerializeField] private Image image;
+
+	private const string FillToken = "FillToken";
 	
-	private void Awake()
+	private void Start()
 	{
 		button.AsButtonObservable().Subscribe(_ =>
 		{
-			UniTask.Void(ActiveFill, CancellationTokenRefresh().Token);
+			UniTask.Void(ActiveFill, GenerateCancellationToken(FillToken).Token);
 		}).AddTo(this);
 
-		Rx.KeyObservable.Subscribe(_ =>
+		Singleton.Get<RxInputBinder>().KeyObservable.Subscribe(_ =>
 		{
 			Debug.Log(_);
 		}).AddTo(this);
 
-		Rx.MouseAndTouchObservable.Subscribe(_ =>
+		Singleton.Get<RxInputBinder>().MouseAndTouchObservable.Subscribe(_ =>
 		{
 			Debug.Log(_);
 		}).AddTo(this);

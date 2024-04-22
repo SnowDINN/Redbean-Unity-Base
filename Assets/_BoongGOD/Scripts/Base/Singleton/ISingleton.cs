@@ -1,3 +1,6 @@
-public interface ISingleton
+namespace Redbean.Base
 {
+	public interface ISingleton
+	{
+	}	
 }

@@ -1,22 +1,23 @@
 using System;
 using Cysharp.Threading.Tasks;
 using R3;
+using Redbean.Base;
 using UnityEngine;
 
-namespace Redbean.Base
+namespace Redbean.Rx
 {
-	public class Rx : ISingleton
+	public class RxInputBinder : ISingleton
     {
-    	private static readonly Subject<KeyCode> keyObservable = new();
-    	public static Observable<KeyCode> KeyObservable => keyObservable.Share();
+    	private readonly Subject<KeyCode> keyObservable = new();
+    	public Observable<KeyCode> KeyObservable => keyObservable.Share();
     	
-    	private static readonly Subject<TouchPhase> mouseAndTouchObservable = new();
-    	public static Observable<TouchPhase> MouseAndTouchObservable => mouseAndTouchObservable.Share();
+    	private readonly Subject<TouchPhase> mouseAndTouchObservable = new();
+    	public Observable<TouchPhase> MouseAndTouchObservable => mouseAndTouchObservable.Share();
     
     	private readonly CompositeDisposable disposables = new();
     	private int mouseCode = -1;
     
-    	public Rx()
+    	public RxInputBinder()
     	{
     		Observable.EveryUpdate().Subscribe(_ =>
     		{
@@ -35,7 +36,7 @@ namespace Redbean.Base
     		}).AddTo(disposables);
     	}
     
-    	~Rx()
+    	~RxInputBinder()
     	{
     		disposables.Dispose();
     		disposables.Clear();
@@ -59,7 +60,7 @@ namespace Redbean.Base
     			mouseAndTouchObservable.OnNext(Input.GetTouch(0).phase);
     	}
     
-    	private static async UniTask FindKeyCodeAsync()
+    	private async UniTask FindKeyCodeAsync()
     	{
     		var keyCodes = Enum.GetValues(typeof(KeyCode));
     		foreach (KeyCode keyCode in keyCodes)

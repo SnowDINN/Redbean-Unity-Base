@@ -1,29 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Redbean.Base
 {
-	public class Singleton : MonoBehaviour
+	public class Singleton
 	{
-		private List<ISingleton> singletons = new();
-	
-		[RuntimeInitializeOnLoadMethod]
-		public static void Initialize()
+		private static readonly Dictionary<string, ISingleton> Singletons = new();
+
+		public Singleton()
 		{
-			var go = new GameObject("Mono Singleton");
-			go.AddComponent<Singleton>();
-			DontDestroyOnLoad(go);
+			var singletons = AppDomain.CurrentDomain.GetAssemblies()
+			                          .SelectMany(x => x.GetTypes())
+			                          .Where(x => typeof(ISingleton).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+			                          .Select(x => (ISingleton)Activator.CreateInstance(Type.GetType(x.FullName)))
+			                          .ToList();
+
+			foreach (var singleton in singletons)
+				Singletons.TryAdd(singleton.GetType().Name, singleton);
 		}
-	
-		private void Awake()
-		{
-			singletons = AppDomain.CurrentDomain.GetAssemblies()
-			                      .SelectMany(x => x.GetTypes())
-			                      .Where(x => typeof(ISingleton).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
-			                      .Select(x => (ISingleton)Activator.CreateInstance(Type.GetType(x.FullName)))
-			                      .ToList();
-		}
+
+		public static T Get<T>() => (T)Singletons[typeof(T).Name];
 	}	
 }
