@@ -54,6 +54,9 @@ namespace Redbean.Rx
     			
     			if (Input.GetMouseButtonUp(mouseCode))
     				mouseAndTouchObservable.OnNext(TouchPhase.Ended);	
+			    
+			    if (Input.GetMouseButton(mouseCode))
+				    mouseAndTouchObservable.OnNext(TouchPhase.Stationary);	
     		}
     
     		if (Input.touchCount > 0)
