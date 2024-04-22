@@ -5,22 +5,23 @@ using DG.Tweening;
 using R3;
 using UnityEngine.UI;
 
-public static class UiExtenstion
+namespace Redbean.Extension
 {
-	public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = 200)
+	public static class UiExtenstion
 	{
-		return inputThrottle > 0 
-			? button.onClick.AsObservable().Share().ThrottleFirst(TimeSpan.FromMilliseconds(inputThrottle)) 
-			: button.onClick.AsObservable().Share();
-	}
+		public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = 200) =>
+			inputThrottle > 0 
+				? button.onClick.AsObservable().Share().ThrottleFirst(TimeSpan.FromMilliseconds(inputThrottle)) 
+				: button.onClick.AsObservable().Share();
 
-	public static async UniTask SmoothFill(this Image image, float start, float end, float duration, CancellationToken token = default)
-	{
-		image.fillAmount = start;
+		public static async UniTask SmoothFill(this Image image, float start, float end, float duration, CancellationToken token = default)
+		{
+			image.fillAmount = start;
 		
-		if (token == default)
-			await image.DOFillAmount(end, duration);
-		else
-			await image.DOFillAmount(end, duration).AwaitForComplete(cancellationToken: token);
-	}
+			if (token == default)
+				await image.DOFillAmount(end, duration);
+			else
+				await image.DOFillAmount(end, duration).AwaitForComplete(cancellationToken: token);
+		}
+	}	
 }

@@ -1,12 +1,15 @@
 ﻿using System.Threading;
 
-public static class Extension
+namespace Redbean.Extension
 {
-	public static void CancelAndDispose(this CancellationTokenSource cancellationTokenSource)
+	public static class Extension
 	{
-		if (!cancellationTokenSource.IsCancellationRequested)
-			cancellationTokenSource.Cancel();
+		public static void CancelAndDispose(this CancellationTokenSource cancellationTokenSource)
+		{
+			if (!cancellationTokenSource.IsCancellationRequested)
+				cancellationTokenSource.Cancel();
 		
-		cancellationTokenSource.Dispose();
-	}
+			cancellationTokenSource.Dispose();
+		}
+	}	
 }

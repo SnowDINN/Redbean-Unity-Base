@@ -1,26 +1,30 @@
 using System;
 using System.Threading;
+using Redbean.Extension;
 using UnityEngine;
 
-public class MonoBase : MonoBehaviour, IDisposable
+namespace Redbean.Base
 {
-	protected CancellationTokenSource DestroyCancellation;
-
-	protected CancellationTokenSource CancellationTokenRefresh()
+	public class MonoBase : MonoBehaviour, IDisposable
 	{
-		DestroyCancellation?.CancelAndDispose();
-		DestroyCancellation = new CancellationTokenSource();
+		protected CancellationTokenSource DestroyCancellation;
 
-		return DestroyCancellation;
-	}
+		protected CancellationTokenSource CancellationTokenRefresh()
+		{
+			DestroyCancellation?.CancelAndDispose();
+			DestroyCancellation = new CancellationTokenSource();
 
-	protected virtual void OnDestroy()
-	{
-		Dispose();
-	}
+			return DestroyCancellation;
+		}
 
-	public void Dispose()
-	{
-		DestroyCancellation?.CancelAndDispose();
-	}
+		protected virtual void OnDestroy()
+		{
+			Dispose();
+		}
+
+		public void Dispose()
+		{
+			DestroyCancellation?.CancelAndDispose();
+		}
+	}	
 }
