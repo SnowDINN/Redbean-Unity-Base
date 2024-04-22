@@ -60,7 +60,7 @@ namespace Redbean.Rx
     			mouseAndTouchObservable.OnNext(Input.GetTouch(0).phase);
     	}
     
-    	private async UniTask FindKeyCodeAsync()
+    	private UniTask FindKeyCodeAsync()
     	{
     		var keyCodes = Enum.GetValues(typeof(KeyCode));
     		foreach (KeyCode keyCode in keyCodes)
@@ -69,8 +69,10 @@ namespace Redbean.Rx
     				continue;
     
     			keyObservable.OnNext(keyCode);
-    			return;
+    			return UniTask.CompletedTask;
     		}
+		    
+		    return UniTask.CompletedTask;
     	}
     }
 }
