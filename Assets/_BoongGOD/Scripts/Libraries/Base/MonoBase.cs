@@ -11,6 +11,9 @@ namespace Redbean.Base
 		protected Dictionary<string, CancellationTokenSource> Cancellations = new();
 		protected CancellationTokenSource DestroyCancellation = new();
 
+		/// <summary>
+		/// 토큰 갱신
+		/// </summary>
 		protected CancellationTokenSource GenerateCancellationToken(string tokenName)
 		{
 			if (Cancellations.ContainsKey(tokenName))

@@ -16,21 +16,39 @@ namespace Redbean.Extension
 		public static void ActiveComponent(this MonoBehaviour mono, bool value) => 
 			mono.enabled = value;
 		
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
 		public static T GetModel<T>(this MonoBehaviour mono) => 
 			Model.Get<T>();
 		
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
 		public static T GetSingleton<T>(this MonoBehaviour mono) => 
 			Singleton.Get<T>();
 		
+		/// <summary>
+		/// 로컬 데이터 호출
+		/// </summary>
 		public static int GetLocalInt(this MonoBehaviour mono, string key) =>
 			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? Convert.ToInt32(value) : default;
 		
+		/// <summary>
+		/// 로컬 데이터 호출
+		/// </summary>
 		public static float GetLocalFloat(this MonoBehaviour mono, string key) =>
 			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? Convert.ToSingle(value) : default;
 		
+		/// <summary>
+		/// 로컬 데이터 호출
+		/// </summary>
 		public static string GetLocalString(this MonoBehaviour mono, string key) =>
 			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? Convert.ToString(value) : default;
 
+		/// <summary>
+		/// 로컬 데이터 호출
+		/// </summary>
 		public static T GetLocalModel<T>(this MonoBehaviour mono, string key) =>
 			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? (T)value : default;
 	}
