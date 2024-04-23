@@ -18,12 +18,12 @@ public class Example : MonoBase
 	
 	private void Start()
 	{
-		index = this.GetSingleton<RxDataBinder>().Get<string>(IndexData);
+		index = this.GetLocalString(IndexData);
 		
 		button.AsButtonObservable().Subscribe(_ =>
 		{
 			index += "1";
-			index.Save(IndexData);
+			index.LocalSave(IndexData);
 			UniTask.Void(ActiveFill, GenerateCancellationToken(FillToken).Token);
 		}).AddTo(this);
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Console = Redbean.Extension.Console;
 
 namespace Redbean.Base
 {
@@ -17,7 +19,10 @@ namespace Redbean.Base
 			                          .ToList();
 
 			foreach (var singleton in singletons)
+			{
 				Singletons.TryAdd(singleton.GetType().Name, singleton);
+				Console.Log($"[Singleton] Create Instance {singleton.GetType().Name}", Color.cyan);
+			}
 		}
 
 		public static T Get<T>() => (T)Singletons[typeof(T).Name];

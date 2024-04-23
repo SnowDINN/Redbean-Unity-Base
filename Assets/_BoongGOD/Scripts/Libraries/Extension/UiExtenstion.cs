@@ -4,11 +4,12 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using Redbean.Define;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Redbean.Extension
 {
-	public static class UiExtenstion
+	public static partial class Extension
 	{
 		public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = Balance.DoubleButtonPrevention) =>
 			inputThrottle > 0 
@@ -23,6 +24,13 @@ namespace Redbean.Extension
 				await image.DOFillAmount(end, duration);
 			else
 				await image.DOFillAmount(end, duration).AwaitForComplete(cancellationToken: token);
+		}
+
+		public static void ActiveCanvas(this CanvasGroup canvasGroup, bool value)
+		{
+			canvasGroup.alpha = value ? 1.0f : 0.0f;
+			canvasGroup.interactable = value;
+			canvasGroup.blocksRaycasts = value;
 		}
 	}	
 }

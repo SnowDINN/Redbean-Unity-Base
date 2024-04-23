@@ -4,15 +4,15 @@ using Redbean.Rx;
 
 namespace Redbean.Extension
 {
-	public static class DataExtension
+	public static partial class Extension
 	{
-		public static void Save(this float value, string key) =>
+		public static void LocalSave(this float value, string key) =>
 			Singleton.Get<RxDataBinder>().Add(key, value);
 		
-		public static void Save(this int value, string key) =>
+		public static void LocalSave(this int value, string key) =>
 			Singleton.Get<RxDataBinder>().Add(key, Convert.ToInt32(value));
 		
-		public static void Save(this string value, string key) =>
+		public static void LocalSave(this string value, string key) =>
 			Singleton.Get<RxDataBinder>().Add(key, value);
 	}
 }

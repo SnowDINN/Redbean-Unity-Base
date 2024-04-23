@@ -2,7 +2,7 @@
 
 namespace Redbean.Extension
 {
-	public static class Extension
+	public static partial class Extension
 	{
 		public static void CancelAndDispose(this CancellationTokenSource cancellationTokenSource)
 		{
@@ -11,5 +11,5 @@ namespace Redbean.Extension
 		
 			cancellationTokenSource.Dispose();
 		}
-	}	
+	}
 }
