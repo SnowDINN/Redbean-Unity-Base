@@ -1,12 +1,15 @@
 ﻿using System;
-using Redbean.Base;
 using Redbean.Rx;
+using Redbean.Static;
 using UnityEngine;
 
 namespace Redbean.Extension
 {
 	public static partial class Extension
 	{
+		public static void SetParent(this GameObject go, Transform parent) => 
+			go.transform.SetParent(parent);
+		
 		public static void ActiveGameObject(this Component component, bool value) => 
 			component.gameObject.SetActive(value);
 

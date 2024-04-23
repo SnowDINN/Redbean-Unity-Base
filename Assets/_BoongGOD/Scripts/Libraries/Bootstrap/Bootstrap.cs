@@ -1,4 +1,4 @@
-using Redbean.Base;
+using Redbean.Static;
 using UnityEngine;
 
 namespace Redbean

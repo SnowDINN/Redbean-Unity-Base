@@ -1,6 +1,6 @@
 ﻿using System;
-using Redbean.Base;
 using Redbean.Rx;
+using Redbean.Static;
 
 namespace Redbean.Extension
 {

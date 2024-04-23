@@ -1,4 +1,4 @@
-namespace Redbean.Base
+namespace Redbean.Static
 {
 	public interface ISingleton
 	{

@@ -1,44 +1,27 @@
-using System.Threading;
 using Cysharp.Threading.Tasks;
-using R3;
-using Redbean.Base;
 using Redbean.Extension;
-using Redbean.Rx;
+using Redbean.Static;
 using UnityEngine;
-using UnityEngine.UI;
+using Console = Redbean.Extension.Console;
 
-public class Example : MonoBase
+namespace Redbean.Example
 {
-	[SerializeField] private Button button;
-	[SerializeField] private Image image;
-
-	private const string FillToken = "TOKEN_FILL_AMOUNT";
-	private const string IndexData = "INDEXS";
-	private string index;
-	
-	private void Start()
+	public class Example : MonoBehaviour, ISingleton
 	{
-		index = this.GetLocalString(IndexData);
+		public int index;
 		
-		button.AsButtonObservable().Subscribe(_ =>
+		private void Awake()
 		{
-			index += "1";
-			index.LocalSave(IndexData);
-			UniTask.Void(ActiveFill, GenerateCancellationToken(FillToken).Token);
-		}).AddTo(this);
+			index = 5;
+			
+			UniTask.Void(Async);
+		}
 
-		this.GetSingleton<RxDataBinder>().OnDataChanged.Subscribe(_ =>
+		private async UniTaskVoid Async()
 		{
-			Debug.Log(_.value);
-		}).AddTo(this);
-	}
-
-	private async UniTaskVoid ActiveFill(CancellationToken token)
-	{
-		await image.SmoothFill(start: 0,
-		                       end: 1,
-		                       duration: 3,
-		                       token: token);
-		Debug.Log("!");
-	}
+			await UniTask.WaitForSeconds(2.5f);
+			
+			Console.Log($"{this.GetSingleton<Example>().index}");
+		}
+	}	
 }
