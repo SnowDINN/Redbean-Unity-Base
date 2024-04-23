@@ -11,6 +11,14 @@ namespace Redbean.Extension
 
 	public class Console
 	{
+		public static void Log(string tag, string message, Color color = default)
+		{
+			if (color == default)
+				color = Color.white;
+			
+			Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>[{tag}] {message}</color>");
+		}
+		
 		public static void Log(string message, Color color = default)
 		{
 			if (color == default)

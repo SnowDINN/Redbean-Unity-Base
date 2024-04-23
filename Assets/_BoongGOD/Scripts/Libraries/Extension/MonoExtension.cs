@@ -16,6 +16,9 @@ namespace Redbean.Extension
 		public static void ActiveComponent(this MonoBehaviour mono, bool value) => 
 			mono.enabled = value;
 		
+		public static T GetModel<T>(this MonoBehaviour mono) => 
+			Model.Get<T>();
+		
 		public static T GetSingleton<T>(this MonoBehaviour mono) => 
 			Singleton.Get<T>();
 		

@@ -1,13 +1,14 @@
 using System;
 using Cysharp.Threading.Tasks;
 using R3;
+using Redbean.Base;
 using Redbean.Define;
 using Redbean.Static;
 using UnityEngine;
 
 namespace Redbean.Rx
 {
-	public class RxInputBinder : ISingleton
+	public class RxInputBinder : RxBase, ISingleton
     {
     	private readonly Subject<KeyCode> onKeyInputDetected = new();
     	public Observable<KeyCode> OnKeyInputDetected => 
@@ -16,8 +17,7 @@ namespace Redbean.Rx
     	private readonly Subject<(TouchPhase type, Vector3 position)> onMouseAndTouchInputDetected = new();
     	public Observable<(TouchPhase type, Vector3 position)> OnMouseAndTouchInputDetected => 
 		    onMouseAndTouchInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.DoubleInputPrevention));
-    
-    	private readonly CompositeDisposable disposables = new();
+	    
     	private int mouseCode = -1;
     
     	public RxInputBinder()
@@ -41,8 +41,7 @@ namespace Redbean.Rx
     
     	~RxInputBinder()
     	{
-    		disposables.Dispose();
-    		disposables.Clear();
+    		Dispose();
     	}
     
     	private async UniTaskVoid DetectingAsync()

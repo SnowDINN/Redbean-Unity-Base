@@ -1,5 +1,13 @@
 ﻿namespace Redbean.Define
 {
+	public enum AppStartedType
+	{
+		Success,
+		FirebaseError,
+		UserInformationError,
+		ResourceError,
+	}
+	
 	public static class Balance
 	{
 		public const int DoubleButtonPrevention = 200;

@@ -9,7 +9,7 @@ namespace Redbean.Static
 {
 	public class Singleton
 	{
-		protected static readonly Dictionary<string, ISingleton> Singletons = new();
+		public static readonly Dictionary<string, ISingleton> Singletons = new();
 
 		public Singleton()
 		{
@@ -35,11 +35,16 @@ namespace Redbean.Static
 
 			foreach (var singleton in nativeSingletons
 				         .Where(singleton => Singletons.TryAdd(singleton.GetType().Name, singleton)))
-				Console.Log($"[Native Singleton] Create Instance {singleton.GetType().FullName}", Color.cyan);
+				Console.Log("Native Singleton", $" Create Instance {singleton.GetType().FullName}", Color.cyan);
 			
 			foreach (var singleton in monoSingletons
 				         .Where(singleton => Singletons.TryAdd(singleton.Name, (ISingleton)go.AddComponent(singleton))))
-				Console.Log($"[Mono Singleton] Create Instance {singleton.FullName}", Color.cyan);
+				Console.Log("Mono Singleton", $"Create Instance {singleton.FullName}", Color.cyan);
+		}
+
+		~Singleton()
+		{
+			Singletons.Clear();
 		}
 
 		public static T Get<T>() => (T)Singletons[typeof(T).Name];
