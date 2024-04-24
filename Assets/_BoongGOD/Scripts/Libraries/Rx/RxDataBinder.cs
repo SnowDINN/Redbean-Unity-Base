@@ -23,9 +23,9 @@ namespace Redbean.Rx
 			if (deserializer != null)
 				DataGroup = deserializer;
 
-			onDataChanged.Subscribe(_ =>
+			OnDataChanged.Subscribe(_ =>
 			{
-				Console.Log("Data", $"Update data : {_.key} | {_.value}", Color.yellow);
+				Console.Log("Data", $"Published data : {_.key} | {_.value}", Color.yellow);
 			}).AddTo(disposables);
 		}
 

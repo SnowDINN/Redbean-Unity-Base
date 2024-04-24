@@ -3,4 +3,8 @@
 	public interface IModel
 	{
 	}
+
+	public interface IPostModel
+	{
+	}
 }

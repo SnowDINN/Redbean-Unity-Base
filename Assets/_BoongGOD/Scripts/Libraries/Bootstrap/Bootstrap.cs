@@ -67,6 +67,8 @@ namespace Redbean
 				AppConfigSettings(config.ios);
 #endif
 			}
+			
+			onAppStarted.OnNext(AppStartedType.Success);
 		}
 
 		private static void AppConfigSettings(AppConfigArgument configArgs)

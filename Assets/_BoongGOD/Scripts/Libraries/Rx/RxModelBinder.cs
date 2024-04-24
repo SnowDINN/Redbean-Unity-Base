@@ -9,15 +9,22 @@ namespace Redbean.Rx
 {
 	public class RxModelBinder : RxBase, ISingleton
 	{
-		private static readonly Subject<(Type type, object model)> onModelChange = new();
-		public static Observable<(Type type, object model)> OnModelChange => onModelChange.Share();
+		private readonly Subject<(Type type, object value)> onModelChanged = new();
+		public Observable<(Type type, object value)> OnModelChanged => onModelChanged.Share();
 		
 		public RxModelBinder()
 		{
-			onModelChange.Subscribe(_ =>
+			OnModelChanged.Subscribe(_ =>
 			{
-				Console.Log("Model", $"Update model : {_.type.FullName}", Color.yellow);
+				Console.Log("Model", $"Published model : {_.type.FullName}", Color.yellow);
 			}).AddTo(disposables);
+
+			OnModelChanged.Where(_ => _.type.IsAssignableFrom(typeof(IPostModel)))
+			              .Select(_ => (IPostModel)_.value)
+			              .Subscribe(_ =>
+			              {
+
+			              }).AddTo(disposables);
 		}
 
 		~RxModelBinder()
@@ -27,7 +34,7 @@ namespace Redbean.Rx
 
 		public T Publish<T>(T value)
 		{
-			onModelChange.OnNext((value.GetType(), value));
+			onModelChanged.OnNext((value.GetType(), value));
 			return value;
 		}
 	}

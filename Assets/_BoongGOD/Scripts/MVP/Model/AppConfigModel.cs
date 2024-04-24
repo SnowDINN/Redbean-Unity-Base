@@ -7,16 +7,16 @@ namespace Redbean.Content.Model
 	public class AppConfigModel : IModel
 	{
 		[FirestoreProperty]
-		public AppConfigArgument android { get; set; }
+		public AppConfigArgument android { get; private set; }
 		
 		[FirestoreProperty]
-		public AppConfigArgument ios { get; set; }
+		public AppConfigArgument ios { get; private set; }
 	}
 
 	[FirestoreData]
 	public class AppConfigArgument
 	{
 		[FirestoreProperty]
-		public string version { get; set; }
+		public string version { get; private set; }
 	}
 }
