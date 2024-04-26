@@ -18,7 +18,7 @@ namespace Redbean
 		
 		private static readonly Dictionary<string, IBootstrap> Instances = new();
 		
-		[RuntimeInitializeOnLoadMethod]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
 		public static async void Setup()
 		{
 			var instances = AppDomain.CurrentDomain.GetAssemblies()

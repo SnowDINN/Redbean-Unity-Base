@@ -1,12 +1,15 @@
 ﻿using R3;
+using Redbean.Define;
 using Redbean.Extension;
+using Redbean.Rx;
 using Redbean.Static;
 
 namespace Redbean.Content.MVP
 {
 	public class ExampleButtonPresenter : Presenter
 	{
-		private ButtonView View => (ButtonView)ViewProperty;
+		[Singleton] private RxInputBinder rxInputBinder;
+		[View] private ButtonView View;
 
 		public static readonly ReactiveProperty<int> RxInteger = new();
 
@@ -15,6 +18,11 @@ namespace Redbean.Content.MVP
 			View.Button.AsButtonObservable().Subscribe(_ =>
 			{
 				RxInteger.Value += 1;
+			}).AddTo(View);
+
+			rxInputBinder.OnKeyInputDetected.Subscribe(_ =>
+			{
+				Log.Print($"{_}");
 			}).AddTo(View);
 		}
 

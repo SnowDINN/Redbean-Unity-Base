@@ -58,5 +58,10 @@ namespace Redbean.Static
 		/// 싱글톤 호출
 		/// </summary>
 		public static T Get<T>() where T : ISingleton => (T)singletons[typeof(T).Name];
+		
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
+		public static ISingleton Get(Type type) => singletons[type.Name];
 	}	
 }
