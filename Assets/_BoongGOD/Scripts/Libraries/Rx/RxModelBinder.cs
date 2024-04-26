@@ -7,7 +7,7 @@ using Console = Redbean.Extension.Console;
 
 namespace Redbean.Rx
 {
-	public class RxModelBinder : RxBase, ISingleton
+	public class RxModelBinder : RxBase
 	{
 		private readonly Subject<(Type type, object value)> onModelChanged = new();
 		public Observable<(Type type, object value)> OnModelChanged => onModelChanged.Share();
@@ -25,11 +25,6 @@ namespace Redbean.Rx
 			              {
 
 			              }).AddTo(disposables);
-		}
-
-		~RxModelBinder()
-		{
-			Dispose();
 		}
 
 		public T Publish<T>(T value)

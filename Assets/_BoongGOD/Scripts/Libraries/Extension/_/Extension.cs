@@ -5,8 +5,7 @@ namespace Redbean.Extension
 {
 	public static partial class Extension
 	{
-		private static T GetSingleton<T>() => 
-			Singleton.Get<T>();
+		private static T GetSingleton<T>() where T : ISingleton => Singleton.Get<T>();
 	}
 
 	public class Console

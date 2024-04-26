@@ -1,13 +1,13 @@
-﻿using System;
-using R3;
+﻿using R3;
+using Redbean.Static;
 
 namespace Redbean.Base
 {
-	public class RxBase : IDisposable
+	public class RxBase : ISingleton
 	{
 		protected readonly CompositeDisposable disposables = new();
 		
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			disposables.Dispose();
 			disposables.Clear();

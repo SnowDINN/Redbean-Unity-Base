@@ -9,13 +9,11 @@ namespace Redbean.Static
 {
 	public class Singleton : IBootstrap
 	{
-		private static readonly Dictionary<string, ISingleton> Singletons = new();
+		private static readonly Dictionary<string, ISingleton> singletons = new();
+		private readonly GameObject componentParent;
 
 		public Singleton()
 		{
-			var go = new GameObject("[Singleton Group]");
-			Object.DontDestroyOnLoad(go);
-
 			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
 			                                .SelectMany(x => x.GetTypes())
 			                                .Where(x => !typeof(MonoBehaviour).IsAssignableFrom(x)
@@ -32,23 +30,33 @@ namespace Redbean.Static
 			                                          && !x.IsInterface
 			                                          && !x.IsAbstract);
 
+			if (monoSingletons.Any())
+			{
+				componentParent = new GameObject("[Singleton Group]");
+				Object.DontDestroyOnLoad(componentParent);
+			}
+
 			foreach (var singleton in nativeSingletons
-				         .Where(singleton => Singletons.TryAdd(singleton.GetType().Name, singleton)))
+				         .Where(singleton => singletons.TryAdd(singleton.GetType().Name, singleton)))
 				Console.Log("Native Singleton", $" Create instance {singleton.GetType().FullName}", Color.cyan);
 			
 			foreach (var singleton in monoSingletons
-				         .Where(singleton => Singletons.TryAdd(singleton.Name, (ISingleton)go.AddComponent(singleton))))
+				         .Where(singleton => singletons.TryAdd(singleton.Name, (ISingleton)componentParent.AddComponent(singleton))))
 				Console.Log("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
 		}
-
-		~Singleton()
+		
+		public void Dispose()
 		{
-			Singletons.Clear();
+			foreach (var singleton in singletons)
+				singleton.Value.Dispose();
+			
+			singletons.Clear();
 		}
+
 
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T Get<T>() => (T)Singletons[typeof(T).Name];
+		public static T Get<T>() where T : ISingleton => (T)singletons[typeof(T).Name];
 	}	
 }

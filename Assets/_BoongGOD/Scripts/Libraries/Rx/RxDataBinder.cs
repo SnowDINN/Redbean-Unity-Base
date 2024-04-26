@@ -4,12 +4,11 @@ using R3;
 using Redbean.Base;
 using Redbean.Define;
 using Redbean.Extension;
-using Redbean.Static;
 using UnityEngine;
 
 namespace Redbean.Rx
 {
-	public class RxDataBinder : RxBase, ISingleton
+	public class RxDataBinder : RxBase
 	{
 		private readonly Subject<(string key, object value)> onDataChanged = new();
 		public Observable<(string key, object value)> OnDataChanged => onDataChanged.Share();
@@ -29,10 +28,11 @@ namespace Redbean.Rx
 			}).AddTo(disposables);
 		}
 
-		~RxDataBinder()
+		public override void Dispose()
 		{
+			base.Dispose();
+			
 			DataGroup.Clear();
-			Dispose();
 		}
 
 		public void Save<T>(string key, T value)

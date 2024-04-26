@@ -33,7 +33,7 @@ namespace Redbean.Static
 		{
 			base.OnDestroy();
 			
-			presenter?.Teardown();
+			presenter?.Dispose();
 		}
 	}
 }

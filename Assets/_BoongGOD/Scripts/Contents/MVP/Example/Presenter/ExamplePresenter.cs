@@ -8,17 +8,15 @@ namespace Redbean.Content.MVP
 	{
 		private ExampleView View => (ExampleView)ViewProperty;
 
-		private const string Token = "Fill";
-
 		public override void Setup()
 		{
 			View.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				View.Image.SmoothFill(0, 1, 2.5f, View.GenerateCancellationToken(Token).Token);
+				Console.Log($"{this.GetModel<AppConfigModel>().android.version}");
 			}).AddTo(View);
 		}
 
-		public override void Teardown()
+		public override void Dispose()
 		{
 			Console.Log($"Destroy component : {View.GetType().FullName}");
 		}

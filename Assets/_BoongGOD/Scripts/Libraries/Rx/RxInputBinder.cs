@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Redbean.Rx
 {
-	public class RxInputBinder : RxBase, ISingleton
+	public class RxInputBinder : RxBase
     {
     	private readonly Subject<KeyCode> onKeyInputDetected = new();
     	public Observable<KeyCode> OnKeyInputDetected => 
@@ -37,11 +37,6 @@ namespace Redbean.Rx
     
     			mouseCode = code;
     		}).AddTo(disposables);
-    	}
-    
-    	~RxInputBinder()
-    	{
-    		Dispose();
     	}
     
     	private async UniTaskVoid DetectingAsync()

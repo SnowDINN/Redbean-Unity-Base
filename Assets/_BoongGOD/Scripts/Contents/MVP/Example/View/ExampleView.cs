@@ -1,4 +1,5 @@
 ﻿using Redbean.Static;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,5 @@ namespace Redbean.Content.MVP
 	{
 		[SerializeField] private Button button;
 		public Button Button => button;
-		
-		[SerializeField] private Image image;
-		public Image Image => image;
 	}
 }

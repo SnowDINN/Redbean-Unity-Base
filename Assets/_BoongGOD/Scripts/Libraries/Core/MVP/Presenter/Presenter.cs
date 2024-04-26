@@ -8,12 +8,12 @@
 		{
 			ViewProperty = view;
 		}
-
+		
 		public virtual void Setup()
 		{
 		}
 
-		public virtual void Teardown()
+		public virtual void Dispose()
 		{
 		}
 	}

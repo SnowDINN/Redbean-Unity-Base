@@ -1,6 +1,8 @@
-﻿namespace Redbean
+﻿using System;
+
+namespace Redbean
 {
-	public interface IBootstrap
+	public interface IBootstrap : IDisposable
 	{
 	}
 }

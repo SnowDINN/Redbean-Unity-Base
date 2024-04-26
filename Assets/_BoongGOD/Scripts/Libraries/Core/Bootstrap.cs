@@ -19,7 +19,7 @@ namespace Redbean
 		
 		private static readonly Dictionary<string, IBootstrap> Instances = new();
 		
-		[RuntimeInitializeOnLoadMethod]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
 		public static async void Setup()
 		{
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
@@ -31,7 +31,7 @@ namespace Redbean
 
 			foreach (var instance in instances
 				         .Where(singleton => Instances.TryAdd(singleton.GetType().Name, singleton)))
-				Console.Log("Bootstrap", $" Success create instance {instance.GetType().FullName}", Color.green);
+				Console.Log("System", $" Success create instance {instance.GetType().FullName}", Color.green);
 
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
@@ -73,7 +73,7 @@ namespace Redbean
 
 		private static void AppConfigSettings(AppConfigArgument configArgs)
 		{
-			Console.Log("App Config", $"Latest updated version : {configArgs.version}", Color.yellow);
+			Console.Log("Config", $"Latest updated version : {configArgs.version}", Color.yellow);
 		}
 	}   
 }

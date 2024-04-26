@@ -19,14 +19,12 @@ namespace Redbean.Extension
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetModel<T>(this MonoBehaviour mono) => 
-			Model.Get<T>();
+		public static T GetModel<T>(this MonoBehaviour mono) where T : IModel => Model.Get<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>(this MonoBehaviour mono) => 
-			Singleton.Get<T>();
+		public static T GetSingleton<T>(this MonoBehaviour mono) where T : ISingleton => Singleton.Get<T>();
 		
 		/// <summary>
 		/// 로컬 데이터 호출

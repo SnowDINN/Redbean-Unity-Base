@@ -1,53 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using Console = Redbean.Extension.Console;
+﻿using System.Collections.Generic;
 
 namespace Redbean.Static
 {
-	public class Model : IBootstrap
+	public class Model
 	{
-		private static readonly Dictionary<string, IModel> Models = new();
+		private static readonly Dictionary<string, IModel> models = new();
 
-		public Model()
-		{
-			var models = AppDomain.CurrentDomain.GetAssemblies()
-			                      .SelectMany(x => x.GetTypes())
-			                      .Where(x => typeof(IModel).IsAssignableFrom(x)
-			                                  && !x.IsInterface
-			                                  && !x.IsAbstract)
-			                      .Select(x => (IModel)Activator.CreateInstance(Type.GetType(x.FullName)));
-			
-			foreach (var model in models
-				         .Where(singleton => Models.TryAdd(singleton.GetType().Name, singleton)))
-				Console.Log("Model", $" Create instance {model.GetType().FullName}", Color.cyan);
-		}
-
-		~Model()
-		{
-			Models.Clear();
-		}
-		
 		/// <summary>
 		/// 모델 포함 여부
 		/// </summary>
-		public static bool isContains<T>() => Models.ContainsKey(typeof(T).Name);
+		public static bool isContains<T>() where T : IModel => models.ContainsKey(typeof(T).Name);
 		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T Get<T>() => (T)Models[typeof(T).Name];
+		public static T Get<T>() where T : IModel => (T)models[typeof(T).Name];
 		
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
-		public static T Override<T>(T model)
+		public static T Override<T>(T model) where T : IModel
 		{
 			if (model is not IModel result)
 				return default;
 
-			Models[result.GetType().Name] = result;
+			models[result.GetType().Name] = result;
 			return model;
 		}
 	}
