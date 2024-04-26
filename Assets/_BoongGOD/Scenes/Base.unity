@@ -475,8 +475,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8040f2dfa6bb470ba2c6ca5bbd42ef2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetPresenter: Redbean.Content.MVP.TestPresenter
-  text: {fileID: 1134231601}
+  TargetPresenter: Redbean.Content.MVP.ExamplePresenter
+  button: {fileID: 1796802805}
+  image: {fileID: 1333067394}
 --- !u!1 &1333067392
 GameObject:
   m_ObjectHideFlags: 0

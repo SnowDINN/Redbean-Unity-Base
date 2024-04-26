@@ -8,13 +8,13 @@ namespace Redbean.Base
 {
 	public class MonoBase : MonoBehaviour, IDisposable
 	{
-		protected Dictionary<string, CancellationTokenSource> Cancellations = new();
-		protected CancellationTokenSource DestroyCancellation = new();
+		public Dictionary<string, CancellationTokenSource> Cancellations = new();
+		public CancellationTokenSource DestroyCancellation = new();
 
 		/// <summary>
 		/// 토큰 갱신
 		/// </summary>
-		protected CancellationTokenSource GenerateCancellationToken(string tokenName)
+		public CancellationTokenSource GenerateCancellationToken(string tokenName)
 		{
 			if (Cancellations.ContainsKey(tokenName))
 				Cancellations[tokenName].CancelAndDispose();
@@ -23,7 +23,7 @@ namespace Redbean.Base
 			return Cancellations[tokenName];
 		}
 
-		protected virtual void OnDestroy()
+		public virtual void OnDestroy()
 		{
 			Dispose();
 		}

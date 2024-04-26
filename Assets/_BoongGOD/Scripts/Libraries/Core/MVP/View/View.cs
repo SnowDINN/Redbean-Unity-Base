@@ -12,7 +12,7 @@ namespace Redbean.Static
 
 		private IPresenter presenter;
 
-		protected virtual void Awake()
+		public virtual void Awake()
 		{
 			var type = Type.GetType(TargetPresenter);
 			presenter = AppDomain.CurrentDomain.GetAssemblies()
@@ -29,7 +29,7 @@ namespace Redbean.Static
 			presenter?.Setup();
 		}
 
-		protected override void OnDestroy()
+		public override void OnDestroy()
 		{
 			base.OnDestroy();
 			
