@@ -4,7 +4,7 @@ using System.Linq;
 using Firebase;
 using Firebase.Firestore;
 using R3;
-using Redbean.Content.Model;
+using Redbean.Content.MVP;
 using Redbean.Define;
 using Redbean.Extension;
 using UnityEngine;

@@ -1,7 +1,7 @@
 ﻿using Firebase.Firestore;
 using Redbean.Static;
 
-namespace Redbean.Content.Model
+namespace Redbean.Content.MVP
 {
 	[FirestoreData]
 	public class AppConfigModel : IModel
