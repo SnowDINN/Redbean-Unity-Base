@@ -65,18 +65,12 @@ namespace Redbean.Extension
 		/// 싱글톤 호출
 		/// </summary>
 		public static T GetSingleton<T>(this IModel model) where T : ISingleton => Singleton.GetOrAdd<T>();
-		
-		/// <summary>
-		/// 모델 데이터 재정의
-		/// </summary>
-		public static T Override<T>(this T model) where T : IModel => 
-			model is not IModel ? default : Model.Override(model);
 
 		/// <summary>
-		/// 모델 데이터 재정의 및 배포
+		/// 모델 데이터 배포
 		/// </summary>
-		public static T OverrideAndPublish<T>(this T model) where T : IModel => 
-			model is not IModel ? default : Singleton.GetOrAdd<RxModelBinder>().Publish(Model.Override(model));
+		public static T Publish<T>(this T model) where T : IModel => 
+			model is not IModel ? default : Singleton.GetOrAdd<RxModelBinder>().Publish(Model.Add(model));
 
 #endregion
 	}

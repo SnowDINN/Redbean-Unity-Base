@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Redbean.Extension;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -10,9 +11,9 @@ namespace Redbean.Static
 	public class Singleton : IBootstrap
 	{
 		private static readonly Dictionary<Type, ISingleton> singletons = new();
-		private readonly GameObject parent;
+		private GameObject parent;
 
-		public Singleton()
+		public UniTask Setup()
 		{
 #region Native
 
@@ -50,16 +51,20 @@ namespace Redbean.Static
 				Log.Print("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
 
 #endregion
+
+			return UniTask.CompletedTask;
 		}
 		
-		public void Dispose()
+		/// <summary>
+		/// 싱글톤 전부 제거
+		/// </summary>
+		public static void Clear()
 		{
 			foreach (var singleton in singletons)
 				singleton.Value.Dispose();
 			
 			singletons.Clear();
 		}
-
 
 		/// <summary>
 		/// 싱글톤 호출

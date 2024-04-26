@@ -39,7 +39,7 @@ namespace Redbean.Static
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
-		public static T Override<T>(T model) where T : IModel
+		public static T Add<T>(T model) where T : IModel
 		{
 			if (model is not IModel result)
 				return default;
