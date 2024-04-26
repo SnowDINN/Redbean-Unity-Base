@@ -26,6 +26,7 @@ namespace Redbean.Static
 		}
 	}
 
+#if UNITY_EDITOR
 	[CustomPropertyDrawer(typeof(TargetPresenterAttribute))]
 	public class TargetPresenterDrawer : PropertyDrawer
 	{
@@ -44,4 +45,5 @@ namespace Redbean.Static
 			EditorGUILayout.Space();
 		}
 	}
+#endif
 }
