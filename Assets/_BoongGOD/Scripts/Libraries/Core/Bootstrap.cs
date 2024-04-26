@@ -16,10 +16,10 @@ namespace Redbean
 		private static readonly Subject<AppStartedType> onAppStarted = new();
 		public static Observable<AppStartedType> OnAppStarted => onAppStarted.Share();
 		
-		private static readonly Dictionary<string, IBootstrap> Instances = new();
-		
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-		public static async void Setup()
+		private static readonly Dictionary<Type, IBootstrap> Instances = new();
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+		public static void AssembliesSetup()
 		{
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
 			                         .SelectMany(x => x.GetTypes())
@@ -29,9 +29,13 @@ namespace Redbean
 			                         .Select(x => (IBootstrap)Activator.CreateInstance(Type.GetType(x.FullName)));
 
 			foreach (var instance in instances
-				         .Where(singleton => Instances.TryAdd(singleton.GetType().Name, singleton)))
+				         .Where(singleton => Instances.TryAdd(singleton.GetType(), singleton)))
 				Log.Print("System", $" Success create instance {instance.GetType().FullName}", Color.green);
-
+		}
+		
+		[RuntimeInitializeOnLoadMethod]
+		public static async void FirebaseSetup()
+		{
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
 			if (status == DependencyStatus.Available)

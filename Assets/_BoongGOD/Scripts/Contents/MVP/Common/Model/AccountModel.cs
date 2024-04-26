@@ -7,9 +7,9 @@ namespace Redbean.Content.MVP
 	public class AccountModel : IPostModel
 	{
 		[FirestoreProperty]
-		public string nickname { get; private set; }
+		public string nickname { get; private set; } = string.Empty;
 		
 		[FirestoreProperty]
-		public string social { get; private set; }
+		public string social { get; private set; } = string.Empty;
 	}
 }

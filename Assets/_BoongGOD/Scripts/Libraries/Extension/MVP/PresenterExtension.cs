@@ -1,53 +1,49 @@
 ﻿using System;
+using Redbean.Content.MVP;
 using Redbean.Rx;
 using Redbean.Static;
-using UnityEngine;
 
 namespace Redbean.Extension
 {
 	public static partial class Extension
 	{
-		public static void SetParent(this GameObject go, Transform parent) => 
-			go.transform.SetParent(parent);
-		
-		public static void ActiveGameObject(this Component component, bool value) => 
-			component.gameObject.SetActive(value);
-
-		public static void ActiveComponent(this MonoBehaviour mono, bool value) => 
-			mono.enabled = value;
-		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetModel<T>(this MonoBehaviour mono) where T : IModel => Model.Get<T>();
+		public static T GetModel<T>(this IPresenter presenter) where T : IModel => Model.GetOrAdd<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>(this MonoBehaviour mono) where T : ISingleton => Singleton.Get<T>();
+		public static T GetSingleton<T>(this IPresenter presenter) where T : ISingleton => Singleton.GetOrAdd<T>();
+		
+		/// <summary>
+		/// 유저 데이터 호출
+		/// </summary>
+		public static AccountModel User(this IPresenter presenter) => Model.GetOrAdd<AccountModel>();
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
-		public static int GetLocalInt(this MonoBehaviour mono, string key) =>
+		public static int GetLocalInt(this IPresenter presenter, string key) =>
 			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToInt32(value) : default;
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
-		public static float GetLocalFloat(this MonoBehaviour mono, string key) =>
+		public static float GetLocalFloat(this IPresenter presenter, string key) =>
 			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToSingle(value) : default;
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
-		public static string GetLocalString(this MonoBehaviour mono, string key) =>
+		public static string GetLocalString(this IPresenter presenter, string key) =>
 			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToString(value) : default;
 
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
-		public static T GetLocalModel<T>(this MonoBehaviour mono, string key) =>
+		public static T GetLocalModel<T>(this IPresenter presenter, string key) =>
 			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? (T)value : default;
 	}
 }

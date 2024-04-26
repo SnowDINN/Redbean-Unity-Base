@@ -9,11 +9,11 @@ using UnityEditor;
 
 namespace Redbean.Static
 {
-	public class TargetPresenterAttribute : PropertyAttribute
+	public class PresenterAttribute : PropertyAttribute
 	{
 		public List<string> presenterArray;
 
-		public TargetPresenterAttribute()
+		public PresenterAttribute()
 		{
 			presenterArray = AppDomain.CurrentDomain.GetAssemblies()
 			                          .SelectMany(x => x.GetTypes())
@@ -30,10 +30,10 @@ namespace Redbean.Static
 	}
 
 #if UNITY_EDITOR
-	[CustomPropertyDrawer(typeof(TargetPresenterAttribute))]
-	public class TargetPresenterDrawer : PropertyDrawer
+	[CustomPropertyDrawer(typeof(PresenterAttribute))]
+	public class PresenterDrawer : PropertyDrawer
 	{
-		private TargetPresenterAttribute target => (TargetPresenterAttribute)attribute;
+		private PresenterAttribute target => (PresenterAttribute)attribute;
 		private int index;
 		
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

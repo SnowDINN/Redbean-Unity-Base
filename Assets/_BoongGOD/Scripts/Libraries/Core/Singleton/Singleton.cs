@@ -9,7 +9,7 @@ namespace Redbean.Static
 {
 	public class Singleton : IBootstrap
 	{
-		private static readonly Dictionary<string, ISingleton> singletons = new();
+		private static readonly Dictionary<Type, ISingleton> singletons = new();
 		private readonly GameObject componentParent;
 
 		public Singleton()
@@ -37,11 +37,11 @@ namespace Redbean.Static
 			}
 
 			foreach (var singleton in nativeSingletons
-				         .Where(singleton => singletons.TryAdd(singleton.GetType().Name, singleton)))
+				         .Where(singleton => singletons.TryAdd(singleton.GetType(), singleton)))
 				Log.Print("Native Singleton", $" Create instance {singleton.GetType().FullName}", Color.cyan);
 			
 			foreach (var singleton in monoSingletons
-				         .Where(singleton => singletons.TryAdd(singleton.Name, (ISingleton)componentParent.AddComponent(singleton))))
+				         .Where(singleton => singletons.TryAdd(singleton, (ISingleton)componentParent.AddComponent(singleton))))
 				Log.Print("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
 		}
 		
@@ -57,11 +57,25 @@ namespace Redbean.Static
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T Get<T>() where T : ISingleton => (T)singletons[typeof(T).Name];
+		public static T GetOrAdd<T>() where T : ISingleton
+		{
+			if (singletons.TryGetValue(typeof(T), out var value))
+				return (T)value;
+
+			singletons[typeof(T)] = (ISingleton)Activator.CreateInstance(typeof(T));
+			return (T)singletons[typeof(T)];
+		}
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static ISingleton Get(Type type) => singletons[type.Name];
+		public static ISingleton GetOrAdd(Type type)
+		{
+			if (singletons.TryGetValue(type, out var value))
+				return value;
+
+			singletons[type] = (ISingleton)Activator.CreateInstance(type);
+			return singletons[type];
+		}
 	}	
 }

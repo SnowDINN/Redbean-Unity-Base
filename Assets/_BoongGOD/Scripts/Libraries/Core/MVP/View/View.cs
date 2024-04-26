@@ -7,7 +7,7 @@ namespace Redbean.Static
 {
 	public class View : MonoBase, IView
 	{
-		[Header("Presenter"), TargetPresenter]
+		[Header("Presenter"), Presenter]
 		public string TargetPresenter;
 		
 		private Presenter presenter;
