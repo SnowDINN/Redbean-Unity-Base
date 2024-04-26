@@ -17,6 +17,11 @@ namespace Redbean.Static
 		public static T Get<T>() where T : IModel => (T)models[typeof(T).Name];
 		
 		/// <summary>
+		/// 모델 전부 제거
+		/// </summary>
+		public static void Clear() => models.Clear();
+		
+		/// <summary>
 		/// 모델 재정의
 		/// </summary>
 		public static T Override<T>(T model) where T : IModel

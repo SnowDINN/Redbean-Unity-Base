@@ -8,7 +8,6 @@ using Redbean.Content.MVP;
 using Redbean.Define;
 using Redbean.Extension;
 using UnityEngine;
-using Console = Redbean.Extension.Console;
 
 namespace Redbean
 {
@@ -31,17 +30,17 @@ namespace Redbean
 
 			foreach (var instance in instances
 				         .Where(singleton => Instances.TryAdd(singleton.GetType().Name, singleton)))
-				Console.Log("System", $" Success create instance {instance.GetType().FullName}", Color.green);
+				Log.Print("System", $" Success create instance {instance.GetType().FullName}", Color.green);
 
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
 			if (status == DependencyStatus.Available)
-				Console.Log("Firebase", "Success to connect to the Firebase server.", Color.green);
+				Log.Print("Firebase", "Success to connect to the Firebase server.", Color.green);
 			else
 			{
 				onAppStarted.OnNext(AppStartedType.FirebaseError);
 				onAppStarted.OnCompleted();
-				Console.Log("Firebase", "Failed to connect to the Firebase server.", Color.red);
+				Log.Print("Firebase", "Failed to connect to the Firebase server.", Color.red);
 				return;
 			}
 
@@ -49,12 +48,12 @@ namespace Redbean
 			var firestore = FirebaseFirestore.DefaultInstance;
 			var configSnapshot = await firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
 			if (configSnapshot.Exists)
-				Console.Log("Firebase", "Success to load to the app config.", Color.green);
+				Log.Print("Firebase", "Success to load to the app config.", Color.green);
 			else
 			{
 				onAppStarted.OnNext(AppStartedType.FirebaseError);
 				onAppStarted.OnCompleted();
-				Console.Log("Firebase", "Failed to load to the app config.", Color.red);
+				Log.Print("Firebase", "Failed to load to the app config.", Color.red);
 				return;
 			}
 
@@ -73,7 +72,7 @@ namespace Redbean
 
 		private static void AppConfigSettings(AppConfigArgument configArgs)
 		{
-			Console.Log("Config", $"Latest updated version : {configArgs.version}", Color.yellow);
+			Log.Print("Config", $"Latest updated version : {configArgs.version}", Color.yellow);
 		}
 	}   
 }

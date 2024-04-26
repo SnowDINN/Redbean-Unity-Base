@@ -1,6 +1,8 @@
-﻿namespace Redbean.Static
+﻿using System;
+
+namespace Redbean.Static
 {
-	public class Presenter : IPresenter
+	public class Presenter : IPresenter, IDisposable
 	{
 		protected object ViewProperty { get; private set; }
 		

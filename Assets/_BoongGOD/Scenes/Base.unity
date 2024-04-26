@@ -434,6 +434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1154298527}
+  - component: {fileID: 1154298529}
   - component: {fileID: 1154298528}
   m_Layer: 5
   m_Name: Base
@@ -471,10 +472,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1154298526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8040f2dfa6bb470ba2c6ca5bbd42ef2c, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b941101c8e44771a8c87b402b5bbfed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetPresenter: Redbean.Content.MVP.ExamplePresenter
+  TargetPresenter: Redbean.Content.MVP.ExampleTextPresenter
+  text: {fileID: 1134231601}
+--- !u!114 &1154298529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154298526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf20170bd2645daa5ca1b38683ae82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetPresenter: Redbean.Content.MVP.ExampleButtonPresenter
   button: {fileID: 1796802805}
 --- !u!1 &1483366782
 GameObject:

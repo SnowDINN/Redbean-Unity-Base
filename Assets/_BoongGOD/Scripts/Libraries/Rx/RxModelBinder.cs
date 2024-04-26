@@ -1,9 +1,9 @@
 ﻿using System;
 using R3;
 using Redbean.Base;
+using Redbean.Extension;
 using Redbean.Static;
 using UnityEngine;
-using Console = Redbean.Extension.Console;
 
 namespace Redbean.Rx
 {
@@ -16,7 +16,7 @@ namespace Redbean.Rx
 		{
 			OnModelChanged.Subscribe(_ =>
 			{
-				Console.Log("Model", $"Published model : {_.type.FullName}", Color.yellow);
+				Log.Print("Model", $"Published model : {_.type.FullName}", Color.yellow);
 			}).AddTo(disposables);
 
 			OnModelChanged.Where(_ => _.type.IsAssignableFrom(typeof(IPostModel)))

@@ -10,7 +10,7 @@ namespace Redbean.Editor
 		public static void PlayPrefsDeleteAll()
 		{
 			PlayerPrefs.DeleteAll();
-			Console.Log("모든 로컬 데이터가 삭제되었습니다.", Color.yellow);
+			Log.Print("모든 로컬 데이터가 삭제되었습니다.", Color.yellow);
 		}
 	}
 }

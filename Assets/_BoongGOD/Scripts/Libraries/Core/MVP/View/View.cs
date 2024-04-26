@@ -9,8 +9,8 @@ namespace Redbean.Static
 	{
 		[Header("Presenter"), TargetPresenter]
 		public string TargetPresenter;
-
-		private IPresenter presenter;
+		
+		private Presenter presenter;
 
 		public virtual void Awake()
 		{
@@ -19,10 +19,10 @@ namespace Redbean.Static
 			                     .SelectMany(x => x.GetTypes())
 			                     .Where(x => type != null
 			                                 && type.IsAssignableFrom(x)
-			                                 && typeof(IPresenter).IsAssignableFrom(x)
+			                                 && typeof(Presenter).IsAssignableFrom(x)
 			                                 && !x.IsInterface
 			                                 && !x.IsAbstract)
-			                     .Select(x => (IPresenter)Activator.CreateInstance(Type.GetType(x.FullName)))
+			                     .Select(x => (Presenter)Activator.CreateInstance(Type.GetType(x.FullName)))
 			                     .FirstOrDefault();
 			
 			presenter?.BindView(this);

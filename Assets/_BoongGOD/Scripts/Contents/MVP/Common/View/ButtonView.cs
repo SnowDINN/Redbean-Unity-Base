@@ -1,12 +1,13 @@
 ﻿using Redbean.Static;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Redbean.Content.MVP
 {
-	public class ExampleView : View
+	public class ButtonView : View
 	{
+		[Header("Field")]
+		
 		[SerializeField] private Button button;
 		public Button Button => button;
 	}

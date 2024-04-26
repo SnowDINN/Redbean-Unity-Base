@@ -24,7 +24,7 @@ namespace Redbean.Rx
 
 			OnDataChanged.Subscribe(_ =>
 			{
-				Console.Log("Data", $"Published data : {_.key} | {_.value}", Color.yellow);
+				Log.Print("Data", $"Published data : {_.key} | {_.value}", Color.yellow);
 			}).AddTo(disposables);
 		}
 

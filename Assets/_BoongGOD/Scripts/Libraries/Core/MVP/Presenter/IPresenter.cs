@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Redbean.Static
+﻿namespace Redbean.Static
 {
-	public interface IPresenter : IDisposable
+	public interface IPresenter
 	{
 		void BindView(IView view);
 		void Setup();

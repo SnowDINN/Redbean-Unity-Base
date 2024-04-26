@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redbean.Extension;
 using UnityEngine;
-using Console = Redbean.Extension.Console;
 using Object = UnityEngine.Object;
 
 namespace Redbean.Static
@@ -38,11 +38,11 @@ namespace Redbean.Static
 
 			foreach (var singleton in nativeSingletons
 				         .Where(singleton => singletons.TryAdd(singleton.GetType().Name, singleton)))
-				Console.Log("Native Singleton", $" Create instance {singleton.GetType().FullName}", Color.cyan);
+				Log.Print("Native Singleton", $" Create instance {singleton.GetType().FullName}", Color.cyan);
 			
 			foreach (var singleton in monoSingletons
 				         .Where(singleton => singletons.TryAdd(singleton.Name, (ISingleton)componentParent.AddComponent(singleton))))
-				Console.Log("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
+				Log.Print("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
 		}
 		
 		public void Dispose()

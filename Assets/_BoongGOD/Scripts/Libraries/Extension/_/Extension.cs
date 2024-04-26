@@ -8,9 +8,9 @@ namespace Redbean.Extension
 		private static T GetSingleton<T>() where T : ISingleton => Singleton.Get<T>();
 	}
 
-	public class Console
+	public class Log
 	{
-		public static void Log(string tag, string message, Color color = default)
+		public static void Print(string tag, string message, Color color = default)
 		{
 			if (color == default)
 				color = Color.white;
@@ -18,7 +18,7 @@ namespace Redbean.Extension
 			Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>[{tag}] {message}</color>");
 		}
 		
-		public static void Log(string message, Color color = default)
+		public static void Print(string message, Color color = default)
 		{
 			if (color == default)
 				color = Color.white;
