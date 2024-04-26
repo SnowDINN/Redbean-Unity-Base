@@ -1,13 +1,5 @@
 ﻿namespace Redbean.Define
 {
-	public enum AppStartedType
-	{
-		Success,
-		FirebaseError,
-		UserInformationError,
-		ResourceError,
-	}
-
 	public enum SubscribeType
 	{
 		None,
