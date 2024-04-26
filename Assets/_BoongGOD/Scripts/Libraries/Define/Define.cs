@@ -7,6 +7,12 @@
 		UserInformationError,
 		ResourceError,
 	}
+
+	public enum SubscribeType
+	{
+		None,
+		Subscribe,
+	}
 	
 	public static class Balance
 	{

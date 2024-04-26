@@ -61,7 +61,7 @@ namespace Redbean
 				return;
 			}
 
-			var config = configSnapshot.ConvertTo<AppConfigModel>().Override();
+			var config = configSnapshot.ConvertTo<AppConfigModel>().OverrideAndPublish();
 			if (config is not null)
 			{
 #if UNITY_ANDROID

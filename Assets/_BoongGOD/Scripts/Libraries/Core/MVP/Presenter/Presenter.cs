@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using R3;
+using Redbean.Define;
+using Redbean.Extension;
+using Redbean.Rx;
+using UnityEngine;
 
 namespace Redbean.Static
 {
 	public class Presenter : IPresenter, IDisposable
 	{
+		private GameObject GameObject;
+
+		public GameObject GetGameObject() => GameObject;
+
 		public void BindView(IView view)
 		{
+			GameObject = view.GetGameObject();
+				
 			foreach (var field in GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
 			{
 				var attributes = field.GetCustomAttributes(false);
@@ -21,8 +32,16 @@ namespace Redbean.Static
 							field.SetValue(this, view);
 							break;
 						
-						case ModelAttribute:
+						case ModelAttribute castAttribute:
 							field.SetValue(this, Model.GetOrAdd(field.FieldType));
+
+							if (castAttribute.type == SubscribeType.Subscribe)
+							{
+								Singleton.GetOrAdd<RxModelBinder>().OnModelChanged
+								         .Where(_ => _.type == field.FieldType)
+								         .Subscribe(_ => field.SetValue(this, _.value))
+								         .AddTo(this);
+							}
 							break;
 
 						case SingletonAttribute:

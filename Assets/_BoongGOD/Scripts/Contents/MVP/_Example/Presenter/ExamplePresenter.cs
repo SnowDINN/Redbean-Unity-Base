@@ -1,4 +1,5 @@
 ﻿using R3;
+using Redbean.Define;
 using Redbean.Extension;
 using Redbean.Rx;
 using Redbean.Static;
@@ -7,10 +8,14 @@ namespace Redbean.Content.MVP
 {
 	public class ExampleButtonPresenter : Presenter
 	{
-		[Singleton] private RxInputBinder rxInputBinder;
-		[View] private ButtonView view;
+		[Singleton] 
+		private RxInputBinder rxInputBinder;
+		
+		[View]
+		private ButtonView view;
 
-		[Model] private AppConfigModel configModel;
+		[Model(SubscribeType.Subscribe)]
+		private AppConfigModel configModel;
 
 		public static readonly ReactiveProperty<int> RxInteger = new();
 
@@ -20,12 +25,12 @@ namespace Redbean.Content.MVP
 			{
 				RxInteger.Value += 1;
 				Log.Print($"{configModel.android.version}");
-			}).AddTo(view);
+			}).AddTo(this);
 
 			rxInputBinder.OnKeyInputDetected.Subscribe(_ =>
 			{
 				Log.Print($"{_}");
-			}).AddTo(view);
+			}).AddTo(this);
 		}
 
 		public override void Dispose()
@@ -43,7 +48,7 @@ namespace Redbean.Content.MVP
 			ExampleButtonPresenter.RxInteger.Subscribe(_ =>
 			{
 				view.Text.text = $"{_}";
-			}).AddTo(view);
+			}).AddTo(this);
 		}
 
 		public override void Dispose()

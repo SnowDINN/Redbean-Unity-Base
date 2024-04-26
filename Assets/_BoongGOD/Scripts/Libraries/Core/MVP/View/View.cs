@@ -11,7 +11,7 @@ namespace Redbean.Static
 		public string TargetPresenter;
 		
 		private Presenter presenter;
-
+		
 		public virtual void Awake()
 		{
 			var type = Type.GetType(TargetPresenter);
@@ -35,5 +35,7 @@ namespace Redbean.Static
 			
 			presenter?.Dispose();
 		}
+		
+		public GameObject GetGameObject() => gameObject;
 	}
 }
