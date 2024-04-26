@@ -30,24 +30,24 @@ namespace Redbean.Extension
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static int GetLocalInt(this MonoBehaviour mono, string key) =>
-			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? Convert.ToInt32(value) : default;
+			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToInt32(value) : default;
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static float GetLocalFloat(this MonoBehaviour mono, string key) =>
-			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? Convert.ToSingle(value) : default;
+			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToSingle(value) : default;
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static string GetLocalString(this MonoBehaviour mono, string key) =>
-			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? Convert.ToString(value) : default;
+			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToString(value) : default;
 
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static T GetLocalModel<T>(this MonoBehaviour mono, string key) =>
-			GetSingleton<RxDataBinder>().DataGroup.TryGetValue(key, out var value) ? (T)value : default;
+			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? (T)value : default;
 	}
 }
