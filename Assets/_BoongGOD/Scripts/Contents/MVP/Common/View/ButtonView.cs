@@ -6,7 +6,7 @@ namespace Redbean.Content.MVP
 {
 	public class ButtonView : View
 	{
-		[Header("Field")]
+		[Header("View")]
 		
 		[SerializeField] private Button button;
 		public Button Button => button;
