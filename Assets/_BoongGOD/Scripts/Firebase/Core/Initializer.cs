@@ -9,6 +9,8 @@ namespace Redbean.Firebase
 {
 	public class Initializer : IBootstrap
 	{
+		public int ExecutionOrder => 10;
+
 		public async UniTask Setup()
 		{
 			// 파이어베이스 연결 체크

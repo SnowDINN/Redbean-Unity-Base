@@ -13,6 +13,8 @@ namespace Redbean.Static
 		private static readonly Dictionary<Type, ISingleton> singletons = new();
 		private GameObject parent;
 
+		public int ExecutionOrder => 0;
+
 		public UniTask Setup()
 		{
 #region Native

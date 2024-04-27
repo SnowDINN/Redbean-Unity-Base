@@ -14,7 +14,8 @@ namespace Redbean
 			                         .Where(x => typeof(IBootstrap).IsAssignableFrom(x)
 			                                     && !x.IsInterface
 			                                     && !x.IsAbstract)
-			                         .Select(x => (IBootstrap)Activator.CreateInstance(Type.GetType(x.FullName)));
+			                         .Select(x => (IBootstrap)Activator.CreateInstance(Type.GetType(x.FullName)))
+			                         .OrderBy(_ => _.ExecutionOrder);
 
 			foreach (var instance in instances)
 				await instance.Setup();
