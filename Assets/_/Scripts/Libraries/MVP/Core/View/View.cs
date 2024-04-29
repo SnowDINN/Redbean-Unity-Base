@@ -22,15 +22,8 @@ namespace Redbean.MVP
 		public virtual void Awake()
 		{
 			var type = Type.GetType(PresenterFullName);
-			presenter = AppDomain.CurrentDomain.GetAssemblies()
-			                     .SelectMany(x => x.GetTypes())
-			                     .Where(x => type != null
-			                                 && type.IsAssignableFrom(x)
-			                                 && typeof(Presenter).IsAssignableFrom(x)
-			                                 && !x.IsInterface
-			                                 && !x.IsAbstract)
-			                     .Select(x => (Presenter)Activator.CreateInstance(Type.GetType(x.FullName)))
-			                     .FirstOrDefault();
+			if (type != null)
+				presenter = (Presenter)Activator.CreateInstance(Type.GetType(type.FullName));
 			
 			presenter?.BindView(this);
 			presenter?.Setup();
@@ -62,7 +55,9 @@ namespace Redbean.MVP
 			                          .Where(x => typeof(IPresenter).IsAssignableFrom(x)
 			                                      && !x.IsInterface
 			                                      && !x.IsAbstract)
-			                          .Where(x => x.GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Any(_ => _.FieldType == view.GetType()))
+			                          .Where(x => x
+			                                      .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+			                                      .Any(_ => _.FieldType == view.GetType()))
 			                          .Select(x => x.FullName)
 			                          .ToList();
 			
