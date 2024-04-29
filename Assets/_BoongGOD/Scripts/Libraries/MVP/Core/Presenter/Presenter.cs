@@ -31,10 +31,10 @@ namespace Redbean.MVP
 							field.SetValue(this, view);
 							break;
 						
-						case ModelAttribute castAttribute:
+						case ModelAttribute model:
 							field.SetValue(this, Model.GetOrAdd(field.FieldType));
 
-							if (castAttribute.type == SubscribeType.Subscribe)
+							if (model.type == SubscribeType.Subscribe)
 							{
 								Singleton.GetOrAdd<RxModelBinder>().OnModelChanged
 								         .Where(_ => _.type == field.FieldType)

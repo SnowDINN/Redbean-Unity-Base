@@ -41,7 +41,8 @@ namespace Redbean.Content.MVP
 	
 	public class ExampleTextPresenter : Presenter
 	{
-		[View] private TextView view;
+		[View]
+		private TextView view;
 
 		public override void Setup()
 		{
