@@ -2,6 +2,7 @@
 using Firebase;
 using Firebase.Firestore;
 using Redbean.Content.MVP;
+using Redbean.Debug;
 using Redbean.Extension;
 using UnityEngine;
 

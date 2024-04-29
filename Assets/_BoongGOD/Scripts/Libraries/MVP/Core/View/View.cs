@@ -8,13 +8,13 @@ namespace Redbean.Static
 	public class View : MonoBase, IView
 	{
 		[Header("Presenter"), Presenter]
-		public string TargetPresenter;
+		public string PresenterFullName;
 		
 		private Presenter presenter;
 		
 		public virtual void Awake()
 		{
-			var type = Type.GetType(TargetPresenter);
+			var type = Type.GetType(PresenterFullName);
 			presenter = AppDomain.CurrentDomain.GetAssemblies()
 			                     .SelectMany(x => x.GetTypes())
 			                     .Where(x => type != null

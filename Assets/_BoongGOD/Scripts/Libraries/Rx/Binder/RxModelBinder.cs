@@ -1,7 +1,7 @@
 ﻿using System;
 using R3;
 using Redbean.Base;
-using Redbean.Extension;
+using Redbean.Debug;
 using Redbean.Static;
 using UnityEngine;
 

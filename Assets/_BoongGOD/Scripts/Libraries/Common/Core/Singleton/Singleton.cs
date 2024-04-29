@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Redbean.Extension;
+using Redbean.Debug;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

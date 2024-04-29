@@ -41,7 +41,7 @@ namespace Redbean.Static
 			var index = target.presenterArray.IndexOf(property.stringValue);
 			if (index < 0)
 				index = 0;
-			index = EditorGUI.Popup(position, label.text, index, target.presenterArray.ToArray());
+			index = EditorGUI.Popup(position, string.Empty, index, target.presenterArray.ToArray());
 			
 			property.stringValue = target.presenterArray[index];
 		}

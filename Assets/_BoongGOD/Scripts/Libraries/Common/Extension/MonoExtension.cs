@@ -6,6 +6,8 @@ namespace Redbean.Extension
 {
 	public static partial class Extension
 	{
+		private static T GetSingleton<T>() where T : ISingleton => Singleton.GetOrAdd<T>();
+		
 		/// <summary>
 		/// 게임 오브젝트 비/활성화
 		/// </summary>
@@ -17,16 +19,6 @@ namespace Redbean.Extension
 		/// </summary>
 		public static void ActiveComponent(this MonoBehaviour mono, bool value) => 
 			mono.enabled = value;
-		
-		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		public static T GetModel<T>(this MonoBehaviour mono) where T : IModel => Model.GetOrAdd<T>();
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		public static T GetSingleton<T>(this MonoBehaviour mono) where T : ISingleton => Singleton.GetOrAdd<T>();
 		
 		/// <summary>
 		/// 토큰 취소 및 할당 해제
