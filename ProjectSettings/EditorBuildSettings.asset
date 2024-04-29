@@ -6,6 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_BoongGOD/Scenes/Base.unity
+    path: Assets/_/Scenes/Base.unity
     guid: 95695fc9caabf4f3ab4545523042d935
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
