@@ -52,6 +52,7 @@ namespace Redbean.MVP
 		private View view => (View)target;
 		
 		private List<string> presenterArray;
+		private bool useSerializeField;
 		
 		private void OnEnable()
 		{
@@ -63,10 +64,18 @@ namespace Redbean.MVP
 			                          .Where(x => x.GetFields(BindingFlags.NonPublic | BindingFlags.Instance).Any(_ => _.FieldType == view.GetType()))
 			                          .Select(x => x.FullName)
 			                          .ToList();
+			
+			if (presenterArray.Contains(typeof(Presenter).FullName))
+				presenterArray.Remove(typeof(Presenter).FullName);
+			
+			foreach (var field in view.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
+			{
+				var attributes = field.GetCustomAttributes(false);
+				if (!attributes.Any())
+					continue;
 
-			var className = typeof(Presenter).FullName;
-			if (presenterArray.Contains(className))
-				presenterArray.Remove(className);
+				useSerializeField = attributes.Any(_ => _ is SerializeField);
+			}
 		}
 
 		public override void OnInspectorGUI()
@@ -94,16 +103,8 @@ namespace Redbean.MVP
 				else
 					EditorGUILayout.LabelField("This View associated with the Presenter does not exist.");
 
-				foreach (var field in view.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
+				if (useSerializeField)
 				{
-					var attributes = field.GetCustomAttributes(false);
-					if (!attributes.Any())
-						continue;
-
-					var useSerializeField = attributes.Any(_ => _ is SerializeField);
-					if (!useSerializeField)
-						continue;
-
 					EditorGUILayout.Space();
 					EditorGUILayout.LabelField("View", EditorStyles.boldLabel);
 				}
