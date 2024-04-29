@@ -3,7 +3,7 @@ using System.Linq;
 using Redbean.Base;
 using UnityEngine;
 
-namespace Redbean.Static
+namespace Redbean.MVP
 {
 	public class View : MonoBase, IView
 	{

@@ -1,11 +1,5 @@
-﻿namespace Redbean.Define
+﻿namespace Redbean
 {
-	public enum SubscribeType
-	{
-		None,
-		Subscribe,
-	}
-	
 	public static class Balance
 	{
 		public const int DoubleButtonPrevention = 200;

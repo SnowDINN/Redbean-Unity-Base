@@ -1,6 +1,6 @@
 using System;
 
-namespace Redbean.Static
+namespace Redbean.Core
 {
 	public interface ISingleton : IDisposable
 	{

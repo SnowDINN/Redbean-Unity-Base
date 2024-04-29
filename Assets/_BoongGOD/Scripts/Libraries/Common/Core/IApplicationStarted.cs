@@ -1,8 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Redbean
+namespace Redbean.Core
 {
-	public interface IBootstrap
+	public interface IApplicationStarted
 	{
 		int ExecutionOrder { get; }
 		UniTask Setup();

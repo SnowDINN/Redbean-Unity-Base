@@ -2,7 +2,7 @@
 using R3;
 using Redbean.Base;
 using Redbean.Debug;
-using Redbean.Static;
+using Redbean.MVP;
 using UnityEngine;
 
 namespace Redbean.Rx

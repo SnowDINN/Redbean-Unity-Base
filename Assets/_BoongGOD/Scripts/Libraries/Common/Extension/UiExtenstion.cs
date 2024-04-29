@@ -3,11 +3,10 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
-using Redbean.Define;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Redbean.Extension
+namespace Redbean
 {
 	public static partial class Extension
 	{

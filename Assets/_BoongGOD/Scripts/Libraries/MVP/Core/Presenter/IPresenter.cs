@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Redbean.Static
+namespace Redbean.MVP
 {
-	public interface IPresenter
+	public interface IPresenter : IMVP
 	{
 		GameObject GetGameObject();
 		void BindView(IView view);

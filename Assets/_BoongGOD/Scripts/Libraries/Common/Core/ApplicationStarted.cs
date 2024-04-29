@@ -2,19 +2,19 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace Redbean
+namespace Redbean.Core
 {
-	public class Bootstrap
+	public class ApplicationStarted
 	{
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
 		public static async void AssembliesSetup()
 		{
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
 			                         .SelectMany(x => x.GetTypes())
-			                         .Where(x => typeof(IBootstrap).IsAssignableFrom(x)
+			                         .Where(x => typeof(IApplicationStarted).IsAssignableFrom(x)
 			                                     && !x.IsInterface
 			                                     && !x.IsAbstract)
-			                         .Select(x => (IBootstrap)Activator.CreateInstance(Type.GetType(x.FullName)))
+			                         .Select(x => (IApplicationStarted)Activator.CreateInstance(Type.GetType(x.FullName)))
 			                         .OrderBy(_ => _.ExecutionOrder);
 
 			foreach (var instance in instances)

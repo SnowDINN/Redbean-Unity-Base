@@ -2,12 +2,11 @@
 using System.Linq;
 using System.Reflection;
 using R3;
-using Redbean.Define;
-using Redbean.Extension;
+using Redbean.Core;
 using Redbean.Rx;
 using UnityEngine;
 
-namespace Redbean.Static
+namespace Redbean.MVP
 {
 	public class Presenter : IPresenter, IDisposable
 	{

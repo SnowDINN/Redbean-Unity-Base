@@ -6,9 +6,9 @@ using Redbean.Debug;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Redbean.Static
+namespace Redbean.Core
 {
-	public class Singleton : IBootstrap
+	public class Singleton : IApplicationStarted
 	{
 		private static readonly Dictionary<Type, ISingleton> singletons = new();
 		private GameObject parent;

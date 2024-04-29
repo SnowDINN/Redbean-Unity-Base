@@ -1,27 +1,32 @@
 ﻿using System;
 using R3;
 using Redbean.Content.MVP;
+using Redbean.Core;
+using Redbean.MVP;
 using Redbean.Rx;
-using Redbean.Static;
 
-namespace Redbean.Extension
+namespace Redbean
 {
 	public static partial class Extension
 	{
-#region Presenter
+#region MVP
 
-		public static T AddTo<T>(this T disposable, IPresenter presenter) where T : IDisposable =>
-			disposable.AddTo(presenter.GetGameObject());
-		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetModel<T>(this IPresenter presenter) where T : IModel => Model.GetOrAdd<T>();
+		public static T GetModel<T>(this IMVP mvp) where T : IModel => Model.GetOrAdd<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>(this IPresenter presenter) where T : ISingleton => Singleton.GetOrAdd<T>();
+		public static T GetSingleton<T>(this IMVP mvp) where T : ISingleton => Singleton.GetOrAdd<T>();
+
+#endregion
+		
+#region Presenter
+
+		public static T AddTo<T>(this T disposable, IPresenter presenter) where T : IDisposable =>
+			disposable.AddTo(presenter.GetGameObject());
 		
 		/// <summary>
 		/// 유저 데이터 호출
@@ -55,16 +60,6 @@ namespace Redbean.Extension
 #endregion
 
 #region Model
-
-		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		public static T GetModel<T>(this IModel model) where T : IModel => Model.GetOrAdd<T>();
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		public static T GetSingleton<T>(this IModel model) where T : ISingleton => Singleton.GetOrAdd<T>();
 
 		/// <summary>
 		/// 모델 데이터 배포

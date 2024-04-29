@@ -1,7 +1,6 @@
-﻿using Redbean.Define;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Redbean.Static
+namespace Redbean.MVP
 {
 	public class ModelAttribute : PropertyAttribute
 	{

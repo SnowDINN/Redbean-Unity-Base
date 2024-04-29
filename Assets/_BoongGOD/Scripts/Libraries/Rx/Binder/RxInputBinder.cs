@@ -2,7 +2,6 @@ using System;
 using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Base;
-using Redbean.Define;
 using UnityEngine;
 
 namespace Redbean.Rx

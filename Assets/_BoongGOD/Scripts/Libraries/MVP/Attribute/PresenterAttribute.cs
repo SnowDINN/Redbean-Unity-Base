@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Redbean.Static
+namespace Redbean.MVP
 {
 	public class PresenterAttribute : PropertyAttribute
 	{

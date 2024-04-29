@@ -1,8 +1,8 @@
 ﻿using System.Threading;
-using Redbean.Static;
+using Redbean.Core;
 using UnityEngine;
 
-namespace Redbean.Extension
+namespace Redbean
 {
 	public static partial class Extension
 	{

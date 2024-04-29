@@ -1,4 +1,4 @@
-﻿using Redbean.Static;
+﻿using Redbean.MVP;
 using TMPro;
 using UnityEngine;
 

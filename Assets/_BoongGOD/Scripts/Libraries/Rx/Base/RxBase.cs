@@ -1,5 +1,5 @@
 ﻿using R3;
-using Redbean.Static;
+using Redbean.Core;
 
 namespace Redbean.Base
 {

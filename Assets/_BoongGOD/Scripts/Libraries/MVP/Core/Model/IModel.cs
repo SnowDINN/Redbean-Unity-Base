@@ -1,6 +1,6 @@
-﻿namespace Redbean.Static
+﻿namespace Redbean.MVP
 {
-	public interface IModel
+	public interface IModel : IMVP
 	{
 	}
 

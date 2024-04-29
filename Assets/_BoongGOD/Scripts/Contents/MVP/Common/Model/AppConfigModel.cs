@@ -1,5 +1,5 @@
 ﻿using Firebase.Firestore;
-using Redbean.Static;
+using Redbean.MVP;
 
 namespace Redbean.Content.MVP
 {

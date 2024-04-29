@@ -1,9 +1,8 @@
 ﻿using R3;
+using Redbean.Core;
 using Redbean.Debug;
-using Redbean.Define;
-using Redbean.Extension;
+using Redbean.MVP;
 using Redbean.Rx;
-using Redbean.Static;
 
 namespace Redbean.Content.MVP
 {

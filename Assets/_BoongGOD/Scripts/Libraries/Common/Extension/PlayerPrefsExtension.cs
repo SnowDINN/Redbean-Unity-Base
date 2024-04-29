@@ -1,8 +1,8 @@
 ﻿using System;
+using Redbean.Core;
 using Redbean.Rx;
-using Redbean.Static;
 
-namespace Redbean.Extension
+namespace Redbean
 {
 	public static partial class Extension
 	{

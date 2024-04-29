@@ -2,13 +2,13 @@
 using Firebase;
 using Firebase.Firestore;
 using Redbean.Content.MVP;
+using Redbean.Core;
 using Redbean.Debug;
-using Redbean.Extension;
 using UnityEngine;
 
 namespace Redbean.Firebase
 {
-	public class Initializer : IBootstrap
+	public class Initializer : IApplicationStarted
 	{
 		public int ExecutionOrder => 10;
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Redbean.Extension;
 using UnityEngine;
 
 namespace Redbean.Base
