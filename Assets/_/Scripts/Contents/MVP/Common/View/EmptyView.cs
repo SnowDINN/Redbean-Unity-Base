@@ -1,6 +1,4 @@
-﻿using Redbean.MVP;
-
-namespace Redbean.Content.MVP
+﻿namespace Redbean.MVP.Content
 {
 	public class EmptyView : View
 	{

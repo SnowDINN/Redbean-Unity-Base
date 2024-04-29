@@ -1,8 +1,7 @@
-﻿using Redbean.MVP;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Redbean.Content.MVP
+namespace Redbean.MVP.Content
 {
 	public class ButtonView : View
 	{

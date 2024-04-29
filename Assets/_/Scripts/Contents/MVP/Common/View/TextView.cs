@@ -1,8 +1,7 @@
-﻿using Redbean.MVP;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-namespace Redbean.Content.MVP
+namespace Redbean.MVP.Content
 {
 	public class TextView : View
 	{

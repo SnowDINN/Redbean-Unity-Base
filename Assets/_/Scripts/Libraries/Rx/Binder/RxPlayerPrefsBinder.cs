@@ -41,5 +41,12 @@ namespace Redbean.Rx
 			
 			onPlayerPrefsChanged.OnNext((key, PlayerPrefsGroup[key]));
 		}
+
+		public T Load<T>(string key)
+		{
+			return PlayerPrefsGroup.TryGetValue(key, out var value) 
+				? JsonConvert.DeserializeObject<T>(value.ToString()) 
+				: default;
+		}
 	}   
 }

@@ -1,9 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
-using Redbean.Content.MVP;
 using Redbean.Core;
 using Redbean.Debug;
+using Redbean.MVP.Content;
 using UnityEngine;
 
 namespace Redbean.Firebase

@@ -1,6 +1,5 @@
 ﻿using System;
 using R3;
-using Redbean.Content.MVP;
 using Redbean.Core;
 using Redbean.MVP;
 using Redbean.Rx;
@@ -29,33 +28,28 @@ namespace Redbean
 			disposable.AddTo(presenter.GetGameObject());
 		
 		/// <summary>
-		/// 유저 데이터 호출
-		/// </summary>
-		public static AccountModel User(this IPresenter presenter) => Model.GetOrAdd<AccountModel>();
-		
-		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static int GetLocalInt(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToInt32(value) : default;
+			GetSingleton<RxPlayerPrefsBinder>().Load<int>(key);
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static float GetLocalFloat(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToSingle(value) : default;
+			GetSingleton<RxPlayerPrefsBinder>().Load<float>(key);
 		
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static string GetLocalString(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? Convert.ToString(value) : default;
+			GetSingleton<RxPlayerPrefsBinder>().Load<string>(key);
 
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
 		public static T GetLocalModel<T>(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().PlayerPrefsGroup.TryGetValue(key, out var value) ? (T)value : default;
+			GetSingleton<RxPlayerPrefsBinder>().Load<T>(key);
 
 #endregion
 
