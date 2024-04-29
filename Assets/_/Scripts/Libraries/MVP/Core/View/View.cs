@@ -11,6 +11,7 @@ using UnityEditor;
 
 namespace Redbean.MVP
 {
+	[Icon("Assets/_/Resource/Icon/View.png")]
 	public class View : MonoBase, IView
 	{
 		[HideInInspector]
