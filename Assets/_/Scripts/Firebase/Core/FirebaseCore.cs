@@ -8,8 +8,10 @@ using UnityEngine;
 
 namespace Redbean.Firebase
 {
-	public class Initializer : IApplicationStarted
+	public class FirebaseCore : IApplicationStarted
 	{
+		private static FirebaseFirestore Firestore => FirebaseFirestore.DefaultInstance;
+		public static DocumentReference UserDB => Firestore.Collection("users").Document(Account.UID.Value);
 		public int ExecutionOrder => 10;
 
 		public async UniTask Setup()

@@ -17,7 +17,7 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				var account = AccountModel.CreateUID();
+				Account.CreateAccount();
 				
 				Log.Print(this.User().uid);
 			}).AddTo(this);

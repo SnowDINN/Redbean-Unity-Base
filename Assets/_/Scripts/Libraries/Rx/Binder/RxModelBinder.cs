@@ -19,8 +19,8 @@ namespace Redbean.Rx
 				Log.Print("Model", $"Published model : {_.type.FullName}", Color.yellow);
 			}).AddTo(disposables);
 
-			OnModelChanged.Where(_ => _.type.IsAssignableFrom(typeof(IPostModel)))
-			              .Select(_ => (IPostModel)_.value)
+			OnModelChanged.Where(_ => _.type.IsAssignableFrom(typeof(IApiModel)))
+			              .Select(_ => (IApiModel)_.value)
 			              .Subscribe(_ =>
 			              {
 
