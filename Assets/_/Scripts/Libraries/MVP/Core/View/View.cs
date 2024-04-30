@@ -23,7 +23,7 @@ namespace Redbean.MVP
 		{
 			var type = Type.GetType(PresenterFullName);
 			if (type != null)
-				presenter = (Presenter)Activator.CreateInstance(Type.GetType(type.FullName));
+				presenter = Activator.CreateInstance(Type.GetType(type.FullName)) as Presenter;
 			
 			presenter?.BindView(this);
 			presenter?.Setup();
@@ -43,7 +43,7 @@ namespace Redbean.MVP
 	[CustomEditor(typeof(View), true)]
 	public class ViewEditor : Editor
 	{
-		private View view => (View)target;
+		private View view => target as View;
 		
 		private List<string> presenterArray;
 		private bool useSerializeField;

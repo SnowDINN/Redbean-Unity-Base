@@ -10,25 +10,25 @@ namespace Redbean
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static void PlayerPrefsSave(this float value, string key) =>
+		public static float PlayerPrefsSave(this float value, string key) =>
 			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, value);
 		
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static void PlayerPrefsSave(this int value, string key) =>
+		public static int PlayerPrefsSave(this int value, string key) =>
 			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, Convert.ToInt32(value));
 		
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static void PlayerPrefsSave(this string value, string key) =>
+		public static string PlayerPrefsSave(this string value, string key) =>
 			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, value);
 		
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static void PlayerPrefsSave<T>(this T value, string key) where T : IModel=>
+		public static T PlayerPrefsSave<T>(this T value, string key) where T : IModel=>
 			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, value);
 	}
 }

@@ -684,7 +684,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2113391620}
   - component: {fileID: 2113391619}
-  - component: {fileID: 2113391618}
   m_Layer: 0
   m_Name: Views
   m_TagString: Untagged
@@ -692,20 +691,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2113391618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2113391617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b941101c8e44771a8c87b402b5bbfed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PresenterFullName: Redbean.Content.MVP.ExampleTextPresenter
-  text: {fileID: 1134231601}
 --- !u!114 &2113391619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -718,7 +703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf20170bd2645daa5ca1b38683ae82e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PresenterFullName: Redbean.Content.MVP.ExampleButtonPresenter
+  PresenterFullName: Redbean.MVP.Content.GuestAuthenticationPresenter
   button: {fileID: 1796802805}
 --- !u!4 &2113391620
 Transform:

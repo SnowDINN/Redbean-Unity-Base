@@ -1,4 +1,5 @@
-﻿using R3;
+﻿using System;
+using R3;
 using Redbean.Core;
 using Redbean.Debug;
 using Redbean.Rx;
@@ -10,6 +11,9 @@ namespace Redbean.MVP.Content
 		[View]
 		private ButtonView view;
 
+		[Model]
+		private AccountModel accountModel;
+
 		[Singleton]
 		private RxPlayerPrefsBinder rxPlayerPrefsBinder;
 		
@@ -17,21 +21,18 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				Account.CreateAccount();
-				
-				Log.Print(this.User().uid);
+				accountModel.uid = $"{Guid.NewGuid()}".PlayerPrefsSave(LocalKey.USER_ACCOUNT_KEY);
+				accountModel.Publish();
 			}).AddTo(this);
-
 			
-			rxPlayerPrefsBinder.OnPlayerPrefsChanged
-			                   .Where(_ => _.key == "USER_ACCOUNT")
-			                   .Subscribe(_ =>
-			                   {
-				                   Log.Print($"{((AccountModel)_.value).uid}");
-			                   }).AddTo(this);
-
-			var account = this.GetLocalModel<AccountModel>("USER_ACCOUNT");
-			Log.Print(account.uid);
+			accountModel.Rx.As<AccountRxModel>().UID.Where(_ => !string.IsNullOrEmpty(_)).Subscribe(_ =>
+			{
+				// FirebaseCore.UserDB = FirebaseCore.Firestore
+				//                                   .Collection("users")
+				//                                   .Document(Model.GetOrAdd<AccountModel>().UID.Value);
+				
+				Log.Print("System", $"Your UID is {_}.");
+			}).AddTo(this);
 		}
 	}
 }

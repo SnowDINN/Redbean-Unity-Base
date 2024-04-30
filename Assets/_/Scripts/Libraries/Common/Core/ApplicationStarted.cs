@@ -14,7 +14,7 @@ namespace Redbean.Core
 			                         .Where(x => typeof(IApplicationStarted).IsAssignableFrom(x)
 			                                     && !x.IsInterface
 			                                     && !x.IsAbstract)
-			                         .Select(x => (IApplicationStarted)Activator.CreateInstance(Type.GetType(x.FullName)))
+			                         .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IApplicationStarted)
 			                         .OrderBy(_ => _.ExecutionOrder);
 
 			foreach (var instance in instances)

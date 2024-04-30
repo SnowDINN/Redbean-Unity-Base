@@ -9,7 +9,5 @@ namespace Redbean
 		/// 유저 데이터 호출
 		/// </summary>
 		public static AccountModel User(this IMVP presenter) => Model.GetOrAdd<AccountModel>();
-
-		public static void Save(this AccountModel account) => account.PlayerPrefsSave("USER_ACCOUNT");
 	}
 }

@@ -1,12 +1,10 @@
-﻿using System;
-using Firebase.Firestore;
+﻿using Firebase.Firestore;
 using R3;
-using Redbean.Rx;
 
 namespace Redbean.MVP.Content
 {
 	[FirestoreData]
-	public class AccountModel : IApiModel
+	public class AccountModel : ISerializeModel
 	{
 		[FirestoreProperty]
 		public string uid { get; set; } = string.Empty;
@@ -14,22 +12,21 @@ namespace Redbean.MVP.Content
 		[FirestoreProperty]
 		public string nickname { get; set; } = string.Empty;
 
-		public void Async()
-		{
-			this.GetSingleton<RxModelBinder>().OnModelChanged
-			    .Where(_ => _.type == typeof(AccountModel))
-			    .Subscribe(_ =>
-			    {
-				    var account = (AccountModel)_.value;
-			    });
-		}
+		public IRxModel Rx { get; } = new AccountRxModel();
 	}
-
-	public class Account : IRxModel
+	
+	public class AccountRxModel : IRxModel
 	{
-		public static ReactiveProperty<string> UID = new();
-		public static ReactiveProperty<string> Nickname = new();
+		public ReactiveProperty<string> UID = new();
+		public ReactiveProperty<string> Nickname = new();
+		
+		public void Publish(ISerializeModel value)
+		{
+			if (value is not AccountModel convert)
+				return;
 
-		public static void CreateAccount() => UID.Value = $"{Guid.NewGuid()}";
+			UID.Value = convert.uid;
+			Nickname.Value = convert.nickname;
+		}
 	}
 }

@@ -3,6 +3,7 @@ using Firebase;
 using Firebase.Firestore;
 using Redbean.Core;
 using Redbean.Debug;
+using Redbean.MVP;
 using Redbean.MVP.Content;
 using UnityEngine;
 
@@ -10,8 +11,8 @@ namespace Redbean.Firebase
 {
 	public class FirebaseCore : IApplicationStarted
 	{
-		private static FirebaseFirestore Firestore => FirebaseFirestore.DefaultInstance;
-		public static DocumentReference UserDB => Firestore.Collection("users").Document(Account.UID.Value);
+		public static FirebaseFirestore Firestore;
+		public static DocumentReference UserDB;
 		public int ExecutionOrder => 10;
 
 		public async UniTask Setup()
@@ -27,8 +28,8 @@ namespace Redbean.Firebase
 			}
 
 			// 파이어스토어 앱 설정 체크
-			var firestore = FirebaseFirestore.DefaultInstance;
-			var configSnapshot = await firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
+			Firestore = FirebaseFirestore.DefaultInstance;
+			var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
 			if (configSnapshot.Exists)
 				Log.Print("Firebase", "Success to load to the app config.", Color.green);
 			else

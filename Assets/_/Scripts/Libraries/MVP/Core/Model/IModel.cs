@@ -1,17 +1,16 @@
-﻿using Cysharp.Threading.Tasks;
-
-namespace Redbean.MVP
+﻿namespace Redbean.MVP
 {
 	public interface IModel : IMVP
 	{
 	}
 
-	public interface IApiModel : IModel
+	public interface ISerializeModel : IModel
 	{
-		void Async();
+		IRxModel Rx { get; }
 	}
 
 	public interface IRxModel : IModel
 	{
+		void Publish(ISerializeModel value);
 	}
 }

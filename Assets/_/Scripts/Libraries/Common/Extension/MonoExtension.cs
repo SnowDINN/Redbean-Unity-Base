@@ -6,7 +6,7 @@ namespace Redbean
 {
 	public static partial class Extension
 	{
-		private static T GetSingleton<T>() where T : ISingleton => Singleton.GetOrAdd<T>();
+		private static T GetSingleton<T>() where T : class, ISingleton => Singleton.GetOrAdd<T>();
 		
 		/// <summary>
 		/// 게임 오브젝트 비/활성화

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using R3;
 using Redbean.Base;
-using Redbean.Debug;
 using UnityEngine;
 
 namespace Redbean.Rx
@@ -16,15 +15,9 @@ namespace Redbean.Rx
 
 		public RxPlayerPrefsBinder()
 		{
-			var deserializer =
-				JsonConvert.DeserializeObject<Dictionary<string, object>>(PlayerPrefs.GetString(Key.GetDataGroup));
+			var deserializer = JsonConvert.DeserializeObject<Dictionary<string, object>>(PlayerPrefs.GetString(Key.GetDataGroup));
 			if (deserializer != null)
 				PlayerPrefsGroup = deserializer;
-
-			OnPlayerPrefsChanged.Subscribe(_ =>
-			{
-				Log.Print("Data", $"Published PlayerPrefs : {_.key} | {_.value}", Color.yellow);
-			}).AddTo(disposables);
 		}
 
 		public override void Dispose()
@@ -34,12 +27,13 @@ namespace Redbean.Rx
 			PlayerPrefsGroup.Clear();
 		}
 
-		public void Save<T>(string key, T value)
+		public T Save<T>(string key, T value)
 		{
 			PlayerPrefsGroup[key] = value;
 			PlayerPrefs.SetString(Key.GetDataGroup, JsonConvert.SerializeObject(PlayerPrefsGroup));
 			
 			onPlayerPrefsChanged.OnNext((key, PlayerPrefsGroup[key]));
+			return value;
 		}
 
 		public T Load<T>(string key)

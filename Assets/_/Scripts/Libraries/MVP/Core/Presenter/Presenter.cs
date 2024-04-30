@@ -37,8 +37,8 @@ namespace Redbean.MVP
 							if (model.type == SubscribeType.Subscribe)
 							{
 								Singleton.GetOrAdd<RxModelBinder>().OnModelChanged
-								         .Where(_ => _.type == field.FieldType)
-								         .Subscribe(_ => field.SetValue(this, _.value))
+								         .Where(_ => _.GetType() == field.FieldType)
+								         .Subscribe(_ => field.SetValue(this, _))
 								         .AddTo(this);
 							}
 							break;

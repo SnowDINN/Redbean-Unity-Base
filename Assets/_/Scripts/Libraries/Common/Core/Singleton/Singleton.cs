@@ -25,7 +25,7 @@ namespace Redbean.Core
 			                                            && typeof(ISingleton).IsAssignableFrom(x)
 			                                            && !x.IsInterface
 			                                            && !x.IsAbstract)
-			                                .Select(x => (ISingleton)Activator.CreateInstance(Type.GetType(x.FullName)));
+			                                .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton);
 
 			foreach (var singleton in nativeSingletons
 				         .Where(singleton => singletons.TryAdd(singleton.GetType(), singleton)))
@@ -49,7 +49,7 @@ namespace Redbean.Core
 			}
 			
 			foreach (var singleton in monoSingletons
-				         .Where(singleton => singletons.TryAdd(singleton, (ISingleton)parent.AddComponent(singleton))))
+				         .Where(singleton => singletons.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
 				Log.Print("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
 
 #endregion
@@ -71,12 +71,12 @@ namespace Redbean.Core
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetOrAdd<T>() where T : ISingleton
+		public static T GetOrAdd<T>() where T : class, ISingleton
 		{
 			if (singletons.TryGetValue(typeof(T), out var value))
 				return (T)value;
 			
-			singletons[typeof(T)] = (ISingleton)Activator.CreateInstance(typeof(T));
+			singletons[typeof(T)] = Activator.CreateInstance(typeof(T)) as ISingleton;
 			return (T)singletons[typeof(T)];
 		}
 		
@@ -88,7 +88,7 @@ namespace Redbean.Core
 			if (singletons.TryGetValue(type, out var value))
 				return value;
 
-			singletons[type] = (ISingleton)Activator.CreateInstance(type);
+			singletons[type] = Activator.CreateInstance(type) as ISingleton;
 			return singletons[type];
 		}
 	}	

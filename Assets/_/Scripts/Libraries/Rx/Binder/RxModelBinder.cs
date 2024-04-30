@@ -1,35 +1,27 @@
-﻿using System;
-using R3;
+﻿using R3;
 using Redbean.Base;
-using Redbean.Debug;
 using Redbean.MVP;
-using UnityEngine;
 
 namespace Redbean.Rx
 {
 	public class RxModelBinder : RxBase
 	{
-		private readonly Subject<(Type type, object value)> onModelChanged = new();
-		public Observable<(Type type, object value)> OnModelChanged => onModelChanged.Share();
+		private readonly Subject<object> onModelChanged = new();
+		public Observable<object> OnModelChanged => onModelChanged.Share();
 		
 		public RxModelBinder()
 		{
-			OnModelChanged.Subscribe(_ =>
-			{
-				Log.Print("Model", $"Published model : {_.type.FullName}", Color.yellow);
-			}).AddTo(disposables);
-
-			OnModelChanged.Where(_ => _.type.IsAssignableFrom(typeof(IApiModel)))
-			              .Select(_ => (IApiModel)_.value)
+			OnModelChanged.Where(_ => _ is ISerializeModel)
+			              .Select(_ => (ISerializeModel)_)
 			              .Subscribe(_ =>
 			              {
-
+				              _.Rx.Publish(_);
 			              }).AddTo(disposables);
 		}
 
 		public T Publish<T>(T value)
 		{
-			onModelChanged.OnNext((value.GetType(), value));
+			onModelChanged.OnNext(value);
 			return value;
 		}
 	}

@@ -15,13 +15,13 @@ namespace Redbean.MVP
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetOrAdd<T>() where T : IModel
+		public static T GetOrAdd<T>() where T : class, IModel
 		{
 			if (models.TryGetValue(typeof(T), out var value))
-				return (T)value;
+				return value as T;
 
-			models[typeof(T)] = (IModel)Activator.CreateInstance(typeof(T));
-			return (T)models[typeof(T)];
+			models[typeof(T)] = Activator.CreateInstance(typeof(T)) as IModel;
+			return models[typeof(T)] as T;
 		}
 
 		/// <summary>
@@ -32,14 +32,14 @@ namespace Redbean.MVP
 			if (models.TryGetValue(type, out var value))
 				return value;
 
-			models[type] = (IModel)Activator.CreateInstance(type);
+			models[type] = Activator.CreateInstance(type) as IModel;
 			return models[type];
 		}
 
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
-		public static T Add<T>(T model) where T : IModel
+		public static T Override<T>(T model) where T : class, IModel
 		{
 			if (model is not IModel result)
 				return default;
