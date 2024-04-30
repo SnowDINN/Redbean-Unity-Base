@@ -23,7 +23,7 @@ namespace Redbean
 		/// <summary>
 		/// 클래스 변환
 		/// </summary>
-		public static T As<T>(this IMVP model) where T : class, IMVP => model as T;
+		public static T As<T>(this IMVP mvp) where T : class, IMVP => mvp as T;
 
 #endregion
 		
@@ -31,30 +31,6 @@ namespace Redbean
 
 		public static T AddTo<T>(this T disposable, IPresenter presenter) where T : IDisposable =>
 			disposable.AddTo(presenter.GetGameObject());
-		
-		/// <summary>
-		/// 로컬 데이터 호출
-		/// </summary>
-		public static int GetLocalInt(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().Load<int>(key);
-		
-		/// <summary>
-		/// 로컬 데이터 호출
-		/// </summary>
-		public static float GetLocalFloat(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().Load<float>(key);
-		
-		/// <summary>
-		/// 로컬 데이터 호출
-		/// </summary>
-		public static string GetLocalString(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().Load<string>(key);
-
-		/// <summary>
-		/// 로컬 데이터 호출
-		/// </summary>
-		public static T GetLocalModel<T>(this IPresenter presenter, string key) =>
-			GetSingleton<RxPlayerPrefsBinder>().Load<T>(key);
 
 #endregion
 

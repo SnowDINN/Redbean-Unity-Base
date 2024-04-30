@@ -4,17 +4,18 @@ using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Core;
 using Redbean.Debug;
+using Redbean.Firebase;
 using Redbean.Rx;
 
 namespace Redbean.MVP.Content
 {
-	public class GuestAuthenticationPresenter : Presenter
+	public class SocialAuthenticationPresenter : Presenter
 	{
 		[Model]
 		private AccountModel model;
 		
 		[View]
-		private ButtonView view;
+		private SocialAuthenticationView view;
 
 		[Singleton]
 		private RxPlayerPrefsBinder rxPlayerPrefsBinder;
@@ -26,11 +27,13 @@ namespace Redbean.MVP.Content
 				UniTask.Void(InteractionAsync, view.DestroyCancellation.Token);
 			}).AddTo(this);
 		}
-
+		
 		private async UniTaskVoid InteractionAsync(CancellationToken token)
 		{
-			model.authenticationType = AuthenticationType.Guest;
+			model.authenticationType = view.Type;
 			model.userId = $"{Guid.NewGuid()}";
+			
+			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.userId);
 			
 			var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
 			if (isDone)

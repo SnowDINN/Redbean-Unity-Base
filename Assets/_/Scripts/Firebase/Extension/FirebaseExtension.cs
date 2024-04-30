@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Redbean.Debug;
 using Redbean.Firebase;
 using Redbean.MVP;
 
@@ -6,10 +8,10 @@ namespace Redbean
 {
 	public static partial class Extension
 	{
-		public static void PostFirebase(this IDictionary<string, object> document) =>
-			FirebaseCore.UserDB.UpdateAsync(document);
+		public static UniTask CreateFirestore(this ISerializeModel model, string key) =>
+			FirebaseCore.UserDB.SetAsync(new Dictionary<string, object> { { key, model } }).AsUniTask();
 
-		public static void PostFirebase(this IRxModel rxModel, string key) =>
-			FirebaseCore.UserDB.UpdateAsync(new Dictionary<string, object> { { key, rxModel } });
+		public static UniTask UpdateFirestore(this ISerializeModel model, string key) =>
+			FirebaseCore.UserDB.UpdateAsync(new Dictionary<string, object> { { key, model } }).AsUniTask();
 	}
 }

@@ -21,7 +21,7 @@ namespace Redbean
 		/// <summary>
 		/// Image의 Fill Amount 애니메이션
 		/// </summary>
-		public static async UniTask SmoothFill(this Image image, float start, float end, float duration, CancellationToken token = default)
+		public static async UniTask FillAnimation(this Image image, float start, float end, float duration, CancellationToken token = default)
 		{
 			image.fillAmount = start;
 		

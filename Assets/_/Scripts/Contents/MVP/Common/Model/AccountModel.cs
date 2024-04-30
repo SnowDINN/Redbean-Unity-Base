@@ -6,6 +6,8 @@ namespace Redbean.MVP.Content
 	[FirestoreData]
 	public class AccountModel : ISerializeModel
 	{
+		public AuthenticationType authenticationType = AuthenticationType.Guest;
+		
 		[FirestoreProperty]
 		public string userId { get; set; } = string.Empty;
 		
