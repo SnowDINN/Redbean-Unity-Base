@@ -21,18 +21,18 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				accountModel.uid = $"{Guid.NewGuid()}".PlayerPrefsSave(LocalKey.USER_ACCOUNT_KEY);
+				accountModel.userId = $"{Guid.NewGuid()}".PlayerPrefsSave(LocalKey.USER_ACCOUNT_KEY);
 				accountModel.Publish();
 			}).AddTo(this);
 			
-			accountModel.Rx.As<AccountRxModel>().UID.Where(_ => !string.IsNullOrEmpty(_)).Subscribe(_ =>
-			{
-				// FirebaseCore.UserDB = FirebaseCore.Firestore
-				//                                   .Collection("users")
-				//                                   .Document(Model.GetOrAdd<AccountModel>().UID.Value);
+			accountModel.Rx.As<AccountRxModel>().UserId
+			            .Where(_ => !string.IsNullOrEmpty(_))
+			            .Subscribe(_ =>
+			            {
+				            // FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(_);
 				
-				Log.Print("System", $"Your UID is {_}.");
-			}).AddTo(this);
+				            Log.Print("System", $"Your UID is {_}.");
+			            }).AddTo(this);
 		}
 	}
 }

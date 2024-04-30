@@ -7,7 +7,7 @@ namespace Redbean.MVP.Content
 	public class AccountModel : ISerializeModel
 	{
 		[FirestoreProperty]
-		public string uid { get; set; } = string.Empty;
+		public string userId { get; set; } = string.Empty;
 		
 		[FirestoreProperty]
 		public string nickname { get; set; } = string.Empty;
@@ -17,16 +17,16 @@ namespace Redbean.MVP.Content
 	
 	public class AccountRxModel : IRxModel
 	{
-		public ReactiveProperty<string> UID = new();
+		public ReactiveProperty<string> UserId = new();
 		public ReactiveProperty<string> Nickname = new();
 		
 		public void Publish(ISerializeModel value)
 		{
-			if (value is not AccountModel convert)
+			if (value is not AccountModel model)
 				return;
 
-			UID.Value = convert.uid;
-			Nickname.Value = convert.nickname;
+			UserId.Value = model.userId;
+			Nickname.Value = model.nickname;
 		}
 	}
 }
