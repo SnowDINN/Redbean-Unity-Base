@@ -36,5 +36,8 @@ namespace Redbean
 		/// </summary>
 		public static T GetPlayerPrefs<T>(this IMVP mvp, string key) =>
 			GetSingleton<RxPlayerPrefsBinder>().Load<T>(key);
+		
+		public static bool IsContains(this IMVP mvp, string key) =>
+			Singleton.GetOrAdd<RxPlayerPrefsBinder>().IsContains(key);
 	}
 }

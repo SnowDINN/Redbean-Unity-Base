@@ -9,6 +9,8 @@
 	
 	public class LocalKey
 	{
-		public const string USER_ACCOUNT_KEY = "USER_ACCOUNT";
+		public const string USER_ID_KEY = "id";
+		public const string USER_INFO_KEY = "user_information";
+		public const string USER_NICKNAME_KEY = "nickname";
 	}
 }

@@ -11,11 +11,11 @@ namespace Redbean.Rx
 		private readonly Subject<(string key, object value)> onPlayerPrefsChanged = new();
 		public Observable<(string key, object value)> OnPlayerPrefsChanged => onPlayerPrefsChanged.Share();
 
-		public readonly Dictionary<string, object> PlayerPrefsGroup = new();
+		private readonly Dictionary<string, string> PlayerPrefsGroup = new();
 
 		public RxPlayerPrefsBinder()
 		{
-			var deserializer = JsonConvert.DeserializeObject<Dictionary<string, object>>(PlayerPrefs.GetString(Key.GetDataGroup));
+			var deserializer = JsonConvert.DeserializeObject<Dictionary<string, string>>(PlayerPrefs.GetString(Key.GetDataGroup));
 			if (deserializer != null)
 				PlayerPrefsGroup = deserializer;
 		}
@@ -27,9 +27,11 @@ namespace Redbean.Rx
 			PlayerPrefsGroup.Clear();
 		}
 
+		public bool IsContains(string key) => PlayerPrefsGroup.ContainsKey(key);
+
 		public T Save<T>(string key, T value)
 		{
-			PlayerPrefsGroup[key] = value;
+			PlayerPrefsGroup[key] = JsonConvert.SerializeObject(value);
 			PlayerPrefs.SetString(Key.GetDataGroup, JsonConvert.SerializeObject(PlayerPrefsGroup));
 			
 			onPlayerPrefsChanged.OnNext((key, PlayerPrefsGroup[key]));
@@ -39,7 +41,7 @@ namespace Redbean.Rx
 		public T Load<T>(string key)
 		{
 			return PlayerPrefsGroup.TryGetValue(key, out var value) 
-				? JsonConvert.DeserializeObject<T>(value.ToString()) 
+				? JsonConvert.DeserializeObject<T>(value) 
 				: default;
 		}
 	}   

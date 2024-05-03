@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Firebase.Firestore;
 using R3;
 using Redbean.Core;
 using Redbean.Debug;
@@ -11,8 +12,8 @@ namespace Redbean.MVP.Content
 {
 	public class SocialAuthenticationPresenter : Presenter
 	{
-		[Model]
-		private AccountModel model;
+		[Model(SubscribeType.Subscribe)]
+		private UserModel model;
 		
 		[View]
 		private SocialAuthenticationView view;
@@ -30,14 +31,27 @@ namespace Redbean.MVP.Content
 		
 		private async UniTaskVoid InteractionAsync(CancellationToken token)
 		{
-			model.authenticationType = view.Type;
-			model.userId = $"{Guid.NewGuid()}";
+			model.AuthenticationType = view.Type;
 			
-			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.userId);
+			if (this.IsContains(LocalKey.USER_INFO_KEY))
+			{
+				this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish();
+				Log.Print("System", $"User ID is {model.UserId}.");	
+			}
+			else
+			{
+				model.UserId = $"{Guid.NewGuid()}";
+				
+				FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.UserId);
 			
-			var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
-			if (isDone)
-				Log.Print("System", $"User ID is {model.userId}.");
+				var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
+				if (isDone)
+					Log.Print("System", $"User ID is {model.UserId}.");
+			}
+
+			var user = FirebaseCore.Firestore.Collection("users").WhereIn(new FieldPath(model.UserId), null);
+			if (user == null)
+				await this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish().CreateAsync().AttachExternalCancellation(token);
 		}
 	}
 }

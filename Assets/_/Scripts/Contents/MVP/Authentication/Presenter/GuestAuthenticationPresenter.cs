@@ -11,7 +11,7 @@ namespace Redbean.MVP.Content
 	public class GuestAuthenticationPresenter : Presenter
 	{
 		[Model]
-		private AccountModel model;
+		private UserModel model;
 		
 		[View]
 		private ButtonView view;
@@ -29,12 +29,21 @@ namespace Redbean.MVP.Content
 
 		private async UniTaskVoid InteractionAsync(CancellationToken token)
 		{
-			model.authenticationType = AuthenticationType.Guest;
-			model.userId = $"{Guid.NewGuid()}";
+			model.AuthenticationType = AuthenticationType.Guest;
 			
-			var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
-			if (isDone)
-				Log.Print("System", $"User ID is {model.userId}.");
+			if (this.IsContains(LocalKey.USER_INFO_KEY))
+			{
+				var id = this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).UserId;
+				Log.Print("System", $"User ID is {id}.");
+			}
+			else
+			{
+				model.UserId = $"{Guid.NewGuid()}";
+			
+				var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
+				if (isDone)
+					Log.Print("System", $"User ID is {model.UserId}.");	
+			}
 		}
 	}
 }

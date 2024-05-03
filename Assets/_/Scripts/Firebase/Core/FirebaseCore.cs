@@ -42,16 +42,16 @@ namespace Redbean.Firebase
 			if (config is not null)
 			{
 #if UNITY_ANDROID
-				AppConfigSettings(config.android);
+				AppConfigSettings(config.Android);
 #elif UNITY_IOS
-				AppConfigSettings(config.ios);
+				AppConfigSettings(config.iOS);
 #endif
 			}
 		}
 
 		private static void AppConfigSettings(AppConfigArgument configArgs)
 		{
-			Log.Print("Config", $"Latest updated version : {configArgs.version}", Color.yellow);
+			Log.Print("Config", $"Latest updated version : {configArgs.Version}", Color.yellow);
 		}
 	}
 }
