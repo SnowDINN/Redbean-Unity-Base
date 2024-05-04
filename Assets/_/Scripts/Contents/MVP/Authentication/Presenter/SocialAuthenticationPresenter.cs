@@ -1,18 +1,18 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Firebase.Firestore;
 using R3;
 using Redbean.Core;
 using Redbean.Debug;
 using Redbean.Firebase;
 using Redbean.Rx;
+using UnityEngine;
 
 namespace Redbean.MVP.Content
 {
 	public class SocialAuthenticationPresenter : Presenter
 	{
-		[Model(SubscribeType.Subscribe)]
+		[Model]
 		private UserModel model;
 		
 		[View]
@@ -34,24 +34,21 @@ namespace Redbean.MVP.Content
 			model.AuthenticationType = view.Type;
 			
 			if (this.IsContains(LocalKey.USER_INFO_KEY))
-			{
 				this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish();
-				Log.Print("System", $"User ID is {model.UserId}.");	
-			}
+			else
+				await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
+
+			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo("id", model.UserId);
+			var user = await equalTo.GetSnapshotAsync();
+			if (user.Any())
+				Log.Print("System", "User information exists in the Firestore.");
 			else
 			{
-				model.UserId = $"{Guid.NewGuid()}";
-				
-				FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.UserId);
-			
-				var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
-				if (isDone)
-					Log.Print("System", $"User ID is {model.UserId}.");
+				Log.Print("System", "User information not exists in the Firestore. It stores local data on the server.", Color.red);
+				await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
 			}
-
-			var user = FirebaseCore.Firestore.Collection("users").WhereIn(new FieldPath(model.UserId), null);
-			if (user == null)
-				await this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish().CreateAsync().AttachExternalCancellation(token);
+			
+			Log.Print("System", $"User id : {model.UserId}.");	
 		}
 	}
 }

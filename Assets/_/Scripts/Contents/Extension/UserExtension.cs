@@ -1,4 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using Redbean.Firebase;
 using Redbean.MVP;
 using Redbean.MVP.Content;
 
@@ -11,40 +13,39 @@ namespace Redbean
 		/// </summary>
 		public static UserModel User(this IMVP mvp) => Model.GetOrAdd<UserModel>();
 
-		/// <summary>
-		/// 유저 데이터 호출
-		/// </summary>
-		public static async UniTask<bool> CreateAsync(this UserModel model)
+		public static UserModel UserValidation(this UserModel model)
 		{
-			model.SetPlayerPrefs(LocalKey.USER_INFO_KEY);
-			var isDone = UniTaskStatus.Succeeded;
+			if (string.IsNullOrEmpty(model.UserId))
+				model.UserId = $"{Guid.NewGuid()}";
+			model.Publish().SetPlayerPrefs(LocalKey.USER_INFO_KEY);
 
-			if (GetModel<UserModel>().AuthenticationType != AuthenticationType.Guest)
-			{
-				var uniTask = model.CreateFirestore();
-				await uniTask;
-				isDone = uniTask.Status;
-			}
-			
-			return isDone == UniTaskStatus.Succeeded;
+			return model;
 		}
 		
 		/// <summary>
 		/// 유저 데이터 호출
 		/// </summary>
-		public static async UniTask<bool> UpdateAsync(this UserModel model)
+		public static async UniTask<bool> CreateUserAsync(this UserModel model)
 		{
-			model.SetPlayerPrefs(LocalKey.USER_INFO_KEY);
-			var isDone = UniTaskStatus.Succeeded;
-
-			if (GetModel<UserModel>().AuthenticationType != AuthenticationType.Guest)
-			{
-				var uniTask = model.UpdateFirestore(LocalKey.USER_INFO_KEY);
-				await uniTask;
-				isDone = uniTask.Status;
-			}
-
-			return isDone == UniTaskStatus.Succeeded;
+			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.UserId);
+			
+			var uniTask = model.CreateFirestore();
+			await uniTask;
+			
+			return uniTask.Status == UniTaskStatus.Succeeded;
+		}
+		
+		/// <summary>
+		/// 유저 데이터 호출
+		/// </summary>
+		public static async UniTask<bool> UpdateUserAsync(this UserModel model)
+		{
+			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.UserId);
+			
+			var uniTask = model.UpdateFirestore(LocalKey.USER_INFO_KEY);
+			await uniTask;
+			
+			return uniTask.Status == UniTaskStatus.Succeeded;
 		}
 	}
 }

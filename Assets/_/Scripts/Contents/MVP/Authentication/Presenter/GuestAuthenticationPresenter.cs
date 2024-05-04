@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Core;
@@ -32,18 +31,11 @@ namespace Redbean.MVP.Content
 			model.AuthenticationType = AuthenticationType.Guest;
 			
 			if (this.IsContains(LocalKey.USER_INFO_KEY))
-			{
-				var id = this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).UserId;
-				Log.Print("System", $"User ID is {id}.");
-			}
+				this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish();
 			else
-			{
-				model.UserId = $"{Guid.NewGuid()}";
+				model.UserValidation();
 			
-				var isDone = await model.Publish().CreateAsync().AttachExternalCancellation(token);
-				if (isDone)
-					Log.Print("System", $"User ID is {model.UserId}.");	
-			}
+			Log.Print("System", $"User id : {model.UserId}.");	
 		}
 	}
 }

@@ -27,20 +27,17 @@ namespace Redbean.MVP
 				foreach (var attribute in attributes)
 					switch (attribute)
 					{
-						case ViewAttribute:
-							field.SetValue(this, view);
+						case ModelAttribute:
+							Singleton.GetOrAdd<RxModelBinder>().OnModelChanged
+							         .Where(_ => _.GetType() == field.FieldType)
+							         .Subscribe(_ => field.SetValue(this, _))
+							         .AddTo(this);
+							
+							field.SetValue(this, Model.GetOrAdd(field.FieldType));
 							break;
 						
-						case ModelAttribute model:
-							field.SetValue(this, Model.GetOrAdd(field.FieldType));
-
-							if (model.type == SubscribeType.Subscribe)
-							{
-								Singleton.GetOrAdd<RxModelBinder>().OnModelChanged
-								         .Where(_ => _.GetType() == field.FieldType)
-								         .Subscribe(_ => field.SetValue(this, _))
-								         .AddTo(this);
-							}
+						case ViewAttribute:
+							field.SetValue(this, view);
 							break;
 
 						case SingletonAttribute:
