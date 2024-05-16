@@ -1,14 +1,14 @@
-﻿using Firebase.Firestore;
+﻿using System;
+using Firebase.Firestore;
 using R3;
 
 namespace Redbean.MVP.Content
 {
 	[FirestoreData]
-	public class UserModel : ISerializeModel
+	public class UserModel : SerializeModel
 	{
 		public AuthenticationType AuthenticationType = AuthenticationType.Guest;
-
-		public IRxModel Rx { get; } = new UserRxModel();
+		public UserModel() => Rx = new UserRxModel();
 		
 		[FirestoreProperty(LocalKey.USER_ID_KEY)]
 		public string UserId { get; set; } = string.Empty;
@@ -24,12 +24,12 @@ namespace Redbean.MVP.Content
 		public string Nickname { get; set; } = string.Empty;
 	}
 	
-	public class UserRxModel : IRxModel
+	public class UserRxModel : RxModel
 	{
 		public ReactiveProperty<string> UserId = new();
 		public ReactiveProperty<UserInfoModel> UserInfo = new();
 		
-		public void Publish(ISerializeModel value)
+		public override void Publish(SerializeModel value)
 		{
 			if (value is not UserModel model)
 				return;

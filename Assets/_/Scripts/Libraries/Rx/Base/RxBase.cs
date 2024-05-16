@@ -3,11 +3,11 @@ using Redbean.Core;
 
 namespace Redbean.Base
 {
-	public class RxBase : ISingleton
+	public class RxBase : Singleton
 	{
 		protected readonly CompositeDisposable disposables = new();
 		
-		public virtual void Dispose()
+		public override void Dispose()
 		{
 			disposables.Dispose();
 			disposables.Clear();

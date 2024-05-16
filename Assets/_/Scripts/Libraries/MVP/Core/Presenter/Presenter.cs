@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using R3;
 using Redbean.Core;
+using Redbean.Dependencies;
 using Redbean.Rx;
 using UnityEngine;
 
@@ -28,12 +29,12 @@ namespace Redbean.MVP
 					switch (attribute)
 					{
 						case ModelAttribute:
-							Singleton.GetOrAdd<RxModelBinder>().OnModelChanged
-							         .Where(_ => _.GetType() == field.FieldType)
-							         .Subscribe(_ => field.SetValue(this, _))
-							         .AddTo(this);
+							this.GetSingleton<RxModelBinder>().OnModelChanged
+							    .Where(_ => _.GetType() == field.FieldType)
+							    .Subscribe(_ => field.SetValue(this, _))
+							    .AddTo(this);
 							
-							field.SetValue(this, Model.GetOrAdd(field.FieldType));
+							field.SetValue(this, DependenciesModel.GetOrAdd(field.FieldType));
 							break;
 						
 						case ViewAttribute:
@@ -41,7 +42,7 @@ namespace Redbean.MVP
 							break;
 
 						case SingletonAttribute:
-							field.SetValue(this, Singleton.GetOrAdd(field.FieldType));
+							field.SetValue(this, DependenciesSingleton.GetOrAdd(field.FieldType));
 							break;
 					}
 			}

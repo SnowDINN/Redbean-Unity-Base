@@ -3,7 +3,7 @@
 namespace Redbean.MVP.Content
 {
 	[FirestoreData]
-	public class AppConfigModel : IModel
+	public class AppConfigModel : Model
 	{
 		[FirestoreProperty("android")]
 		public AppConfigArgument Android { get; private set; } = new();

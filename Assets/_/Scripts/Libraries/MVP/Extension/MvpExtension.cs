@@ -1,6 +1,7 @@
 ﻿using System;
 using R3;
 using Redbean.Core;
+using Redbean.Dependencies;
 using Redbean.MVP;
 using Redbean.Rx;
 
@@ -13,12 +14,12 @@ namespace Redbean
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetModel<T>(this IMVP mvp) where T : class, IModel => Model.GetOrAdd<T>();
+		public static T GetModel<T>(this IMVP mvp) where T : Model => GetModel<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>(this IMVP mvp) where T : class, ISingleton => Singleton.GetOrAdd<T>();
+		public static T GetSingleton<T>(this IMVP mvp) where T : Singleton => GetSingleton<T>();
 		
 		/// <summary>
 		/// 클래스 변환
@@ -39,8 +40,8 @@ namespace Redbean
 		/// <summary>
 		/// 모델 데이터 배포
 		/// </summary>
-		public static T Publish<T>(this T model) where T : class, IModel => 
-			Singleton.GetOrAdd<RxModelBinder>().Publish(Model.Override(model));
+		public static T Publish<T>(this T model) where T : Model => 
+			GetSingleton<RxModelBinder>().Publish(DependenciesModel.Override(model));
 
 #endregion
 	}

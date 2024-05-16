@@ -1,5 +1,6 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using Redbean.Dependencies;
 using Redbean.Firebase;
 using Redbean.MVP;
 using Redbean.MVP.Content;
@@ -11,7 +12,7 @@ namespace Redbean
 		/// <summary>
 		/// 유저 데이터 호출
 		/// </summary>
-		public static UserModel User(this IMVP mvp) => Model.GetOrAdd<UserModel>();
+		public static UserModel User(this IMVP mvp) => GetModel<UserModel>();
 
 		public static UserModel UserValidation(this UserModel model)
 		{

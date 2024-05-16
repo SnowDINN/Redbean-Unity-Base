@@ -22,11 +22,11 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				UniTask.Void(InteractionAsync, view.DestroyCancellation.Token);
+				InteractionAsync();
 			}).AddTo(this);
 		}
 
-		private async UniTaskVoid InteractionAsync(CancellationToken token)
+		private void InteractionAsync()
 		{
 			model.AuthenticationType = AuthenticationType.Guest;
 			
@@ -35,7 +35,7 @@ namespace Redbean.MVP.Content
 			else
 				model.UserValidation();
 			
-			Log.Print("System", $"User id : {model.UserId}.");	
+			Log.Print("System", $"User id : {model.UserId}.");
 		}
 	}
 }

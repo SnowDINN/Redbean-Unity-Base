@@ -1,5 +1,5 @@
 ﻿using System;
-using Redbean.Core;
+using Redbean.Dependencies;
 using Redbean.MVP;
 using Redbean.Rx;
 
@@ -11,25 +11,25 @@ namespace Redbean
 		/// 로컬 데이터 저장
 		/// </summary>
 		public static float SetPlayerPrefs(this float value, string key) =>
-			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, value);
+			GetSingleton<RxPlayerPrefsBinder>().Save(key, value);
 		
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
 		public static int SetPlayerPrefs(this int value, string key) =>
-			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, Convert.ToInt32(value));
+			GetSingleton<RxPlayerPrefsBinder>().Save(key, Convert.ToInt32(value));
 		
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
 		public static string SetPlayerPrefs(this string value, string key) =>
-			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, value);
+			GetSingleton<RxPlayerPrefsBinder>().Save(key, value);
 		
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static T SetPlayerPrefs<T>(this T value, string key) where T : IModel=>
-			Singleton.GetOrAdd<RxPlayerPrefsBinder>().Save(key, value);
+		public static T SetPlayerPrefs<T>(this T value, string key) where T : Model=>
+			GetSingleton<RxPlayerPrefsBinder>().Save(key, value);
 		
 		/// <summary>
 		/// 로컬 데이터 호출
@@ -38,6 +38,6 @@ namespace Redbean
 			GetSingleton<RxPlayerPrefsBinder>().Load<T>(key);
 		
 		public static bool IsContains(this IMVP mvp, string key) =>
-			Singleton.GetOrAdd<RxPlayerPrefsBinder>().IsContains(key);
+			GetSingleton<RxPlayerPrefsBinder>().IsContains(key);
 	}
 }

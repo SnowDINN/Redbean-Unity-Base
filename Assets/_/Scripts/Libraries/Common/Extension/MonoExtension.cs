@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Redbean.Core;
+using Redbean.Dependencies;
 using Redbean.MVP;
 using UnityEngine;
 
@@ -7,8 +8,8 @@ namespace Redbean
 {
 	public static partial class Extension
 	{
-		private static T GetSingleton<T>() where T : class, ISingleton => Singleton.GetOrAdd<T>();
-		private static T GetModel<T>() where T : class, IModel => Model.GetOrAdd<T>();
+		private static T GetSingleton<T>() where T : Singleton => DependenciesSingleton.GetOrAdd<T>();
+		private static T GetModel<T>() where T : Model => DependenciesModel.GetOrAdd<T>();
 		
 		/// <summary>
 		/// 게임 오브젝트 비/활성화
