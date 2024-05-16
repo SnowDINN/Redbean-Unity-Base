@@ -1,17 +1,13 @@
 ﻿namespace Redbean.MVP
 {
-	public class Model : IModel
+	public interface ISerializeModel : IModel
 	{
-	}
-	
-	public class SerializeModel : Model
-	{
-		public RxModel Rx { get; protected set; }
+		public IRxModel Rx { get; }
 	}
 
-	public class RxModel : Model
+	public interface IRxModel : IModel
 	{
-		public virtual void Publish(SerializeModel value)
+		public void Publish(ISerializeModel value)
 		{
 		}
 	}

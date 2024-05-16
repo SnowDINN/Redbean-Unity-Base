@@ -7,13 +7,13 @@ namespace Redbean
 {
 	public static partial class Extension
 	{
-		public static UniTask CreateFirestore(this SerializeModel model) =>
+		public static UniTask CreateFirestore(this ISerializeModel model) =>
 			FirebaseCore.UserDB.SetAsync(model).AsUniTask();
 		
-		public static UniTask CreateFirestore(this SerializeModel model, string key) =>
+		public static UniTask CreateFirestore(this ISerializeModel model, string key) =>
 			FirebaseCore.UserDB.SetAsync(new Dictionary<string, object> { { key, model } }).AsUniTask();
 		
-		public static UniTask UpdateFirestore(this SerializeModel model, string key) =>
+		public static UniTask UpdateFirestore(this ISerializeModel model, string key) =>
 			FirebaseCore.UserDB.UpdateAsync(key, model).AsUniTask();
 		
 		public static UniTask UpdateFirestore<T>(this T value, string key) =>

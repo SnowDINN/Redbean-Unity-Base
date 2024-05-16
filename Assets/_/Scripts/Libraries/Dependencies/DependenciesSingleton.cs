@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Redbean.Base;
 using Redbean.Core;
 using Redbean.Debug;
 using UnityEngine;
@@ -22,8 +23,10 @@ namespace Redbean.Dependencies
 
 			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
 			                                .SelectMany(x => x.GetTypes())
-			                                .Where(x => !typeof(MonoBehaviour).IsAssignableFrom(x)
+			                                .Where(x => x.FullName != null
 			                                            && typeof(ISingleton).IsAssignableFrom(x)
+			                                            && !typeof(MonoBehaviour).IsAssignableFrom(x)
+			                                            && !x.FullName.Equals(typeof(RxBase).FullName)
 			                                            && !x.IsInterface
 			                                            && !x.IsAbstract)
 			                                .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton);
@@ -38,8 +41,10 @@ namespace Redbean.Dependencies
 
 			var monoSingletons = AppDomain.CurrentDomain.GetAssemblies()
 			                              .SelectMany(x => x.GetTypes())
-			                              .Where(x => typeof(MonoBehaviour).IsAssignableFrom(x)
+			                              .Where(x => x.FullName != null
 			                                          && typeof(ISingleton).IsAssignableFrom(x)
+			                                          && typeof(MonoBehaviour).IsAssignableFrom(x)
+			                                          && !x.FullName.Equals(typeof(RxBase).FullName)
 			                                          && !x.IsInterface
 			                                          && !x.IsAbstract);
 			
@@ -57,40 +62,20 @@ namespace Redbean.Dependencies
 
 			return UniTask.CompletedTask;
 		}
-		
+
 		/// <summary>
 		/// 싱글톤 전부 제거
 		/// </summary>
-		public static void Clear()
-		{
-			foreach (var singleton in singletons)
-				singleton.Value.Dispose();
-			
-			singletons.Clear();
-		}
-
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		public static T GetOrAdd<T>() where T : Singleton
-		{
-			if (singletons.TryGetValue(typeof(T), out var value))
-				return (T)value;
-			
-			singletons[typeof(T)] = Activator.CreateInstance(typeof(T)) as Singleton;
-			return (T)singletons[typeof(T)];
-		}
+		public static void Clear() => singletons.Clear();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static ISingleton GetOrAdd(Type type)
-		{
-			if (singletons.TryGetValue(type, out var value))
-				return value as Singleton;
-
-			singletons[type] = Activator.CreateInstance(type) as ISingleton;
-			return singletons[type];
-		}
+		public static ISingleton GetOrAdd(Type type) => singletons[type];
+		
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
+		public static T GetOrAdd<T>() where T : ISingleton => (T)singletons[typeof(T)];
 	}
 }

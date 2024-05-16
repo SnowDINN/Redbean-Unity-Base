@@ -20,13 +20,6 @@ namespace Redbean.Rx
 				PlayerPrefsGroup = deserializer;
 		}
 
-		public override void Dispose()
-		{
-			base.Dispose();
-			
-			PlayerPrefsGroup.Clear();
-		}
-
 		public bool IsContains(string key) => PlayerPrefsGroup.ContainsKey(key);
 
 		public T Save<T>(string key, T value)

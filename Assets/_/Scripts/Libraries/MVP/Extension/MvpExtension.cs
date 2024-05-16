@@ -14,12 +14,12 @@ namespace Redbean
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetModel<T>(this IMVP mvp) where T : Model => GetModel<T>();
+		public static T GetModel<T>(this IMVP mvp) where T : IModel => GetModel<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>(this IMVP mvp) where T : Singleton => GetSingleton<T>();
+		public static T GetSingleton<T>(this IMVP mvp) where T : ISingleton => GetSingleton<T>();
 		
 		/// <summary>
 		/// 클래스 변환
@@ -40,7 +40,7 @@ namespace Redbean
 		/// <summary>
 		/// 모델 데이터 배포
 		/// </summary>
-		public static T Publish<T>(this T model) where T : Model => 
+		public static T Publish<T>(this T model) where T : IModel => 
 			GetSingleton<RxModelBinder>().Publish(DependenciesModel.Override(model));
 
 #endregion

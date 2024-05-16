@@ -1,5 +1,4 @@
 ﻿using System;
-using Redbean.Dependencies;
 using Redbean.MVP;
 using Redbean.Rx;
 
@@ -28,7 +27,7 @@ namespace Redbean
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static T SetPlayerPrefs<T>(this T value, string key) where T : Model=>
+		public static T SetPlayerPrefs<T>(this T value, string key) where T : IModel=>
 			GetSingleton<RxPlayerPrefsBinder>().Save(key, value);
 		
 		/// <summary>

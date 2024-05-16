@@ -11,8 +11,8 @@ namespace Redbean.Rx
 		
 		public RxModelBinder()
 		{
-			OnModelChanged.Where(_ => _ is SerializeModel)
-			              .Select(_ => (SerializeModel)_)
+			OnModelChanged.Where(_ => _ is ISerializeModel)
+			              .Select(_ => (ISerializeModel)_)
 			              .Subscribe(_ =>
 			              {
 				              _.Rx.Publish(_);

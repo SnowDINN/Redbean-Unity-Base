@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using R3;
 using Redbean.Core;
 using Redbean.Dependencies;
-using Redbean.Rx;
 using UnityEngine;
 
 namespace Redbean.MVP
@@ -29,11 +27,6 @@ namespace Redbean.MVP
 					switch (attribute)
 					{
 						case ModelAttribute:
-							this.GetSingleton<RxModelBinder>().OnModelChanged
-							    .Where(_ => _.GetType() == field.FieldType)
-							    .Subscribe(_ => field.SetValue(this, _))
-							    .AddTo(this);
-							
 							field.SetValue(this, DependenciesModel.GetOrAdd(field.FieldType));
 							break;
 						
