@@ -6,8 +6,8 @@ namespace Redbean.Rx
 {
 	public class RxPushMessageBinder : RxBase
 	{
-		private readonly Subject<object> onPushMessageReceived = new();
-		public Observable<object> OnPushMessageReceived => onPushMessageReceived.Share();
+		private readonly Subject<FirebaseMessage> onPushMessageReceived = new();
+		public Observable<FirebaseMessage> OnPushMessageReceived => onPushMessageReceived.Share();
 
 		public RxPushMessageBinder()
 		{
