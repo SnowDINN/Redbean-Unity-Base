@@ -8,48 +8,24 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:517818090277:android:c9de12d16ec452ffcbd0cc",
+        "mobilesdk_app_id": "1:517818090277:ios:6bde3a83ea15c421cbd0cc",
         "android_client_info": {
-          "package_name": "com.BoongStory.BoongGOD"
+          "package_name": "com.Redbean.BoongGOD"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "517818090277-c7v2a02434j4n66rmig7r7k7605hmduu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.BoongStory.BoongGOD",
-            "certificate_hash": "3b7c30fff91331e9718fe26af2045506b53068cd"
-          }
-        },
-        {
-          "client_id": "517818090277-q8dkr01a24emsf9ikktv5bht1qk077p6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
       "api_key": [
         {
-          "current_key": "AIzaSyD8O3TxPzPeVWqpsDAHSoSBi3ZIXhF5BAU"
+          "current_key": "AIzaSyBmK_GS7DWMoxQy5utCs8HZ1cZpwTkn2mU"
         }
       ],
       "services": {
+        "analytics_service": {
+          "status": 0
+        },
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "517818090277-q8dkr01a24emsf9ikktv5bht1qk077p6.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "517818090277-2avem0i9v94e6a4bpf1l7dien6plu550.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.BoongStory.BoongGOD"
-              }
-            }
-          ]
+          "status": 1
         }
-      },
-      "admob_app_id": "ca-app-pub-8152166386210405~4289945249"
+      }
     }
   ],
   "configuration_version": "1"

@@ -17,7 +17,7 @@ namespace Redbean.Debug
 			if (color == default)
 				color = Color.white;
 			
-			UnityEngine.Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{message}</color>");
+			UnityEngine.Debug.Log($"<color=#{ColorUtility.ToHtmlStringRGB(color)}>[Log] {message}</color>");
 		}
 	}
 }

@@ -2,9 +2,10 @@
 
 namespace Redbean.Core
 {
-	public interface IApplicationStarted
+	public interface IApplicationCore
 	{
 		int ExecutionOrder { get; }
 		UniTask Setup();
+		UniTask TearDown();
 	}
 }

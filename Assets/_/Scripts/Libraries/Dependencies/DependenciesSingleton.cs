@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace Redbean.Dependencies
 {
-	public class DependenciesSingleton : IApplicationStarted
+	public class DependenciesSingleton : IApplicationCore
 	{
 		private static readonly Dictionary<Type, ISingleton> singletons = new();
 		private GameObject parent;
@@ -33,7 +33,7 @@ namespace Redbean.Dependencies
 
 			foreach (var singleton in nativeSingletons
 				         .Where(singleton => singletons.TryAdd(singleton.GetType(), singleton)))
-				Log.Print("Native Singleton", $" Create instance {singleton.GetType().FullName}", Color.cyan);
+				Log.Print("System", $" Create instance {singleton.GetType().FullName}", Color.cyan);
 
 #endregion
 
@@ -56,10 +56,20 @@ namespace Redbean.Dependencies
 			
 			foreach (var singleton in monoSingletons
 				         .Where(singleton => singletons.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
-				Log.Print("Mono Singleton", $"Create instance {singleton.FullName}", Color.cyan);
+				Log.Print("System", $"Create instance {singleton.FullName}", Color.cyan);
 
 #endregion
 
+			return UniTask.CompletedTask;
+		}
+
+		public UniTask TearDown()
+		{
+			foreach (var singleton in singletons)
+				singleton.Value.Dispose();
+			
+			Log.Print("System", "Rx or Event has been terminated.", Color.cyan);
+			
 			return UniTask.CompletedTask;
 		}
 

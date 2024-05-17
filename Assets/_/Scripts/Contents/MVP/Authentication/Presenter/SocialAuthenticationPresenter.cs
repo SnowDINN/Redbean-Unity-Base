@@ -50,14 +50,14 @@ namespace Redbean.MVP.Content
 				    .FirstOrDefault(_ => _.UserId == model.UserId)
 				    .Publish();
 				
-				Log.Print("System", "User information exists in the Firestore.");
+				Log.Print("User information exists in the Firestore.");
 			}
 			else
-				Log.Print("System", "User information not exists in the Firestore. It stores local data on the server.", Color.red);
+				Log.Print("User information not exists in the Firestore. It stores local data on the server.", Color.red);
 				
 			await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
 			
-			Log.Print("System", $"User id : {model.UserId}");	
+			Log.Print($"User id : {model.UserId}");	
 		}
 	}
 }

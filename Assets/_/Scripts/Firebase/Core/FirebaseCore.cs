@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Redbean.Firebase
 {
-	public class FirebaseCore : IApplicationStarted
+	public class FirebaseCore : IApplicationCore
 	{
 		public static FirebaseFirestore Firestore;
 		public static DocumentReference UserDB;
@@ -48,9 +48,18 @@ namespace Redbean.Firebase
 			}
 		}
 
+		public UniTask TearDown()
+		{
+			FirebaseApp.DefaultInstance.Dispose();
+			
+			Log.Print("System", "Firebase has been terminated.", Color.cyan);
+			
+			return UniTask.CompletedTask;
+		}
+
 		private static void AppConfigSettings(AppConfigArgument configArgs)
 		{
-			Log.Print("Config", $"Latest updated version : {configArgs.Version}", Color.yellow);
+			Log.Print("Notice", $"Latest updated version : {configArgs.Version}", Color.yellow);
 		}
 	}
 }

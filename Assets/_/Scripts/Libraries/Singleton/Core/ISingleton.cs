@@ -1,6 +1,8 @@
+using System;
+
 namespace Redbean.Core
 {
-	public interface ISingleton
+	public interface ISingleton : IDisposable
 	{
 	}	
 }

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Redbean.Dependencies
 {
-	public class DependenciesModel : IApplicationStarted
+	public class DependenciesModel : IApplicationCore
 	{
 		private static readonly Dictionary<Type, IModel> models = new();
 		
@@ -28,11 +28,16 @@ namespace Redbean.Dependencies
 
 			foreach (var singleton in nativeSingletons
 				         .Where(model => models.TryAdd(model.GetType(), model)))
-				Log.Print("Model", $" Create instance {singleton.GetType().FullName}", Color.cyan);
+				Log.Print("System", $" Create instance {singleton.GetType().FullName}", Color.cyan);
 			
 			return UniTask.CompletedTask;
 		}
-		
+
+		public UniTask TearDown()
+		{
+			return UniTask.CompletedTask;
+		}
+
 		/// <summary>
 		/// 모델 전부 제거
 		/// </summary>
