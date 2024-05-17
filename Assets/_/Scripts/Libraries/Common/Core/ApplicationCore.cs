@@ -9,7 +9,7 @@ namespace Redbean.Core
 {
 	public class ApplicationCore
 	{
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
 		public static async void AssembliesSetup()
 		{
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
