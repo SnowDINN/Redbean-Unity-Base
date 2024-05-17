@@ -13,6 +13,7 @@ namespace Redbean.Rx
 		public Observable<FirebaseMessage> OnPushMessageReceived => onPushMessageReceived.Share();
 
 		private const string PERMISSION_ANDROID = "android.permission.POST_NOTIFICATIONS";
+		private const string CHANNEL_ID = "REDBEAN_BOONGGOD";
 		
 		public RxPushMessageBinder()
 		{
@@ -46,8 +47,8 @@ namespace Redbean.Rx
 			
 			AndroidNotificationCenter.RegisterNotificationChannel(new AndroidNotificationChannel
 			{
-				Id = Application.identifier,
-				Name = Application.identifier,
+				Id = CHANNEL_ID,
+				Name = "BoongGod",
 				Importance = Importance.Default,
 				Description = "Generic notifications",
 			});
@@ -65,7 +66,7 @@ namespace Redbean.Rx
 				FireTime = System.DateTime.Now
 			};
 			
-			AndroidNotificationCenter.SendNotification(notification, Application.identifier);
+			AndroidNotificationCenter.SendNotification(notification, CHANNEL_ID);
 #elif UNITY_IOS
 #endif
 		}

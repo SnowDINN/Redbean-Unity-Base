@@ -8,22 +8,37 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:517818090277:ios:6bde3a83ea15c421cbd0cc",
+        "mobilesdk_app_id": "1:517818090277:android:5108d23d124d0440cbd0cc",
         "android_client_info": {
           "package_name": "com.Redbean.BoongGOD"
         }
       },
+      "oauth_client": [
+        {
+          "client_id": "517818090277-q8dkr01a24emsf9ikktv5bht1qk077p6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBmK_GS7DWMoxQy5utCs8HZ1cZpwTkn2mU"
+          "current_key": "AIzaSyD8O3TxPzPeVWqpsDAHSoSBi3ZIXhF5BAU"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 0
-        },
         "appinvite_service": {
-          "status": 1
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517818090277-q8dkr01a24emsf9ikktv5bht1qk077p6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "517818090277-2avem0i9v94e6a4bpf1l7dien6plu550.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.BoongStory.BoongGOD"
+              }
+            }
+          ]
         }
       }
     }
