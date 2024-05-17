@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Redbean.MVP.Content
@@ -10,5 +11,8 @@ namespace Redbean.MVP.Content
 
 		[SerializeField] private Button button;
 		public Button Button => button;
+		
+		[SerializeField] private TMP_InputField inputField;
+		public TMP_InputField InputField => inputField;
 	}
 }

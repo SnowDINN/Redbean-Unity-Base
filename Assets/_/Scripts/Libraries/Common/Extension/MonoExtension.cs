@@ -8,7 +8,14 @@ namespace Redbean
 {
 	public static partial class Extension
 	{
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
 		private static T GetSingleton<T>() where T : ISingleton => DependenciesSingleton.GetOrAdd<T>();
+		
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
 		private static T GetModel<T>() where T : IModel => DependenciesModel.GetOrAdd<T>();
 		
 		/// <summary>

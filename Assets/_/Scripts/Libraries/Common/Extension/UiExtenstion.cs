@@ -31,6 +31,9 @@ namespace Redbean
 				await image.DOFillAmount(end, duration).AwaitForComplete(cancellationToken: token);
 		}
 
+		/// <summary>
+		/// 캔바스 비/활성화
+		/// </summary>
 		public static void ActiveCanvas(this CanvasGroup canvasGroup, bool value)
 		{
 			canvasGroup.alpha = value ? 1.0f : 0.0f;

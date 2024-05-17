@@ -36,19 +36,28 @@ namespace Redbean.MVP.Content
 			if (this.IsContains(LocalKey.USER_INFO_KEY))
 				this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish();
 			else
-				await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
+			{
+				if (!string.IsNullOrEmpty(view.InputField.text))
+					model.UserId = view.InputField.text;
+			}
 
 			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo("id", model.UserId);
 			var user = await equalTo.GetSnapshotAsync();
 			if (user.Any())
-				Log.Print("System", "User information exists in the Firestore.");
-			else
 			{
-				Log.Print("System", "User information not exists in the Firestore. It stores local data on the server.", Color.red);
-				await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
+				user.Documents
+				    .Select(_ => _.ConvertTo<UserModel>())
+				    .FirstOrDefault(_ => _.UserId == model.UserId)
+				    .Publish();
+				
+				Log.Print("System", "User information exists in the Firestore.");
 			}
+			else
+				Log.Print("System", "User information not exists in the Firestore. It stores local data on the server.", Color.red);
+				
+			await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
 			
-			Log.Print("System", $"User id : {model.UserId}.");	
+			Log.Print("System", $"User id : {model.UserId}");	
 		}
 	}
 }
