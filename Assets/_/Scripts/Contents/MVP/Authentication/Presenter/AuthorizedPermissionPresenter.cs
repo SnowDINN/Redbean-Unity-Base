@@ -3,11 +3,12 @@ using Newtonsoft.Json;
 using R3;
 using Redbean.Core;
 using Redbean.Debug;
+using Redbean.Native;
 using Redbean.Rx;
 
 namespace Redbean.MVP.Content
 {
-	public class PushNotificationPresenter : Presenter
+	public class AuthorizedPermissionPresenter : Presenter
 	{
 		[View]
 		private EmptyView view;
@@ -27,9 +28,9 @@ namespace Redbean.MVP.Content
 
 		public async UniTaskVoid SetupPermission()
 		{
-			await UniTask.WaitForSeconds(1.0f);
+			await UniTask.WaitForEndOfFrame(view.DestroyCancellation.Token);
 			
-			rxPushMessageBinder.Setup();
+			await NativeNotification.Setup();
 		}
 	}
 }
