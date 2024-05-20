@@ -7,7 +7,7 @@ namespace Redbean.Base
 {
 	public class MonoBase : MonoBehaviour, IDisposable
 	{
-		public Dictionary<string, CancellationTokenSource> Cancellations = new();
+		private readonly Dictionary<string, CancellationTokenSource> Cancellations = new();
 		public CancellationTokenSource DestroyCancellation = new();
 
 		/// <summary>
@@ -15,8 +15,8 @@ namespace Redbean.Base
 		/// </summary>
 		public CancellationTokenSource GenerateCancellationToken(string tokenName)
 		{
-			if (Cancellations.ContainsKey(tokenName))
-				Cancellations[tokenName].CancelAndDispose();
+			if (Cancellations.TryGetValue(tokenName, out var cancellation))
+				cancellation.CancelAndDispose();
 			Cancellations[tokenName] = new CancellationTokenSource();
 
 			return Cancellations[tokenName];
