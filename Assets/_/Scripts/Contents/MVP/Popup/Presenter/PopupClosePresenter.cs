@@ -1,18 +1,22 @@
 ﻿using R3;
-using Redbean.Popup.Content;
+using Redbean.Popup;
 
 namespace Redbean.MVP.Content
 {
-	public class OpenPopupPresenter : Presenter
+	public class PopupClosePresenter : Presenter
 	{
 		[View]
 		private ButtonView view;
 
+		private PopupBase popup;
+
 		public override void Setup()
 		{
+			popup = view.GetComponent<PopupBase>();
+
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				this.Popup().Open<PopupExample>();
+				popup.Close();
 			}).AddTo(this);
 		}
 	}
