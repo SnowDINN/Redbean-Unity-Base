@@ -26,7 +26,7 @@ namespace Redbean.Native
 			AndroidNotificationCenter.RegisterNotificationChannel(new AndroidNotificationChannel
 			{
 				Id = CHANNEL_ID,
-				Name = "붕神",
+				Name = CHANNEL_ID,
 				Importance = Importance.Default,
 				Description = "Generic notifications",
 			});
