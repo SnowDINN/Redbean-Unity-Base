@@ -11,8 +11,5 @@ namespace Redbean.MVP.Content
 
 		[SerializeField] private Button button;
 		public Button Button => button;
-		
-		[SerializeField] private TMP_InputField inputField;
-		public TMP_InputField InputField => inputField;
 	}
 }

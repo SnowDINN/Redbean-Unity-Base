@@ -25,12 +25,13 @@ namespace Redbean.MVP.Content
 
 		private void InteractionAsync()
 		{
-			model.AuthenticationType = AuthenticationType.Guest;
-
 			if (this.IsContains(typeof(UserModel).FullName))
 				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
-			else
-				model.UserValidation();
+			
+			if (string.IsNullOrEmpty(model.Information.Nickname))
+				model.Social.Platform = "Pengu";
+			
+			model.UserValidation();
 			
 			Log.Print($"User id : {model.Id}");
 		}

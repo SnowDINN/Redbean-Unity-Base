@@ -45,7 +45,7 @@ namespace Redbean
 		{
 			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Id);
 			
-			var uniTask = model.UpdateFirestore(DataKey.USER_DETAILS_KEY);
+			var uniTask = model.UpdateFirestore(DataKey.USER_INFORMATION_KEY);
 			await uniTask;
 			
 			return uniTask.Status == UniTaskStatus.Succeeded;

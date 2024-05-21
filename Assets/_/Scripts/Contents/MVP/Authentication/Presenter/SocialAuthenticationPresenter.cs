@@ -30,15 +30,17 @@ namespace Redbean.MVP.Content
 		
 		private async UniTaskVoid InteractionAsync(CancellationToken token)
 		{
-			model.AuthenticationType = view.Type;
-			
 			if (this.IsContains(typeof(UserModel).FullName))
 				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
-			else
-			{
-				if (!string.IsNullOrEmpty(view.InputField.text))
-					model.Id = view.InputField.text;
-			}
+			
+			if (string.IsNullOrEmpty(model.Social.Id))
+				model.Social.Platform = "";
+			
+			if (string.IsNullOrEmpty(model.Social.Platform))
+				model.Social.Platform = $"{view.Type}";
+			
+			if (string.IsNullOrEmpty(model.Information.Nickname))
+				model.Social.Platform = "Pengu";
 
 			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo("id", model.Id);
 			var user = await equalTo.GetSnapshotAsync();

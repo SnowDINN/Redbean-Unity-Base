@@ -7,27 +7,40 @@ namespace Redbean.MVP.Content
 	[FirestoreData]
 	public class UserModel : ISerializeModel
 	{
-		public AuthenticationType AuthenticationType = AuthenticationType.Guest;
 		public IRxModel Rx => new UserRxModel();
 		
-		[FirestoreProperty("id"), ShowInInspector]
+		[FirestoreProperty(DataKey.USER_ID_KEY), ShowInInspector]
 		public string Id { get; set; } = string.Empty;
 
-		[FirestoreProperty(DataKey.USER_DETAILS_KEY), ShowInInspector]
-		public UserDetailsModel Details { get; set; } = new();
+		[FirestoreProperty(DataKey.USER_INFORMATION_KEY), ShowInInspector]
+		public UserInfoModel Information { get; set; } = new();
+		
+		[FirestoreProperty(DataKey.USER_SOCIAL_KEY), ShowInInspector]
+		public UserSocialModel Social { get; set; } = new();
 	}
 
 	[FirestoreData]
-	public class UserDetailsModel
+	public class UserInfoModel
 	{
-		[FirestoreProperty("nickname"), ShowInInspector]
+		[FirestoreProperty(DataKey.USER_NICKNAME_KEY), ShowInInspector]
 		public string Nickname { get; set; } = string.Empty;
+	}
+	
+	[FirestoreData]
+	public class UserSocialModel
+	{
+		[FirestoreProperty(DataKey.USER_ID_KEY), ShowInInspector]
+		public string Id { get; set; } = string.Empty;
+		
+		[FirestoreProperty(DataKey.USER_PLATFORM_KEY), ShowInInspector]
+		public string Platform { get; set; } = string.Empty;
 	}
 	
 	public class UserRxModel : IRxModel
 	{
 		public ReactiveProperty<string> Id = new();
-		public ReactiveProperty<UserDetailsModel> Details = new();
+		public ReactiveProperty<UserInfoModel> Information = new();
+		public ReactiveProperty<UserSocialModel> Social = new();
 		
 		public void Publish(ISerializeModel value)
 		{
@@ -35,7 +48,8 @@ namespace Redbean.MVP.Content
 				return;
 
 			Id.Value = model.Id;
-			Details.Value = model.Details;
+			Information.Value = model.Information;
+			Social.Value = model.Social;
 		}
 	}
 }
