@@ -9,10 +9,10 @@ namespace Redbean.MVP.Content
 		public AuthenticationType AuthenticationType = AuthenticationType.Guest;
 		public IRxModel Rx => new UserRxModel();
 		
-		[FirestoreProperty(LocalKey.USER_ID_KEY)]
+		[FirestoreProperty("id")]
 		public string UserId { get; set; } = string.Empty;
 
-		[FirestoreProperty(LocalKey.USER_INFO_KEY)]
+		[FirestoreProperty(DataKey.USER_INFO_KEY)]
 		public UserInfoModel UserInfo { get; set; } = new();
 	}
 

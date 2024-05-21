@@ -4,9 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Cysharp.Threading.Tasks;
 using Redbean.Core;
-using Redbean.Debug;
 using Redbean.MVP;
-using UnityEngine;
 
 namespace Redbean.Dependencies
 {
@@ -28,7 +26,7 @@ namespace Redbean.Dependencies
 
 			foreach (var singleton in nativeSingletons
 				         .Where(model => models.TryAdd(model.GetType(), model)))
-				Log.Print("System", $" Create instance {singleton.GetType().FullName}", Color.cyan);
+				Log.System($"Create instance {singleton.GetType().FullName}");
 			
 			return UniTask.CompletedTask;
 		}

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redbean.Debug;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -41,7 +40,7 @@ namespace Redbean.Core
 			foreach (var instance in instances)
 				instance.TearDown();
 			
-			Log.Print("System", "App has been terminated.", Color.cyan);
+			Log.System("App has been terminated.");
 		}
 
 		public void AddInstances(List<IApplicationCore> instances)

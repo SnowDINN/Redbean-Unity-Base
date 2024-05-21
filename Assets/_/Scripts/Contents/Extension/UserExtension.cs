@@ -13,11 +13,14 @@ namespace Redbean
 		/// </summary>
 		public static UserModel User(this IPresenter mvp) => GetModel<UserModel>();
 
+		/// <summary>
+		/// 유저 데이터 검증
+		/// </summary>
 		public static UserModel UserValidation(this UserModel model)
 		{
 			if (string.IsNullOrEmpty(model.UserId))
 				model.UserId = $"{Guid.NewGuid()}".Replace("-", "");
-			model.Publish().SetPlayerPrefs(LocalKey.USER_INFO_KEY);
+			model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 
 			return model;
 		}
@@ -36,13 +39,13 @@ namespace Redbean
 		}
 		
 		/// <summary>
-		/// 유저 데이터 호출
+		/// 유저 데이터 업데이트
 		/// </summary>
 		public static async UniTask<bool> UpdateUserAsync(this UserModel model)
 		{
 			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.UserId);
 			
-			var uniTask = model.UpdateFirestore(LocalKey.USER_INFO_KEY);
+			var uniTask = model.UpdateFirestore(DataKey.USER_INFO_KEY);
 			await uniTask;
 			
 			return uniTask.Status == UniTaskStatus.Succeeded;

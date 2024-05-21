@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Core;
-using Redbean.Debug;
 using Redbean.Firebase;
 using Redbean.Rx;
 using UnityEngine;
@@ -33,8 +32,8 @@ namespace Redbean.MVP.Content
 		{
 			model.AuthenticationType = view.Type;
 			
-			if (this.IsContains(LocalKey.USER_INFO_KEY))
-				this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish();
+			if (this.IsContains(typeof(UserModel).FullName))
+				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
 			else
 			{
 				if (!string.IsNullOrEmpty(view.InputField.text))

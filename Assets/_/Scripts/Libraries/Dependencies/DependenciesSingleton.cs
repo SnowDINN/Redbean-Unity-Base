@@ -4,7 +4,6 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Redbean.Base;
 using Redbean.Core;
-using Redbean.Debug;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -33,7 +32,7 @@ namespace Redbean.Dependencies
 
 			foreach (var singleton in nativeSingletons
 				         .Where(singleton => singletons.TryAdd(singleton.GetType(), singleton)))
-				Log.Print("System", $" Create instance {singleton.GetType().FullName}", Color.cyan);
+				Log.System($"Create instance {singleton.GetType().FullName}");
 
 #endregion
 
@@ -56,7 +55,7 @@ namespace Redbean.Dependencies
 			
 			foreach (var singleton in monoSingletons
 				         .Where(singleton => singletons.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
-				Log.Print("System", $"Create instance {singleton.FullName}", Color.cyan);
+				Log.System($"Create instance {singleton.FullName}");
 
 #endregion
 
@@ -68,7 +67,7 @@ namespace Redbean.Dependencies
 			foreach (var singleton in singletons)
 				singleton.Value.Dispose();
 			
-			Log.Print("System", "Rx or Event has been terminated.", Color.cyan);
+			Log.System("Rx or Event has been terminated.");
 			
 			return UniTask.CompletedTask;
 		}

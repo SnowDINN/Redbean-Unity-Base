@@ -1,5 +1,4 @@
-﻿using Redbean.Debug;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 namespace Redbean.Editor
@@ -10,7 +9,7 @@ namespace Redbean.Editor
 		public static void PlayPrefsDeleteAll()
 		{
 			PlayerPrefs.DeleteAll();
-			Log.Print("모든 로컬 데이터가 삭제되었습니다.", Color.yellow);
+			Log.Notice("All local data has been deleted.");
 		}
 	}
 }

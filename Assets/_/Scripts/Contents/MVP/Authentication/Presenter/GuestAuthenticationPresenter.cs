@@ -1,6 +1,5 @@
 ﻿using R3;
 using Redbean.Core;
-using Redbean.Debug;
 using Redbean.Rx;
 
 namespace Redbean.MVP.Content
@@ -28,8 +27,8 @@ namespace Redbean.MVP.Content
 		{
 			model.AuthenticationType = AuthenticationType.Guest;
 
-			if (this.IsContains(LocalKey.USER_INFO_KEY))
-				this.GetPlayerPrefs<UserModel>(LocalKey.USER_INFO_KEY).Publish();
+			if (this.IsContains(typeof(UserModel).FullName))
+				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
 			else
 				model.UserValidation();
 			

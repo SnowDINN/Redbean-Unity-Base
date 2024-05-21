@@ -2,9 +2,7 @@
 using Firebase;
 using Firebase.Firestore;
 using Redbean.Core;
-using Redbean.Debug;
 using Redbean.MVP.Content;
-using UnityEngine;
 
 namespace Redbean.Firebase
 {
@@ -19,10 +17,10 @@ namespace Redbean.Firebase
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
 			if (status == DependencyStatus.Available)
-				Log.Print("Firebase", "Success to connect to the Firebase server.", Color.green);
+				Log.Success("Firebase", "Success to connect to the Firebase server.");
 			else
 			{
-				Log.Print("Firebase", "Failed to connect to the Firebase server.", Color.red);
+				Log.Fail("Firebase", "Failed to connect to the Firebase server.");
 				return;
 			}
 
@@ -30,10 +28,10 @@ namespace Redbean.Firebase
 			Firestore = FirebaseFirestore.DefaultInstance;
 			var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
 			if (configSnapshot.Exists)
-				Log.Print("Firebase", "Success to load to the app config.", Color.green);
+				Log.Success("Firebase", "Success to load to the app config.");
 			else
 			{
-				Log.Print("Firebase", "Failed to load to the app config.", Color.red);
+				Log.Fail("Firebase", "Failed to load to the app config.");
 				return;
 			}
 
@@ -52,14 +50,14 @@ namespace Redbean.Firebase
 		{
 			FirebaseApp.DefaultInstance.Dispose();
 			
-			Log.Print("System", "Firebase has been terminated.", Color.cyan);
+			Log.System("Firebase has been terminated.");
 			
 			return UniTask.CompletedTask;
 		}
 
 		private static void AppConfigSettings(AppConfigArgument configArgs)
 		{
-			Log.Print("Notice", $"Latest updated version : {configArgs.Version}", Color.yellow);
+			Log.Notice($"Latest updated version : {configArgs.Version}");
 		}
 	}
 }
