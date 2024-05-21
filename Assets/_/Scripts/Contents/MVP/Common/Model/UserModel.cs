@@ -1,5 +1,6 @@
 ﻿using Firebase.Firestore;
 using R3;
+using Sirenix.OdinInspector;
 
 namespace Redbean.MVP.Content
 {
@@ -9,32 +10,32 @@ namespace Redbean.MVP.Content
 		public AuthenticationType AuthenticationType = AuthenticationType.Guest;
 		public IRxModel Rx => new UserRxModel();
 		
-		[FirestoreProperty("id")]
-		public string UserId { get; set; } = string.Empty;
+		[FirestoreProperty("id"), ShowInInspector]
+		public string Id { get; set; } = string.Empty;
 
-		[FirestoreProperty(DataKey.USER_INFO_KEY)]
-		public UserInfoModel UserInfo { get; set; } = new();
+		[FirestoreProperty(DataKey.USER_DETAILS_KEY), ShowInInspector]
+		public UserDetailsModel Details { get; set; } = new();
 	}
 
 	[FirestoreData]
-	public class UserInfoModel
+	public class UserDetailsModel
 	{
-		[FirestoreProperty("nickname")]
+		[FirestoreProperty("nickname"), ShowInInspector]
 		public string Nickname { get; set; } = string.Empty;
 	}
 	
 	public class UserRxModel : IRxModel
 	{
-		public ReactiveProperty<string> UserId = new();
-		public ReactiveProperty<UserInfoModel> UserInfo = new();
+		public ReactiveProperty<string> Id = new();
+		public ReactiveProperty<UserDetailsModel> Details = new();
 		
 		public void Publish(ISerializeModel value)
 		{
 			if (value is not UserModel model)
 				return;
 
-			UserId.Value = model.UserId;
-			UserInfo.Value = model.UserInfo;
+			Id.Value = model.Id;
+			Details.Value = model.Details;
 		}
 	}
 }

@@ -1,11 +1,24 @@
-﻿using UnityEditor;
+﻿using Sirenix.OdinInspector.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Redbean.Editor
 {
 	public class MenuItemEditor
 	{
-		[MenuItem("Quick Menu/Local Data/Delete All")]
+		[MenuItem("Redbean Menu/Windows/Config Window", false, 0)]
+		public static void OpenConfigWindow()
+		{
+			OdinEditorWindow.GetWindow<ConfigWindow>().Show();
+		}
+		
+		[MenuItem("Redbean Menu/Windows/Runtime Window", false, 1)]
+		public static void OpenRuntimeWindow()
+		{
+			OdinEditorWindow.GetWindow<RuntimeWindow>().Show();
+		}
+		
+		[MenuItem("Redbean Menu/Local Data/Delete All", false, 100)]
 		public static void PlayPrefsDeleteAll()
 		{
 			PlayerPrefs.DeleteAll();

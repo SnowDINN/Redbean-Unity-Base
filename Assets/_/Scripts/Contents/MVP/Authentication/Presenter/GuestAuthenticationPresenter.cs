@@ -32,7 +32,7 @@ namespace Redbean.MVP.Content
 			else
 				model.UserValidation();
 			
-			Log.Print($"User id : {model.UserId}");
+			Log.Print($"User id : {model.Id}");
 		}
 	}
 }

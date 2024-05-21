@@ -4,6 +4,10 @@ using Redbean.Dependencies;
 using Redbean.MVP;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using Sirenix.OdinInspector.Editor;
+#endif
+
 namespace Redbean
 {
 	public static partial class Extension
@@ -17,6 +21,18 @@ namespace Redbean
 		/// 모델 호출
 		/// </summary>
 		private static T GetModel<T>() where T : IModel => DependenciesModel.GetOrAdd<T>();
+		
+#if UNITY_EDITOR
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
+		public static T GetModel<T>(this OdinEditorWindow editor) where T : IModel => GetModel<T>();
+		
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
+		public static T GetSingleton<T>(this OdinEditorWindow editor) where T : ISingleton => GetSingleton<T>();
+#endif
 		
 		/// <summary>
 		/// 게임 오브젝트 비/활성화

@@ -15,7 +15,7 @@ namespace Redbean
 		/// <summary>
 		/// 클래스 변환
 		/// </summary>
-		public static T As<T>(this IMVP mvp) where T : class, IMVP => mvp as T;
+		public static T As<T>(this IMVP mvp) where T : class => mvp as T;
 
 #endregion
 		

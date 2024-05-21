@@ -3,6 +3,7 @@ using Firebase;
 using Firebase.Firestore;
 using Redbean.Core;
 using Redbean.MVP.Content;
+using UnityEngine;
 
 namespace Redbean.Firebase
 {
@@ -10,7 +11,7 @@ namespace Redbean.Firebase
 	{
 		public static FirebaseFirestore Firestore;
 		public static DocumentReference UserDB;
-		public int ExecutionOrder => 10;
+		public int ExecutionOrder => 100;
 
 		public async UniTask Setup()
 		{
@@ -24,25 +25,28 @@ namespace Redbean.Firebase
 				return;
 			}
 
-			// 파이어스토어 앱 설정 체크
-			Firestore = FirebaseFirestore.DefaultInstance;
-			var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
-			if (configSnapshot.Exists)
-				Log.Success("Firebase", "Success to load to the app config.");
-			else
+			if (Application.isPlaying)
 			{
-				Log.Fail("Firebase", "Failed to load to the app config.");
-				return;
-			}
+				// 파이어스토어 앱 설정 체크
+				Firestore = FirebaseFirestore.DefaultInstance;
+				var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
+				if (configSnapshot.Exists)
+					Log.Success("Firebase", "Success to load to the app config.");
+				else
+				{
+					Log.Fail("Firebase", "Failed to load to the app config.");
+					return;
+				}
 
-			var config = configSnapshot.ConvertTo<AppConfigModel>().Publish();
-			if (config is not null)
-			{
+				var config = configSnapshot.ConvertTo<AppConfigModel>().Publish();
+				if (config is not null)
+				{
 #if UNITY_ANDROID
-				AppConfigSettings(config.Android);
+					AppConfigSettings(config.Android);
 #elif UNITY_IOS
 				AppConfigSettings(config.iOS);
 #endif
+				}	
 			}
 		}
 

@@ -33,6 +33,8 @@ namespace Redbean.Dependencies
 
 		public UniTask TearDown()
 		{
+			models.Clear();
+			
 			return UniTask.CompletedTask;
 		}
 
@@ -50,6 +52,16 @@ namespace Redbean.Dependencies
 		/// 모델 호출
 		/// </summary>
 		public static IModel GetOrAdd(Type type) => models[type];
+
+		/// <summary>
+		/// 모델 존재 여부
+		/// </summary>
+		public static bool IsContains<T>() where T : IModel => models.ContainsKey(typeof(T));
+		
+		/// <summary>
+		/// 모델 존재 여부
+		/// </summary>
+		public static bool IsContains(Type type) => models.ContainsKey(type);
 
 		/// <summary>
 		/// 모델 재정의

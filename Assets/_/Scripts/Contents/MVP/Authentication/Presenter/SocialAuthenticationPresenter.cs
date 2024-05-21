@@ -37,16 +37,16 @@ namespace Redbean.MVP.Content
 			else
 			{
 				if (!string.IsNullOrEmpty(view.InputField.text))
-					model.UserId = view.InputField.text;
+					model.Id = view.InputField.text;
 			}
 
-			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo("id", model.UserId);
+			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo("id", model.Id);
 			var user = await equalTo.GetSnapshotAsync();
 			if (user.Any())
 			{
 				user.Documents
 				    .Select(_ => _.ConvertTo<UserModel>())
-				    .FirstOrDefault(_ => _.UserId == model.UserId)
+				    .FirstOrDefault(_ => _.Id == model.Id)
 				    .Publish();
 				
 				Log.Print("User information exists in the Firestore.");
@@ -56,7 +56,7 @@ namespace Redbean.MVP.Content
 				
 			await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
 			
-			Log.Print($"User id : {model.UserId}");	
+			Log.Print($"User id : {model.Id}");	
 		}
 	}
 }

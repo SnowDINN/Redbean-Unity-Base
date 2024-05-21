@@ -9,6 +9,6 @@
 	
 	public class DataKey
 	{
-		public const string USER_INFO_KEY = "user_information";
+		public const string USER_DETAILS_KEY = "user_details";
 	}
 }
