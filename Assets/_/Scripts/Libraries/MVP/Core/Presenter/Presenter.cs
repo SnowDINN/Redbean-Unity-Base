@@ -41,12 +41,14 @@ namespace Redbean.MVP
 			}
 		}
 		
-		public virtual void Setup()
-		{
-		}
+		/// <summary>
+		/// Presenter 생성 시 호출되는 함수
+		/// </summary>
+		public virtual void Setup() { }
 
-		public virtual void Dispose()
-		{
-		}
+		/// <summary>
+		/// Presenter 파괴 시 호출되는 함수
+		/// </summary>
+		public virtual void Dispose() { }
 	}
 }

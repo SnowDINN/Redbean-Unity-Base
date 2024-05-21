@@ -22,7 +22,7 @@ namespace Redbean.Rx
     	{
     		Observable.EveryUpdate().Subscribe(_ =>
     		{
-    			UniTask.Void(DetectingAsync);
+    			UniTask.Void(InputDetectingAsync);
     		}).AddTo(disposables);
     
     		OnKeyInputDetected.Subscribe(_ =>
@@ -37,10 +37,10 @@ namespace Redbean.Rx
     		}).AddTo(disposables);
     	}
     
-    	private async UniTaskVoid DetectingAsync()
+    	private async UniTaskVoid InputDetectingAsync()
     	{
     		if (Input.anyKeyDown)
-    			await FindKeyCodeAsync();
+    			await FindKeyCodeAndConvertAsync();
     
     		if (mouseCode > -1)
     		{
@@ -61,7 +61,7 @@ namespace Redbean.Rx
 		    }
 	    }
     
-    	private UniTask FindKeyCodeAsync()
+    	private UniTask FindKeyCodeAndConvertAsync()
     	{
     		var keyCodes = Enum.GetValues(typeof(KeyCode));
     		foreach (KeyCode keyCode in keyCodes)

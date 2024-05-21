@@ -6,6 +6,9 @@ namespace Redbean.Rx
 {
 	public class RxPushMessageBinder : RxBase
 	{
+		private readonly Subject<string> onPushTokenReceived = new();
+		public Observable<string> OnPushTokenReceived => onPushTokenReceived.Share();
+		
 		private readonly Subject<FirebaseMessage> onPushMessageReceived = new();
 		public Observable<FirebaseMessage> OnPushMessageReceived => onPushMessageReceived.Share();
 		
@@ -25,7 +28,7 @@ namespace Redbean.Rx
 
 		private void OnTokenReceived(object sender, TokenReceivedEventArgs e)
 		{
-
+			onPushTokenReceived.OnNext(e.Token);
 		}
 		
 		private void OnMessageReceived(object sender, MessageReceivedEventArgs e)

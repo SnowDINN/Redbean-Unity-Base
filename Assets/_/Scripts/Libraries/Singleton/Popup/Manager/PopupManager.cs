@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Redbean.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,8 @@ namespace Redbean.Popup
 		private readonly CanvasScaler canvasScaler;
 		private readonly GraphicRaycaster raycaster;
 		private readonly Transform popupParent;
+
+		public PopupBase CurrentPopup => popupCollection.Values.Last();
 
 		public PopupManager()
 		{
@@ -68,6 +71,13 @@ namespace Redbean.Popup
 		{
 			popupCollection[type].Destroy();
 			popupCollection.Remove(type);
+		}
+
+		public void AllClose()
+		{
+			foreach (var popup in popupCollection.Values)
+				popup.Destroy();
+			popupCollection.Clear();
 		}
 		
 		public T Get<T>() where T : class => popupCollection[typeof(T)] as T;

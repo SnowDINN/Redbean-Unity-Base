@@ -17,6 +17,9 @@ namespace Redbean.Native
 		private const string PERMISSION_ANDROID = "android.permission.POST_NOTIFICATIONS";
 		private const string CHANNEL_ID = "REDBEAN_BoongGOD_PUSH_CHANNEL";
 		
+		/// <summary>
+		/// 모바일 알림 설정
+		/// </summary>
 		public static async UniTask Setup()
 		{
 #if UNITY_ANDROID
@@ -40,6 +43,9 @@ namespace Redbean.Native
 			await UniTask.CompletedTask;
 		}
 		
+		/// <summary>
+		/// 모바일 알림 예약
+		/// </summary>
 		public static void PushNotification(NotificationForm form)
 		{
 #if UNITY_ANDROID

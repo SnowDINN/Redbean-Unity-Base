@@ -7,8 +7,6 @@
 
 	public interface IRxModel : IModel
 	{
-		public void Publish(ISerializeModel value)
-		{
-		}
+		public void Publish(ISerializeModel value) { }
 	}
 }
