@@ -34,7 +34,7 @@ namespace Redbean.MVP.Content
 				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
 			
 			if (string.IsNullOrEmpty(model.Social.Id))
-				model.Social.Platform = "";
+				model.Social.Id = "";
 			
 			if (string.IsNullOrEmpty(model.Social.Platform))
 				model.Social.Platform = $"{view.Type}";
@@ -48,18 +48,18 @@ namespace Redbean.MVP.Content
 			{
 				user.Documents
 				    .Select(_ => _.ConvertTo<UserModel>())
-				    .FirstOrDefault(_ => _.Id == model.Id)
+				    .FirstOrDefault(_ => _.Social.Id == model.Social.Id)
 				    .Publish();
 				
-				Log.Print("User information exists in the Firestore.");
+				Log.Print("User data has been verified.");
 			}
 			else
-				Log.Print("User information not exists in the Firestore. It stores local data on the server.", Color.red);
+				Log.Print("User information not exists in the Server. It stores local data on the server.", Color.red);
 
 			await model.UserIdValidate().AttachExternalCancellation(token);
 			await model.UserCreateAsync().AttachExternalCancellation(token);
 			
-			Log.Print($"User id : {model.Id}");	
+			Log.Print($"User id : {model.Social.Id}");	
 		}
 	}
 }

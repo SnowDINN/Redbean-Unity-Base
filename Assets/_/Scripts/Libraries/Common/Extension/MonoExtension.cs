@@ -36,7 +36,7 @@ namespace Redbean
 		/// <summary>
 		/// 모델 존재 여부
 		/// </summary>
-		public static bool IsContains<T>(this OdinEditorWindow editor) where T : IModel => DependenciesModel.IsContains<T>();
+		public static bool IsContainsModel<T>(this OdinEditorWindow editor) where T : IModel => DependenciesModel.IsContains<T>();
 #endif
 		
 		/// <summary>

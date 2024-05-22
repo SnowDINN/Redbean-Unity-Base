@@ -7,7 +7,7 @@ namespace Redbean.Editor
 {
 	internal partial class RuntimeWindow
 	{
-		private const string Example = "Example";
+		private const string Example = nameof(Example);
 		
 		[TabGroup(Contents), Title(Example), DisableInEditorMode, Button]
 		public void OpenPopupExample()

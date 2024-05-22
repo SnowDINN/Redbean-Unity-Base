@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using Firebase;
+using Firebase.Auth;
 using Firebase.Firestore;
 using Redbean.Core;
 using Redbean.MVP.Content;
@@ -9,6 +10,7 @@ namespace Redbean.Firebase
 {
 	public class FirebaseCore : IApplicationCore
 	{
+		public static FirebaseAuth Auth;
 		public static FirebaseFirestore Firestore;
 		public static DocumentReference UserDB;
 		public int ExecutionOrder => 100;
@@ -28,6 +30,7 @@ namespace Redbean.Firebase
 			if (Application.isPlaying)
 			{
 				// 파이어스토어 앱 설정 체크
+				Auth = FirebaseAuth.DefaultInstance;
 				Firestore = FirebaseFirestore.DefaultInstance;
 				var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
 				if (configSnapshot.Exists)

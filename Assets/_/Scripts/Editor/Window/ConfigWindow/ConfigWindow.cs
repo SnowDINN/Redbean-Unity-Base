@@ -10,7 +10,7 @@ namespace Redbean.Editor
 {
 	internal class ConfigWindow : OdinEditorWindow
 	{
-		private const string Version = "Version";
+		private const string Version = nameof(Version);
 		
 		[TitleGroup(Version), Button]
 		public async void AndroidVersion(string version = "0.0.1")

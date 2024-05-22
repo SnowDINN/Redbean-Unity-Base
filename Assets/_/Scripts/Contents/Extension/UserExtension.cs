@@ -19,7 +19,7 @@ namespace Redbean
 		/// </summary>
 		public static async UniTask<UserModel> UserIdValidate(this UserModel model)
 		{
-			if (string.IsNullOrEmpty(model.Id) && !string.IsNullOrEmpty(model.Social.Platform))
+			if (string.IsNullOrEmpty(model.Social.Id) && !string.IsNullOrEmpty(model.Social.Platform))
 			{
 				var x = true;
 				while (x)
@@ -28,7 +28,7 @@ namespace Redbean
 					var any = await id.IsContainsData("users", "id");
 					if (!any)
 					{
-						model.Id = id;
+						model.Social.Id = id;
 						x = false;
 					}
 				}
@@ -44,7 +44,7 @@ namespace Redbean
 		/// </summary>
 		public static async UniTask<bool> UserCreateAsync(this UserModel model)
 		{
-			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Id);
+			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
 			
 			var uniTask = model.CreateFirestore();
 			await uniTask;
@@ -57,7 +57,7 @@ namespace Redbean
 		/// </summary>
 		public static async UniTask<bool> UpdateUserAsync(this UserModel model)
 		{
-			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Id);
+			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
 			
 			var uniTask = model.UpdateFirestore(DataKey.USER_INFORMATION_KEY);
 			await uniTask;

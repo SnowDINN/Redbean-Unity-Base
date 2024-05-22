@@ -35,7 +35,7 @@ namespace Redbean.MVP.Content
 			
 			await model.UserIdValidate();
 			
-			Log.Print($"User id : {model.Id}");
+			Log.Print("User logged in as a guest.");
 		}
 	}
 }

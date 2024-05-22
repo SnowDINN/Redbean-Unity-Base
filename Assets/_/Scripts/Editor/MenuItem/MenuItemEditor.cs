@@ -12,7 +12,13 @@ namespace Redbean.Editor
 			OdinEditorWindow.GetWindow<ConfigWindow>().Show();
 		}
 		
-		[MenuItem("Redbean Menu/Windows/Runtime Window", false, 1)]
+		[MenuItem("Redbean Menu/Windows/ThirdParty Window", false, 1)]
+		public static void OpenThirdPartyWindow()
+		{
+			OdinEditorWindow.GetWindow<ThirdPartyWindow>().Show();
+		}
+		
+		[MenuItem("Redbean Menu/Windows/Runtime Window", false, 2)]
 		public static void OpenRuntimeWindow()
 		{
 			OdinEditorWindow.GetWindow<RuntimeWindow>().Show();

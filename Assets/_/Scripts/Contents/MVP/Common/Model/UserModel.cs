@@ -8,9 +8,6 @@ namespace Redbean.MVP.Content
 	public class UserModel : ISerializeModel
 	{
 		public IRxModel Rx => new UserRxModel();
-		
-		[FirestoreProperty(DataKey.USER_ID_KEY), ShowInInspector]
-		public string Id { get; set; } = string.Empty;
 
 		[FirestoreProperty(DataKey.USER_INFORMATION_KEY), ShowInInspector]
 		public UserInfoModel Information { get; set; } = new();
@@ -38,7 +35,6 @@ namespace Redbean.MVP.Content
 	
 	public class UserRxModel : IRxModel
 	{
-		public ReactiveProperty<string> Id = new();
 		public ReactiveProperty<UserInfoModel> Information = new();
 		public ReactiveProperty<UserSocialModel> Social = new();
 		
@@ -46,8 +42,7 @@ namespace Redbean.MVP.Content
 		{
 			if (value is not UserModel model)
 				return;
-
-			Id.Value = model.Id;
+			
 			Information.Value = model.Information;
 			Social.Value = model.Social;
 		}
