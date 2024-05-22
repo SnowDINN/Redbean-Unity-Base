@@ -32,6 +32,7 @@ namespace Redbean.Firebase
 				// 파이어스토어 앱 설정 체크
 				Auth = FirebaseAuth.DefaultInstance;
 				Firestore = FirebaseFirestore.DefaultInstance;
+				
 				var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
 				if (configSnapshot.Exists)
 					Log.Success("Firebase", "Success to load to the app config.");
@@ -47,15 +48,16 @@ namespace Redbean.Firebase
 #if UNITY_ANDROID
 					AppConfigSettings(config.Android);
 #elif UNITY_IOS
-				AppConfigSettings(config.iOS);
+					AppConfigSettings(config.iOS);
 #endif
-				}	
+				}
 			}
 		}
 
 		public UniTask TearDown()
 		{
 			FirebaseApp.DefaultInstance.Dispose();
+			FirebaseAuth.DefaultInstance.Dispose();
 			
 			Log.System("Firebase has been terminated.");
 			

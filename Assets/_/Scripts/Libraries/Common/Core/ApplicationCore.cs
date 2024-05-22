@@ -8,6 +8,8 @@ namespace Redbean.Core
 {
 	public class ApplicationCore
 	{
+		public static bool IsReady;
+		
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
 		public static async void AssembliesSetup()
 		{
@@ -28,6 +30,7 @@ namespace Redbean.Core
 			core.AddInstances(instances);
 			
 			Object.DontDestroyOnLoad(go);
+			IsReady = true;
 		}
 	}
 

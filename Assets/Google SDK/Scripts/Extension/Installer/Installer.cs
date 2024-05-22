@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using UnityEditor.Build;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -11,12 +12,6 @@ using UnityEditor.iOS.Xcode;
 
 namespace Google
 {
-	public enum ClientConnectType
-	{
-		Auto,
-		DirectInput,
-	}
-	
 	public enum ClientType
 	{
 		AndroidClientId = 1,
@@ -27,11 +22,16 @@ namespace Google
 	[CreateAssetMenu(fileName = "Installer", menuName = "Google/Google Sign In Installer")]
 	public class Installer : ScriptableObject
 	{
+		[Header("Web")]
 		public string webClientId;
-		public string webClientSecretId;
-		public string androidClientId;
-		public string iosClientId;
+		public string webSecretId;
 		public int webRedirectPort;
+		
+		[Header("Android")]
+		public string androidClientId;
+		
+		[Header("iOS")]
+		public string iosClientId;
 		
 		public string webRedirectUrl => $"http://localhost:{webRedirectPort}/";
 		
@@ -49,7 +49,7 @@ namespace Google
 						id = "google-services.json file does not exist.";
 					else
 					{
-						var packageName = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
+						var packageName = PlayerSettings.GetApplicationIdentifier(NamedBuildTarget.Android);
 						var client = jObject["client"]?.Children()
 						                              .Where(_ => _.SelectToken("client_info.android_client_info.package_name").Value<string>() == packageName)
 						                              .Select(_ => _.SelectToken("oauth_client")).Children()
@@ -76,7 +76,7 @@ namespace Google
 						id = "GoogleService-Info.plist file does not exist.";
 					else
 					{
-						var packageName = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+						var packageName = PlayerSettings.GetApplicationIdentifier(NamedBuildTarget.iOS);
 						id = plist.root["BUNDLE_ID"].AsString() == packageName
 							? plist.root["CLIENT_ID"].AsString()
 							: "iOS Client ID value does not exist that matches the package name.";
@@ -96,7 +96,7 @@ namespace Google
 						id = "google-services.json file does not exist.";
 					else
 					{
-						var packageName = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
+						var packageName = PlayerSettings.GetApplicationIdentifier(NamedBuildTarget.Android);
 						var client = jObject["client"]?.Children()
 						                              .Where(_ => _.SelectToken("client_info.android_client_info.package_name").Value<string>() == packageName)
 						                              .Select(_ => _.SelectToken("oauth_client")).Children()

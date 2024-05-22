@@ -7,13 +7,13 @@ namespace Google
 	public static class GoogleExtension
 	{
 		private static Installer m_installer;
-		private static Installer installer => m_installer ??= Resources.Load<Installer>("GoogleSignIn/Installer");
+		private static Installer installer => m_installer ??= Resources.Load<Installer>("Google/Installer");
 
 		public static string GetAndroidClientId() => installer.GetClientId(ClientType.AndroidClientId);
 		public static string GetIosClientId() => installer.GetClientId(ClientType.IosClientId);
 		public static string GetIosClientScheme() => installer.GetReverseClientId(ClientType.IosClientId);
 		public static string GetWebClientId() => installer.GetClientId(ClientType.WebClientId);
-		public static string GetWebSecretId() => installer.webClientSecretId;
+		public static string GetWebSecretId() => installer.webSecretId;
 		public static string GetWebRedirectURL() => installer.webRedirectUrl;
 		public static int GetWebRedirectUrlPort() => installer.webRedirectPort;
 

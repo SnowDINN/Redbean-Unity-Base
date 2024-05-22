@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using Redbean.Firebase;
 using Redbean.MVP;
@@ -34,6 +33,8 @@ namespace Redbean
 				}
 			}
 			
+			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
+			
 			model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 
 			return model;
@@ -44,8 +45,6 @@ namespace Redbean
 		/// </summary>
 		public static async UniTask<bool> UserCreateAsync(this UserModel model)
 		{
-			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
-			
 			var uniTask = model.CreateFirestore();
 			await uniTask;
 			
@@ -57,8 +56,6 @@ namespace Redbean
 		/// </summary>
 		public static async UniTask<bool> UpdateUserAsync(this UserModel model)
 		{
-			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
-			
 			var uniTask = model.UpdateFirestore(DataKey.USER_INFORMATION_KEY);
 			await uniTask;
 			

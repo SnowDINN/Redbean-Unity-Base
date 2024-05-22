@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06140ddde55d0984486fe31c37d9ae1f, type: 3}
   m_Name: Installer
   m_EditorClassIdentifier: 
-  connectType: 0
-  iosBuildOverrideType: 0
-  webClientId: google-services.json file does not exist.
-  webClientSecretId: 
-  androidClientId: google-services.json file does not exist.
-  iosClientId: GoogleService-Info.plist file does not exist.
+  webClientId: 517818090277-b4n17aclsf2ie6e2c06e6fqbqhh9d03u.apps.googleusercontent.com
+  webSecretId: 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
   webRedirectPort: 5000
+  androidClientId: Android Client ID value does not exist that matches the package
+    name.
+  iosClientId: 517818090277-u8kd216u52ul2558clbeheahm21c9ne5.apps.googleusercontent.com

@@ -25,7 +25,7 @@ namespace Google
 			installer.androidClientId = GoogleExtension.GetAndroidClientId();
 			installer.iosClientId = GoogleExtension.GetIosClientId();
 			installer.webClientId = GoogleExtension.GetWebClientId();
-			installer.webClientSecretId = "";
+			installer.webSecretId = "";
 			installer.Save();
 
 #if UNITY_IOS
@@ -40,8 +40,8 @@ namespace Google
 			var googlePlistPath = $"{path}/GoogleService-Info.plist";
 			var googlePlist = new PlistDocument();
 			googlePlist.ReadFromString(File.ReadAllText(googlePlistPath));
-			googlePlist.root.SetString("CLIENT_ID", GoogleSignInExtension.GetIosClientId());
-			googlePlist.root.SetString("REVERSED_CLIENT_ID", GoogleSignInExtension.GetIosClientScheme());
+			googlePlist.root.SetString("CLIENT_ID", GoogleExtension.GetIosClientId());
+			googlePlist.root.SetString("REVERSED_CLIENT_ID", GoogleExtension.GetIosClientScheme());
 			googlePlist.WriteToFile(googlePlistPath);
 		}
 
@@ -65,7 +65,7 @@ namespace Google
 			var dictionary = urlSchemes.AddDict();
 			dictionary.SetString("CFBundleURLName", "google");
 			dictionary.CreateArray("CFBundleURLSchemes")
-			          .AddString(GoogleSignInExtension.GetIosClientScheme());
+			          .AddString(GoogleExtension.GetIosClientScheme());
 			
 			plist.WriteToFile(plistPath);
 		}

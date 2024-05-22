@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>517818090277-c7v2a02434j4n66rmig7r7k7605hmduu.apps.googleusercontent.com</string>
+	<key>CLIENT_ID</key>
+	<string>517818090277-u8kd216u52ul2558clbeheahm21c9ne5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.517818090277-u8kd216u52ul2558clbeheahm21c9ne5</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBmK_GS7DWMoxQy5utCs8HZ1cZpwTkn2mU</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,22 +19,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>boonggod-67483.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:517818090277:ios:6bde3a83ea15c421cbd0cc</string>
 	<key>DATABASE_URL</key>
 	<string>https://boonggod-67483-default-rtdb.asia-southeast1.firebasedatabase.app</string>
-	<key>CLIENT_ID</key>
-	<string>517818090277-2avem0i9v94e6a4bpf1l7dien6plu550.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.517818090277-2avem0i9v94e6a4bpf1l7dien6plu550</string>
 </dict>
 </plist>
