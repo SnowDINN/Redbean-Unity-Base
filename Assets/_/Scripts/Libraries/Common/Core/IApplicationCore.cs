@@ -1,8 +1,9 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 
 namespace Redbean.Core
 {
-	public interface IApplicationCore
+	public interface IApplicationCore : IDisposable
 	{
 		/// <summary>
 		/// 실행 순서
@@ -13,10 +14,5 @@ namespace Redbean.Core
 		/// 앱 시작 시 실행되는 함수
 		/// </summary>
 		UniTask Setup();
-		
-		/// <summary>
-		/// 앱 종료 시 실행되는 함수
-		/// </summary>
-		UniTask TearDown();
 	}
 }

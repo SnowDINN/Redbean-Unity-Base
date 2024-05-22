@@ -35,9 +35,7 @@ namespace Redbean
 			
 			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
 			
-			model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
-
-			return model;
+			return model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 		}
 		
 		/// <summary>

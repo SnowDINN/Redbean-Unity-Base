@@ -31,11 +31,9 @@ namespace Redbean.Dependencies
 			return UniTask.CompletedTask;
 		}
 
-		public UniTask TearDown()
+		public void Dispose()
 		{
 			models.Clear();
-			
-			return UniTask.CompletedTask;
 		}
 
 		/// <summary>

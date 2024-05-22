@@ -15,6 +15,9 @@ namespace Redbean.Editor
 		[TitleGroup(Version), Button]
 		public async void AndroidVersion(string version = "0.0.1")
 		{
+			using var core = new FirebaseCore();
+			await core.Setup();
+			
 			var config = await GetAppConfig();
 			var before = config.Model.Android.Version;
 			config.Model.Android.Version = version;
@@ -29,6 +32,9 @@ namespace Redbean.Editor
 		[TitleGroup(Version), Button]
 		public async void IosVersion(string version = "0.0.1")
 		{
+			using var core = new FirebaseCore();
+			await core.Setup();
+			
 			var config = await GetAppConfig();
 			var before = config.Model.iOS.Version;
 			config.Model.iOS.Version = version;
@@ -42,8 +48,6 @@ namespace Redbean.Editor
 
 		private async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
-			await new FirebaseCore().Setup();
-
 			var document = FirebaseFirestore.DefaultInstance.Collection("app_config").Document("setup");
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
@@ -53,7 +57,7 @@ namespace Redbean.Editor
 				Log.Fail("Firebase", "Failed to load to the app config.");
 				return default;
 			}
-			
+				
 			return (document, snapshotAsync.ConvertTo<AppConfigModel>());
 		}
 	}

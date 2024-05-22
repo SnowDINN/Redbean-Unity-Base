@@ -62,14 +62,12 @@ namespace Redbean.Dependencies
 			return UniTask.CompletedTask;
 		}
 
-		public UniTask TearDown()
+		public void Dispose()
 		{
 			foreach (var singleton in singletons)
 				singleton.Value.Dispose();
 			
 			Log.System("Rx or Event has been terminated.");
-			
-			return UniTask.CompletedTask;
 		}
 
 		/// <summary>

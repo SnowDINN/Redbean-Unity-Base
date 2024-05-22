@@ -13,6 +13,9 @@ namespace Redbean.Core
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
 		public static async void AssembliesSetup()
 		{
+			Application.runInBackground = true;
+			Application.targetFrameRate = 60;
+			
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
 			                     .SelectMany(x => x.GetTypes())
 			                     .Where(x => typeof(IApplicationCore).IsAssignableFrom(x)
@@ -26,10 +29,10 @@ namespace Redbean.Core
 				await instance.Setup();
 			
 			var go = new GameObject("[Application Core]");
-			var core = go.AddComponent<MonoApplicationCore>();
-			core.AddInstances(instances);
+			go.AddComponent<MonoApplicationCore>().AddInstances(instances);
 			
 			Object.DontDestroyOnLoad(go);
+			
 			IsReady = true;
 		}
 	}
@@ -41,7 +44,7 @@ namespace Redbean.Core
 		private void OnDestroy()
 		{
 			foreach (var instance in instances)
-				instance.TearDown();
+				instance.Dispose();
 			
 			Log.System("App has been terminated.");
 		}

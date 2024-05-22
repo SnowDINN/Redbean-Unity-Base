@@ -54,14 +54,12 @@ namespace Redbean.Firebase
 			}
 		}
 
-		public UniTask TearDown()
+		public void Dispose()
 		{
 			FirebaseApp.DefaultInstance.Dispose();
 			FirebaseAuth.DefaultInstance.Dispose();
 			
 			Log.System("Firebase has been terminated.");
-			
-			return UniTask.CompletedTask;
 		}
 
 		private static void AppConfigSettings(AppConfigArgument configArgs)

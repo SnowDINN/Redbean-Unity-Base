@@ -12,19 +12,18 @@ namespace Redbean.Editor
 		private const string UserInformation = "User Information";
 		
 		[TabGroup(Authentication), Title(Login), PropertyOrder(0), DisableInEditorMode, Button]
-		public async void UserIdLogin(string userId)
+		public async void UserIdLogin(string id)
 		{
-			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", userId);
+			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
 			var userQuery = await equalTo.GetSnapshotAsync();
 			if (userQuery.Any())
 			{
 				var user = userQuery.Documents
 				                    .Select(_ => _.ConvertTo<UserModel>())
-				                    .FirstOrDefault(_ => _.Social.Id == userId)
+				                    .FirstOrDefault(_ => _.Social.Id == id)
 				                    .Publish();
 
 				await user.UserIdValidate();
-				await user.UserCreateAsync();
 				
 				Log.Print("User data has been verified.");
 			}
