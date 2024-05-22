@@ -1,4 +1,6 @@
-﻿using R3;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using R3;
 using Redbean.Core;
 using Redbean.Rx;
 
@@ -19,19 +21,19 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				InteractionAsync();
+				UniTask.Void(InteractionAsync, view.DestroyCancellation.Token);
 			}).AddTo(this);
 		}
 
-		private void InteractionAsync()
+		private async UniTaskVoid InteractionAsync(CancellationToken token)
 		{
 			if (this.IsContains(typeof(UserModel).FullName))
 				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
 			
 			if (string.IsNullOrEmpty(model.Information.Nickname))
-				model.Social.Platform = "Pengu";
+				model.Information.Nickname = "Pengu";
 			
-			model.UserValidation();
+			await model.UserIdValidate();
 			
 			Log.Print($"User id : {model.Id}");
 		}

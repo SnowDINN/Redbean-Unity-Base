@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Redbean.Firebase;
 using Redbean.MVP;
@@ -16,10 +17,23 @@ namespace Redbean
 		/// <summary>
 		/// 유저 데이터 검증
 		/// </summary>
-		public static UserModel UserValidation(this UserModel model)
+		public static async UniTask<UserModel> UserIdValidate(this UserModel model)
 		{
-			if (string.IsNullOrEmpty(model.Id))
-				model.Id = $"{Guid.NewGuid()}".Replace("-", "");
+			if (string.IsNullOrEmpty(model.Id) && !string.IsNullOrEmpty(model.Social.Platform))
+			{
+				var x = true;
+				while (x)
+				{
+					var id = $"{Guid.NewGuid()}".Replace("-", "");
+					var any = await id.IsContainsData("users", "id");
+					if (!any)
+					{
+						model.Id = id;
+						x = false;
+					}
+				}
+			}
+			
 			model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 
 			return model;
@@ -28,7 +42,7 @@ namespace Redbean
 		/// <summary>
 		/// 유저 데이터 호출
 		/// </summary>
-		public static async UniTask<bool> CreateUserAsync(this UserModel model)
+		public static async UniTask<bool> UserCreateAsync(this UserModel model)
 		{
 			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Id);
 			

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Redbean.Firebase;
 using Redbean.MVP;
@@ -30,5 +31,13 @@ namespace Redbean
 		/// </summary>
 		public static UniTask UpdateFirestore<T>(this T value, string key) =>
 			FirebaseCore.UserDB.UpdateAsync(key, value).AsUniTask();
+
+		public static async UniTask<bool> IsContainsData<T>(this T value, string collection, string path)
+		{
+			var equalTo = FirebaseCore.Firestore.Collection(collection).WhereEqualTo(path, value);
+			var querySnapshot = await equalTo.GetSnapshotAsync();
+
+			return querySnapshot.Any();
+		}
 	}
 }

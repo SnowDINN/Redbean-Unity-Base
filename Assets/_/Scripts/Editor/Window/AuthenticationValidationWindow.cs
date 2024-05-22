@@ -23,13 +23,13 @@ namespace Redbean.Editor
 				                    .FirstOrDefault(_ => _.Id == userId)
 				                    .Publish();
 
-				await user.UserValidation().CreateUserAsync();
+				await user.UserIdValidate();
+				await user.UserCreateAsync();
 				
-				Log.Print("User information exists in the Firestore.");
 				Log.Print($"User id : {user.Id}");	
 			}
 			else
-				Log.Print("User information not exists in the Firestore. It stores local data on the server.", Color.red);
+				Log.Print("User information not exists in the Firestore.", Color.red);
 		}
 		
 		[TabGroup(Authentication), PropertyOrder(1), DisableInEditorMode, Button]
@@ -44,13 +44,13 @@ namespace Redbean.Editor
 				                    .FirstOrDefault(_ => _.Social.Id == userSocialId)
 				                    .Publish();
 
-				await user.UserValidation().CreateUserAsync();
+				await user.UserIdValidate();
+				await user.UserCreateAsync();
 				
-				Log.Print("User information exists in the Firestore.");
 				Log.Print($"User id : {user.Id}");	
 			}
 			else
-				Log.Print("User information not exists in the Firestore. It stores local data on the server.", Color.red);
+				Log.Print("User information not exists in the Firestore.", Color.red);
 		}
 
 		[TabGroup(Authentication), Title(UserInformation), PropertyOrder(100), DisableInEditorMode, ShowInInspector]

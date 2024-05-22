@@ -40,9 +40,9 @@ namespace Redbean.MVP.Content
 				model.Social.Platform = $"{view.Type}";
 			
 			if (string.IsNullOrEmpty(model.Information.Nickname))
-				model.Social.Platform = "Pengu";
+				model.Information.Nickname = "Pengu";
 
-			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo("id", model.Id);
+			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", model.Social.Id);
 			var user = await equalTo.GetSnapshotAsync();
 			if (user.Any())
 			{
@@ -55,8 +55,9 @@ namespace Redbean.MVP.Content
 			}
 			else
 				Log.Print("User information not exists in the Firestore. It stores local data on the server.", Color.red);
-				
-			await model.UserValidation().CreateUserAsync().AttachExternalCancellation(token);
+
+			await model.UserIdValidate().AttachExternalCancellation(token);
+			await model.UserCreateAsync().AttachExternalCancellation(token);
 			
 			Log.Print($"User id : {model.Id}");	
 		}
