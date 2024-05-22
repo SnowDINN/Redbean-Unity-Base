@@ -40,14 +40,9 @@ namespace Redbean.MVP.Content
 			var credential = await auth.Login();
 			var user = await FirebaseCore.Auth.SignInWithCredentialAsync(credential.Credential);
 			
-			if (string.IsNullOrEmpty(model.Social.Id))
-				model.Social.Id = user.UserId;
-			
-			if (string.IsNullOrEmpty(model.Social.Platform))
-				model.Social.Platform = user.ProviderData.First().ProviderId;
-			
-			if (string.IsNullOrEmpty(model.Information.Nickname))
-				model.Information.Nickname = user.ProviderData.First().DisplayName;
+			model.Social.Id = user.UserId;
+			model.Social.Platform = user.ProviderData.First().ProviderId;
+			model.Information.Nickname = user.ProviderData.First().DisplayName;
 
 			var isFind = await FindUserSnapshot(user.UserId);
 			if (isFind)
