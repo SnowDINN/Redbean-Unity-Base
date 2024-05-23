@@ -7,7 +7,7 @@ namespace Redbean.MVP.Content
 	public class GuestAuthenticationPresenter : Presenter
 	{
 		[Model]
-		private UserModel model;
+		private UserModel m_user;
 		
 		[View]
 		private ButtonView view;
@@ -25,10 +25,10 @@ namespace Redbean.MVP.Content
 			if (this.IsContains(typeof(UserModel).FullName))
 				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
 			
-			if (string.IsNullOrEmpty(model.Information.Nickname))
-				model.Information.Nickname = "Pengu";
+			if (string.IsNullOrEmpty(m_user.Information.Nickname))
+				m_user.Information.Nickname = "Guest";
 			
-			await model.UserIdValidate();
+			m_user.SetReferenceUser();
 			
 			Log.Print("User logged in as a guest.");
 		}

@@ -4,14 +4,13 @@ using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Firebase;
 using Redbean.ServiceBridge;
-using UnityEngine;
 
 namespace Redbean.MVP.Content
 {
 	public class SocialAuthenticationPresenter : Presenter
 	{
 		[Model]
-		private UserModel model;
+		private UserModel m_user;
 		
 		[View]
 		private SocialAuthenticationView view;
@@ -39,16 +38,15 @@ namespace Redbean.MVP.Content
 			var credential = await auth.Login();
 			var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
 			
-			model.Social.Id = user.UserId;
-			model.Social.Platform = user.ProviderData.First().ProviderId;
-			model.Information.Nickname = user.ProviderData.First().DisplayName;
+			m_user.Social.Id = user.UserId;
+			m_user.Social.Platform = user.ProviderData.First().ProviderId;
+			m_user.Information.Nickname = user.ProviderData.First().DisplayName;
 
-			var isFind = await FindUserSnapshot(user.UserId);
-			if (isFind)
-				Log.Print($"User stored on the server exists. [ {model.Social.Id} | {model.Information.Nickname} ]");	
+			var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
+			if (!isSuccess)
+				Log.Print($"Created a new user's data. [ {m_user.Information.Nickname} | {m_user.Social.Id} ]");
 			
-			await model.UserIdValidate().AttachExternalCancellation(token);
-			await model.UserCreateAsync().AttachExternalCancellation(token);
+			await m_user.UserCreateAsync();
 		}
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
@@ -68,30 +66,11 @@ namespace Redbean.MVP.Content
 					var credential = await auth.AutoLogin();
 					var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
 					
-					var isFind = await FindUserSnapshot(user.UserId);
-					if (isFind)
-						await model.UserIdValidate().AttachExternalCancellation(token);
+					var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
+					if (isSuccess)
+						m_user.SetReferenceUser();
 				}
 			}
-		}
-
-		private async UniTask<bool> FindUserSnapshot(string id)
-		{
-			var equalTo = FirebaseSetup.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
-			var querySnapshot = await equalTo.GetSnapshotAsync();
-			if (querySnapshot.Any())
-			{
-				querySnapshot.Documents
-				             .Select(_ => _.ConvertTo<UserModel>())
-				             .FirstOrDefault(_ =>  _.Social.Id == id)
-				             .Publish();
-				
-				Log.Print("User data has been verified.");
-				return true;
-			}
-			
-			Log.Print("User information not exists in the Server.", Color.red);
-			return false;
 		}
 	}
 }
