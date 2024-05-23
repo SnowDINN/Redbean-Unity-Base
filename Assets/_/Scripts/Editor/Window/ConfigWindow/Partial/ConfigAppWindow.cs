@@ -4,15 +4,14 @@ using Firebase.Firestore;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
 
 namespace Redbean.Editor
 {
-	internal class ConfigWindow : OdinEditorWindow
+	internal partial class ApplicationWindow
 	{
 		private const string Version = nameof(Version);
 		
-		[TitleGroup(Version), Button]
+		[TabGroup(ConfigTab), Title(Version), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
 			using var core = new FirebaseSetup();
@@ -29,7 +28,7 @@ namespace Redbean.Editor
 			Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 		
-		[TitleGroup(Version), Button]
+		[TabGroup(ConfigTab), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
 			using var core = new FirebaseSetup();

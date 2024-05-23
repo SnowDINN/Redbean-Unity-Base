@@ -12,19 +12,19 @@ namespace Redbean.Editor
 		private const string Login = nameof(Login);
 		private const string UserInformation = "User Information";
 
-		private bool isExistUser => !string.IsNullOrEmpty(User.Social.Id);
+		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
 		
 		[TabGroup(Authentication), Title(UserInformation), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
-		private UserModel User => this.IsContainsModel<UserModel>()
+		private UserModel user => this.IsContainsModel<UserModel>()
 			? this.GetModel<UserModel>()
 			: new UserModel();
 		
 		[TabGroup(Authentication), Title(Login), PropertyOrder(0), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
-			var isSuccess = await User.TryGetUserSnapshot(ID);
+			var isSuccess = await user.TryGetUserSnapshot(ID);
 			if (isSuccess)
-				User.SetReferenceUser();
+				user.SetReferenceUser();
 		}
 
 		[TabGroup(Authentication), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf("isExistUser", Value = true), PropertySpace, DisableInEditorMode]
@@ -33,7 +33,7 @@ namespace Redbean.Editor
 			if (!this.IsContainsModel<UserModel>())
 				return;
 
-			User.SetReferenceUser();
+			user.SetReferenceUser();
 			
 			await FirebaseSetup.UserDB.DeleteAsync();
 			await FirebaseSetup.Auth.CurrentUser.DeleteAsync();

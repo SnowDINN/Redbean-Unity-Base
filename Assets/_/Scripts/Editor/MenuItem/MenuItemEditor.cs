@@ -6,10 +6,10 @@ namespace Redbean.Editor
 {
 	public class MenuItemEditor
 	{
-		[MenuItem("Redbean Menu/Windows/Config Window", false, 0)]
-		public static void OpenConfigWindow()
+		[MenuItem("Redbean Menu/Windows/Application Window", false, 0)]
+		public static void OpenApplicationWindow()
 		{
-			OdinEditorWindow.GetWindow<ConfigWindow>().Show();
+			OdinEditorWindow.GetWindow<ApplicationWindow>().Show();
 		}
 		
 		[MenuItem("Redbean Menu/Windows/ThirdParty Window", false, 1)]
