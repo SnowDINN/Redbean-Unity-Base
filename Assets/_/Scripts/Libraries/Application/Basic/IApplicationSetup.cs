@@ -1,9 +1,9 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace Redbean.Core
+namespace Redbean
 {
-	public interface IApplicationCore : IDisposable
+	public interface IApplicationSetup : IDisposable
 	{
 		/// <summary>
 		/// 실행 순서

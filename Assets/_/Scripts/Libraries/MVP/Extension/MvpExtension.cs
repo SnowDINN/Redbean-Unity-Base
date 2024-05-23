@@ -1,6 +1,5 @@
 ﻿using System;
 using R3;
-using Redbean.Core;
 using Redbean.Dependencies;
 using Redbean.MVP;
 using Redbean.Popup;
@@ -34,7 +33,7 @@ namespace Redbean
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupManager Popup(this IPresenter mvp) => GetSingleton<PopupManager>();
+		public static PopupBinder Popup(this IPresenter mvp) => GetSingleton<PopupBinder>();
 
 		public static T AddTo<T>(this T disposable, IPresenter presenter) where T : IDisposable =>
 			disposable.AddTo(presenter.GetGameObject());

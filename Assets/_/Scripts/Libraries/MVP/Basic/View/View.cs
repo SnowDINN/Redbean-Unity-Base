@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Redbean.Base;
 using UnityEngine;
 
@@ -19,14 +21,11 @@ namespace Redbean.MVP
 		
 		private Presenter presenter;
 		
+		public GameObject GetGameObject() => gameObject;
+		
 		public virtual void Awake()
 		{
-			var type = Type.GetType(PresenterFullName);
-			if (type != null)
-				presenter = Activator.CreateInstance(Type.GetType(type.FullName)) as Presenter;
-			
-			presenter?.BindView(this);
-			presenter?.Setup();
+			UniTask.Void(AwakeAsync, DestroyCancellation.Token);
 		}
 
 		public override void OnDestroy()
@@ -35,8 +34,19 @@ namespace Redbean.MVP
 			
 			presenter?.Dispose();
 		}
-		
-		public GameObject GetGameObject() => gameObject;
+
+		private async UniTaskVoid AwakeAsync(CancellationToken token)
+		{
+			if (!ApplicationSetup.IsReady)
+				await UniTask.WaitUntil(() => ApplicationSetup.IsReady, cancellationToken: token);
+			
+			var type = Type.GetType(PresenterFullName);
+			if (type != null)
+				presenter = Activator.CreateInstance(Type.GetType(type.FullName)) as Presenter;
+			
+			presenter?.BindView(this);
+			presenter?.Setup();
+		}
 	}
 
 #if UNITY_EDITOR

@@ -6,9 +6,9 @@ namespace Redbean.Popup
 {
 	public class PopupBase : MonoBase
 	{
-		private PopupManager Popup;
+		private PopupBinder Popup;
 
-		public virtual void Awake() => Popup = DependenciesSingleton.GetOrAdd<PopupManager>();
+		public virtual void Awake() => Popup = DependenciesSingleton.GetOrAdd<PopupBinder>();
 
 		public virtual void Close() => Popup.Close(GetType());
 

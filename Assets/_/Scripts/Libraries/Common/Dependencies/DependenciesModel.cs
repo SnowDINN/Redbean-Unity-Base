@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Cysharp.Threading.Tasks;
-using Redbean.Core;
 using Redbean.MVP;
 
 namespace Redbean.Dependencies
 {
-	public class DependenciesModel : IApplicationCore
+	public class DependenciesModel : IApplicationSetup
 	{
 		private static readonly Dictionary<Type, IModel> models = new();
 		

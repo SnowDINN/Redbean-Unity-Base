@@ -10,7 +10,7 @@ using UnityEngine.Android;
 using Unity.Notifications.iOS;
 #endif
 
-namespace Redbean.Native
+namespace Redbean.Mobile
 {
 	public class NativeNotification
 	{

@@ -13,9 +13,9 @@ namespace Redbean.Editor
 		private const string Version = nameof(Version);
 		
 		[TitleGroup(Version), Button]
-		public async void AndroidVersion(string version = "0.0.1")
+		private async void AndroidVersion(string version = "0.0.1")
 		{
-			using var core = new FirebaseCore();
+			using var core = new FirebaseSetup();
 			await core.Setup();
 			
 			var config = await GetAppConfig();
@@ -30,9 +30,9 @@ namespace Redbean.Editor
 		}
 		
 		[TitleGroup(Version), Button]
-		public async void IosVersion(string version = "0.0.1")
+		private async void IosVersion(string version = "0.0.1")
 		{
-			using var core = new FirebaseCore();
+			using var core = new FirebaseSetup();
 			await core.Setup();
 			
 			var config = await GetAppConfig();

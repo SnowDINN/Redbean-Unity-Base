@@ -11,9 +11,14 @@ namespace Redbean.Editor
 		private const string Editor = "Use only in the editor";
 
 		private Installer GoogleInstaller;
+		
+		protected override void OnEnable()
+		{
+			GoogleInstaller = Resources.Load<Installer>("Google/Installer");
+		}
 
 		[TabGroup(Google), Title(ClientKey), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
-		public string AndroidClientKey
+		private string AndroidClientKey
 		{
 			get => GoogleInstaller.androidClientId;
 			set
@@ -24,7 +29,7 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(Google), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
-		public string IosClientKey
+		private string IosClientKey
 		{
 			get => GoogleInstaller.iosClientId;
 			set
@@ -35,7 +40,7 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(Google), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
-		public string WebClientKey
+		private string WebClientKey
 		{
 			get => GoogleInstaller.webClientId;
 			set
@@ -46,7 +51,7 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(Google), Title(Editor), ShowInInspector]
-		public string WebSecretKey
+		private string WebSecretKey
 		{
 			get => GoogleInstaller.webSecretId;
 			set
@@ -57,7 +62,7 @@ namespace Redbean.Editor
 		}
 		
 		[TabGroup(Google), ShowInInspector]
-		public int Port
+		private int Port
 		{
 			get => GoogleInstaller.webRedirectPort;
 			set
@@ -67,15 +72,10 @@ namespace Redbean.Editor
 			}
 		}
 
-		public void GetAosClientKey() => AndroidClientKey = GoogleInstaller.GetClientId(ClientType.AndroidClientId);
+		private void GetAosClientKey() => AndroidClientKey = GoogleInstaller.GetClientId(ClientType.AndroidClientId);
 
-		public void GetIosClientKey() => IosClientKey = GoogleInstaller.GetClientId(ClientType.IosClientId);
+		private void GetIosClientKey() => IosClientKey = GoogleInstaller.GetClientId(ClientType.IosClientId);
 
-		public void GetWebClientKey() => WebClientKey = GoogleInstaller.GetClientId(ClientType.WebClientId);
-		
-		protected override void OnEnable()
-		{
-			GoogleInstaller = Resources.Load<Installer>("Google/Installer");
-		}
+		private void GetWebClientKey() => WebClientKey = GoogleInstaller.GetClientId(ClientType.WebClientId);
 	}
 }

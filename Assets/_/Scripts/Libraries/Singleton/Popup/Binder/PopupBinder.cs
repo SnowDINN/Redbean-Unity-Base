@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redbean.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace Redbean.Popup
 {
-	public class PopupManager : ISingleton
+	public class PopupBinder : ISingleton
 	{
 		private readonly Dictionary<Type, PopupBase> popupCollection = new();
 		private readonly Canvas canvas;
@@ -19,9 +18,9 @@ namespace Redbean.Popup
 
 		public PopupBase CurrentPopup => popupCollection.Values.Last();
 
-		public PopupManager()
+		public PopupBinder()
 		{
-			var go = new GameObject("[Popup Canvas]");
+			var go = new GameObject("[Popup]");
 			canvas = go.AddComponent<Canvas>();
 			canvasScaler = go.AddComponent<CanvasScaler>();
 			raycaster = go.AddComponent<GraphicRaycaster>();

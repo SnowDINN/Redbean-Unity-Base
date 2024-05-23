@@ -24,7 +24,7 @@ namespace Redbean.Editor
 			OdinEditorWindow.GetWindow<RuntimeWindow>().Show();
 		}
 		
-		[MenuItem("Redbean Menu/Play Prefs/Delete All", false, 100)]
+		[MenuItem("Redbean Menu/PlayerPrefs/Delete All", false, 100)]
 		public static void PlayPrefsDeleteAll()
 		{
 			PlayerPrefs.DeleteAll();

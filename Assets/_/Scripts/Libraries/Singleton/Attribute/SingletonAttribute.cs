@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Redbean.Core
+namespace Redbean
 {
 	public class SingletonAttribute : PropertyAttribute
 	{

@@ -2,7 +2,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
-using Redbean.Core;
 using Redbean.Firebase;
 using Redbean.ServiceBridge;
 using UnityEngine;
@@ -38,7 +37,7 @@ namespace Redbean.MVP.Content
 				return;
 
 			var credential = await auth.Login();
-			var user = await FirebaseCore.Auth.SignInWithCredentialAsync(credential.Credential);
+			var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
 			
 			model.Social.Id = user.UserId;
 			model.Social.Platform = user.ProviderData.First().ProviderId;
@@ -46,19 +45,17 @@ namespace Redbean.MVP.Content
 
 			var isFind = await FindUserSnapshot(user.UserId);
 			if (isFind)
-			{
-				await model.UserIdValidate().AttachExternalCancellation(token);
-				await model.UserCreateAsync().AttachExternalCancellation(token);
+				Log.Print($"User stored on the server exists. [ {model.Social.Id} | {model.Information.Nickname} ]");	
 			
-				Log.Print($"User id : {model.Social.Id}");	
-			}
+			await model.UserIdValidate().AttachExternalCancellation(token);
+			await model.UserCreateAsync().AttachExternalCancellation(token);
 		}
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
 		{
 			if (this.IsContains(typeof(UserModel).FullName))
 			{
-				await UniTask.WaitUntil(() => ApplicationCore.IsReady, cancellationToken: token);
+				await UniTask.WaitUntil(() => ApplicationSetup.IsReady, cancellationToken: token);
 				
 				var saveData = this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName);
 				if (saveData.Social.Platform.Contains($"{view.Type}".ToLower()))
@@ -69,22 +66,18 @@ namespace Redbean.MVP.Content
 						return;
 
 					var credential = await auth.AutoLogin();
-					var user = await FirebaseCore.Auth.SignInWithCredentialAsync(credential.Credential);
+					var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
 					
 					var isFind = await FindUserSnapshot(user.UserId);
 					if (isFind)
-					{
 						await model.UserIdValidate().AttachExternalCancellation(token);
-					
-						Log.Print($"User id : {model.Social.Id}");	
-					}
 				}
 			}
 		}
 
 		private async UniTask<bool> FindUserSnapshot(string id)
 		{
-			var equalTo = FirebaseCore.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
+			var equalTo = FirebaseSetup.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
 			var querySnapshot = await equalTo.GetSnapshotAsync();
 			if (querySnapshot.Any())
 			{

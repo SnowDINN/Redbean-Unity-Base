@@ -2,13 +2,12 @@
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
-using Redbean.Core;
 using Redbean.MVP.Content;
 using UnityEngine;
 
 namespace Redbean.Firebase
 {
-	public class FirebaseCore : IApplicationCore
+	public class FirebaseSetup : IApplicationSetup
 	{
 		public static FirebaseAuth Auth;
 		public static FirebaseFirestore Firestore;

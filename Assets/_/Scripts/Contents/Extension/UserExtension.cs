@@ -18,22 +18,8 @@ namespace Redbean
 		/// </summary>
 		public static async UniTask<UserModel> UserIdValidate(this UserModel model)
 		{
-			if (string.IsNullOrEmpty(model.Social.Id) && !string.IsNullOrEmpty(model.Social.Platform))
-			{
-				var x = true;
-				while (x)
-				{
-					var id = $"{Guid.NewGuid()}".Replace("-", "");
-					var any = await id.IsContainsData("users", "id");
-					if (!any)
-					{
-						model.Social.Id = id;
-						x = false;
-					}
-				}
-			}
-			
-			FirebaseCore.UserDB = FirebaseCore.Firestore.Collection("users").Document(model.Social.Id);
+			if (!string.IsNullOrEmpty(model.Social.Id))
+				FirebaseSetup.UserDB = FirebaseSetup.Firestore.Collection("users").Document(model.Social.Id);
 			
 			return model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 		}

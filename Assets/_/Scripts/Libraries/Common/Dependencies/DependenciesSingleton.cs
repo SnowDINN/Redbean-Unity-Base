@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Redbean.Base;
-using Redbean.Core;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Redbean.Dependencies
 {
-	public class DependenciesSingleton : IApplicationCore
+	public class DependenciesSingleton : IApplicationSetup
 	{
 		private static readonly Dictionary<Type, ISingleton> singletons = new();
 		private GameObject parent;

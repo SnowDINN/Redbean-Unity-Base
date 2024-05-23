@@ -10,9 +10,9 @@ namespace Redbean.Editor
 		private const string Example = nameof(Example);
 		
 		[TabGroup(Contents), Title(Example), DisableInEditorMode, Button]
-		public void OpenPopupExample()
+		private void OpenPopupExample()
 		{
-			DependenciesSingleton.GetOrAdd<PopupManager>().Open<PopupExample>();
+			DependenciesSingleton.GetOrAdd<PopupBinder>().Open<PopupExample>();
 		}
 	}
 }
