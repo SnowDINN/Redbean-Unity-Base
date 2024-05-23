@@ -4,7 +4,7 @@ namespace Redbean.Editor
 {
 	internal partial class RuntimeWindow : OdinEditorWindow
 	{
-		private const string Authentication = nameof(Authentication);
-		private const string Contents = nameof(Contents);
+		private const string AuthenticationTab = "Authentication";
+		private const string ContentsTab = "Contents";
 	}
 }

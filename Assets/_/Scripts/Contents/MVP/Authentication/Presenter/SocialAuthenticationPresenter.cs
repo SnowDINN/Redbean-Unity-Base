@@ -42,11 +42,15 @@ namespace Redbean.MVP.Content
 			m_user.Social.Platform = user.ProviderData.First().ProviderId;
 			m_user.Information.Nickname = user.ProviderData.First().DisplayName;
 
-			var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
-			if (!isSuccess)
-				Log.Print($"Created a new user's data. [ {m_user.Information.Nickname} | {m_user.Social.Id} ]");
-			
-			await m_user.UserCreateAsync();
+			var isExist = await m_user.TryGetUserSnapshot(user.UserId);
+			if (isExist)
+				m_user.SetReferenceUser();
+			else
+			{
+				var isCreated = await m_user.UserCreateAsync();
+				if (isCreated)
+					Log.Print($"Created a new user's data. [ {m_user.Information.Nickname} | {m_user.Social.Id} ]");
+			}
 		}
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)

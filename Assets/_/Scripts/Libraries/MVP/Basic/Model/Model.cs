@@ -1,7 +1,10 @@
-﻿namespace Redbean.MVP
+﻿using Newtonsoft.Json;
+
+namespace Redbean.MVP
 {
 	public interface ISerializeModel : IModel
 	{
+		[JsonIgnore]
 		public IRxModel Rx { get; }
 	}
 

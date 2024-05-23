@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using Cysharp.Threading.Tasks;
-using R3;
+﻿using R3;
 
 namespace Redbean.MVP.Content
 {
@@ -16,11 +14,11 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				UniTask.Void(LoginAsync, view.DestroyCancellation.Token);
+				Login();
 			}).AddTo(this);
 		}
 
-		private async UniTaskVoid LoginAsync(CancellationToken token)
+		private void Login()
 		{
 			if (this.IsContains(typeof(UserModel).FullName))
 				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();

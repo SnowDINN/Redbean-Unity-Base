@@ -4,6 +4,6 @@ namespace Redbean.Editor
 {
 	internal partial class ThirdPartyWindow : OdinEditorWindow
 	{
-		private const string Google = nameof(Google);
+		private const string GoogleTab = "Google";
 	}
 }

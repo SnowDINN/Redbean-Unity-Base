@@ -9,9 +9,9 @@ namespace Redbean.Editor
 {
 	internal partial class ApplicationWindow
 	{
-		private const string Version = nameof(Version);
+		private const string VersionTab = "Version";
 		
-		[TabGroup(ConfigTab), Title(Version), Button("Android")]
+		[TabGroup(ConfigTab), Title(VersionTab), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
 			using var core = new FirebaseSetup();

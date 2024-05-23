@@ -17,7 +17,7 @@ namespace Redbean.Editor
 			GoogleInstaller = Resources.Load<Installer>("Google/Installer");
 		}
 
-		[TabGroup(Google), Title(ClientKey), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
+		[TabGroup(GoogleTab), Title(ClientKey), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
 			get => GoogleInstaller.androidClientId;
@@ -28,7 +28,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(Google), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
+		[TabGroup(GoogleTab), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
 		private string IosClientKey
 		{
 			get => GoogleInstaller.iosClientId;
@@ -39,7 +39,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(Google), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
+		[TabGroup(GoogleTab), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
 		private string WebClientKey
 		{
 			get => GoogleInstaller.webClientId;
@@ -50,7 +50,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(Google), Title(Editor), ShowInInspector]
+		[TabGroup(GoogleTab), Title(Editor), ShowInInspector]
 		private string WebSecretKey
 		{
 			get => GoogleInstaller.webSecretId;
@@ -61,7 +61,7 @@ namespace Redbean.Editor
 			}
 		}
 		
-		[TabGroup(Google), ShowInInspector]
+		[TabGroup(GoogleTab), ShowInInspector]
 		private int Port
 		{
 			get => GoogleInstaller.webRedirectPort;
