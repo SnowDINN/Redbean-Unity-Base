@@ -7,8 +7,8 @@ namespace Redbean.Editor
 {
 	internal partial class ThirdPartyWindow
 	{
-		private const string ClientKey = "Client key settings";
-		private const string Editor = "Use only in the editor";
+		private const string ClientTitle = "Client key settings";
+		private const string OnlyEditorTitle = "Use only in the editor";
 
 		private Installer GoogleInstaller;
 		
@@ -17,7 +17,7 @@ namespace Redbean.Editor
 			GoogleInstaller = Resources.Load<Installer>("Google/Installer");
 		}
 
-		[TabGroup(GoogleTab), Title(ClientKey), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
+		[TabGroup(GoogleTab), Title(ClientTitle), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
 			get => GoogleInstaller.androidClientId;
@@ -50,7 +50,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(GoogleTab), Title(Editor), ShowInInspector]
+		[TabGroup(GoogleTab), Title(OnlyEditorTitle), ShowInInspector]
 		private string WebSecretKey
 		{
 			get => GoogleInstaller.webSecretId;

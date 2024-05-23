@@ -9,17 +9,17 @@ namespace Redbean.Editor
 {
 	internal partial class RuntimeWindow
 	{
-		private const string LoginTab = "Login";
-		private const string UserInformationTab = "User Information";
+		private const string LoginTitle = "Login";
+		private const string UserInformationTitle = "User Information";
 
 		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
 		
-		[TabGroup(AuthenticationTab), Title(UserInformationTab), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
+		[TabGroup(AuthenticationTab), Title(UserInformationTitle), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
 		private UserModel user => this.IsContainsModel<UserModel>()
 			? this.GetModel<UserModel>()
 			: new UserModel();
 		
-		[TabGroup(AuthenticationTab), Title(LoginTab), PropertyOrder(0), DisableInEditorMode, Button]
+		[TabGroup(AuthenticationTab), Title(LoginTitle), PropertyOrder(0), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
 			var isSuccess = await user.TryGetUserSnapshot(ID);

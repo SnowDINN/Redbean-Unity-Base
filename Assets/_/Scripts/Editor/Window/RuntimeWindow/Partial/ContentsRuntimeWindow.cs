@@ -7,9 +7,9 @@ namespace Redbean.Editor
 {
 	internal partial class RuntimeWindow
 	{
-		private const string ExampleTab = "Example";
+		private const string ExampleTitle = "Example";
 		
-		[TabGroup(ContentsTab), Title(ExampleTab), DisableInEditorMode, Button]
+		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button]
 		private void OpenPopupExample()
 		{
 			DependenciesSingleton.GetOrAdd<PopupBinder>().Open<PopupExample>();
