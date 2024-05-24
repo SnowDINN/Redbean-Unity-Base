@@ -20,9 +20,6 @@ namespace Redbean.MVP.Content
 
 		private void Login()
 		{
-			if (this.IsContains(typeof(UserModel).FullName))
-				this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName).Publish();
-			
 			if (string.IsNullOrEmpty(m_user.Information.Nickname))
 				m_user.Information.Nickname = "Guest";
 			

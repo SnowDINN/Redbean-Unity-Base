@@ -31,11 +31,6 @@ namespace Redbean
 		/// 싱글톤 호출
 		/// </summary>
 		public static T GetSingleton<T>(this OdinEditorWindow editor) where T : ISingleton => GetSingleton<T>();
-
-		/// <summary>
-		/// 모델 존재 여부
-		/// </summary>
-		public static bool IsContainsModel<T>(this OdinEditorWindow editor) where T : IModel => DependenciesModel.IsContains<T>();
 #endif
 		
 		/// <summary>

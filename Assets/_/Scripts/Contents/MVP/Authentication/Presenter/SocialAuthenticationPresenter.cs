@@ -55,26 +55,26 @@ namespace Redbean.MVP.Content
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
 		{
-			if (this.IsContains(typeof(UserModel).FullName))
-			{
-				await UniTask.WaitUntil(() => ApplicationSetup.IsReady, cancellationToken: token);
+			if (!m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
+				return;
+			
+			await UniTask.WaitUntil(() => ApplicationSetup.IsReady, cancellationToken: token);
 				
-				var saveData = this.GetPlayerPrefs<UserModel>(typeof(UserModel).FullName);
-				if (saveData.Social.Platform.Contains($"{view.Type}".ToLower()))
-				{
-					var auth = authentication.GetPlatform(view.Type);
-					var isInitialize = await auth.Initialize();
-					if (!isInitialize)
-						return;
+			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
+			{
+				var auth = authentication.GetPlatform(view.Type);
+				var isInitialize = await auth.Initialize();
+				if (!isInitialize)
+					return;
 
-					var credential = await auth.AutoLogin();
-					var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
+				var credential = await auth.AutoLogin();
+				var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
 					
-					var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
-					if (isSuccess)
-						m_user.SetReferenceUser();
-				}
+				var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
+				if (isSuccess)
+					m_user.SetReferenceUser();
 			}
+				
 		}
 	}
 }

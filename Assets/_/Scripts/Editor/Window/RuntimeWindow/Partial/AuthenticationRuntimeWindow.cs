@@ -15,7 +15,7 @@ namespace Redbean.Editor
 		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
 		
 		[TabGroup(AuthenticationTab), Title(UserInformationTitle), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
-		private UserModel user => this.IsContainsModel<UserModel>()
+		private UserModel user => ApplicationSetup.IsReady
 			? this.GetModel<UserModel>()
 			: new UserModel();
 		
@@ -30,7 +30,7 @@ namespace Redbean.Editor
 		[TabGroup(AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf("isExistUser", Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			if (!this.IsContainsModel<UserModel>())
+			if (!ApplicationSetup.IsReady)
 				return;
 
 			user.SetReferenceUser();
