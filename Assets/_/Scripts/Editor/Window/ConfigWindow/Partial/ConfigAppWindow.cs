@@ -10,6 +10,7 @@ namespace Redbean.Editor
 	internal partial class ApplicationWindow
 	{
 		private const string VersionTitle = "Version";
+		private const string TableTitle = "Table";
 		
 		[TabGroup(ConfigTab), Title(VersionTitle), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
@@ -43,6 +44,11 @@ namespace Redbean.Editor
 			FirebaseApp.DefaultInstance.Dispose();
 			
 			Log.Notice($"Android version changed from {before} -> {version}.");
+		}
+
+		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE TABLE")]
+		private void UpdateTable()
+		{
 		}
 
 		private async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()

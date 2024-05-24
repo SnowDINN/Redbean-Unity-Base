@@ -7,10 +7,10 @@ namespace Redbean.Editor
 	{
 		private const string ExampleTitle = "Example";
 		
-		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button]
-		private void OpenPopupExample()
+		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button("Exception")]
+		private void ThrowException()
 		{
-			throw new Exception("TEST");
+			throw new Exception("An exception has occurred.");
 		}
 	}
 }
