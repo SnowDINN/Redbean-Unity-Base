@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace Redbean.Dependencies
 {
-	public class DependenciesSingleton : IApplicationSetup
+	public class SingletonContainer : IApplicationBootstrap
 	{
 		private static readonly Dictionary<Type, ISingleton> singletons = new();
 		private GameObject parent;

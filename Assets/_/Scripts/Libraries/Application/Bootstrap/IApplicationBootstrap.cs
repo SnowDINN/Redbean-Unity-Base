@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Redbean
 {
-	public interface IApplicationSetup : IDisposable
+	public interface IApplicationBootstrap : IDisposable
 	{
 		/// <summary>
 		/// 실행 순서

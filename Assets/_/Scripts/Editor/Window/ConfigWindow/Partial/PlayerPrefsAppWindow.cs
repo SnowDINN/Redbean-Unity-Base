@@ -17,9 +17,8 @@ namespace Redbean.Editor
 			if (!PlayerPrefs.HasKey(Key.GetDataGroup))
 				return;
 
-			var decryptValue = aes.Decrypt(PlayerPrefs.GetString(Key.GetDataGroup));
-				
-			var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(decryptValue);
+			var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(Key.GetDataGroup));
+			var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 			if (dataGroups == null)
 				return;
 

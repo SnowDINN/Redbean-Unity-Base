@@ -14,7 +14,7 @@ namespace Redbean.Editor
 		[TabGroup(ConfigTab), Title(VersionTitle), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			using var core = new FirebaseSetup();
+			using var core = new FirebaseBootstrap();
 			await core.Setup();
 			
 			var config = await GetAppConfig();
@@ -31,7 +31,7 @@ namespace Redbean.Editor
 		[TabGroup(ConfigTab), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			using var core = new FirebaseSetup();
+			using var core = new FirebaseBootstrap();
 			await core.Setup();
 			
 			var config = await GetAppConfig();

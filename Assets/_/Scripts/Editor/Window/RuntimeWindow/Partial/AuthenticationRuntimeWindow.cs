@@ -15,7 +15,7 @@ namespace Redbean.Editor
 		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
 		
 		[TabGroup(AuthenticationTab), Title(UserInformationTitle), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
-		private UserModel user => ApplicationSetup.IsReady
+		private UserModel user => ApplicationBootstrap.IsReady
 			? this.GetModel<UserModel>()
 			: new UserModel();
 		
@@ -30,13 +30,13 @@ namespace Redbean.Editor
 		[TabGroup(AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf("isExistUser", Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			if (!ApplicationSetup.IsReady)
+			if (!ApplicationBootstrap.IsReady)
 				return;
 
 			user.SetReferenceUser();
 			
-			await FirebaseSetup.UserDB.DeleteAsync();
-			await FirebaseSetup.Auth.CurrentUser.DeleteAsync();
+			await FirebaseBootstrap.UserDB.DeleteAsync();
+			await FirebaseBootstrap.Auth.CurrentUser.DeleteAsync();
 			
 			PlayerPrefs.DeleteAll();
 			

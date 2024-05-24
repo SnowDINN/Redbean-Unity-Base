@@ -37,8 +37,8 @@ namespace Redbean.MVP
 
 		private async UniTaskVoid AwakeAsync(CancellationToken token)
 		{
-			if (!ApplicationSetup.IsReady)
-				await UniTask.WaitUntil(() => ApplicationSetup.IsReady, cancellationToken: token);
+			if (!ApplicationBootstrap.IsReady)
+				await UniTask.WaitUntil(() => ApplicationBootstrap.IsReady, cancellationToken: token);
 			
 			var type = Type.GetType(PresenterFullName);
 			if (type != null)

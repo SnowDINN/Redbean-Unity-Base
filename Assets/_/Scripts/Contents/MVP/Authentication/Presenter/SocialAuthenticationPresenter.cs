@@ -36,7 +36,7 @@ namespace Redbean.MVP.Content
 				return;
 
 			var credential = await auth.Login();
-			var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
+			var user = await FirebaseBootstrap.Auth.SignInWithCredentialAsync(credential.Credential);
 			
 			m_user.Social.Id = user.UserId;
 			m_user.Social.Platform = user.ProviderData.First().ProviderId;
@@ -58,7 +58,7 @@ namespace Redbean.MVP.Content
 			if (!m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 				return;
 			
-			await UniTask.WaitUntil(() => ApplicationSetup.IsReady, cancellationToken: token);
+			await UniTask.WaitUntil(() => ApplicationBootstrap.IsReady, cancellationToken: token);
 				
 			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{
@@ -68,7 +68,7 @@ namespace Redbean.MVP.Content
 					return;
 
 				var credential = await auth.AutoLogin();
-				var user = await FirebaseSetup.Auth.SignInWithCredentialAsync(credential.Credential);
+				var user = await FirebaseBootstrap.Auth.SignInWithCredentialAsync(credential.Credential);
 					
 				var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
 				if (isSuccess)

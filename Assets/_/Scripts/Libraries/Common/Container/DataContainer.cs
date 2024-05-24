@@ -10,12 +10,12 @@ using UnityEngine;
 
 namespace Redbean.Dependencies
 {
-	public class DependenciesModel : IApplicationSetup
+	public class DataContainer : IApplicationBootstrap
 	{
-		private static readonly Dictionary<string, string> playerPrefsGroup = new();
 		private static readonly Dictionary<Type, IModel> models = new();
-		
 		private static readonly AES128 aes = new();
+		
+		private static Dictionary<string, string> playerPrefsGroup = new();
 		
 		public int ExecutionOrder => 1;
 		
@@ -37,20 +37,18 @@ namespace Redbean.Dependencies
 
 			if (PlayerPrefs.HasKey(Key.GetDataGroup))
 			{
-				var decryptValue = aes.Decrypt(PlayerPrefs.GetString(Key.GetDataGroup));
-				
-				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(decryptValue);
-				if (dataGroups != null)
+				var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(Key.GetDataGroup));
+				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
+				foreach (var dataGroup in dataGroups)
 				{
-					foreach (var dataGroup in dataGroups)
-					{
-						var key = Assembly.Load("Assembly-CSharp").GetTypes().FirstOrDefault(_ => _.FullName == dataGroup.Key);
-						var value = JsonConvert.DeserializeObject(dataGroup.Value, key);
+					var key = Assembly.Load("Assembly-CSharp").GetTypes().FirstOrDefault(_ => _.FullName == dataGroup.Key);
+					var value = JsonConvert.DeserializeObject(dataGroup.Value, key);
 
-						if (value is IModel model)
-							models[key] = model;
-					}
+					if (value is IModel model)
+						models[key] = model;
 				}
+
+				playerPrefsGroup = dataGroups;
 			}
 
 #endregion
@@ -81,15 +79,18 @@ namespace Redbean.Dependencies
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
-		public static T Override<T>(T model) where T : IModel
+		public static T Override<T>(T model, bool isPlayerPrefs = false) where T : IModel
 		{
 			var targetFields = models[model.GetType()].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
 			var copyFields = model.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
 			
 			for (var i = 0; i < targetFields.Length; i++)
 				targetFields[i].SetValue(models[model.GetType()], copyFields[i].GetValue(model));
+
+			if (isPlayerPrefs)
+				model.SetPlayerPrefs(typeof(T).FullName);
 			
-			return model.SetPlayerPrefs(typeof(T).FullName);
+			return model;
 		}
 		
 		/// <summary>

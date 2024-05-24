@@ -9,7 +9,7 @@ namespace Redbean
 {
 	public class ApplicationLifeCycle : MonoBehaviour
 	{
-		private List<IApplicationSetup> instances = new();
+		private List<IApplicationBootstrap> instances = new();
 		
 		private void OnDestroy()
 		{
@@ -24,7 +24,7 @@ namespace Redbean
 #endif
 		}
 
-		public void AddInstances(List<IApplicationSetup> instances)
+		public void AddInstances(List<IApplicationBootstrap> instances)
 		{
 			this.instances = instances;
 			this.instances.Reverse();

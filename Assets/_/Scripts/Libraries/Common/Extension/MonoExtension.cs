@@ -14,12 +14,12 @@ namespace Redbean
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		private static T GetSingleton<T>() where T : ISingleton => DependenciesSingleton.GetOrAdd<T>();
+		private static T GetSingleton<T>() where T : ISingleton => SingletonContainer.GetOrAdd<T>();
 		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static T GetModel<T>() where T : IModel => DependenciesModel.GetOrAdd<T>();
+		private static T GetModel<T>() where T : IModel => DataContainer.GetOrAdd<T>();
 		
 #if UNITY_EDITOR
 		/// <summary>

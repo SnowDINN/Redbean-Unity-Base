@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Redbean.Firebase
 {
-	public class FirebaseSetup : IApplicationSetup
+	public class FirebaseBootstrap : IApplicationBootstrap
 	{
 		public static FirebaseAuth Auth;
 		public static FirebaseFirestore Firestore;

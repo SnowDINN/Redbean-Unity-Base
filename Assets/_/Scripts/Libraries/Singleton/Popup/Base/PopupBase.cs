@@ -8,7 +8,7 @@ namespace Redbean.Popup
 	{
 		private PopupBinder Popup;
 
-		public virtual void Awake() => Popup = DependenciesSingleton.GetOrAdd<PopupBinder>();
+		public virtual void Awake() => Popup = SingletonContainer.GetOrAdd<PopupBinder>();
 
 		public virtual void Close() => Popup.Close(GetType());
 

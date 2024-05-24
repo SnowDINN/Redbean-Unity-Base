@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace Redbean
 {
-	public class ApplicationSetup
+	public class ApplicationBootstrap
 	{
 		public static bool IsReady;
 		
@@ -17,10 +17,10 @@ namespace Redbean
 			
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
 			                     .SelectMany(x => x.GetTypes())
-			                     .Where(x => typeof(IApplicationSetup).IsAssignableFrom(x)
+			                     .Where(x => typeof(IApplicationBootstrap).IsAssignableFrom(x)
 			                                 && !x.IsInterface
 			                                 && !x.IsAbstract)
-			                     .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IApplicationSetup)
+			                     .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IApplicationBootstrap)
 			                     .OrderBy(_ => _.ExecutionOrder)
 			                     .ToList();
 

@@ -12,7 +12,7 @@ namespace Redbean.Editor
 		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button]
 		private void OpenPopupExample()
 		{
-			DependenciesSingleton.GetOrAdd<PopupBinder>().Open<PopupExample>();
+			SingletonContainer.GetOrAdd<PopupBinder>().Open<PopupExample>();
 		}
 	}
 }
