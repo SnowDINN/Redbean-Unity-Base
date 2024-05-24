@@ -59,6 +59,7 @@ namespace Redbean.Dependencies
 		public void Dispose()
 		{
 			models.Clear();
+			playerPrefsGroup.Clear();
 		}
 
 		/// <summary>

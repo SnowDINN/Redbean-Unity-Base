@@ -24,11 +24,11 @@ namespace Redbean
 		/// </summary>
 		public static string SetPlayerPrefs(this string value, string key) =>
 			DataContainer.Save(key, value);
-		
+
 		/// <summary>
 		/// 로컬 데이터 저장
 		/// </summary>
-		public static T SetPlayerPrefs<T>(this T value, string key) where T : IModel=>
+		public static T SetPlayerPrefs<T>(this T value, string key) where T : IModel => 
 			DataContainer.Save(key, value);
 		
 		/// <summary>

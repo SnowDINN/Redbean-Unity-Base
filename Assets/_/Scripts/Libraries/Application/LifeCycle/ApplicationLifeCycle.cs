@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Redbean.Base;
+using Redbean.Popup.Content;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -7,27 +9,44 @@ using UnityEditor;
 
 namespace Redbean
 {
-	public class ApplicationLifeCycle : MonoBehaviour
+	public class ApplicationLifeCycle : MonoBase
 	{
 		private List<IApplicationBootstrap> instances = new();
+
+		public static bool IsReady { get; private set; }
 		
-		private void OnDestroy()
+		public void Bootstrap(List<IApplicationBootstrap> instances)
 		{
+			Application.logMessageReceived += OnLogMessageReceived;
+			
+			this.instances = instances;
+			this.instances.Reverse();
+
+			IsReady = true;
+		}
+
+		public override void OnDestroy()
+		{
+			Application.logMessageReceived -= OnLogMessageReceived;
+			
 			foreach (var instance in instances)
 				instance.Dispose();
-			
-			Log.System("App has been terminated.");
+
+			IsReady = false;
 			
 #if UNITY_EDITOR
 			if (EditorApplication.isPlaying)
 				EditorApplication.isPlaying = false;
 #endif
 		}
-
-		public void AddInstances(List<IApplicationBootstrap> instances)
+		
+		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)
 		{
-			this.instances = instances;
-			this.instances.Reverse();
+			if (type != LogType.Exception)
+				return;
+
+			var popup = this.Popup().Open<PopupException>();
+			popup.ExceptionMessage.Value = condition;
 		}
 	}
 }

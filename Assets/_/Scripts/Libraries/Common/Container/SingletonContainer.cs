@@ -63,8 +63,8 @@ namespace Redbean.Dependencies
 
 		public void Dispose()
 		{
-			foreach (var singleton in singletons)
-				singleton.Value.Dispose();
+			foreach (var singleton in singletons.Values)
+				singleton.Dispose();
 			
 			Log.System("Rx or Event has been terminated.");
 		}

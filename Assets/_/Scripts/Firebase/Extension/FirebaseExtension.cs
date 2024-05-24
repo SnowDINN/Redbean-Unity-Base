@@ -32,7 +32,7 @@ namespace Redbean
 		public static UniTask UpdateFirestore<T>(this T value, string key) =>
 			FirebaseBootstrap.UserDB.UpdateAsync(key, value).AsUniTask();
 
-		public static async UniTask<bool> IsContainsData<T>(this T value, string collection, string path)
+		public static async UniTask<bool> IsContainsServer<T>(this T value, string collection, string path)
 		{
 			var equalTo = FirebaseBootstrap.Firestore.Collection(collection).WhereEqualTo(path, value);
 			var querySnapshot = await equalTo.GetSnapshotAsync();

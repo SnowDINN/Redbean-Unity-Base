@@ -1,6 +1,8 @@
 ﻿using System.Threading;
+using Redbean.Base;
 using Redbean.Dependencies;
 using Redbean.MVP;
+using Redbean.Popup;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -32,6 +34,21 @@ namespace Redbean
 		/// </summary>
 		public static T GetSingleton<T>(this OdinEditorWindow editor) where T : ISingleton => GetSingleton<T>();
 #endif
+		
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
+		public static T GetModel<T>(this MonoBase mono) where T : IModel => GetModel<T>();
+		
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
+		public static T GetSingleton<T>(this MonoBase mono) where T : ISingleton => GetSingleton<T>();
+		
+		/// <summary>
+		/// 팝업 호출
+		/// </summary>
+		public static PopupBinder Popup(this MonoBase mono) => GetSingleton<PopupBinder>();
 		
 		/// <summary>
 		/// 게임 오브젝트 비/활성화

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Redbean.Firebase;
+﻿using Redbean.Firebase;
 using Redbean.MVP.Content;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -15,7 +14,7 @@ namespace Redbean.Editor
 		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
 		
 		[TabGroup(AuthenticationTab), Title(UserInformationTitle), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
-		private UserModel user => ApplicationBootstrap.IsReady
+		private UserModel user => ApplicationLifeCycle.IsReady
 			? this.GetModel<UserModel>()
 			: new UserModel();
 		
@@ -30,7 +29,7 @@ namespace Redbean.Editor
 		[TabGroup(AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf("isExistUser", Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			if (!ApplicationBootstrap.IsReady)
+			if (!ApplicationLifeCycle.IsReady)
 				return;
 
 			user.SetReferenceUser();

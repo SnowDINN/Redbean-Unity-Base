@@ -1,6 +1,4 @@
-﻿using Redbean.Dependencies;
-using Redbean.Popup;
-using Redbean.Popup.Content;
+﻿using System;
 using Sirenix.OdinInspector;
 
 namespace Redbean.Editor
@@ -12,7 +10,7 @@ namespace Redbean.Editor
 		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button]
 		private void OpenPopupExample()
 		{
-			SingletonContainer.GetOrAdd<PopupBinder>().Open<PopupExample>();
+			throw new Exception("TEST");
 		}
 	}
 }

@@ -7,10 +7,8 @@ namespace Redbean
 {
 	public class ApplicationBootstrap
 	{
-		public static bool IsReady;
-		
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-		public static async void AssembliesSetup()
+		public static async void AssembliesBootstrap()
 		{
 			Application.runInBackground = true;
 			Application.targetFrameRate = 60;
@@ -28,11 +26,9 @@ namespace Redbean
 				await instance.Setup();
 			
 			var go = new GameObject("[Application Life Cycle]");
-			go.AddComponent<ApplicationLifeCycle>().AddInstances(instances);
+			go.AddComponent<ApplicationLifeCycle>().Bootstrap(instances);
 			
 			Object.DontDestroyOnLoad(go);
-			
-			IsReady = true;
 		}
 	}
 }

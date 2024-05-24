@@ -10,7 +10,7 @@ namespace Redbean.Popup
 {
 	public class PopupBinder : ISingleton
 	{
-		private readonly Dictionary<Type, PopupBase> popupCollection = new();
+		private readonly Dictionary<string, PopupBase> popupCollection = new();
 		private readonly Canvas canvas;
 		private readonly CanvasScaler canvasScaler;
 		private readonly GraphicRaycaster raycaster;
@@ -50,26 +50,52 @@ namespace Redbean.Popup
 
 		public T Open<T>() where T : PopupBase
 		{
-			popupCollection.Add(typeof(T), Instantiate(Resources.Load<GameObject>($"Popup/{typeof(T).Name}")).GetComponent<T>());
-			return popupCollection[typeof(T)] as T;
+			var popup = Instantiate(Resources.Load<GameObject>($"Popup/{typeof(T).Name}")).GetComponent<T>() as PopupBase;
+			
+			while (true)
+			{
+				var id = $"{Guid.NewGuid()}";
+				if (popupCollection.ContainsKey(id))
+					continue;
+
+				popup.Guid = $"{Guid.NewGuid()}";
+				break;
+			}
+			
+			popupCollection.Add(popup.Guid, popup);
+			return popupCollection[popup.Guid] as T;
 		}
 
 		public object Open(Type type)
 		{
-			popupCollection.Add(type, Instantiate(Resources.Load<GameObject>($"Popup/{type.Name}")).GetComponent(type) as PopupBase);
-			return popupCollection[type];
+			var popup = Instantiate(Resources.Load<GameObject>($"Popup/{type.Name}")).GetComponent(type) as PopupBase;
+			
+			while (true)
+			{
+				var id = $"{Guid.NewGuid()}";
+				if (popupCollection.ContainsKey(id))
+					continue;
+
+				popup.Guid = $"{Guid.NewGuid()}";
+				break;
+			}
+			
+			popupCollection.Add(popup.Guid, popup);
+			return popupCollection[popup.Guid];
 		}
 
-		public void Close<T>()
+		public void CurrentPopupClose()
 		{
-			popupCollection[typeof(T)].Destroy();
-			popupCollection.Remove(typeof(T));
+			var id = CurrentPopup.Guid;
+			
+			CurrentPopup.Destroy();
+			popupCollection.Remove(id);
 		}
 		
-		public void Close(Type type)
+		public void Close(string id)
 		{
-			popupCollection[type].Destroy();
-			popupCollection.Remove(type);
+			popupCollection[id].Destroy();
+			popupCollection.Remove(id);
 		}
 
 		public void AllClose()
@@ -79,9 +105,9 @@ namespace Redbean.Popup
 			popupCollection.Clear();
 		}
 		
-		public T Get<T>() where T : class => popupCollection[typeof(T)] as T;
+		public T Get<T>(string id) where T : class => popupCollection[id] as T;
 		
-		public PopupBase Get(Type type) => popupCollection[type];
+		public PopupBase Get(string id) => popupCollection[id];
 
 		private GameObject Instantiate(GameObject gameObject) => GameObject.Instantiate(gameObject, popupParent);
 	}
