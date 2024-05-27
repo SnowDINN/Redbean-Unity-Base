@@ -77,11 +77,11 @@ namespace Redbean.Dependencies
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static ISingleton GetOrAdd(Type type) => singletons[type];
+		public static ISingleton Get(Type type) => singletons[type];
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetOrAdd<T>() where T : ISingleton => (T)singletons[typeof(T)];
+		public static T Get<T>() where T : ISingleton => (T)singletons[typeof(T)];
 	}
 }

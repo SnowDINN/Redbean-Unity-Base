@@ -1,9 +1,12 @@
 ﻿using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
+using Redbean.Dependencies;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
+using Redbean.Table;
 using Sirenix.OdinInspector;
+using UnityEditor;
 
 namespace Redbean.Editor
 {
@@ -47,8 +50,22 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE TABLE")]
-		private void UpdateTable()
+		private async void UpdateTable()
 		{
+			using var container = new DataContainer();
+			await container.Setup();
+			
+			using var firebase = new FirebaseBootstrap();
+			await firebase.Setup();
+			
+			DataContainer.Override((await GetAppConfig()).Model);
+			
+			var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
+			await GoogleTableGenerator.GenerateCSharp(sheetRaw);
+			foreach (var table in sheetRaw)
+				await GoogleTableGenerator.GenerateItemCSharp(table.Key, table.Value);
+			
+			AssetDatabase.Refresh();
 		}
 
 		private async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()

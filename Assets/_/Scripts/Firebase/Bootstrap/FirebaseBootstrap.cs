@@ -61,7 +61,7 @@ namespace Redbean.Firebase
 			Log.System("Firebase has been terminated.");
 		}
 
-		private static void AppConfigSettings(AppConfigArgument configArgs)
+		private static void AppConfigSettings(MobileConfigArgument configArgs)
 		{
 			Log.Notice($"Latest updated version : {configArgs.Version}");
 		}

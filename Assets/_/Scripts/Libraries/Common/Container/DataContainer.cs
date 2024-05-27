@@ -70,12 +70,12 @@ namespace Redbean.Dependencies
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static T GetOrAdd<T>() where T : IModel => (T)models[typeof(T)];
+		public static T Get<T>() where T : IModel => (T)models[typeof(T)];
 
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public static IModel GetOrAdd(Type type) => models[type];
+		public static IModel Get(Type type) => models[type];
 
 		/// <summary>
 		/// 모델 재정의

@@ -26,7 +26,7 @@ namespace Redbean.MVP
 					switch (attribute)
 					{
 						case ModelAttribute:
-							field.SetValue(this, DataContainer.GetOrAdd(field.FieldType));
+							field.SetValue(this, DataContainer.Get(field.FieldType));
 							break;
 						
 						case ViewAttribute:
@@ -34,7 +34,7 @@ namespace Redbean.MVP
 							break;
 
 						case SingletonAttribute:
-							field.SetValue(this, SingletonContainer.GetOrAdd(field.FieldType));
+							field.SetValue(this, SingletonContainer.Get(field.FieldType));
 							break;
 					}
 			}

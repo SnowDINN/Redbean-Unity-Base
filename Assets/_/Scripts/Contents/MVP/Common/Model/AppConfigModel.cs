@@ -6,16 +6,29 @@ namespace Redbean.MVP.Content
 	public class AppConfigModel : IModel
 	{
 		[FirestoreProperty("android")]
-		public AppConfigArgument Android { get; set; } = new();
+		public MobileConfigArgument Android { get; set; } = new();
 		
 		[FirestoreProperty("ios")]
-		public AppConfigArgument iOS { get; set; } = new();
+		public MobileConfigArgument iOS { get; set; } = new();
+		
+		[FirestoreProperty("table")]
+		public TableConfigArgument Table { get; set; } = new();
 	}
 
 	[FirestoreData]
-	public class AppConfigArgument
+	public class MobileConfigArgument
 	{
 		[FirestoreProperty("version")]
 		public string Version { get; set; } = string.Empty;
+	}
+	
+	[FirestoreData]
+	public class TableConfigArgument
+	{
+		[FirestoreProperty("uri")]
+		public string Uri { get; set; } = string.Empty;
+		
+		[FirestoreProperty("gid")]
+		public string Gid { get; set; } = string.Empty;
 	}
 }

@@ -45,8 +45,7 @@ namespace Redbean
 			if (type != LogType.Exception)
 				return;
 
-			var popup = this.Popup().Open<PopupException>();
-			popup.ExceptionMessage.Value = condition;
+			this.Popup().Open<PopupException>().ExceptionMessage.Value = condition;
 		}
 	}
 }
