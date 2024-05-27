@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
@@ -16,21 +17,33 @@ namespace Redbean.Editor
 		private const string TableTitle = "Table";
 		private const string VersionTitle = "Version";
 		
-		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE ALL TABLE")]
+		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
 		private async void UpdateAllTable()
 		{
-			using var container = new DataContainer();
-			await container.Setup();
+			EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", 0);
+			{
+				using var container = new DataContainer();
+				await container.Setup();
+				
+				using var firebase = new FirebaseBootstrap();
+				await firebase.Setup();
 			
-			using var firebase = new FirebaseBootstrap();
-			await firebase.Setup();
+				DataContainer.Override((await GetAppConfig()).Model);
 			
-			DataContainer.Override((await GetAppConfig()).Model);
+				var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
+				await GoogleTableGenerator.GenerateCSharp(sheetRaw);
+
+				var keys = sheetRaw.Keys.ToArray();
+				var values = sheetRaw.Values.ToArray();
+				for (var i = 0; i < sheetRaw.Count; i++)
+				{
+					EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", i + 1 / sheetRaw.Count);
+					await GoogleTableGenerator.GenerateItemCSharp(keys[i], values[i]);
+				}
+			}
+			EditorUtility.ClearProgressBar();
 			
-			var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
-			await GoogleTableGenerator.GenerateCSharp(sheetRaw);
-			foreach (var table in sheetRaw)
-				await GoogleTableGenerator.GenerateItemCSharp(table.Key, table.Value);
+			Log.Notice("Table update is complete.");
 			
 			AssetDatabase.Refresh();
 		}

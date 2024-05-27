@@ -75,7 +75,7 @@ namespace Redbean.Table
 			stringBuilder.AppendLine("\t{");
 
 			foreach (var table in tables)
-				stringBuilder.AppendLine($"\t\tpublic static Dictionary<{table.Value[1].Split("\t").First()}, {table.Key}> Item = new();");
+				stringBuilder.AppendLine($"\t\tpublic static Dictionary<{table.Value[1].Split("\t").First()}, {table.Key}> {table.Key} = new();");
 			
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
@@ -118,6 +118,11 @@ namespace Redbean.Table
 					"long" => $"long.Parse(split[{i}]),",
 					"float" => $"float.Parse(split[{i}]),",
 					"double" => $"double.Parse(split[{i}]),",
+					"int[]" => $"Array.ConvertAll(split[{i}].Split('|'), int.Parse),",
+					"long[]" => $"Array.ConvertAll(split[{i}].Split('|'), long.Parse),",
+					"float[]" => $"Array.ConvertAll(split[{i}].Split('|'), float.Parse),",
+					"double[]" => $"Array.ConvertAll(split[{i}].Split('|'), double.Parse),",
+					"string[]" => $"split[{i}].Split('|'),",
 					_ => $"split[{i}],"
 				};
 
@@ -126,7 +131,7 @@ namespace Redbean.Table
 			
 			stringBuilder.AppendLine("\t\t\t};");
 			stringBuilder.AppendLine();
-			stringBuilder.AppendLine("\t\t\tGoogleTable.Item.Add(item.Id, item);");
+			stringBuilder.AppendLine($"\t\t\tGoogleTable.{key}.Add(item.Id, item);");
 			stringBuilder.AppendLine("\t\t}");
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
@@ -151,6 +156,8 @@ namespace Redbean.Table
 						instance.Injection(item);
 				}
 			}
+			
+			Log.Success("Table", "Success to connect to the Google sheets.");
 		}
 
 		private static async UniTask<string[]> GetCSV(string uri)

@@ -5,6 +5,7 @@ namespace Redbean
 {
 	public class GoogleTable
 	{
-		public static Dictionary<long, Item> Item = new();
+		public static Dictionary<string, Localize> Localize = new();
+		public static Dictionary<int, Item> Item = new();
 	}
 }

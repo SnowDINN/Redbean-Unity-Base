@@ -63,7 +63,7 @@ namespace Redbean.Firebase
 
 		private static void AppConfigSettings(MobileConfigArgument configArgs)
 		{
-			Log.Notice($"Latest updated version : {configArgs.Version}");
+
 		}
 	}
 }

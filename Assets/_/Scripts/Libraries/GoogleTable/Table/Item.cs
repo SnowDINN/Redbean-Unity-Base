@@ -2,7 +2,7 @@ namespace Redbean.Table
 {
 	public class Item : IGoogleTable
 	{
-		public long Id;
+		public int Id;
 		public string Name;
 
 		public void Injection(string value)
@@ -10,7 +10,7 @@ namespace Redbean.Table
 			var split = value.Split("\t");
 			var item = new Item
 			{
-				Id = long.Parse(split[0]),
+				Id = int.Parse(split[0]),
 				Name = split[1],
 			};
 
