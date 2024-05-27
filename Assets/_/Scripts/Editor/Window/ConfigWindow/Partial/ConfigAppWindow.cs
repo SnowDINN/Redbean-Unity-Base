@@ -16,10 +16,7 @@ namespace Redbean.Editor
 		private const string TableTitle = "Table";
 		private const string VersionTitle = "Version";
 		
-		[TabGroup(ConfigTab), Title(TableTitle), Toggle("Enabled")]
-		public Toggle IsCheck = new();
-
-		[TabGroup(ConfigTab), Button("UPDATE ALL TABLE")]
+		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE ALL TABLE")]
 		private async void UpdateAllTable()
 		{
 			using var container = new DataContainer();

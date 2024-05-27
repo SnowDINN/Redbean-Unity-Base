@@ -4,7 +4,6 @@ namespace Redbean.Table
 	{
 		public long Id;
 		public string Name;
-		public string Description;
 
 		public void Injection(string value)
 		{
@@ -13,7 +12,6 @@ namespace Redbean.Table
 			{
 				Id = long.Parse(split[0]),
 				Name = split[1],
-				Description = split[2],
 			};
 
 			GoogleTable.Item.Add(item.Id, item);

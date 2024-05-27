@@ -36,14 +36,31 @@ namespace Redbean.Table
 			                      .Select((key, index) => (key, index))
 			                      .FirstOrDefault(_ => _.key == "Sheet Name");
 
-			var tables = new Dictionary<string, string[]>();
+			var sheetRaw = new Dictionary<string, string[]>();
 			for (var i = 1; i < csv.Length; i++)
 			{
 				var split = csv[i].Split("\t");
-				tables.Add(split[nameIndex.index], await GetCSV($"{SheetUri}/{ConvertFormat}{split[idIndex.index]}"));
+				var variables = await GetCSV($"{SheetUri}/{ConvertFormat}{split[idIndex.index]}");
+				var skipIndex = variables[0].Split("\t")
+				                            .Select((key, index) => (key, index))
+				                            .Where(_ => _.key.Contains('~'))
+				                            .ToArray();
+
+				for (var index = 0; index < variables.Length; index++)
+				{
+					var sheetValues = variables[index].Split("\t").ToList();
+					var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
+
+					foreach (var target in removeTarget)
+						sheetValues.Remove(target);
+
+					variables[index] = string.Join("\t", sheetValues);
+				}
+				
+				sheetRaw.Add(split[nameIndex.index], variables);
 			}
 
-			return tables;
+			return sheetRaw;
 		}
 		
 		public static async UniTask GenerateCSharp(Dictionary<string, string[]> tables)
@@ -101,8 +118,7 @@ namespace Redbean.Table
 					"long" => $"long.Parse(split[{i}]),",
 					"float" => $"float.Parse(split[{i}]),",
 					"double" => $"double.Parse(split[{i}]),",
-					"string" => $"split[{i}],",
-					_ => ""
+					_ => $"split[{i}],"
 				};
 
 				stringBuilder.AppendLine($"\t\t\t\t{variableNames[i]} = {convert}");
