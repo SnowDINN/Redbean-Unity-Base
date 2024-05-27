@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
 using Redbean.Dependencies;
@@ -12,8 +13,30 @@ namespace Redbean.Editor
 {
 	internal partial class ApplicationWindow
 	{
-		private const string VersionTitle = "Version";
 		private const string TableTitle = "Table";
+		private const string VersionTitle = "Version";
+		
+		[TabGroup(ConfigTab), Title(TableTitle), Toggle("Enabled")]
+		public Toggle IsCheck = new();
+
+		[TabGroup(ConfigTab), Button("UPDATE ALL TABLE")]
+		private async void UpdateAllTable()
+		{
+			using var container = new DataContainer();
+			await container.Setup();
+			
+			using var firebase = new FirebaseBootstrap();
+			await firebase.Setup();
+			
+			DataContainer.Override((await GetAppConfig()).Model);
+			
+			var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
+			await GoogleTableGenerator.GenerateCSharp(sheetRaw);
+			foreach (var table in sheetRaw)
+				await GoogleTableGenerator.GenerateItemCSharp(table.Key, table.Value);
+			
+			AssetDatabase.Refresh();
+		}
 		
 		[TabGroup(ConfigTab), Title(VersionTitle), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
@@ -49,25 +72,6 @@ namespace Redbean.Editor
 			Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 
-		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE TABLE")]
-		private async void UpdateTable()
-		{
-			using var container = new DataContainer();
-			await container.Setup();
-			
-			using var firebase = new FirebaseBootstrap();
-			await firebase.Setup();
-			
-			DataContainer.Override((await GetAppConfig()).Model);
-			
-			var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
-			await GoogleTableGenerator.GenerateCSharp(sheetRaw);
-			foreach (var table in sheetRaw)
-				await GoogleTableGenerator.GenerateItemCSharp(table.Key, table.Value);
-			
-			AssetDatabase.Refresh();
-		}
-
 		private async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
 			var document = FirebaseFirestore.DefaultInstance.Collection("app_config").Document("setup");
@@ -81,6 +85,12 @@ namespace Redbean.Editor
 			}
 				
 			return (document, snapshotAsync.ConvertTo<AppConfigModel>());
+		}
+		
+		[Serializable]
+		internal class Toggle
+		{
+			public bool Enabled;
 		}
 	}
 }

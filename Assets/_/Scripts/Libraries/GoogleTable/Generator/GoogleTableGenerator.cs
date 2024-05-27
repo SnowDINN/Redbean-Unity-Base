@@ -22,7 +22,6 @@ namespace Redbean.Table
 		public int ExecutionOrder => 200;
 
 		public async UniTask Setup() => await RuntimeTableSetup();
-		
 		public void Dispose() { }
 
 		public static async UniTask<Dictionary<string, string[]>> GetSheetRaw()
