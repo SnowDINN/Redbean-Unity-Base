@@ -6,16 +6,16 @@ namespace Google
 {
 	public static class GoogleExtension
 	{
-		private static Installer m_installer;
-		private static Installer installer => m_installer ??= Resources.Load<Installer>("Google/Installer");
+		private static GoogleSdkInstaller googleSdkInstaller;
+		private static GoogleSdkInstaller GoogleSdkInstaller => googleSdkInstaller ??= Resources.Load<GoogleSdkInstaller>("Google/GoogleSdk");
 
-		public static string GetAndroidClientId() => installer.GetClientId(ClientType.AndroidClientId);
-		public static string GetIosClientId() => installer.GetClientId(ClientType.IosClientId);
-		public static string GetIosClientScheme() => installer.GetReverseClientId(ClientType.IosClientId);
-		public static string GetWebClientId() => installer.GetClientId(ClientType.WebClientId);
-		public static string GetWebSecretId() => installer.webSecretId;
-		public static string GetWebRedirectURL() => installer.webRedirectUrl;
-		public static int GetWebRedirectUrlPort() => installer.webRedirectPort;
+		public static string GetAndroidClientId() => GoogleSdkInstaller.GetClientId(ClientType.AndroidClientId);
+		public static string GetIosClientId() => GoogleSdkInstaller.GetClientId(ClientType.IosClientId);
+		public static string GetIosClientScheme() => GoogleSdkInstaller.GetReverseClientId(ClientType.IosClientId);
+		public static string GetWebClientId() => GoogleSdkInstaller.GetClientId(ClientType.WebClientId);
+		public static string GetWebSecretId() => GoogleSdkInstaller.webSecretId;
+		public static string GetWebRedirectURL() => GoogleSdkInstaller.webRedirectUrl;
+		public static int GetWebRedirectUrlPort() => GoogleSdkInstaller.webRedirectPort;
 
 		public static async UniTask<(GoogleSignInUser user, int code)> AwaitCompleted(this Task<GoogleSignInUser> task)
 		{

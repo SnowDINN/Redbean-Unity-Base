@@ -1,7 +1,5 @@
 ﻿using Google;
 using Sirenix.OdinInspector;
-using Sirenix.OdinInspector.Editor;
-using UnityEngine;
 
 namespace Redbean.Editor
 {
@@ -10,72 +8,65 @@ namespace Redbean.Editor
 		private const string ClientTitle = "Client key settings";
 		private const string OnlyEditorTitle = "Use only in the editor";
 
-		private Installer GoogleInstaller;
-		
-		protected override void OnEnable()
-		{
-			GoogleInstaller = Resources.Load<Installer>("Google/Installer");
-		}
-
 		[TabGroup(GoogleTab), Title(ClientTitle), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
-			get => GoogleInstaller.androidClientId;
+			get => googleSdk.androidClientId;
 			set
 			{
-				GoogleInstaller.androidClientId = value;
-				GoogleInstaller.Save();
+				googleSdk.androidClientId = value;
+				googleSdk.Save();
 			}
 		}
 
 		[TabGroup(GoogleTab), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
 		private string IosClientKey
 		{
-			get => GoogleInstaller.iosClientId;
+			get => googleSdk.iosClientId;
 			set
 			{
-				GoogleInstaller.iosClientId = value;
-				GoogleInstaller.Save();
+				googleSdk.iosClientId = value;
+				googleSdk.Save();
 			}
 		}
 
 		[TabGroup(GoogleTab), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
 		private string WebClientKey
 		{
-			get => GoogleInstaller.webClientId;
+			get => googleSdk.webClientId;
 			set
 			{
-				GoogleInstaller.webClientId = value;
-				GoogleInstaller.Save();
+				googleSdk.webClientId = value;
+				googleSdk.Save();
 			}
 		}
 
 		[TabGroup(GoogleTab), Title(OnlyEditorTitle), ShowInInspector]
 		private string WebSecretKey
 		{
-			get => GoogleInstaller.webSecretId;
+			get => googleSdk.webSecretId;
 			set
 			{
-				GoogleInstaller.webSecretId = value;
-				GoogleInstaller.Save();
+				googleSdk.webSecretId = value;
+				googleSdk.Save();
 			}
 		}
 		
 		[TabGroup(GoogleTab), ShowInInspector]
 		private int Port
 		{
-			get => GoogleInstaller.webRedirectPort;
+			get => googleSdk.webRedirectPort;
 			set
 			{
-				GoogleInstaller.webRedirectPort = value;
-				GoogleInstaller.Save();
+				googleSdk.webRedirectPort = value;
+				googleSdk.Save();
 			}
 		}
 
-		private void GetAosClientKey() => AndroidClientKey = GoogleInstaller.GetClientId(ClientType.AndroidClientId);
+		private void GetAosClientKey() => AndroidClientKey = googleSdk.GetClientId(ClientType.AndroidClientId);
 
-		private void GetIosClientKey() => IosClientKey = GoogleInstaller.GetClientId(ClientType.IosClientId);
+		private void GetIosClientKey() => IosClientKey = googleSdk.GetClientId(ClientType.IosClientId);
 
-		private void GetWebClientKey() => WebClientKey = GoogleInstaller.GetClientId(ClientType.WebClientId);
+		private void GetWebClientKey() => WebClientKey = googleSdk.GetClientId(ClientType.WebClientId);
 	}
 }

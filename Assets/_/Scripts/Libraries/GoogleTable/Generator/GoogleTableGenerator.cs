@@ -13,20 +13,27 @@ namespace Redbean.Table
 {
 	public class GoogleTableGenerator : IApplicationBootstrap
 	{
-		private const string ConvertFormat = "export?format=tsv&gid=";
-		private const string Namespace = "Redbean";
-
 		private static string SheetUri => DataContainer.Get<AppConfigModel>().Table.Uri;
 		private static string SheetGid => DataContainer.Get<AppConfigModel>().Table.Gid;
+
+		private static string Path =>
+			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").Path}";
+
+		private static string ItemPath =>
+			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").ItemPath}";
 		
+		private const string Namespace = "Redbean";
 		public int ExecutionOrder => 200;
 
 		public async UniTask Setup() => await RuntimeTableSetup();
 		public void Dispose() { }
 
+		/// <summary>
+		/// 테이블 데이터 호출 및 파싱
+		/// </summary>
 		public static async UniTask<Dictionary<string, string[]>> GetSheetRaw()
 		{
-			var csv = await GetCSV($"{SheetUri}/{ConvertFormat}{SheetGid}");
+			var csv = await GetCSV($"{SheetUri}/export?format=tsv&gid={SheetGid}");
 			
 			var idIndex = csv[0].Split("\t")
 			                    .Select((key, index) => (key, index))
@@ -40,7 +47,7 @@ namespace Redbean.Table
 			for (var i = 1; i < csv.Length; i++)
 			{
 				var split = csv[i].Split("\t");
-				var variables = await GetCSV($"{SheetUri}/{ConvertFormat}{split[idIndex.index]}");
+				var variables = await GetCSV($"{SheetUri}/export?format=tsv&gid={split[idIndex.index]}");
 				var skipIndex = variables[0].Split("\t")
 				                            .Select((key, index) => (key, index))
 				                            .Where(_ => _.key.Contains('~'))
@@ -63,6 +70,9 @@ namespace Redbean.Table
 			return sheetRaw;
 		}
 		
+		/// <summary>
+		/// 테이블 C# 스크립트 생성
+		/// </summary>
 		public static async UniTask GenerateCSharp(Dictionary<string, string[]> tables)
 		{
 			var stringBuilder = new StringBuilder();
@@ -79,15 +89,17 @@ namespace Redbean.Table
 			
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
-
-			var path = $"{Application.dataPath}/_/Scripts/Libraries/GoogleTable/Basic";
-			if (Directory.Exists(path))
-				Directory.CreateDirectory(path);
 			
-			File.Delete($"{path}/GoogleTable.cs");
-			await File.WriteAllTextAsync($"{path}/GoogleTable.cs", $"{stringBuilder}");
+			if (Directory.Exists(Path))
+				Directory.CreateDirectory(Path);
+			
+			File.Delete($"{Path}/GoogleTable.cs");
+			await File.WriteAllTextAsync($"{Path}/GoogleTable.cs", $"{stringBuilder}");
 		}
 
+		/// <summary>
+		/// 테이블 아이템 C# 스크립트 생성
+		/// </summary>
 		public static async UniTask GenerateItemCSharp(string key, string[] value)
 		{
 			var variableNames = value[0].Split("\t");
@@ -96,14 +108,14 @@ namespace Redbean.Table
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine($"namespace {Namespace}.Table");
 			stringBuilder.AppendLine("{");
-			stringBuilder.AppendLine($"\tpublic class {key} : IGoogleTable");
+			stringBuilder.AppendLine($"\tpublic class {key} : {nameof(IGoogleTable)}");
 			stringBuilder.AppendLine("\t{");
 			
 			for (var i = 0; i < variableNames.Length; i++)
 				stringBuilder.AppendLine($"\t\tpublic {variableTypes[i]} {variableNames[i]};");
 			
 			stringBuilder.AppendLine();
-			stringBuilder.AppendLine("\t\tpublic void Injection(string value)");
+			stringBuilder.AppendLine($"\t\tpublic void {nameof(IGoogleTable.Apply)}(string value)");
 			stringBuilder.AppendLine("\t\t{");
 			stringBuilder.AppendLine("\t\t\tvar split = value.Split(\"\\t\");");
 			stringBuilder.AppendLine($"\t\t\tvar item = new {key}");
@@ -135,15 +147,17 @@ namespace Redbean.Table
 			stringBuilder.AppendLine("\t\t}");
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
-
-			var path = $"{Application.dataPath}/_/Scripts/Libraries/GoogleTable/Table";
-			if (Directory.Exists(path))
-				Directory.CreateDirectory(path);
 			
-			File.Delete($"{path}/{key}.cs");
-			await File.WriteAllTextAsync($"{path}/{key}.cs", $"{stringBuilder}");
+			if (Directory.Exists(ItemPath))
+				Directory.CreateDirectory(ItemPath);
+			
+			File.Delete($"{ItemPath}/{key}.cs");
+			await File.WriteAllTextAsync($"{ItemPath}/{key}.cs", $"{stringBuilder}");
 		}
 
+		/// <summary>
+		/// 테이블 적용
+		/// </summary>
 		public async UniTask RuntimeTableSetup()
 		{
 			var sheets = await GetSheetRaw();
@@ -153,7 +167,7 @@ namespace Redbean.Table
 				foreach (var item in sheet.Value.Skip(2))
 				{
 					if (Activator.CreateInstance(type) is IGoogleTable instance)
-						instance.Injection(item);
+						instance.Apply(item);
 				}
 			}
 			

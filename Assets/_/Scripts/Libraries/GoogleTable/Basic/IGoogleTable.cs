@@ -2,6 +2,6 @@
 {
 	public interface IGoogleTable
 	{
-		void Injection(string value);
+		void Apply(string value);
 	}
 }

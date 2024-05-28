@@ -5,7 +5,7 @@ namespace Redbean.Table
 		public string Id;
 		public string Kr;
 
-		public void Injection(string value)
+		public void Apply(string value)
 		{
 			var split = value.Split("\t");
 			var item = new Localize

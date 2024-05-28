@@ -5,7 +5,7 @@ namespace Redbean.Table
 		public int Id;
 		public string Name;
 
-		public void Injection(string value)
+		public void Apply(string value)
 		{
 			var split = value.Split("\t");
 			var item = new Item

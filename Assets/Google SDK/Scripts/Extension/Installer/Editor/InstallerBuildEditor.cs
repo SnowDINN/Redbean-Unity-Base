@@ -21,7 +21,7 @@ namespace Google
 
 		private void OnPostProcessBuild(BuildTarget target, string path)
 		{
-			var installer = Resources.Load<Installer>("GoogleSignInInstaller");
+			var installer = Resources.Load<GoogleSdkInstaller>("Google/GoogleSdk");
 			installer.androidClientId = GoogleExtension.GetAndroidClientId();
 			installer.iosClientId = GoogleExtension.GetIosClientId();
 			installer.webClientId = GoogleExtension.GetWebClientId();

@@ -16,8 +16,30 @@ namespace Redbean.Editor
 	{
 		private const string TableTitle = "Table";
 		private const string VersionTitle = "Version";
+
+		[TabGroup(ConfigTab), Title(TableTitle), LabelText("Path"), ShowInInspector, FolderPath]
+		public string TablePath
+		{
+			get => googleTable.Path;
+			set
+			{
+				googleTable.Path = value;
+				googleTable.Save();
+			}
+		}
+
+		[TabGroup(ConfigTab), LabelText("Item Path"), ShowInInspector, FolderPath]
+		public string TableItemPath
+		{
+			get => googleTable.ItemPath;
+			set
+			{
+				googleTable.ItemPath = value;
+				googleTable.Save();
+			}
+		}
 		
-		[TabGroup(ConfigTab), Title(TableTitle), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
+		[TabGroup(ConfigTab), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
 		private async void UpdateAllTable()
 		{
 			EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", 0);
@@ -82,7 +104,7 @@ namespace Redbean.Editor
 			Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 
-		private async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
+		private static async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
 			var document = FirebaseFirestore.DefaultInstance.Collection("app_config").Document("setup");
 			var snapshotAsync = await document.GetSnapshotAsync();

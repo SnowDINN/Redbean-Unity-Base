@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06140ddde55d0984486fe31c37d9ae1f, type: 3}
-  m_Name: Installer
+  m_Name: GoogleSdk
   m_EditorClassIdentifier: 
   webClientId: 517818090277-b4n17aclsf2ie6e2c06e6fqbqhh9d03u.apps.googleusercontent.com
   webSecretId: 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
