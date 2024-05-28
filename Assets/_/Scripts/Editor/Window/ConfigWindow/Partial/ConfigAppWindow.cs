@@ -47,8 +47,9 @@ namespace Redbean.Editor
 				
 			using var firebase = new FirebaseBootstrap();
 			await firebase.Setup();
-			
-			DataContainer.Override((await GetTableConfig()).Model);
+
+			var config = await GetTableConfig();
+			DataContainer.Override(config.Model);
 			
 			try
 			{
@@ -64,6 +65,9 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", i + 1 / sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 				}
+
+				config.Model.TableNames = keys;
+				await config.Document.SetAsync(config.Model);
 			}
 			catch (Exception e)
 			{

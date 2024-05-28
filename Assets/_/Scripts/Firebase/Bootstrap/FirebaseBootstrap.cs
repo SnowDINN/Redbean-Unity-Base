@@ -2,6 +2,7 @@
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
+using Firebase.Storage;
 using Redbean.MVP.Content;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Redbean.Firebase
 	public class FirebaseBootstrap : IApplicationBootstrap
 	{
 		public static FirebaseAuth Auth;
+		public static FirebaseStorage Storage;
 		public static FirebaseFirestore Firestore;
 		public static DocumentReference UserDB;
 		public int ExecutionOrder => 100;
@@ -30,6 +32,7 @@ namespace Redbean.Firebase
 			{
 				// 파이어스토어 앱 설정 체크
 				Auth = FirebaseAuth.DefaultInstance;
+				Storage = FirebaseStorage.DefaultInstance;
 				Firestore = FirebaseFirestore.DefaultInstance;
 				
 				var appSnapshot = await Firestore.Collection("config").Document("app").GetSnapshotAsync();
@@ -66,8 +69,10 @@ namespace Redbean.Firebase
 
 		public void Dispose()
 		{
-			FirebaseApp.DefaultInstance.Dispose();
 			FirebaseAuth.DefaultInstance.Dispose();
+			FirebaseApp.DefaultInstance.Dispose();
+			
+			FirebaseFirestore.DefaultInstance.ClearPersistenceAsync();
 			
 			Log.System("Firebase has been terminated.");
 		}

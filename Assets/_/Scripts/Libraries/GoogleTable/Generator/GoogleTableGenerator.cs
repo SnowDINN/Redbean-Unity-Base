@@ -1,7 +1,8 @@
-﻿#if UNITY_EDITOR
+﻿using System.Linq;
+
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -18,6 +19,29 @@ namespace Redbean.Table
 	public class GoogleTableGenerator
 	{
 		public const string Namespace = "Redbean";
+
+		public static string[] TsvRefined(string[] tsv)
+		{
+			var skipIndex = tsv[0].Split("\t")
+			                      .Select((key, index) => (key, index))
+			                      .Where(_ => _.key.Contains('~'))
+			                      .ToArray();
+			if (!skipIndex.Any())
+				return tsv;
+
+			for (var index = 0; index < tsv.Length; index++)
+			{
+				var sheetValues = tsv[index].Split("\t").ToList();
+				var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
+
+				foreach (var target in removeTarget)
+					sheetValues.Remove(target);
+
+				tsv[index] = string.Join("\t", sheetValues);
+			}
+
+			return tsv;
+		}
 
 #if UNITY_EDITOR
 		private static string Path =>
@@ -53,26 +77,10 @@ namespace Redbean.Table
 				var sheetName = sheet.Properties.Title;
 				var sheetInfo = await service.Spreadsheets.Values.Get(SheetId, $"{sheetName}!A:Z").ExecuteAsync();
 
-				var csv = ToTSV(sheetInfo.Values).Split("\n");
-				var skipIndex = csv[0].Split("\t")
-				                      .Select((key, index) => (key, index))
-				                      .Where(_ => _.key.Contains('~'))
-				                      .ToArray();
-				if (skipIndex.Any())
-				{
-					for (var index = 0; index < csv.Length; index++)
-					{
-						var sheetValues = csv[index].Split("\t").ToList();
-						var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
-
-						foreach (var target in removeTarget)
-							sheetValues.Remove(target);
-
-						csv[index] = string.Join("\t", sheetValues);
-					}	
-				}
+				var tsv = ToTSV(sheetInfo.Values).Split("\r\n");
+				var tsvRefined = TsvRefined(tsv);
 				
-				sheetDictionary.Add(sheetName, csv);
+				sheetDictionary.Add(sheetName, tsvRefined);
 			}
 
 			return sheetDictionary;
@@ -190,7 +198,7 @@ namespace Redbean.Table
 				csvString.Append(stringBuilder.ToString());
 				
 				if (rowIndex < rows.Count - 1)
-					csvString.Append('\n');
+					csvString.Append("\r\n");
 			}
 			
 			return csvString.ToString();

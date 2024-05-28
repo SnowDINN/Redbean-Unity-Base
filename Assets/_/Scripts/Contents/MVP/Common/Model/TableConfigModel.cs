@@ -1,4 +1,5 @@
-﻿using Firebase.Firestore;
+﻿using System.Collections.Generic;
+using Firebase.Firestore;
 
 namespace Redbean.MVP.Content
 {
@@ -10,6 +11,9 @@ namespace Redbean.MVP.Content
 		
 		[FirestoreProperty("sheet")]
 		public TableSheetArgument Sheet { get; set; } = new();
+
+		[FirestoreProperty("table")]
+		public string[] TableNames { get; set; } = { };
 	}
 	
 	[FirestoreData]

@@ -1,7 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Cysharp.Threading.Tasks;
+using Redbean.Dependencies;
+using Redbean.Firebase;
+using Redbean.MVP.Content;
+using UnityEngine;
 
 namespace Redbean.Table
 {
@@ -11,12 +15,17 @@ namespace Redbean.Table
 
 		public async UniTask Setup()
 		{
-			var sheets = new Dictionary<string, string[]>();
-			foreach (var sheet in sheets)
+			var names = DataContainer.Get<TableConfigModel>().TableNames;
+			foreach (var name in names)
 			{
-				var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{sheet.Key}");
-				foreach (var item in sheet.Value.Skip(2))
+				var storageReference = FirebaseBootstrap.Storage.GetReference($"Table/{Application.version}/{name}.tsv");
+				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
+				
+				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
+				var tsvRefined = GoogleTableGenerator.TsvRefined(tsv);
+				foreach (var item in tsvRefined.Skip(2))
 				{
+					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{name}");
 					if (Activator.CreateInstance(type) is IGoogleTable instance)
 						instance.Apply(item);
 				}
