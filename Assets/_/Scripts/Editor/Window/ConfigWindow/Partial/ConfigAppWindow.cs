@@ -64,10 +64,10 @@ namespace Redbean.Editor
 				var values = sheetRaw.Values.ToArray();
 				for (var i = 0; i < sheetRaw.Count; i++)
 				{
-					EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", i + 1 / sheetRaw.Count);
+					EditorUtility.DisplayProgressBar("Table Update Progress Bar", $"Updating {keys[i]} Table...", i + 1 / sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 					
-					var storageReference = FirebaseStorage.DefaultInstance.GetReference($"Table/{PlayerSettings.bundleVersion}/{keys[i]}.tsv");
+					var storageReference = FirebaseStorage.DefaultInstance.GetReference(GoogleTableDefine.RequestPath(keys[i]));
 					var tsv = $"{string.Join("\r\n", values[i])}";
 					var metadata = new MetadataChange
 					{

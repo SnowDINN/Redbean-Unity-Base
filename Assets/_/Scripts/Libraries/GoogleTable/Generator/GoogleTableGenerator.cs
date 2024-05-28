@@ -11,6 +11,7 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Redbean.Dependencies;
 using Redbean.MVP.Content;
+using UnityEditor;
 using UnityEngine;
 #endif
 
@@ -38,18 +39,27 @@ namespace Redbean.Table
 		{
 			var sheetDictionary = new Dictionary<string, string[]>();
 			
-			var client = new ClientSecrets { ClientId = ClientId, ClientSecret = ClientSecret };
-			var scopes = new[] { SheetsService.Scope.SpreadsheetsReadonly };
-			var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(client, scopes, "UnityEditor", CancellationToken.None).Result;
+			var client = new ClientSecrets
+			{
+				ClientId = ClientId,
+				ClientSecret = ClientSecret
+			};
+			
+			var scopes = new[]
+			{
+				SheetsService.Scope.SpreadsheetsReadonly
+			};
+			var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(client, scopes, Namespace, CancellationToken.None).Result;
 
 			var service = new SheetsService(new BaseClientService.Initializer
 			{
-				HttpClientInitializer = credential,
-				ApplicationName = "DEV-BoongGOD"
+				HttpClientInitializer = credential
 			});
-        
 			var sheets = await service.Spreadsheets.Get(SheetId).ExecuteAsync();
-			foreach (var sheet in sheets.Sheets.Skip(1))
+			
+			// Skip Summary Sheet
+			var skipSheets = sheets.Sheets.Skip(1);
+			foreach (var sheet in skipSheets)
 			{
 				var sheetName = sheet.Properties.Title;
 				var sheetInfo = await service.Spreadsheets.Values.Get(SheetId, $"{sheetName}!A:Z").ExecuteAsync();
@@ -183,6 +193,7 @@ namespace Redbean.Table
 		
 		private static string[] TsvRefined(string[] tsv)
 		{
+			// Skip Contains '~' Column
 			var skipIndex = tsv[0].Split("\t")
 			                      .Select((key, index) => (key, index))
 			                      .Where(_ => _.key.Contains('~'))

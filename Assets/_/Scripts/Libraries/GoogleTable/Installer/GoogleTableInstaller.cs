@@ -21,4 +21,9 @@ namespace Redbean
 		}
 #endif
 	}
+	
+	public class GoogleTableDefine
+	{
+		public static string RequestPath(string name) => $"Table/{PlayerSettings.bundleVersion}/{name}.tsv";
+	}
 }
