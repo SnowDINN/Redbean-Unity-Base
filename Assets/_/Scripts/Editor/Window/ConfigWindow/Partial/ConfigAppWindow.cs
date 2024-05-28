@@ -42,16 +42,18 @@ namespace Redbean.Editor
 		[TabGroup(ConfigTab), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
 		private async void UpdateAllTable()
 		{
-			EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", 0);
-			{
-				using var container = new DataContainer();
-				await container.Setup();
+			using var container = new DataContainer();
+			await container.Setup();
 				
-				using var firebase = new FirebaseBootstrap();
-				await firebase.Setup();
+			using var firebase = new FirebaseBootstrap();
+			await firebase.Setup();
 			
-				DataContainer.Override((await GetAppConfig()).Model);
+			DataContainer.Override((await GetAppConfig()).Model);
 			
+			try
+			{
+				EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", 0);
+				
 				var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
 				await GoogleTableGenerator.GenerateCSharp(sheetRaw);
 
@@ -63,9 +65,14 @@ namespace Redbean.Editor
 					await GoogleTableGenerator.GenerateItemCSharp(keys[i], values[i]);
 				}
 			}
-			EditorUtility.ClearProgressBar();
+			catch (Exception e)
+			{
+				Log.Fail("Error", e.Message);
+				EditorUtility.ClearProgressBar();
+			}
 			
 			Log.Notice("Table update is complete.");
+			EditorUtility.ClearProgressBar();
 			
 			AssetDatabase.Refresh();
 		}

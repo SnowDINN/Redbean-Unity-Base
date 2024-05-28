@@ -15,7 +15,9 @@ namespace Redbean.Table
 	{
 		private static string SheetUri => DataContainer.Get<AppConfigModel>().Table.Uri;
 		private static string SheetGid => DataContainer.Get<AppConfigModel>().Table.Gid;
+		public int ExecutionOrder => 200;
 
+#if UNITY_EDITOR
 		private static string Path =>
 			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").Path}";
 
@@ -23,7 +25,7 @@ namespace Redbean.Table
 			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").ItemPath}";
 		
 		private const string Namespace = "Redbean";
-		public int ExecutionOrder => 200;
+#endif
 
 		public async UniTask Setup() => await RuntimeTableSetup();
 		public void Dispose() { }
@@ -69,7 +71,36 @@ namespace Redbean.Table
 
 			return sheetRaw;
 		}
+
+		/// <summary>
+		/// 테이블 적용
+		/// </summary>
+		public async UniTask RuntimeTableSetup()
+		{
+			var sheets = await GetSheetRaw();
+			foreach (var sheet in sheets)
+			{
+				var type = Type.GetType($"{Namespace}.Table.{sheet.Key}");
+				foreach (var item in sheet.Value.Skip(2))
+				{
+					if (Activator.CreateInstance(type) is IGoogleTable instance)
+						instance.Apply(item);
+				}
+			}
+			
+			Log.Success("Table", "Success to connect to the Google sheets.");
+		}
+
+		private static async UniTask<string[]> GetCSV(string uri)
+		{
+			var www = UnityWebRequest.Get(uri);
+			var request = await www.SendWebRequest();
+			var csv = request.downloadHandler.text;
+			
+			return csv.Split("\r\n");
+		}
 		
+#if UNITY_EDITOR
 		/// <summary>
 		/// 테이블 C# 스크립트 생성
 		/// </summary>
@@ -154,33 +185,6 @@ namespace Redbean.Table
 			File.Delete($"{ItemPath}/{key}.cs");
 			await File.WriteAllTextAsync($"{ItemPath}/{key}.cs", $"{stringBuilder}");
 		}
-
-		/// <summary>
-		/// 테이블 적용
-		/// </summary>
-		public async UniTask RuntimeTableSetup()
-		{
-			var sheets = await GetSheetRaw();
-			foreach (var sheet in sheets)
-			{
-				var type = Type.GetType($"{Namespace}.Table.{sheet.Key}");
-				foreach (var item in sheet.Value.Skip(2))
-				{
-					if (Activator.CreateInstance(type) is IGoogleTable instance)
-						instance.Apply(item);
-				}
-			}
-			
-			Log.Success("Table", "Success to connect to the Google sheets.");
-		}
-
-		private static async UniTask<string[]> GetCSV(string uri)
-		{
-			var www = UnityWebRequest.Get(uri);
-			var request = await www.SendWebRequest();
-			var csv = request.downloadHandler.text;
-			
-			return csv.Split("\r\n");
-		}
+#endif
 	}
 }
