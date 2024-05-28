@@ -10,9 +10,6 @@ namespace Redbean.MVP.Content
 		
 		[FirestoreProperty("ios")]
 		public MobileConfigArgument iOS { get; set; } = new();
-		
-		[FirestoreProperty("table")]
-		public TableConfigArgument Table { get; set; } = new();
 	}
 
 	[FirestoreData]
@@ -22,13 +19,5 @@ namespace Redbean.MVP.Content
 		public string Version { get; set; } = string.Empty;
 	}
 	
-	[FirestoreData]
-	public class TableConfigArgument
-	{
-		[FirestoreProperty("uri")]
-		public string Uri { get; set; } = string.Empty;
-		
-		[FirestoreProperty("gid")]
-		public string Gid { get; set; } = string.Empty;
-	}
+
 }

@@ -1,21 +1,23 @@
-﻿using System;
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Google.Apis.Sheets.v4;
 using Redbean.Dependencies;
 using Redbean.MVP.Content;
 using UnityEngine;
-using UnityEngine.Networking;
+#endif
 
 namespace Redbean.Table
 {
-	public class GoogleTableGenerator : IApplicationBootstrap
+	public class GoogleTableGenerator
 	{
-		private static string SheetUri => DataContainer.Get<AppConfigModel>().Table.Uri;
-		private static string SheetGid => DataContainer.Get<AppConfigModel>().Table.Gid;
-		public int ExecutionOrder => 200;
+		public const string Namespace = "Redbean";
 
 #if UNITY_EDITOR
 		private static string Path =>
@@ -24,87 +26,62 @@ namespace Redbean.Table
 		private static string ItemPath =>
 			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").ItemPath}";
 		
-		private const string Namespace = "Redbean";
-#endif
-
-		public async UniTask Setup() => await RuntimeTableSetup();
-		public void Dispose() { }
+		private static string ClientId => DataContainer.Get<TableConfigModel>().Client.Id;
+		private static string ClientSecret => DataContainer.Get<TableConfigModel>().Client.Secret;
+		private static string SheetId => DataContainer.Get<TableConfigModel>().Sheet.Id;
 
 		/// <summary>
-		/// 테이블 데이터 호출 및 파싱
+		/// 테이블 시트 데이터 호출
 		/// </summary>
-		public static async UniTask<Dictionary<string, string[]>> GetSheetRaw()
+		public static async UniTask<Dictionary<string, string[]>> GetSheetAsync()
 		{
-			var csv = await GetCSV($"{SheetUri}/export?format=tsv&gid={SheetGid}");
+			var sheetDictionary = new Dictionary<string, string[]>();
 			
-			var idIndex = csv[0].Split("\t")
-			                    .Select((key, index) => (key, index))
-			                    .FirstOrDefault(_ => _.key == "Sheet ID");
-			
-			var nameIndex = csv[0].Split("\t")
-			                      .Select((key, index) => (key, index))
-			                      .FirstOrDefault(_ => _.key == "Sheet Name");
+			var client = new ClientSecrets { ClientId = ClientId, ClientSecret = ClientSecret };
+			var scopes = new[] { SheetsService.Scope.SpreadsheetsReadonly };
+			var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(client, scopes, "UnityEditor", CancellationToken.None).Result;
 
-			var sheetRaw = new Dictionary<string, string[]>();
-			for (var i = 1; i < csv.Length; i++)
+			var service = new SheetsService(new BaseClientService.Initializer
 			{
-				var split = csv[i].Split("\t");
-				var variables = await GetCSV($"{SheetUri}/export?format=tsv&gid={split[idIndex.index]}");
-				var skipIndex = variables[0].Split("\t")
-				                            .Select((key, index) => (key, index))
-				                            .Where(_ => _.key.Contains('~'))
-				                            .ToArray();
+				HttpClientInitializer = credential,
+				ApplicationName = "DEV-BoongGOD"
+			});
+        
+			var sheets = await service.Spreadsheets.Get(SheetId).ExecuteAsync();
+			foreach (var sheet in sheets.Sheets.Skip(1))
+			{
+				var sheetName = sheet.Properties.Title;
+				var sheetInfo = await service.Spreadsheets.Values.Get(SheetId, $"{sheetName}!A:Z").ExecuteAsync();
 
-				for (var index = 0; index < variables.Length; index++)
+				var csv = ToTSV(sheetInfo.Values).Split("\n");
+				var skipIndex = csv[0].Split("\t")
+				                      .Select((key, index) => (key, index))
+				                      .Where(_ => _.key.Contains('~'))
+				                      .ToArray();
+				if (skipIndex.Any())
 				{
-					var sheetValues = variables[index].Split("\t").ToList();
-					var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
+					for (var index = 0; index < csv.Length; index++)
+					{
+						var sheetValues = csv[index].Split("\t").ToList();
+						var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
 
-					foreach (var target in removeTarget)
-						sheetValues.Remove(target);
+						foreach (var target in removeTarget)
+							sheetValues.Remove(target);
 
-					variables[index] = string.Join("\t", sheetValues);
+						csv[index] = string.Join("\t", sheetValues);
+					}	
 				}
 				
-				sheetRaw.Add(split[nameIndex.index], variables);
+				sheetDictionary.Add(sheetName, csv);
 			}
 
-			return sheetRaw;
-		}
-
-		/// <summary>
-		/// 테이블 적용
-		/// </summary>
-		public async UniTask RuntimeTableSetup()
-		{
-			var sheets = await GetSheetRaw();
-			foreach (var sheet in sheets)
-			{
-				var type = Type.GetType($"{Namespace}.Table.{sheet.Key}");
-				foreach (var item in sheet.Value.Skip(2))
-				{
-					if (Activator.CreateInstance(type) is IGoogleTable instance)
-						instance.Apply(item);
-				}
-			}
-			
-			Log.Success("Table", "Success to connect to the Google sheets.");
-		}
-
-		private static async UniTask<string[]> GetCSV(string uri)
-		{
-			var www = UnityWebRequest.Get(uri);
-			var request = await www.SendWebRequest();
-			var csv = request.downloadHandler.text;
-			
-			return csv.Split("\r\n");
+			return sheetDictionary;
 		}
 		
-#if UNITY_EDITOR
 		/// <summary>
 		/// 테이블 C# 스크립트 생성
 		/// </summary>
-		public static async UniTask GenerateCSharp(Dictionary<string, string[]> tables)
+		public static async UniTask GenerateCSharpAsync(Dictionary<string, string[]> tables)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("using System.Collections.Generic;");
@@ -131,7 +108,7 @@ namespace Redbean.Table
 		/// <summary>
 		/// 테이블 아이템 C# 스크립트 생성
 		/// </summary>
-		public static async UniTask GenerateItemCSharp(string key, string[] value)
+		public static async UniTask GenerateItemCSharpAsync(string key, string[] value)
 		{
 			var variableNames = value[0].Split("\t");
 			var variableTypes = value[1].Split("\t");
@@ -184,6 +161,39 @@ namespace Redbean.Table
 			
 			File.Delete($"{ItemPath}/{key}.cs");
 			await File.WriteAllTextAsync($"{ItemPath}/{key}.cs", $"{stringBuilder}");
+		}
+		
+		private static string ToTSV(IList<IList<object>> rows)
+		{
+			var csvString = new StringBuilder();
+			for (var rowIndex = 0; rowIndex < rows.Count; rowIndex++)
+			{
+				var stringBuilder = new StringBuilder();
+				for (var i = 0; i < rows[0].Count; i++)
+				{
+					if (i >= rows[rowIndex].Count)
+					{
+						for (var idx = 0; idx < rows[0].Count - rows[rowIndex].Count; idx++)
+							stringBuilder.Append("\t");
+						break;
+					}
+					
+					if (rows[rowIndex][i].ToString().Contains("\t"))
+						stringBuilder.Append($"\"{rows[rowIndex][i]}\"");
+					else
+						stringBuilder.Append(rows[rowIndex][i]);
+					
+					if (i < rows[rowIndex].Count - 1)
+						stringBuilder.Append("\t");
+				}
+				
+				csvString.Append(stringBuilder.ToString());
+				
+				if (rowIndex < rows.Count - 1)
+					csvString.Append('\n');
+			}
+			
+			return csvString.ToString();
 		}
 #endif
 	}

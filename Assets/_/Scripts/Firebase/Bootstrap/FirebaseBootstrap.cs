@@ -32,8 +32,8 @@ namespace Redbean.Firebase
 				Auth = FirebaseAuth.DefaultInstance;
 				Firestore = FirebaseFirestore.DefaultInstance;
 				
-				var configSnapshot = await Firestore.Collection("app_config").Document("setup").GetSnapshotAsync();
-				if (configSnapshot.Exists)
+				var appSnapshot = await Firestore.Collection("config").Document("app").GetSnapshotAsync();
+				if (appSnapshot.Exists)
 					Log.Success("Firebase", "Success to load to the app config.");
 				else
 				{
@@ -41,14 +41,25 @@ namespace Redbean.Firebase
 					return;
 				}
 
-				var config = configSnapshot.ConvertTo<AppConfigModel>().Publish();
-				if (config is not null)
+				var app = appSnapshot.ConvertTo<AppConfigModel>().Publish();
+				if (app is not null)
 				{
-#if UNITY_ANDROID
-					AppConfigSettings(config.Android);
-#elif UNITY_IOS
-					AppConfigSettings(config.iOS);
-#endif
+					// 앱 설정 관련
+				}
+				
+				var tableSnapshot = await Firestore.Collection("config").Document("table").GetSnapshotAsync();
+				if (tableSnapshot.Exists)
+					Log.Success("Firebase", "Success to load to the table config.");
+				else
+				{
+					Log.Fail("Firebase", "Failed to load to the table config.");
+					return;
+				}
+
+				var table = tableSnapshot.ConvertTo<TableConfigModel>().Publish();
+				if (table is not null)
+				{
+					// 테이블 설정 관련
 				}
 			}
 		}
@@ -59,11 +70,6 @@ namespace Redbean.Firebase
 			FirebaseAuth.DefaultInstance.Dispose();
 			
 			Log.System("Firebase has been terminated.");
-		}
-
-		private static void AppConfigSettings(MobileConfigArgument configArgs)
-		{
-
 		}
 	}
 }

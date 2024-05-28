@@ -48,21 +48,21 @@ namespace Redbean.Editor
 			using var firebase = new FirebaseBootstrap();
 			await firebase.Setup();
 			
-			DataContainer.Override((await GetAppConfig()).Model);
+			DataContainer.Override((await GetTableConfig()).Model);
 			
 			try
 			{
 				EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", 0);
 				
-				var sheetRaw = await GoogleTableGenerator.GetSheetRaw();
-				await GoogleTableGenerator.GenerateCSharp(sheetRaw);
+				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
+				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
 
 				var keys = sheetRaw.Keys.ToArray();
 				var values = sheetRaw.Values.ToArray();
 				for (var i = 0; i < sheetRaw.Count; i++)
 				{
 					EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", i + 1 / sheetRaw.Count);
-					await GoogleTableGenerator.GenerateItemCSharp(keys[i], values[i]);
+					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 				}
 			}
 			catch (Exception e)
@@ -113,7 +113,7 @@ namespace Redbean.Editor
 
 		private static async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
-			var document = FirebaseFirestore.DefaultInstance.Collection("app_config").Document("setup");
+			var document = FirebaseFirestore.DefaultInstance.Collection("config").Document("app");
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the app config.");
@@ -124,6 +124,21 @@ namespace Redbean.Editor
 			}
 				
 			return (document, snapshotAsync.ConvertTo<AppConfigModel>());
+		}
+		
+		private static async UniTask<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
+		{
+			var document = FirebaseFirestore.DefaultInstance.Collection("config").Document("table");
+			var snapshotAsync = await document.GetSnapshotAsync();
+			if (snapshotAsync.Exists)
+				Log.Success("Firebase", "Success to load to the table config.");
+			else
+			{
+				Log.Fail("Firebase", "Failed to load to the table config.");
+				return default;
+			}
+				
+			return (document, snapshotAsync.ConvertTo<TableConfigModel>());
 		}
 		
 		[Serializable]
