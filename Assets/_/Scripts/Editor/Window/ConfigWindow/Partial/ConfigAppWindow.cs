@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
+using Firebase.Storage;
 using Redbean.Dependencies;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
@@ -64,6 +66,16 @@ namespace Redbean.Editor
 				{
 					EditorUtility.DisplayProgressBar("Table Update Progress Bar", "Doing some work...", i + 1 / sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
+					
+					var storageReference = FirebaseStorage.DefaultInstance.GetReference($"Table/{PlayerSettings.bundleVersion}/{keys[i]}.tsv");
+					var tsv = $"{string.Join("\r\n", values[i])}";
+					var metadata = new MetadataChange
+					{
+						CacheControl = "no-store",
+					};
+				
+					await storageReference.PutBytesAsync(Encoding.UTF8.GetBytes(tsv), metadata);
+					Log.Notice($"{keys[i]} Table update is complete.");
 				}
 
 				config.Model.TableNames = keys;
@@ -75,7 +87,7 @@ namespace Redbean.Editor
 				EditorUtility.ClearProgressBar();
 			}
 			
-			Log.Notice("Table update is complete.");
+			Log.Success("Table", "Success to update to the Google sheets.");
 			EditorUtility.ClearProgressBar();
 			
 			AssetDatabase.Refresh();

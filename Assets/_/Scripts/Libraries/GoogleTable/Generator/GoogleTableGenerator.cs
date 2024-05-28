@@ -20,29 +20,6 @@ namespace Redbean.Table
 	{
 		public const string Namespace = "Redbean";
 
-		public static string[] TsvRefined(string[] tsv)
-		{
-			var skipIndex = tsv[0].Split("\t")
-			                      .Select((key, index) => (key, index))
-			                      .Where(_ => _.key.Contains('~'))
-			                      .ToArray();
-			if (!skipIndex.Any())
-				return tsv;
-
-			for (var index = 0; index < tsv.Length; index++)
-			{
-				var sheetValues = tsv[index].Split("\t").ToList();
-				var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
-
-				foreach (var target in removeTarget)
-					sheetValues.Remove(target);
-
-				tsv[index] = string.Join("\t", sheetValues);
-			}
-
-			return tsv;
-		}
-
 #if UNITY_EDITOR
 		private static string Path =>
 			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").Path}";
@@ -202,6 +179,29 @@ namespace Redbean.Table
 			}
 			
 			return csvString.ToString();
+		}
+		
+		private static string[] TsvRefined(string[] tsv)
+		{
+			var skipIndex = tsv[0].Split("\t")
+			                      .Select((key, index) => (key, index))
+			                      .Where(_ => _.key.Contains('~'))
+			                      .ToArray();
+			if (!skipIndex.Any())
+				return tsv;
+
+			for (var index = 0; index < tsv.Length; index++)
+			{
+				var sheetValues = tsv[index].Split("\t").ToList();
+				var removeTarget = skipIndex.Select(index => sheetValues[index.index]).ToList();
+
+				foreach (var target in removeTarget)
+					sheetValues.Remove(target);
+
+				tsv[index] = string.Join("\t", sheetValues);
+			}
+
+			return tsv;
 		}
 #endif
 	}

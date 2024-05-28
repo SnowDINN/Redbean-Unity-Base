@@ -22,8 +22,7 @@ namespace Redbean.Table
 				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
 				
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
-				var tsvRefined = GoogleTableGenerator.TsvRefined(tsv);
-				foreach (var item in tsvRefined.Skip(2))
+				foreach (var item in tsv.Skip(2))
 				{
 					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{name}");
 					if (Activator.CreateInstance(type) is IGoogleTable instance)

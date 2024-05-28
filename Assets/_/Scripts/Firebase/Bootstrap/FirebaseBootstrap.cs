@@ -69,10 +69,10 @@ namespace Redbean.Firebase
 
 		public void Dispose()
 		{
+			FirebaseFirestore.DefaultInstance.ClearPersistenceAsync();
+			
 			FirebaseAuth.DefaultInstance.Dispose();
 			FirebaseApp.DefaultInstance.Dispose();
-			
-			FirebaseFirestore.DefaultInstance.ClearPersistenceAsync();
 			
 			Log.System("Firebase has been terminated.");
 		}
