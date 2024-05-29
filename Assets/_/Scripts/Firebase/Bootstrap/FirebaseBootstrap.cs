@@ -10,9 +10,10 @@ namespace Redbean.Firebase
 {
 	public class FirebaseBootstrap : IApplicationBootstrap
 	{
-		public static FirebaseAuth Auth;
-		public static FirebaseStorage Storage;
-		public static FirebaseFirestore Firestore;
+		public static FirebaseAuth Auth => FirebaseAuth.DefaultInstance;
+		public static FirebaseStorage Storage => FirebaseStorage.DefaultInstance;
+		public static FirebaseFirestore Firestore => FirebaseFirestore.DefaultInstance;
+		
 		public static DocumentReference UserDB;
 		public int ExecutionOrder => 100;
 
@@ -31,11 +32,9 @@ namespace Redbean.Firebase
 			if (Application.isPlaying)
 			{
 				// 파이어스토어 앱 설정 체크
-				Auth = FirebaseAuth.DefaultInstance;
-				Storage = FirebaseStorage.DefaultInstance;
-				Firestore = FirebaseFirestore.DefaultInstance;
-				
-				var appSnapshot = await Firestore.Collection("config").Document("app").GetSnapshotAsync();
+				var appSnapshot = await Firestore.Collection(FirebaseDefine.Config)
+				                                 .Document(FirebaseDefine.AppConfig)
+				                                 .GetSnapshotAsync();
 				if (appSnapshot.Exists)
 					Log.Success("Firebase", "Success to load to the app config.");
 				else
@@ -50,7 +49,9 @@ namespace Redbean.Firebase
 					// 앱 설정 관련
 				}
 				
-				var tableSnapshot = await Firestore.Collection("config").Document("table").GetSnapshotAsync();
+				var tableSnapshot = await Firestore.Collection(FirebaseDefine.Config)
+				                                   .Document(FirebaseDefine.TableConfig)
+				                                   .GetSnapshotAsync();
 				if (tableSnapshot.Exists)
 					Log.Success("Firebase", "Success to load to the table config.");
 				else

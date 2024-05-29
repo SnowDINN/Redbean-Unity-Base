@@ -17,7 +17,7 @@ namespace Redbean.Cryptography
 			Aes.BlockSize = 128;
 		}
 
-		private string key
+		private static string key
 		{
 			get
 			{

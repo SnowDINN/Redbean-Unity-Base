@@ -19,9 +19,11 @@ namespace Redbean.Table
 			{
 				var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableDefine.RequestPath(name));
 				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
-				
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
-				foreach (var item in tsv.Skip(2))
+				
+				// Skip Name and Type Rows
+				var skipRows = tsv.Skip(2);
+				foreach (var item in skipRows)
 				{
 					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{name}");
 					if (Activator.CreateInstance(type) is IGoogleTable instance)

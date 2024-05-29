@@ -67,7 +67,7 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Table Update Progress Bar", $"Updating {keys[i]} Table...", i + 1 / sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 					
-					var storageReference = FirebaseStorage.DefaultInstance.GetReference(GoogleTableDefine.RequestPath(keys[i]));
+					var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableDefine.RequestPath(keys[i]));
 					var tsv = $"{string.Join("\r\n", values[i])}";
 					var metadata = new MetadataChange
 					{
@@ -129,7 +129,7 @@ namespace Redbean.Editor
 
 		private static async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
-			var document = FirebaseFirestore.DefaultInstance.Collection("config").Document("app");
+			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the app config.");
@@ -144,7 +144,7 @@ namespace Redbean.Editor
 		
 		private static async UniTask<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
 		{
-			var document = FirebaseFirestore.DefaultInstance.Collection("config").Document("table");
+			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the table config.");

@@ -20,14 +20,14 @@ namespace Redbean
 		public static UserModel SetReferenceUser(this UserModel model)
 		{
 			if (!string.IsNullOrEmpty(model.Social.Id))
-				FirebaseBootstrap.UserDB = FirebaseBootstrap.Firestore.Collection("users").Document(model.Social.Id);
+				FirebaseBootstrap.UserDB = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Users).Document(model.Social.Id);
 			
 			return model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 		}
 		
 		public static async UniTask<bool> TryGetUserSnapshot(this UserModel model, string id)
 		{
-			var equalTo = FirebaseBootstrap.Firestore.Collection("users").WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
+			var equalTo = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Users).WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
 			var querySnapshot = await equalTo.GetSnapshotAsync();
 			if (querySnapshot.Any())
 			{

@@ -26,7 +26,7 @@ namespace Redbean.Editor
 				user.SetReferenceUser();
 		}
 
-		[TabGroup(AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf("isExistUser", Value = true), PropertySpace, DisableInEditorMode]
+		[TabGroup(AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
 			if (!ApplicationLifeCycle.IsReady)
