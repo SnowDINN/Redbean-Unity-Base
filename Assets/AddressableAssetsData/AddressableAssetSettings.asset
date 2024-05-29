@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: cd85ae8b35c73e841862cd9ee748a5c5
   m_currentHash:
     serializedVersion: 2
-    Hash: 5962b0e54daa080d7b217e1055d52cbe
+    Hash: b77a73fb2b58831a0f60c8a6068633c3
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
       - m_Id: 1657206d5e22e5f4e9efbccc889317d7
         m_Value: 'Bundle/[Redbean.ApplicationSettings.Version]/[BuildTarget]'
       - m_Id: 473b3f291c5a3be4086725f62d7ddc68
-        m_Value: 'https://storage.googleapis.com/live-boonggod.appspot.com/Bundle/[Redbean.ApplicationSettings.Version]/[BuildTarget]'
+        m_Value: 'https://storage.googleapis.com/boonggod-67483.appspot.com/Bundle/[Redbean.ApplicationSettings.Version]/[BuildTarget]'
     - m_InheritedParent: 
       m_Id: cecfae07380729f48b9f605871f6796b
       m_ProfileName: Release

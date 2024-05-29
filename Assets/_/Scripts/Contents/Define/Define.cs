@@ -14,5 +14,27 @@
 		public const string USER_SOCIAL_KEY = "social";
 		public const string USER_PLATFORM_KEY = "platform";
 		public const string USER_NICKNAME_KEY = "nickname";
+		
+
+	}
+
+	public class StoragePath
+	{
+		private static string OS
+		{
+			get
+			{
+#if UNITY_ANDROID
+				return "Android";
+#endif
+				
+#if UNITY_IOS
+				return "iOS;
+#endif
+			}
+		}
+		
+		public static string TableRequest(string name) => $"Table/{ApplicationSettings.Version}/{name}.tsv";
+		public static string BundleRequest(string name) => $"Bundle/{ApplicationSettings.Version}/{OS}/{name}";
 	}
 }

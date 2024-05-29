@@ -14,14 +14,15 @@ namespace Redbean.Table
 
 		public async UniTask Setup()
 		{
-			var names = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(FirebaseDefine.TableConfig);
+			var names = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
 			var snapshotAsync = await names.GetSnapshotAsync();
 			if (!snapshotAsync.Exists)
 				return;
-			
-			foreach (var name in snapshotAsync.ConvertTo<string[]>())
+
+			var tables = snapshotAsync.ConvertTo<StorageFileModel>().Table;
+			foreach (var table in tables)
 			{
-				var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableSettings.RequestPath(name));
+				var storageReference = FirebaseBootstrap.Storage.GetReference(StoragePath.TableRequest(table));
 				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
 				
@@ -29,7 +30,7 @@ namespace Redbean.Table
 				var skipRows = tsv.Skip(2);
 				foreach (var item in skipRows)
 				{
-					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{name}");
+					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{table}");
 					if (Activator.CreateInstance(type) is IGoogleTable instance)
 						instance.Apply(item);
 				}
