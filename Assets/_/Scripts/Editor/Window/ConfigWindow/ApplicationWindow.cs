@@ -16,7 +16,7 @@ namespace Redbean.Editor
 		
 		protected override void OnEnable()
 		{
-			googleTable = Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable");
+			googleTable = Resources.Load<GoogleTableInstaller>("Settings/GoogleTable");
 			
 			if (!PlayerPrefs.HasKey(Key.GetDataGroup))
 				return;

@@ -67,7 +67,7 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Table Update Progress Bar", $"Updating {keys[i]} Table...", i + 1 / sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 					
-					var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableDefine.RequestPath(keys[i]));
+					var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableSettings.RequestPath(keys[i]));
 					var tsv = $"{string.Join("\r\n", values[i])}";
 					var metadata = new MetadataChange
 					{

@@ -23,10 +23,10 @@ namespace Redbean.Table
 
 #if UNITY_EDITOR
 		private static string Path =>
-			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").Path}";
+			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("Settings/GoogleTable").Path}";
 
 		private static string ItemPath =>
-			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("GoogleTable/GoogleTable").ItemPath}";
+			$"{Application.dataPath.Replace("Assets", "")}{Resources.Load<GoogleTableInstaller>("Settings/GoogleTable").ItemPath}";
 		
 		private static string ClientId => DataContainer.Get<TableConfigModel>().Client.Id;
 		private static string ClientSecret => DataContainer.Get<TableConfigModel>().Client.Secret;

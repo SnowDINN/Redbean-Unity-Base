@@ -20,7 +20,8 @@ MonoBehaviour:
   - m_GUID: 917f82b1a1020eb4e98b50445cc4c4e8
     m_Address: PopupException
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 39846f20475d39540b576efb004aa207, type: 2}

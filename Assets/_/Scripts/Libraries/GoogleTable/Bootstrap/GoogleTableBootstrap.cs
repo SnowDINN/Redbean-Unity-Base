@@ -17,7 +17,7 @@ namespace Redbean.Table
 			var names = DataContainer.Get<TableConfigModel>().TableNames;
 			foreach (var name in names)
 			{
-				var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableDefine.RequestPath(name));
+				var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableSettings.RequestPath(name));
 				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
 				

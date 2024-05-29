@@ -22,8 +22,9 @@ namespace Redbean
 #endif
 	}
 	
-	public class GoogleTableDefine
+	public class GoogleTableSettings
 	{
-		public static string RequestPath(string name) => $"Table/{PlayerSettings.bundleVersion}/{name}.tsv";
+		private static ApplicationInstaller installer => Resources.Load<ApplicationInstaller>("Settings/Application");
+		public static string RequestPath(string name) => $"Table/{installer.Version}/{name}.tsv";
 	}
 }
