@@ -12,12 +12,8 @@ namespace Redbean.Editor
 		private const string ConfigTab = "Config";
 		private const string PlayerPrefsTab = "PlayerPrefs";
 		
-		private GoogleTableInstaller googleTable;
-		
 		protected override void OnEnable()
 		{
-			googleTable = Resources.Load<GoogleTableInstaller>("Settings/GoogleTable");
-			
 			if (!PlayerPrefs.HasKey(Key.GetDataGroup))
 				return;
 

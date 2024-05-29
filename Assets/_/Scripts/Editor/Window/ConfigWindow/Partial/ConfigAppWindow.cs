@@ -22,22 +22,22 @@ namespace Redbean.Editor
 		[TabGroup(ConfigTab), Title(TableTitle), LabelText("Path"), ShowInInspector, FolderPath]
 		public string TablePath
 		{
-			get => googleTable.Path;
+			get => GoogleTableSettings.Path;
 			set
 			{
-				googleTable.Path = value;
-				googleTable.Save();
+				GoogleTableSettings.Path = value;
+				GoogleTableSettings.Save();
 			}
 		}
 
 		[TabGroup(ConfigTab), LabelText("Item Path"), ShowInInspector, FolderPath]
 		public string TableItemPath
 		{
-			get => googleTable.ItemPath;
+			get => GoogleTableSettings.ItemPath;
 			set
 			{
-				googleTable.ItemPath = value;
-				googleTable.Save();
+				GoogleTableSettings.ItemPath = value;
+				GoogleTableSettings.Save();
 			}
 		}
 		

@@ -10,9 +10,20 @@ namespace Redbean
 
 	public class ApplicationSettings
 	{
-		private static ApplicationInstaller installer => Resources.Load<ApplicationInstaller>("Settings/Application");
+		private static ApplicationInstaller installer;
+
+		private static ApplicationInstaller Installer
+		{
+			get
+			{
+				if (!installer)
+					installer = Resources.Load<ApplicationInstaller>("Settings/Application");
+
+				return installer;
+			}
+		}
 
 		public static string Version =>
-			string.IsNullOrEmpty(installer.Version) ? Application.version : installer.Version;
+			string.IsNullOrEmpty(Installer.Version) ? Application.version : Installer.Version;
 	}
 }

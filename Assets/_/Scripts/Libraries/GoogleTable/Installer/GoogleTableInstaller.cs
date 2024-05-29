@@ -24,7 +24,32 @@ namespace Redbean
 	
 	public class GoogleTableSettings
 	{
-		private static ApplicationInstaller installer => Resources.Load<ApplicationInstaller>("Settings/Application");
-		public static string RequestPath(string name) => $"Table/{installer.Version}/{name}.tsv";
+		private static GoogleTableInstaller installer;
+
+		private static GoogleTableInstaller Installer
+		{
+			get
+			{
+				if (!installer)
+					installer = Resources.Load<GoogleTableInstaller>("Settings/GoogleTable");
+
+				return installer;
+			}
+		}
+
+		public static string Path
+		{
+			get => Installer.Path;
+			set => Installer.Path = value;
+		}
+
+		public static string ItemPath
+		{
+			get => Installer.ItemPath;
+			set => Installer.ItemPath = value;
+		}
+		
+		public static string RequestPath(string name) => $"Table/{ApplicationSettings.Version}/{name}.tsv";
+		public static void Save() => Installer.Save();
 	}
 }
