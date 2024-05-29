@@ -1,5 +1,9 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
+using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.UI;
 
 namespace Redbean.Editor
 {
@@ -11,6 +15,24 @@ namespace Redbean.Editor
 		private void ThrowException()
 		{
 			throw new Exception("An exception has occurred.");
+		}
+
+		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button("Load Bundle")]
+		private async void LoadBundle()
+		{
+			var go = new GameObject("[Bundle]");
+			var canvas = go.AddComponent<Canvas>();
+			var canvasScaler = go.AddComponent<CanvasScaler>();
+			var raycaster = go.AddComponent<GraphicRaycaster>();
+
+			canvas.renderMode = RenderMode.ScreenSpaceCamera;
+			canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+			canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
+			canvasScaler.referenceResolution = new Vector2(720, 1440);
+			
+			var locations = await Addressables.LoadResourceLocationsAsync("default");
+			foreach (var location in locations)
+				await Addressables.InstantiateAsync(location, go.transform);
 		}
 	}
 }

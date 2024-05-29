@@ -50,6 +50,9 @@ namespace Redbean
 		}
 		
 		public static string RequestPath(string name) => $"Table/{ApplicationSettings.Version}/{name}.tsv";
+		
+#if UNITY_EDITOR
 		public static void Save() => Installer.Save();
+#endif
 	}
 }

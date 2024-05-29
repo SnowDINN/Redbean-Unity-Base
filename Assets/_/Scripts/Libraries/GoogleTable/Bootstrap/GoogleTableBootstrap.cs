@@ -14,8 +14,12 @@ namespace Redbean.Table
 
 		public async UniTask Setup()
 		{
-			var names = DataContainer.Get<TableConfigModel>().TableNames;
-			foreach (var name in names)
+			var names = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(FirebaseDefine.TableConfig);
+			var snapshotAsync = await names.GetSnapshotAsync();
+			if (!snapshotAsync.Exists)
+				return;
+			
+			foreach (var name in snapshotAsync.ConvertTo<string[]>())
 			{
 				var storageReference = FirebaseBootstrap.Storage.GetReference(GoogleTableSettings.RequestPath(name));
 				var bytes = await storageReference.GetBytesAsync(1000 * 1000);

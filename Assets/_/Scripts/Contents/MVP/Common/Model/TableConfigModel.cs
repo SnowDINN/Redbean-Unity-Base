@@ -11,9 +11,6 @@ namespace Redbean.MVP.Content
 		
 		[FirestoreProperty("sheet")]
 		public TableSheetArgument Sheet { get; set; } = new();
-
-		[FirestoreProperty("table")]
-		public string[] TableNames { get; set; } = { };
 	}
 	
 	[FirestoreData]
