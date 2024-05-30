@@ -1,5 +1,4 @@
 ﻿using System;
-using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -30,9 +29,9 @@ namespace Redbean.Editor
 			canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 			canvasScaler.referenceResolution = new Vector2(720, 1440);
 			
-			var locations = await Addressables.LoadResourceLocationsAsync("default");
+			var locations = await Addressables.LoadResourceLocationsAsync("default").Task;
 			foreach (var location in locations)
-				await Addressables.InstantiateAsync(location, go.transform);
+				await Addressables.InstantiateAsync(location, go.transform).Task;
 		}
 	}
 }

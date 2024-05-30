@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Redbean.ServiceBridge
 {
@@ -12,19 +13,19 @@ namespace Redbean.ServiceBridge
 	{
 		public AuthenticationType Type => AuthenticationType.Apple;
 		
-		public UniTask<bool> Initialize()
+		public Task Initialize()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public UniTask<AuthenticationResult> Login()
+		public Task<AuthenticationResult> Login()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public UniTask<AuthenticationResult> AutoLogin()
+		public Task<AuthenticationResult> AutoLogin()
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 	}
 }

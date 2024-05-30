@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
 using Firebase.Storage;
@@ -185,7 +185,7 @@ namespace Redbean.Editor
 			Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 
-		private static async UniTask<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
+		private static async Task<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
 			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
@@ -200,7 +200,7 @@ namespace Redbean.Editor
 			return (document, snapshotAsync.ConvertTo<AppConfigModel>());
 		}
 		
-		private static async UniTask<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
+		private static async Task<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
 		{
 			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
@@ -215,7 +215,7 @@ namespace Redbean.Editor
 			return (document, snapshotAsync.ConvertTo<TableConfigModel>());
 		}
 		
-		private static async UniTask<(DocumentReference Document, StorageFileModel Model)> GetStorageFiles()
+		private static async Task<(DocumentReference Document, StorageFileModel Model)> GetStorageFiles()
 		{
 			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
 			var snapshotAsync = await document.GetSnapshotAsync();

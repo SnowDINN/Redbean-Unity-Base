@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Firebase.Auth;
 
 namespace Redbean.ServiceBridge
@@ -6,9 +7,9 @@ namespace Redbean.ServiceBridge
 	public interface IAuthentication
 	{
 		AuthenticationType Type { get; }
-		UniTask<bool> Initialize();
-		UniTask<AuthenticationResult> Login();
-		UniTask<AuthenticationResult> AutoLogin();
+		Task Initialize();
+		Task<AuthenticationResult> Login();
+		Task<AuthenticationResult> AutoLogin();
 	}
 
 	public class AuthenticationResult

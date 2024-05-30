@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Firebase.Auth;
 using Google;
 
@@ -14,9 +14,9 @@ namespace Redbean.ServiceBridge
 	{
 		public AuthenticationType Type => AuthenticationType.Google;
 		
-		public UniTask<bool> Initialize()
+		public Task Initialize()
 		{
-			var completionSource = new UniTaskCompletionSource<bool>();
+			var completionSource = new TaskCompletionSource<bool>();
 			
 			if (GoogleSignIn.Configuration != null)
 				completionSource.TrySetResult(false);
@@ -38,7 +38,7 @@ namespace Redbean.ServiceBridge
 			return completionSource.Task;
 		}
 
-		public async UniTask<AuthenticationResult> Login()
+		public async Task<AuthenticationResult> Login()
 		{
 			var result = new AuthenticationResult();
 			
@@ -75,7 +75,7 @@ namespace Redbean.ServiceBridge
 			return result;
 		}
 
-		public async UniTask<AuthenticationResult> AutoLogin()
+		public async Task<AuthenticationResult> AutoLogin()
 		{
 			var result = new AuthenticationResult();
 			
