@@ -7,7 +7,7 @@ namespace Redbean.ServiceBridge
 	public interface IAuthentication
 	{
 		AuthenticationType Type { get; }
-		Task Initialize();
+		Task<bool> Initialize();
 		Task<AuthenticationResult> Login();
 		Task<AuthenticationResult> AutoLogin();
 	}

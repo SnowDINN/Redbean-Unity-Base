@@ -13,7 +13,7 @@ namespace Redbean.ServiceBridge
 	{
 		public AuthenticationType Type => AuthenticationType.Apple;
 		
-		public Task Initialize()
+		public Task<bool> Initialize()
 		{
 			throw new NotImplementedException();
 		}

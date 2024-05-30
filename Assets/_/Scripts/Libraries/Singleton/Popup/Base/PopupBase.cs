@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Redbean.Base;
 using Redbean.Dependencies;
 using UnityEngine;
@@ -18,6 +18,6 @@ namespace Redbean.Popup
 
 		public void Destroy() => Destroy(gameObject);
 
-		public async UniTask WaitUntilClose() => await DestroyCancellation.Token.WaitUntilCanceled();
+		public async Task WaitUntilClose() => await TaskExtension.WaitUntil(() => DestroyCancellation.Token.IsCancellationRequested);
 	}
 }

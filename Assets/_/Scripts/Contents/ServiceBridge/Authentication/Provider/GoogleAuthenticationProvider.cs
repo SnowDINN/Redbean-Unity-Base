@@ -14,7 +14,7 @@ namespace Redbean.ServiceBridge
 	{
 		public AuthenticationType Type => AuthenticationType.Google;
 		
-		public Task Initialize()
+		public Task<bool> Initialize()
 		{
 			var completionSource = new TaskCompletionSource<bool>();
 			
