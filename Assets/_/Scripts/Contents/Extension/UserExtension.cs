@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Redbean.Firebase;
 using Redbean.MVP;
@@ -54,7 +55,7 @@ namespace Redbean
 			var uniTask = model.CreateFirestore();
 			await uniTask;
 			
-			return uniTask.Status == UniTaskStatus.Succeeded;
+			return uniTask.Status == TaskStatus.RanToCompletion;
 		}
 		
 		/// <summary>
@@ -64,8 +65,8 @@ namespace Redbean
 		{
 			var uniTask = model.UpdateFirestore(DataKey.USER_INFORMATION_KEY);
 			await uniTask;
-			
-			return uniTask.Status == UniTaskStatus.Succeeded;
+
+			return uniTask.Status == TaskStatus.RanToCompletion;
 		}
 	}
 }

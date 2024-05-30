@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
@@ -17,7 +17,7 @@ namespace Redbean.Firebase
 		public static DocumentReference UserDB;
 		public int ExecutionOrder => 100;
 
-		public async UniTask Setup()
+		public async Task Setup()
 		{
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();

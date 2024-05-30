@@ -1,7 +1,6 @@
 ﻿using System;
 using Redbean.Dependencies;
 using Redbean.MVP;
-using Redbean.Rx;
 
 namespace Redbean
 {

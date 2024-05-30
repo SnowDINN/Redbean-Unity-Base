@@ -4,7 +4,6 @@ using Redbean.Dependencies;
 using Redbean.MVP;
 using Redbean.Popup;
 using UnityEngine;
-
 #if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 #endif

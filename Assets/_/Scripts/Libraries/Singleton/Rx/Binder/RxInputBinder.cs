@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Base;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace Redbean.Rx
     	{
     		Observable.EveryUpdate().Subscribe(_ =>
     		{
-    			UniTask.Void(InputDetectingAsync);
+    			InputDetectingAsync();
     		}).AddTo(disposables);
     
     		OnKeyInputDetected.Subscribe(_ =>
@@ -37,10 +36,19 @@ namespace Redbean.Rx
     		}).AddTo(disposables);
     	}
     
-    	private async UniTaskVoid InputDetectingAsync()
+    	private void InputDetectingAsync()
     	{
-    		if (Input.anyKeyDown)
-    			await FindKeyCodeAndConvertAsync();
+		    if (Input.anyKeyDown)
+		    {
+			    var keyCodes = Enum.GetValues(typeof(KeyCode));
+			    foreach (KeyCode keyCode in keyCodes)
+			    {
+				    if (!Input.GetKeyDown(keyCode))
+					    continue;
+    
+				    onKeyInputDetected.OnNext(keyCode);
+			    }
+		    }
     
     		if (mouseCode > -1)
     		{
@@ -60,20 +68,5 @@ namespace Redbean.Rx
 			    onMouseAndTouchInputDetected.OnNext((touch.phase, touch.position));
 		    }
 	    }
-    
-    	private UniTask FindKeyCodeAndConvertAsync()
-    	{
-    		var keyCodes = Enum.GetValues(typeof(KeyCode));
-    		foreach (KeyCode keyCode in keyCodes)
-    		{
-    			if (!Input.GetKeyDown(keyCode))
-    				continue;
-    
-    			onKeyInputDetected.OnNext(keyCode);
-    			return UniTask.CompletedTask;
-    		}
-		    
-		    return UniTask.CompletedTask;
-    	}
     }
 }

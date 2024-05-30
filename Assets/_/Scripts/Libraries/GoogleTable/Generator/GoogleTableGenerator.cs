@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Redbean.Dependencies;
 using Redbean.MVP.Content;
-using UnityEditor;
 using UnityEngine;
 #endif
 
@@ -35,7 +34,7 @@ namespace Redbean.Table
 		/// <summary>
 		/// 테이블 시트 데이터 호출
 		/// </summary>
-		public static async UniTask<Dictionary<string, string[]>> GetSheetAsync()
+		public static async Task<Dictionary<string, string[]>> GetSheetAsync()
 		{
 			var sheetDictionary = new Dictionary<string, string[]>();
 			
@@ -76,7 +75,7 @@ namespace Redbean.Table
 		/// <summary>
 		/// 테이블 C# 스크립트 생성
 		/// </summary>
-		public static async UniTask GenerateCSharpAsync(Dictionary<string, string[]> tables)
+		public static async Task GenerateCSharpAsync(Dictionary<string, string[]> tables)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("using System.Collections.Generic;");
@@ -103,7 +102,7 @@ namespace Redbean.Table
 		/// <summary>
 		/// 테이블 아이템 C# 스크립트 생성
 		/// </summary>
-		public static async UniTask GenerateItemCSharpAsync(string key, string[] value)
+		public static async Task GenerateItemCSharpAsync(string key, string[] value)
 		{
 			var variableNames = value[0].Split("\t");
 			var variableTypes = value[1].Split("\t");

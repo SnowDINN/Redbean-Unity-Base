@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Cysharp.Threading.Tasks;
-using Redbean.Dependencies;
+using System.Threading.Tasks;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
 
@@ -12,7 +11,7 @@ namespace Redbean.Table
 	{
 		public int ExecutionOrder => 200;
 
-		public async UniTask Setup()
+		public async Task Setup()
 		{
 			var names = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
 			var snapshotAsync = await names.GetSnapshotAsync();

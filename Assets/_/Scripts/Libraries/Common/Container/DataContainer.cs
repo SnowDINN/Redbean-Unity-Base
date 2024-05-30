@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Redbean.Cryptography;
 using Redbean.MVP;
@@ -19,7 +19,7 @@ namespace Redbean.Dependencies
 		
 		public int ExecutionOrder => 1;
 		
-		public UniTask Setup()
+		public Task Setup()
 		{
 			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
 			                                .SelectMany(x => x.GetTypes())
@@ -53,7 +53,7 @@ namespace Redbean.Dependencies
 
 #endregion
 			
-			return UniTask.CompletedTask;
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()

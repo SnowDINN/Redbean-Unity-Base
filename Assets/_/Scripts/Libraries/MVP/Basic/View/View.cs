@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using Redbean.Base;
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -23,9 +21,9 @@ namespace Redbean.MVP
 		
 		public GameObject GetGameObject() => gameObject;
 		
-		public virtual void Awake()
+		public virtual async void Awake()
 		{
-			UniTask.Void(AwakeAsync, DestroyCancellation.Token);
+			await AwakeAsync();
 		}
 
 		public override void OnDestroy()
@@ -35,10 +33,10 @@ namespace Redbean.MVP
 			presenter?.Dispose();
 		}
 
-		private async UniTaskVoid AwakeAsync(CancellationToken token)
+		private async Task AwakeAsync()
 		{
 			if (!ApplicationLifeCycle.IsReady)
-				await UniTask.WaitUntil(() => ApplicationLifeCycle.IsReady, cancellationToken: token);
+				await TaskExtension.WaitUntil(() => ApplicationLifeCycle.IsReady);
 			
 			var type = Type.GetType(PresenterFullName);
 			if (type != null)

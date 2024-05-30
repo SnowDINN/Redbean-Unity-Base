@@ -1,5 +1,5 @@
 ﻿using System;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Redbean
 {
@@ -13,6 +13,6 @@ namespace Redbean
 		/// <summary>
 		/// 앱 시작 시 실행되는 함수
 		/// </summary>
-		UniTask Setup();
+		Task Setup();
 	}
 }

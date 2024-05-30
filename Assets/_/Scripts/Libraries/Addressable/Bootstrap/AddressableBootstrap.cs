@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
 namespace Redbean.Bundle
@@ -7,9 +7,9 @@ namespace Redbean.Bundle
 	{
 		public int ExecutionOrder => 300;
 
-		public async UniTask Setup()
+		public async Task Setup()
 		{
-			await Addressables.InitializeAsync();
+			await Addressables.InitializeAsync().Task;
 		}
 
 		public void Dispose()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using Redbean.Base;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,7 +15,7 @@ namespace Redbean.Dependencies
 
 		public int ExecutionOrder => 0;
 
-		public UniTask Setup()
+		public Task Setup()
 		{
 #region Native
 
@@ -58,7 +58,7 @@ namespace Redbean.Dependencies
 
 #endregion
 
-			return UniTask.CompletedTask;
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Cysharp.Threading.Tasks;
 
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
@@ -20,7 +19,7 @@ namespace Redbean.Mobile
 		/// <summary>
 		/// 모바일 알림 설정
 		/// </summary>
-		public static async UniTask Setup()
+		public static void Setup()
 		{
 #if UNITY_ANDROID
 			if (!Permission.HasUserAuthorizedPermission(PERMISSION_ANDROID))
@@ -37,10 +36,8 @@ namespace Redbean.Mobile
 			
 #if UNITY_IOS
 			using var request = new AuthorizationRequest(AuthorizationOption.Alert | AuthorizationOption.Badge, true);
-			await UniTask.WaitUntil(() => request.IsFinished);
+			await TaskExtension.WaitUntil(() => request.IsFinished);
 #endif
-
-			await UniTask.CompletedTask;
 		}
 		
 		/// <summary>
