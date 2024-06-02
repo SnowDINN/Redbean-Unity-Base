@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Redbean.Dependencies;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
 
@@ -13,12 +14,13 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var names = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
-			var snapshotAsync = await names.GetSnapshotAsync();
-			if (!snapshotAsync.Exists)
+			var tables = DataContainer.Get<StorageFileModel>().Table;
+			if (!tables.Any())
+			{
+				Log.Fail("Table", "Fail to load to the Google sheets.");
 				return;
-
-			var tables = snapshotAsync.ConvertTo<StorageFileModel>().Table;
+			}
+			
 			foreach (var table in tables)
 			{
 				var storageReference = FirebaseBootstrap.Storage.GetReference(StoragePath.TableRequest(table));
@@ -33,9 +35,11 @@ namespace Redbean.Table
 					if (Activator.CreateInstance(type) is IGoogleTable instance)
 						instance.Apply(item);
 				}
+				
+				Log.Notice($"{table} Table load is complete.");
 			}
 			
-			Log.Success("Table", "Success to load to the Google sheets.");
+			Log.Success("Table", "Success to load to the tables.");
 		}
 		
 		public void Dispose() { }

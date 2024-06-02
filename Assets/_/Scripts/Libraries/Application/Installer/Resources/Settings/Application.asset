@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8d4e54cb71848c880a7f4a46af6fd0d, type: 3}
   m_Name: Application
   m_EditorClassIdentifier: 
-  Version: 0.0.1
+  Version: 
