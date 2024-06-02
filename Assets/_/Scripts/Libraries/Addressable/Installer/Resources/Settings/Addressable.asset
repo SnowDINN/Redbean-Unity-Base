@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Addressable
   m_EditorClassIdentifier: 
   Labels:
-  - default
+  - Popup

@@ -1,5 +1,6 @@
 ﻿using System;
 using Redbean.Container;
+using Redbean.Popup.Content;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +30,7 @@ namespace Redbean.Editor
 			canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 			canvasScaler.referenceResolution = new Vector2(720, 1440);
 
-			var popup = await AddressableContainer.GetGameObject("PopupException");
+			var popup = await AddressableContainer.GetPopup<PopupException>();
 			Instantiate(popup, go.transform);
 		}
 	}

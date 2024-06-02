@@ -17,11 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: cd85ae8b35c73e841862cd9ee748a5c5
   m_SerializeEntries:
-  - m_GUID: 917f82b1a1020eb4e98b50445cc4c4e8
-    m_Address: PopupException
+  - m_GUID: fd12a707f070eef4fae66885947de414
+    m_Address: Popup
     m_ReadOnly: 0
     m_SerializedLabels:
-    - default
+    - Popup
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 39846f20475d39540b576efb004aa207, type: 2}
