@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88b31c2d5565a344f9d93f708299aa2e, type: 3}
   m_Name: Addressable
   m_EditorClassIdentifier: 
-  Labels: []
+  Labels:
+  - default

@@ -18,7 +18,10 @@ namespace Redbean
 			set
 			{
 				Installer.Labels = value;
+				
+#if UNITY_EDITOR
 				Save();
+#endif
 			}
 		}
 	}

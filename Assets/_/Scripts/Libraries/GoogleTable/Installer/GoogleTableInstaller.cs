@@ -19,7 +19,10 @@ namespace Redbean
 			set
 			{
 				Installer.Path = value;
+
+#if UNITY_EDITOR
 				Save();
+#endif
 			}
 		}
 
@@ -29,7 +32,10 @@ namespace Redbean
 			set
 			{
 				Installer.ItemPath = value;
+				
+#if UNITY_EDITOR
 				Save();
+#endif
 			}
 		}
 	}
