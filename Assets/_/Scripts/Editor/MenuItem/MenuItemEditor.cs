@@ -28,7 +28,14 @@ namespace Redbean.Editor
 		public static void PlayPrefsDeleteAll()
 		{
 			PlayerPrefs.DeleteAll();
-			Log.Notice("All local data has been deleted.");
+			Log.Notice("All local PlayPrefs has been deleted.");
+		}
+		
+		[MenuItem("Redbean Menu/Cache/Delete All", false, 100)]
+		public static void CacheDeleteAll()
+		{
+			Caching.ClearCache();
+			Log.Notice("All local cache has been deleted.");
 		}
 	}
 }

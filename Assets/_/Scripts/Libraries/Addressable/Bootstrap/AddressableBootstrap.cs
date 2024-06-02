@@ -9,7 +9,14 @@ namespace Redbean.Bundle
 
 		public async Task Setup()
 		{
-			await Addressables.InitializeAsync().Task;
+			var size = 0L;
+			foreach (var label in AddressableSettings.Labels)
+				size += await Addressables.GetDownloadSizeAsync(label).Task;
+			
+			foreach (var label in AddressableSettings.Labels)
+				await Addressables.DownloadDependenciesAsync(label).Task;
+			 
+			 Log.Success("Bundle", $"Success to load to the bundles. [{size / 1024}KB]");
 		}
 
 		public void Dispose()

@@ -35,7 +35,7 @@ namespace Redbean.Table
 				}
 			}
 			
-			Log.Success("Table", "Success to connect to the Google sheets.");
+			Log.Success("Table", "Success to load to the Google sheets.");
 		}
 		
 		public void Dispose() { }

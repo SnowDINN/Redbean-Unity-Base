@@ -1,56 +1,36 @@
-﻿using UnityEngine;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+﻿using Redbean.Base;
+using UnityEngine;
 
 namespace Redbean
 {
 	[CreateAssetMenu(fileName = "GoogleTable", menuName = "Redbean/GoogleTable")]
 	public class GoogleTableInstaller : ScriptableObject
 	{
+		[Header("Get table information during runtime")]
 		public string Path;
 		public string ItemPath;
-		
-#if UNITY_EDITOR
-		public void Save()
-		{
-			EditorUtility.SetDirty(this);
-			AssetDatabase.SaveAssets();
-			AssetDatabase.Refresh();
-		}
-#endif
 	}
 	
-	public class GoogleTableSettings
+	public class GoogleTableSettings : SettingsBase<GoogleTableInstaller>
 	{
-		private static GoogleTableInstaller installer;
-
-		private static GoogleTableInstaller Installer
-		{
-			get
-			{
-				if (!installer)
-					installer = Resources.Load<GoogleTableInstaller>("Settings/GoogleTable");
-
-				return installer;
-			}
-		}
-
 		public static string Path
 		{
 			get => Installer.Path;
-			set => Installer.Path = value;
+			set
+			{
+				Installer.Path = value;
+				Save();
+			}
 		}
 
 		public static string ItemPath
 		{
 			get => Installer.ItemPath;
-			set => Installer.ItemPath = value;
+			set
+			{
+				Installer.ItemPath = value;
+				Save();
+			}
 		}
-		
-#if UNITY_EDITOR
-		public static void Save() => Installer.Save();
-#endif
 	}
 }

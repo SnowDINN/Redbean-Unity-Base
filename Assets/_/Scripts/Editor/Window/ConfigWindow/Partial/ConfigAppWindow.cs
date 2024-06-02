@@ -59,6 +59,8 @@ namespace Redbean.Editor
 					await storageReference.PutFileAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}", metadata);
 					Log.Notice($"{filename} Bundle update is complete.");
 				}
+
+				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			
 				storage.Model.Bundle = path.Select(_ => _.Split('/').Last()).ToArray();
 				await storage.Document.SetAsync(storage.Model);
@@ -77,22 +79,14 @@ namespace Redbean.Editor
 		private string TablePath
 		{
 			get => GoogleTableSettings.Path;
-			set
-			{
-				GoogleTableSettings.Path = value;
-				GoogleTableSettings.Save();
-			}
+			set => GoogleTableSettings.Path = value;
 		}
 
 		[TabGroup(ConfigTab), PropertyOrder(TableOrder), LabelText("Item Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
 			get => GoogleTableSettings.ItemPath;
-			set
-			{
-				GoogleTableSettings.ItemPath = value;
-				GoogleTableSettings.Save();
-			}
+			set => GoogleTableSettings.ItemPath = value;
 		}
 		
 		[TabGroup(ConfigTab), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
