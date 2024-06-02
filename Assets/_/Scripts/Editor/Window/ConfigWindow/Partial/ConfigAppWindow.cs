@@ -6,7 +6,7 @@ using Firebase;
 using Firebase.Firestore;
 using Firebase.Storage;
 using Redbean.Bundle;
-using Redbean.Dependencies;
+using Redbean.Container;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
 using Redbean.Table;
@@ -43,14 +43,14 @@ namespace Redbean.Editor
 				
 				var storage = await GetStorageFiles();
 				foreach (var file in storage.Model.Bundle)
-					await FirebaseBootstrap.Storage.GetReference(StoragePath.BundleRequest(file)).DeleteAsync();
+					await FirebaseContainer.Storage.GetReference(StoragePath.BundleRequest(file)).DeleteAsync();
 
 				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
 				for (var i = 0; i < path.Length; i++)
 				{
 					var filename = path[i].Split('/').Last();
 					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
-					var storageReference = FirebaseBootstrap.Storage.GetReference(path[i]);
+					var storageReference = FirebaseContainer.Storage.GetReference(path[i]);
 					var metadata = new MetadataChange
 					{
 						CacheControl = "no-store",
@@ -92,7 +92,7 @@ namespace Redbean.Editor
 		[TabGroup(ConfigTab), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
 		private async void UpdateAllTable()
 		{
-			using var container = new DataContainer();
+			using var container = new ModelContainer();
 			await container.Setup();
 				
 			using var firebase = new FirebaseBootstrap();
@@ -100,14 +100,14 @@ namespace Redbean.Editor
 
 			var storage = await GetStorageFiles();
 			var config = await GetTableConfig();
-			DataContainer.Override(config.Model);
+			ModelContainer.Override(config.Model);
 			
 			try
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 
 				foreach (var file in storage.Model.Table)
-					await FirebaseBootstrap.Storage.GetReference(StoragePath.TableRequest(file)).DeleteAsync();
+					await FirebaseContainer.Storage.GetReference(StoragePath.TableRequest(file)).DeleteAsync();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
 				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
@@ -119,7 +119,7 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 					
-					var storageReference = FirebaseBootstrap.Storage.GetReference(StoragePath.TableRequest(keys[i]));
+					var storageReference = FirebaseContainer.Storage.GetReference(StoragePath.TableRequest(keys[i]));
 					var tsv = $"{string.Join("\r\n", values[i])}";
 					var metadata = new MetadataChange
 					{
@@ -181,7 +181,7 @@ namespace Redbean.Editor
 
 		private static async Task<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
-			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
+			var document = FirebaseContainer.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the app config.");
@@ -196,7 +196,7 @@ namespace Redbean.Editor
 		
 		private static async Task<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
 		{
-			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
+			var document = FirebaseContainer.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the table config.");
@@ -211,7 +211,7 @@ namespace Redbean.Editor
 		
 		private static async Task<(DocumentReference Document, StorageFileModel Model)> GetStorageFiles()
 		{
-			var document = FirebaseBootstrap.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
+			var document = FirebaseContainer.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 			{

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Redbean.Dependencies;
+using Redbean.Container;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
 
@@ -14,7 +14,7 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var tables = DataContainer.Get<StorageFileModel>().Table;
+			var tables = ModelContainer.Get<StorageFileModel>().Table;
 			if (!tables.Any())
 			{
 				Log.Fail("Table", "Fail to load to the Google sheets.");
@@ -23,7 +23,7 @@ namespace Redbean.Table
 			
 			foreach (var table in tables)
 			{
-				var storageReference = FirebaseBootstrap.Storage.GetReference(StoragePath.TableRequest(table));
+				var storageReference = FirebaseContainer.Storage.GetReference(StoragePath.TableRequest(table));
 				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
 				

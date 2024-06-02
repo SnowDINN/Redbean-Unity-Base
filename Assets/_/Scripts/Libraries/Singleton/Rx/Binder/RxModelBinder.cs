@@ -12,11 +12,11 @@ namespace Redbean.Rx
 		public RxModelBinder()
 		{
 			OnModelChanged.Where(_ => _ is ISerializeModel)
-			              .Select(_ => _.As<ISerializeModel>())
-			              .Subscribe(_ =>
-			              {
-				              _.Rx.Publish(_);
-			              }).AddTo(disposables);
+				.Select(_ => _.As<ISerializeModel>())
+				.Subscribe(_ =>
+				{
+					_.Rx.Publish(_);
+				}).AddTo(disposables);
 		}
 
 		public T Publish<T>(T value) where T : IModel

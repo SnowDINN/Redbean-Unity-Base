@@ -11,12 +11,12 @@ namespace Redbean.ServiceBridge
 		public Authentication()
 		{
 			var authentications = AppDomain.CurrentDomain.GetAssemblies()
-			                                .SelectMany(x => x.GetTypes())
-			                                .Where(x => x.FullName != null
-			                                            && typeof(IAuthentication).IsAssignableFrom(x)
-			                                            && !x.IsInterface
-			                                            && !x.IsAbstract)
-			                                .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IAuthentication);
+				.SelectMany(x => x.GetTypes())
+				.Where(x => x.FullName != null
+				            && typeof(IAuthentication).IsAssignableFrom(x)
+				            && !x.IsInterface
+				            && !x.IsAbstract)
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IAuthentication);
 			
 			foreach (var auth in authentications
 				         .Where(authentication => this.authentications.TryAdd(authentication.Type, authentication)))

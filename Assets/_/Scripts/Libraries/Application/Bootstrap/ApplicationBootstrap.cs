@@ -14,13 +14,13 @@ namespace Redbean
 			Application.targetFrameRate = 60;
 			
 			var instances = AppDomain.CurrentDomain.GetAssemblies()
-			                     .SelectMany(x => x.GetTypes())
-			                     .Where(x => typeof(IApplicationBootstrap).IsAssignableFrom(x)
-			                                 && !x.IsInterface
-			                                 && !x.IsAbstract)
-			                     .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IApplicationBootstrap)
-			                     .OrderBy(_ => _.ExecutionOrder)
-			                     .ToList();
+				.SelectMany(x => x.GetTypes())
+				.Where(x => typeof(IApplicationBootstrap).IsAssignableFrom(x)
+				            && !x.IsInterface
+				            && !x.IsAbstract)
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IApplicationBootstrap)
+				.OrderBy(_ => _.ExecutionOrder)
+				.ToList();
 
 			foreach (var instance in instances)
 				await instance.Setup();

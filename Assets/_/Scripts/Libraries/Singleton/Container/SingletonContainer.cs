@@ -6,7 +6,7 @@ using Redbean.Base;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Redbean.Dependencies
+namespace Redbean.Container
 {
 	public class SingletonContainer : IApplicationBootstrap
 	{
@@ -20,14 +20,14 @@ namespace Redbean.Dependencies
 #region Native
 
 			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
-			                                .SelectMany(x => x.GetTypes())
-			                                .Where(x => x.FullName != null
-			                                            && typeof(ISingleton).IsAssignableFrom(x)
-			                                            && !typeof(MonoBehaviour).IsAssignableFrom(x)
-			                                            && !x.FullName.Equals(typeof(RxBase).FullName)
-			                                            && !x.IsInterface
-			                                            && !x.IsAbstract)
-			                                .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton);
+				.SelectMany(x => x.GetTypes())
+				.Where(x => x.FullName != null
+				            && typeof(ISingleton).IsAssignableFrom(x)
+				            && !typeof(MonoBehaviour).IsAssignableFrom(x)
+				            && !x.FullName.Equals(typeof(RxBase).FullName)
+				            && !x.IsInterface
+				            && !x.IsAbstract)
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton);
 
 			foreach (var singleton in nativeSingletons
 				         .Where(singleton => singletons.TryAdd(singleton.GetType(), singleton)))
@@ -38,13 +38,13 @@ namespace Redbean.Dependencies
 #region Mono
 
 			var monoSingletons = AppDomain.CurrentDomain.GetAssemblies()
-			                              .SelectMany(x => x.GetTypes())
-			                              .Where(x => x.FullName != null
-			                                          && typeof(ISingleton).IsAssignableFrom(x)
-			                                          && typeof(MonoBehaviour).IsAssignableFrom(x)
-			                                          && !x.FullName.Equals(typeof(RxBase).FullName)
-			                                          && !x.IsInterface
-			                                          && !x.IsAbstract);
+				.SelectMany(x => x.GetTypes())
+				.Where(x => x.FullName != null
+				            && typeof(ISingleton).IsAssignableFrom(x)
+				            && typeof(MonoBehaviour).IsAssignableFrom(x)
+				            && !x.FullName.Equals(typeof(RxBase).FullName)
+				            && !x.IsInterface
+				            && !x.IsAbstract);
 			
 			if (monoSingletons.Any())
 			{

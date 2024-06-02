@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Redbean.Base;
-using Redbean.Dependencies;
+using Redbean.Container;
 using Redbean.MVP;
 using Redbean.Popup;
 using UnityEngine;
@@ -20,7 +20,7 @@ namespace Redbean
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static T GetModel<T>() where T : IModel => DataContainer.Get<T>();
+		private static T GetModel<T>() where T : IModel => ModelContainer.Get<T>();
 		
 #if UNITY_EDITOR
 		/// <summary>

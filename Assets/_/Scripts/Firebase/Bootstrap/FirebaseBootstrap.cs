@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
-using Firebase.Storage;
+using Redbean.Container;
 using Redbean.MVP.Content;
 using UnityEngine;
 
@@ -11,11 +11,6 @@ namespace Redbean.Firebase
 {
 	public class FirebaseBootstrap : IApplicationBootstrap
 	{
-		public static FirebaseAuth Auth => FirebaseAuth.DefaultInstance;
-		public static FirebaseStorage Storage => FirebaseStorage.DefaultInstance;
-		public static FirebaseFirestore Firestore => FirebaseFirestore.DefaultInstance;
-		
-		public static DocumentReference UserDB;
 		public int ExecutionOrder => 100;
 
 		public async Task Setup()
@@ -33,9 +28,10 @@ namespace Redbean.Firebase
 			if (Application.isPlaying)
 			{
 				// 파이어스토어 앱 설정 체크
-				var appSnapshot = await Firestore.Collection(FirebaseDefine.Config)
-				                                 .Document(FirebaseDefine.AppConfig)
-				                                 .GetSnapshotAsync();
+				var appSnapshot = await FirebaseContainer.Firestore.Collection(FirebaseDefine.Config)
+					.Document(FirebaseDefine.AppConfig)
+					.GetSnapshotAsync();
+				
 				if (appSnapshot.Exists)
 					Log.Notice("Application config load is complete.");
 				else
@@ -60,11 +56,11 @@ namespace Redbean.Firebase
 						// 정상 진입
 						case <= 0:
 						{
-							var tableSnapshot = await Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig).GetSnapshotAsync();
+							var tableSnapshot = await FirebaseContainer.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig).GetSnapshotAsync();
 							if (tableSnapshot.Exists)
 								tableSnapshot.ConvertTo<TableConfigModel>().Publish();
 							
-							var storageSnapshot = await Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version).GetSnapshotAsync();
+							var storageSnapshot = await FirebaseContainer.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version).GetSnapshotAsync();
 							if (storageSnapshot.Exists)
 								storageSnapshot.ConvertTo<StorageFileModel>().Publish();
 							
@@ -97,7 +93,7 @@ namespace Redbean.Firebase
 			Log.System("Firebase has been terminated.");
 		}
 		
-		private int CompareVersion(string v1, string v2)
+		private static int CompareVersion(string v1, string v2)
 		{
 			var v1a = v1.Split('.', StringSplitOptions.RemoveEmptyEntries);
 			var v2a = v2.Split('.', StringSplitOptions.RemoveEmptyEntries);

@@ -8,9 +8,9 @@ using Redbean.Cryptography;
 using Redbean.MVP;
 using UnityEngine;
 
-namespace Redbean.Dependencies
+namespace Redbean.Container
 {
-	public class DataContainer : IApplicationBootstrap
+	public class ModelContainer : IApplicationBootstrap
 	{
 		private static readonly Dictionary<Type, IModel> models = new();
 		private static readonly AES128 aes = new();
@@ -22,12 +22,12 @@ namespace Redbean.Dependencies
 		public Task Setup()
 		{
 			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
-			                                .SelectMany(x => x.GetTypes())
-			                                .Where(x => typeof(IModel).IsAssignableFrom(x)
-			                                            && !typeof(IRxModel).IsAssignableFrom(x)
-			                                            && !x.IsInterface
-			                                            && !x.IsAbstract)
-			                                .Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IModel);
+				.SelectMany(x => x.GetTypes())
+				.Where(x => typeof(IModel).IsAssignableFrom(x)
+				            && !typeof(IRxModel).IsAssignableFrom(x)
+				            && !x.IsInterface
+				            && !x.IsAbstract)
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IModel);
 
 			foreach (var singleton in nativeSingletons
 				         .Where(model => models.TryAdd(model.GetType(), model)))

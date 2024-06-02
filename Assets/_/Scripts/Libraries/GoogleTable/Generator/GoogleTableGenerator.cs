@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Redbean.Container;
 
 #if UNITY_EDITOR
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
-using Redbean.Dependencies;
 using Redbean.MVP.Content;
 using UnityEngine;
 #endif
@@ -27,9 +27,9 @@ namespace Redbean.Table
 		private static string ItemPath =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.ItemPath}";
 		
-		private static string ClientId => DataContainer.Get<TableConfigModel>().Client.Id;
-		private static string ClientSecret => DataContainer.Get<TableConfigModel>().Client.Secret;
-		private static string SheetId => DataContainer.Get<TableConfigModel>().Sheet.Id;
+		private static string ClientId => ModelContainer.Get<TableConfigModel>().Client.Id;
+		private static string ClientSecret => ModelContainer.Get<TableConfigModel>().Client.Secret;
+		private static string SheetId => ModelContainer.Get<TableConfigModel>().Sheet.Id;
 
 		/// <summary>
 		/// 테이블 시트 데이터 호출
@@ -194,9 +194,9 @@ namespace Redbean.Table
 		{
 			// Skip Contains '~' Column
 			var skipIndex = tsv[0].Split("\t")
-			                      .Select((key, index) => (key, index))
-			                      .Where(_ => _.key.Contains('~'))
-			                      .ToArray();
+				.Select((key, index) => (key, index))
+				.Where(_ => _.key.Contains('~'))
+				.ToArray();
 			if (!skipIndex.Any())
 				return tsv;
 

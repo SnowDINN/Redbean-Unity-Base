@@ -2,6 +2,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
+using Redbean.Container;
 using Redbean.Firebase;
 using Redbean.ServiceBridge;
 
@@ -36,7 +37,7 @@ namespace Redbean.MVP.Content
 				return;
 
 			var credential = await auth.Login();
-			var user = await FirebaseBootstrap.Auth.SignInWithCredentialAsync(credential.Credential);
+			var user = await FirebaseContainer.Auth.SignInWithCredentialAsync(credential.Credential);
 			
 			m_user.Social.Id = user.UserId;
 			m_user.Social.Platform = user.ProviderData.First().ProviderId;
@@ -68,7 +69,7 @@ namespace Redbean.MVP.Content
 					return;
 
 				var credential = await auth.AutoLogin();
-				var user = await FirebaseBootstrap.Auth.SignInWithCredentialAsync(credential.Credential);
+				var user = await FirebaseContainer.Auth.SignInWithCredentialAsync(credential.Credential);
 					
 				var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
 				if (isSuccess)

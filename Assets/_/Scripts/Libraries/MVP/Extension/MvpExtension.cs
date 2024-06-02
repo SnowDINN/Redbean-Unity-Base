@@ -1,6 +1,6 @@
 ﻿using System;
 using R3;
-using Redbean.Dependencies;
+using Redbean.Container;
 using Redbean.MVP;
 using Redbean.Popup;
 using Redbean.Rx;
@@ -46,7 +46,7 @@ namespace Redbean
 		/// 모델 데이터 배포
 		/// </summary>
 		public static T Publish<T>(this T model, bool isPlayerPrefs = false) where T : IModel => 
-			GetSingleton<RxModelBinder>().Publish(DataContainer.Override(model, isPlayerPrefs));
+			GetSingleton<RxModelBinder>().Publish(ModelContainer.Override(model, isPlayerPrefs));
 
 #endregion
 	}

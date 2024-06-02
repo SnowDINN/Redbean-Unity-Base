@@ -1,7 +1,7 @@
 ﻿using System;
+using Redbean.Container;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace Redbean.Editor
@@ -28,10 +28,9 @@ namespace Redbean.Editor
 			canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
 			canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 			canvasScaler.referenceResolution = new Vector2(720, 1440);
-			
-			var locations = await Addressables.LoadResourceLocationsAsync("default").Task;
-			foreach (var location in locations)
-				await Addressables.InstantiateAsync(location, go.transform).Task;
+
+			var popup = await AddressableContainer.GetGameObject("PopupException");
+			Instantiate(popup, go.transform);
 		}
 	}
 }

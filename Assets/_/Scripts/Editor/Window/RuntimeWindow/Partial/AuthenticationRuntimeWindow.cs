@@ -1,4 +1,4 @@
-﻿using Redbean.Firebase;
+﻿using Redbean.Container;
 using Redbean.MVP.Content;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -34,8 +34,8 @@ namespace Redbean.Editor
 
 			user.SetReferenceUser();
 			
-			await FirebaseBootstrap.UserDB.DeleteAsync();
-			await FirebaseBootstrap.Auth.CurrentUser.DeleteAsync();
+			await FirebaseContainer.UserDB.DeleteAsync();
+			await FirebaseContainer.Auth.CurrentUser.DeleteAsync();
 			
 			PlayerPrefs.DeleteAll();
 			

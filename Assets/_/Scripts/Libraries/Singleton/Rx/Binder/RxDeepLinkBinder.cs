@@ -30,9 +30,9 @@ namespace Redbean.Rx
 			
 			var queryString = new Uri(uri).GetComponents(UriComponents.Query, UriFormat.SafeUnescaped);
 			var queryCollection = queryString.Split('&')
-			                                 .Select(x => x.Split('='))
-			                                 .Where(x => x.Length == 2)
-			                                 .ToList();
+				.Select(x => x.Split('='))
+				.Where(x => x.Length == 2)
+				.ToList();
 
 			foreach (var query in queryCollection)
 				collection.TryAdd(query[0], query[1]);
