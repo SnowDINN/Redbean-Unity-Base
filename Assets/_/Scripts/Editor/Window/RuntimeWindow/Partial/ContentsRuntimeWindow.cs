@@ -11,13 +11,13 @@ namespace Redbean.Editor
 	{
 		private const string ExampleTitle = "Example";
 		
-		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button("Exception")]
+		[TabGroup("Tabs", ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button("Exception")]
 		private void ThrowException()
 		{
 			throw new Exception("An exception has occurred.");
 		}
 
-		[TabGroup(ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button("Load Bundle")]
+		[TabGroup("Tabs", ContentsTab), Title(ExampleTitle), DisableInEditorMode, Button("Load Bundle")]
 		private async void LoadBundle()
 		{
 			var go = new GameObject("[Bundle]");

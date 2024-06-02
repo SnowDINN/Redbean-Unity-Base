@@ -8,7 +8,7 @@ namespace Redbean.Editor
 		private const string ClientTitle = "Client key settings";
 		private const string OnlyEditorTitle = "Use only in the editor";
 
-		[TabGroup(GoogleTab), LabelText("Android Key"), Title(ClientTitle), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
+		[TabGroup("Tabs", GoogleTab), LabelText("Android Key"), Title(ClientTitle), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
 			get => googleSdk.androidClientId;
@@ -19,7 +19,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(GoogleTab), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
+		[TabGroup("Tabs", GoogleTab), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
 		private string IosClientKey
 		{
 			get => googleSdk.iosClientId;
@@ -30,7 +30,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(GoogleTab), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
+		[TabGroup("Tabs", GoogleTab), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
 		private string WebClientKey
 		{
 			get => googleSdk.webClientId;
@@ -41,7 +41,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(GoogleTab), LabelText("Web Secret"), Title(OnlyEditorTitle), ShowInInspector]
+		[TabGroup("Tabs", GoogleTab), LabelText("Web Secret"), Title(OnlyEditorTitle), ShowInInspector]
 		private string WebSecretKey
 		{
 			get => googleSdk.webSecretId;
@@ -52,7 +52,7 @@ namespace Redbean.Editor
 			}
 		}
 		
-		[TabGroup(GoogleTab), ShowInInspector]
+		[TabGroup("Tabs", GoogleTab), ShowInInspector]
 		private int Port
 		{
 			get => googleSdk.webRedirectPort;

@@ -13,12 +13,12 @@ namespace Redbean.Editor
 
 		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
 		
-		[TabGroup(AuthenticationTab), Title(UserInformationTitle), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
+		[TabGroup("Tabs", AuthenticationTab), Title(UserInformationTitle), PropertyOrder(100), DisableInEditorMode, ShowInInspector]
 		private UserModel user => ApplicationLifeCycle.IsReady
 			? this.GetModel<UserModel>()
 			: new UserModel();
 		
-		[TabGroup(AuthenticationTab), Title(LoginTitle), PropertyOrder(0), DisableInEditorMode, Button]
+		[TabGroup("Tabs", AuthenticationTab), Title(LoginTitle), PropertyOrder(0), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
 			var isSuccess = await user.TryGetUserSnapshot(ID);
@@ -26,7 +26,7 @@ namespace Redbean.Editor
 				user.SetReferenceUser();
 		}
 
-		[TabGroup(AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
+		[TabGroup("Tabs", AuthenticationTab), Button("DELETE", ButtonSizes.Large), PropertyOrder(101), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
 			if (!ApplicationLifeCycle.IsReady)
