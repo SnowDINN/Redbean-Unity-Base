@@ -9,8 +9,7 @@ namespace Redbean.Editor
 {
 	internal partial class ApplicationWindow : OdinEditorWindow
 	{
-		private const string ConfigTab = "Config";
-		private const string PlayerPrefsTab = "PlayerPrefs";
+		private const string TabGroup = "Tabs";
 		
 		protected override void OnEnable()
 		{

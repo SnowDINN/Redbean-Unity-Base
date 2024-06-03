@@ -6,9 +6,12 @@ namespace Redbean.Editor
 {
 	internal partial class ApplicationWindow
 	{
+		private const string PlayerPrefsTab = "PlayerPrefs";
+		private const string PlayerPrefsGroup = "Tabs/PlayerPrefs/PlayerPrefs Information";
+		
 		private readonly AES128 aes = new();
 
-		[TabGroup("Tabs", PlayerPrefsTab), Title(""), ShowInInspector, ReadOnly]
+		[TabGroup(TabGroup, PlayerPrefsTab), TitleGroup(PlayerPrefsGroup), ShowInInspector, ReadOnly]
 		private Dictionary<string, object> playerPrefsGroup = new();
 	}
 }

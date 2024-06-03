@@ -5,10 +5,12 @@ namespace Redbean.Editor
 {
 	internal partial class ThirdPartyWindow
 	{
-		private const string ClientTitle = "Client key settings";
-		private const string OnlyEditorTitle = "Use only in the editor";
+		private const string GoogleTab = "Google";
+		
+		private const string ClientGroup = "Tabs/Google/Client key settings";
+		private const string OnlyEditorGroup = "Tabs/Google/Use only in the editor";
 
-		[TabGroup("Tabs", GoogleTab), LabelText("Android Key"), Title(ClientTitle), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("Android Key"), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
 			get => googleSdk.androidClientId;
@@ -19,7 +21,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup("Tabs", GoogleTab), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
 		private string IosClientKey
 		{
 			get => googleSdk.iosClientId;
@@ -30,7 +32,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup("Tabs", GoogleTab), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
 		private string WebClientKey
 		{
 			get => googleSdk.webClientId;
@@ -41,7 +43,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup("Tabs", GoogleTab), LabelText("Web Secret"), Title(OnlyEditorTitle), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(OnlyEditorGroup), LabelText("Web Secret"), ShowInInspector]
 		private string WebSecretKey
 		{
 			get => googleSdk.webSecretId;
@@ -52,7 +54,7 @@ namespace Redbean.Editor
 			}
 		}
 		
-		[TabGroup("Tabs", GoogleTab), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(OnlyEditorGroup), ShowInInspector]
 		private int Port
 		{
 			get => googleSdk.webRedirectPort;

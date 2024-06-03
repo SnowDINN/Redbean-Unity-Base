@@ -19,15 +19,17 @@ namespace Redbean.Editor
 {
 	internal partial class ApplicationWindow
 	{
-		private const string BundleTitle = "Bundle";
-		private const string TableTitle = "Table";
-		private const string VersionTitle = "Version";
+		private const string ConfigTab = "Config";
+		
+		private const string BundleGroup = "Tabs/Config/Bundle";
+		private const string TableGroup = "Tabs/Config/Table";
+		private const string VersionGroup = "Tabs/Config/Version";
 
 		private const int BundleOrder = 0;
 		private const int TableOrder = 1;
 		private const int VersionOrder = 2;
 		
-		[TabGroup("Tabs", ConfigTab), Title(BundleTitle), PropertyOrder(BundleOrder), Button("UPDATE BUNDLE", ButtonSizes.Large)]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(BundleGroup), PropertyOrder(BundleOrder), Button("UPDATE BUNDLE", ButtonSizes.Large)]
 		private async void UpdateBundle()
 		{
 			using var firebase = new FirebaseBootstrap();
@@ -75,27 +77,27 @@ namespace Redbean.Editor
 			EditorUtility.ClearProgressBar();
 		}
 
-		[TabGroup("Tabs", ConfigTab), Title(TableTitle), PropertyOrder(TableOrder), LabelText("Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Path"), ShowInInspector, FolderPath]
 		private string TablePath
 		{
 			get => GoogleTableSettings.Path;
 			set => GoogleTableSettings.Path = value;
 		}
 
-		[TabGroup("Tabs", ConfigTab), PropertyOrder(TableOrder), LabelText("Item Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Item Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
 			get => GoogleTableSettings.ItemPath;
 			set => GoogleTableSettings.ItemPath = value;
 		}
 
-		[TabGroup("Tabs", ConfigTab), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large), ResponsiveButtonGroup("Tabs/Config/ResponsiveButton")]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large)]
 		private void OpenTableURL()
 		{
 			Application.OpenURL("https://docs.google.com/spreadsheets/d/1UjQhF5Zhxpa-2bP5hoIH2kVClHT5ZM_QBbrAiE3c3xs/edit#gid=924887524");
 		}
 		
-		[TabGroup("Tabs", ConfigTab), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large), ResponsiveButtonGroup("Tabs/Config/ResponsiveButton")]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
 		private async void UpdateAllTable()
 		{
 			using var container = new ModelContainer();
@@ -151,7 +153,7 @@ namespace Redbean.Editor
 			AssetDatabase.Refresh();
 		}
 		
-		[TabGroup("Tabs", ConfigTab), PropertyOrder(VersionOrder), Title(VersionTitle), Button("Android")]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
 			using var core = new FirebaseBootstrap();
@@ -168,7 +170,7 @@ namespace Redbean.Editor
 			Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 		
-		[TabGroup("Tabs", ConfigTab), PropertyOrder(VersionOrder), Button("iOS")]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
 			using var core = new FirebaseBootstrap();
