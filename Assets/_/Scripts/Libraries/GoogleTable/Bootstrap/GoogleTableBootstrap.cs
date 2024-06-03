@@ -22,7 +22,7 @@ namespace Redbean.Table
 			foreach (var table in tables)
 			{
 				var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(table));
-				var bytes = await storageReference.GetBytesAsync(1000 * 1000);
+				var bytes = await storageReference.GetBytesAsync(1024 * 1024 * 1024);
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
 				
 				// Skip Name and Type Rows
@@ -40,7 +40,10 @@ namespace Redbean.Table
 			
 			Log.Success("Table", "Success to load to the tables.");
 		}
-		
-		public void Dispose() { }
+
+		public void Dispose()
+		{
+			Log.System("Table has been terminated.");
+		}
 	}
 }

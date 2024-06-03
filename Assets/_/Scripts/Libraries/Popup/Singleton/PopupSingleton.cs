@@ -53,16 +53,17 @@ namespace Redbean.Singleton
 
 		public async Task<object> Open(Type type)
 		{
-			var go = await SingletonContainer.GetSingleton<AddressableSingleton>().GetPopup(type);
-			var popup = Instantiate(go).GetComponent(type) as PopupBase;
+			var bundle = await AddressableWrapper.LoadGameObjectAsync(AddressableWrapper.GetPopupPath(type));
+			var popup = Instantiate(bundle.Value).GetComponent(type) as PopupBase;
 			
 			while (true)
 			{
 				var id = $"{Guid.NewGuid()}";
 				if (popupCollection.ContainsKey(id))
 					continue;
-
+				
 				popup.Guid = $"{Guid.NewGuid()}";
+				popup.Bundle = bundle;
 				break;
 			}
 			
@@ -79,8 +80,6 @@ namespace Redbean.Singleton
 		{
 			popupCollection.Remove(id, out var popup);
 			popup.Destroy();
-			
-			SingletonContainer.GetSingleton<AddressableSingleton>().ReleasePopup(popup.GetType());
 		}
 
 		public void AllClose()

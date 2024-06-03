@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Redbean.Bundle;
 using Redbean.Singleton;
 using UnityEngine;
 
@@ -7,16 +8,19 @@ namespace Redbean.Popup
 	public class PopupBase : MonoBase
 	{
 		[HideInInspector]
-		public string Guid;
+		public GameObjectBundle Bundle;
 		
-		private PopupSingleton Popup;
+		[HideInInspector]
+		public string Guid;
 
-		public virtual void Awake() => Popup = this.GetSingleton<PopupSingleton>();
-
-		public virtual void Close() => Popup.Close(Guid);
-
-		public void Destroy() => Destroy(gameObject);
+		public virtual void Close() => this.GetSingleton<PopupSingleton>().Close(Guid);
 
 		public async Task WaitUntilClose() => await TaskExtension.WaitUntil(() => DestroyCancellation.Token.IsCancellationRequested);
+		
+		public void Destroy()
+		{
+			Destroy(gameObject);
+			Bundle.Dispose();
+		}
 	}
 }

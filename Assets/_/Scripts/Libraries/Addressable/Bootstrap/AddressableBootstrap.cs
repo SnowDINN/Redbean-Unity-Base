@@ -37,7 +37,7 @@ namespace Redbean.Bundle
 
 		public void Dispose()
 		{
-			
+			Log.System("Bundle has been terminated.");
 		}
 
 		private static (string value, string type) ConvertDownloadSize(long size)
