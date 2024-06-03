@@ -54,10 +54,23 @@ namespace Redbean.Singleton
 
 		public void AutoRelease()
 		{
-			foreach (var asset in assetsGroup.Values)
+			var releaseList = new List<string>();
+			foreach (var asset in assetsGroup)
 			{
-				foreach (var reference in asset.References.Values.Where(reference => reference))
-					asset.References.Remove(reference.GetInstanceID());
+				var removeList = (from reference in asset.Value.References where !reference.Value select reference.Key).ToArray();
+				foreach (var remove in removeList)
+					asset.Value.References.Remove(remove);
+				
+				if (asset.Value.References.Any())
+					return;
+
+				releaseList.Add(asset.Key);
+			}
+
+			foreach (var release in releaseList)
+			{
+				if (assetsGroup.Remove(release, out var removeBundle))
+					removeBundle.Release();
 			}
 		}
 		

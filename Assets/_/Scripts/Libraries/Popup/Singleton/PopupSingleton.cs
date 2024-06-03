@@ -66,7 +66,7 @@ namespace Redbean.Singleton
 		{
 			if (!popupsGroup.Remove(id, out var popup))
 				return;
-
+			
 			addressable.Release(AddressableSettings.GetPopupPath(popup.GetType()), popup.Guid);
 		}
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using Redbean.Container;
+using Redbean.Singleton;
 using Sirenix.OdinInspector;
 
 namespace Redbean.Editor
@@ -14,6 +16,12 @@ namespace Redbean.Editor
 		private void ThrowException()
 		{
 			throw new Exception("An exception has occurred.");
+		}
+		
+		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), DisableInEditorMode, Button("Auto Release")]
+		private void AutoRelease()
+		{
+			SingletonContainer.GetSingleton<AddressableSingleton>().AutoRelease();
 		}
 	}
 }
