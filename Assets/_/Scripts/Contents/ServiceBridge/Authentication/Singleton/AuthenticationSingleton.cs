@@ -7,7 +7,7 @@ namespace Redbean.Singleton
 {
 	public class AuthenticationSingleton : ISingleton
 	{
-		private readonly Dictionary<AuthenticationType, IAuthentication> authentications = new();
+		private readonly Dictionary<AuthenticationType, IAuthentication> authenticationsGroup = new();
 		
 		public AuthenticationSingleton()
 		{
@@ -20,14 +20,14 @@ namespace Redbean.Singleton
 				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IAuthentication);
 
 			foreach (var _ in authentications
-				         .Where(authentication => authentication != null && this.authentications.TryAdd(authentication.Type, authentication))) ;
+				         .Where(authentication => authentication != null && authenticationsGroup.TryAdd(authentication.Type, authentication))) ;
 		}
 		
 		public void Dispose()
 		{
-			authentications.Clear();
+			authenticationsGroup.Clear();
 		}
 
-		public IAuthentication GetPlatform(AuthenticationType type) => authentications[type];
+		public IAuthentication GetPlatform(AuthenticationType type) => authenticationsGroup[type];
 	}
 }

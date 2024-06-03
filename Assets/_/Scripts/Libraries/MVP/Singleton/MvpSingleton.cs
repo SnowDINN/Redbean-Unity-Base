@@ -12,7 +12,7 @@ namespace Redbean.Singleton
 	public class MvpSingleton : ISingleton
 	{
 		private readonly Dictionary<string, string> playerPrefsGroup = new();
-		private readonly Dictionary<Type, IModel> models = new();
+		private readonly Dictionary<Type, IModel> modelsGroup = new();
 		private readonly AES128 aes = new();
 
 		public MvpSingleton()
@@ -26,7 +26,7 @@ namespace Redbean.Singleton
 				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IModel);
 
 			foreach (var _ in nativeSingletons
-				         .Where(model => model != null && models.TryAdd(model.GetType(), model)))
+				         .Where(model => model != null && modelsGroup.TryAdd(model.GetType(), model)))
 
 #region PlayerPrefs
 
@@ -40,7 +40,7 @@ namespace Redbean.Singleton
 					var value = JsonConvert.DeserializeObject(dataGroup.Value, key);
 
 					if (value is IModel model)
-						models[key] = model;
+						modelsGroup[key] = model;
 				}
 
 				playerPrefsGroup = dataGroups;
@@ -51,35 +51,35 @@ namespace Redbean.Singleton
 
 		public void Dispose()
 		{
-			models.Clear();
+			modelsGroup.Clear();
 			playerPrefsGroup.Clear();
 		}
 
 		/// <summary>
 		/// 모델 전부 제거
 		/// </summary>
-		public void Clear() => models.Clear();
+		public void Clear() => modelsGroup.Clear();
 
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public T GetModel<T>() where T : IModel => (T)models[typeof(T)];
+		public T GetModel<T>() where T : IModel => (T)modelsGroup[typeof(T)];
 
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public IModel GetModel(Type type) => models[type];
+		public IModel GetModel(Type type) => modelsGroup[type];
 
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
 		public T Override<T>(T model, bool isPlayerPrefs = false) where T : IModel
 		{
-			var targetFields = models[model.GetType()].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
+			var targetFields = modelsGroup[model.GetType()].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
 			var copyFields = model.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
 			
 			for (var i = 0; i < targetFields.Length; i++)
-				targetFields[i].SetValue(models[model.GetType()], copyFields[i].GetValue(model));
+				targetFields[i].SetValue(modelsGroup[model.GetType()], copyFields[i].GetValue(model));
 
 			if (isPlayerPrefs)
 				model.SetPlayerPrefs(typeof(T).FullName);

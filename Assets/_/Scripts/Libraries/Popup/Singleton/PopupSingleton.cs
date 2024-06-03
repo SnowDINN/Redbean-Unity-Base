@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redbean.Bundle;
+using Redbean.Container;
 using Redbean.Popup;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,27 +13,28 @@ namespace Redbean.Singleton
 {
 	public class PopupSingleton : ISingleton
 	{
-		private readonly Dictionary<string, PopupBase> popupCollection = new();
-		private readonly Canvas canvas;
-		private readonly CanvasScaler canvasScaler;
-		private readonly GraphicRaycaster raycaster;
+		private AddressableSingleton addressable => SingletonContainer.GetSingleton<AddressableSingleton>();
+		
+		private readonly Dictionary<int, PopupBase> popupsGroup = new();
 		private readonly Transform popupParent;
+		private readonly Canvas canvas;
 
-		public PopupBase CurrentPopup => popupCollection.Values.Last();
+		public PopupBase CurrentPopup => popupsGroup.Values.Last();
 
 		public PopupSingleton()
 		{
 			var go = new GameObject("[Popup]");
+			Object.DontDestroyOnLoad(go);
+			
 			canvas = go.AddComponent<Canvas>();
-			canvasScaler = go.AddComponent<CanvasScaler>();
-			raycaster = go.AddComponent<GraphicRaycaster>();
-
 			canvas.renderMode = RenderMode.ScreenSpaceCamera;
+			
+			var canvasScaler = go.AddComponent<CanvasScaler>();
 			canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
 			canvasScaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
 			canvasScaler.referenceResolution = new Vector2(720, 1440);
 			
-			Object.DontDestroyOnLoad(go);
+			go.AddComponent<GraphicRaycaster>();
 			
 			popupParent = go.transform;
 
@@ -51,50 +54,34 @@ namespace Redbean.Singleton
 
 		public object Open(Type type)
 		{
-			var bundle = AddressableWrapper.LoadGameObjectAsync(AddressableWrapper.GetPopupPath(type));
-			var popup = Instantiate(bundle.Value).GetComponent(type) as PopupBase;
+			var go = addressable.LoadAsset<GameObject>(AddressableSettings.GetPopupPath(type), popupParent);
+			var popup = go.GetComponent(type) as PopupBase;
+			popup.Guid = go.GetInstanceID();
 			
-			while (true)
-			{
-				var id = $"{Guid.NewGuid()}";
-				if (popupCollection.ContainsKey(id))
-					continue;
-				
-				popup.Guid = $"{Guid.NewGuid()}";
-				popup.Bundle = bundle;
-				break;
-			}
-			
-			popupCollection.Add(popup.Guid, popup);
-			return popupCollection[popup.Guid];
+			popupsGroup.Add(popup.Guid, popup);
+			return popupsGroup[popup.Guid];
 		}
 		
-		public T Open<T>() where T : PopupBase
+		public void Close(int id)
 		{
-			return Open(typeof(T)) as T;
-		}
-		
-		public void Close(string id)
-		{
-			popupCollection.Remove(id, out var popup);
-			popup.Destroy();
+			if (!popupsGroup.Remove(id, out var popup))
+				return;
+
+			addressable.Release(AddressableSettings.GetPopupPath(popup.GetType()), popup.Guid);
 		}
 
 		public void AllClose()
 		{
-			foreach (var popup in popupCollection.Values)
+			foreach (var popup in popupsGroup.Values)
 				Close(popup.Guid);
 		}
 		
-		public void CurrentPopupClose()
-		{
-			Close(CurrentPopup.Guid);
-		}
+		public T Open<T>() where T : PopupBase => Open(typeof(T)) as T;
 		
-		public T Get<T>(string id) where T : class => popupCollection[id] as T;
+		public T GetPopup<T>(int id) where T : class => popupsGroup[id] as T;
 		
-		public PopupBase Get(string id) => popupCollection[id];
-
-		private GameObject Instantiate(GameObject gameObject) => GameObject.Instantiate(gameObject, popupParent);
+		public PopupBase GetPopup(int id) => popupsGroup[id];
+		
+		public void CurrentPopupClose() => Close(CurrentPopup.Guid);
 	}
 }

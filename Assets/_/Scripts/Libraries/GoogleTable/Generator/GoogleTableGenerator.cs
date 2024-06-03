@@ -21,15 +21,17 @@ namespace Redbean.Table
 		public const string Namespace = "Redbean";
 
 #if UNITY_EDITOR
+		private static MvpSingleton mvp => SingletonContainer.GetSingleton<MvpSingleton>();
+		
 		private static string Path =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.Path}";
 
 		private static string ItemPath =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.ItemPath}";
 		
-		private static string ClientId => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<TableConfigModel>().Client.Id;
-		private static string ClientSecret => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<TableConfigModel>().Client.Secret;
-		private static string SheetId => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<TableConfigModel>().Sheet.Id;
+		private static string ClientId => mvp.GetModel<TableConfigModel>().Client.Id;
+		private static string ClientSecret => mvp.GetModel<TableConfigModel>().Client.Secret;
+		private static string SheetId => mvp.GetModel<TableConfigModel>().Sheet.Id;
 
 		/// <summary>
 		/// 테이블 시트 데이터 호출
