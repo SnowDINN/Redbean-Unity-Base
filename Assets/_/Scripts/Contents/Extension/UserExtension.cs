@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Redbean.Container;
 using Redbean.Firebase;
 using Redbean.MVP;
 using Redbean.MVP.Content;
@@ -22,14 +21,14 @@ namespace Redbean
 		public static UserModel SetReferenceUser(this UserModel model)
 		{
 			if (!string.IsNullOrEmpty(model.Social.Id))
-				FirebaseContainer.UserDB = FirebaseContainer.Firestore.Collection(FirebaseDefine.Users).Document(model.Social.Id);
+				UserDB = Firestore.Collection(FirebaseDefine.Users).Document(model.Social.Id);
 			
 			return model.Publish().SetPlayerPrefs(typeof(UserModel).FullName);
 		}
 		
 		public static async UniTask<bool> TryGetUserSnapshot(this UserModel model, string id)
 		{
-			var equalTo = FirebaseContainer.Firestore.Collection(FirebaseDefine.Users).WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
+			var equalTo = Firestore.Collection(FirebaseDefine.Users).WhereEqualTo($"{DataKey.USER_SOCIAL_KEY}.{DataKey.USER_ID_KEY}", id);
 			var querySnapshot = await equalTo.GetSnapshotAsync();
 			if (querySnapshot.Any())
 			{

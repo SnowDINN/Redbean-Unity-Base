@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Redbean.Base;
-using Redbean.Container;
 using UnityEngine;
 
 namespace Redbean.Popup
@@ -10,9 +9,9 @@ namespace Redbean.Popup
 		[HideInInspector]
 		public string Guid;
 		
-		private PopupBinder Popup;
+		private PopupSingleton Popup;
 
-		public virtual void Awake() => Popup = SingletonContainer.Get<PopupBinder>();
+		public virtual void Awake() => Popup = this.GetSingleton<PopupSingleton>();
 
 		public virtual void Close() => Popup.Close(Guid);
 

@@ -45,14 +45,14 @@ namespace Redbean.Editor
 				
 				var storage = await GetStorageFiles();
 				foreach (var file in storage.Model.Bundle)
-					await FirebaseContainer.Storage.GetReference(StoragePath.BundleRequest(file)).DeleteAsync();
+					await Extension.Storage.GetReference(StoragePath.BundleRequest(file)).DeleteAsync();
 
 				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
 				for (var i = 0; i < path.Length; i++)
 				{
 					var filename = path[i].Split('/').Last();
 					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
-					var storageReference = FirebaseContainer.Storage.GetReference(path[i]);
+					var storageReference = Extension.Storage.GetReference(path[i]);
 					var metadata = new MetadataChange
 					{
 						CacheControl = "no-store",
@@ -100,22 +100,20 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large), PropertySpace]
 		private async void UpdateAllTable()
 		{
-			using var container = new ModelContainer();
-			await container.Setup();
-				
+			using var container = new MvpSingleton();
 			using var firebase = new FirebaseBootstrap();
 			await firebase.Setup();
 
 			var storage = await GetStorageFiles();
 			var config = await GetTableConfig();
-			ModelContainer.Override(config.Model);
 			
+			this.GetSingleton<MvpSingleton>().Override(config.Model);
 			try
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 
 				foreach (var file in storage.Model.Table)
-					await FirebaseContainer.Storage.GetReference(StoragePath.TableRequest(file)).DeleteAsync();
+					await Extension.Storage.GetReference(StoragePath.TableRequest(file)).DeleteAsync();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
 				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
@@ -127,7 +125,7 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 					
-					var storageReference = FirebaseContainer.Storage.GetReference(StoragePath.TableRequest(keys[i]));
+					var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(keys[i]));
 					var tsv = $"{string.Join("\r\n", values[i])}";
 					var metadata = new MetadataChange
 					{
@@ -189,7 +187,7 @@ namespace Redbean.Editor
 
 		private static async Task<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
 		{
-			var document = FirebaseContainer.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
+			var document = Extension.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the app config.");
@@ -204,7 +202,7 @@ namespace Redbean.Editor
 		
 		private static async Task<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
 		{
-			var document = FirebaseContainer.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
+			var document = Extension.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 				Log.Success("Firebase", "Success to load to the table config.");
@@ -219,7 +217,7 @@ namespace Redbean.Editor
 		
 		private static async Task<(DocumentReference Document, StorageFileModel Model)> GetStorageFiles()
 		{
-			var document = FirebaseContainer.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
+			var document = Extension.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
 			var snapshotAsync = await document.GetSnapshotAsync();
 			if (snapshotAsync.Exists)
 			{

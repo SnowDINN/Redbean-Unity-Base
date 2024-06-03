@@ -29,8 +29,7 @@ namespace Redbean.Container
 				            && !x.IsAbstract)
 				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton);
 
-			foreach (var singleton in nativeSingletons
-				         .Where(singleton => singletons.TryAdd(singleton.GetType(), singleton)))
+			foreach (var singleton in nativeSingletons.Where(singleton => singleton != null && singletons.TryAdd(singleton.GetType(), singleton)))
 				Log.System($"Create instance {singleton.GetType().FullName}");
 
 #endregion
@@ -52,8 +51,7 @@ namespace Redbean.Container
 				Object.DontDestroyOnLoad(parent);
 			}
 			
-			foreach (var singleton in monoSingletons
-				         .Where(singleton => singletons.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
+			foreach (var singleton in monoSingletons.Where(singleton => singletons.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
 				Log.System($"Create instance {singleton.FullName}");
 
 #endregion
@@ -77,11 +75,11 @@ namespace Redbean.Container
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static ISingleton Get(Type type) => singletons[type];
+		public static ISingleton GetSingleton(Type type) => singletons[type];
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T Get<T>() where T : ISingleton => (T)singletons[typeof(T)];
+		public static T GetSingleton<T>() where T : ISingleton => (T)singletons[typeof(T)];
 	}
 }

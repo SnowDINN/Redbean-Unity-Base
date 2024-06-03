@@ -1,9 +1,11 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Redbean.Base;
 using Redbean.Container;
 using Redbean.MVP;
 using Redbean.Popup;
 using UnityEngine;
+
 #if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 #endif
@@ -15,12 +17,22 @@ namespace Redbean
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		private static T GetSingleton<T>() where T : ISingleton => SingletonContainer.Get<T>();
+		private static T GetSingleton<T>() where T : ISingleton => SingletonContainer.GetSingleton<T>();
+		
+		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
+		private static object GetSingleton(Type type) => SingletonContainer.GetSingleton(type);
 		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static T GetModel<T>() where T : IModel => ModelContainer.Get<T>();
+		private static T GetModel<T>() where T : IModel => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<T>();
+		
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
+		private static object GetModel(Type type) => SingletonContainer.GetSingleton<MvpSingleton>().GetModel(type);
 		
 #if UNITY_EDITOR
 		/// <summary>
@@ -47,7 +59,7 @@ namespace Redbean
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupBinder Popup(this MonoBase mono) => GetSingleton<PopupBinder>();
+		public static PopupSingleton Popup(this MonoBase mono) => GetSingleton<PopupSingleton>();
 		
 		/// <summary>
 		/// 게임 오브젝트 비/활성화

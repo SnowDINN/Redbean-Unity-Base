@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
-using Redbean.Container;
 using Redbean.MVP.Content;
 using UnityEngine;
 
@@ -28,7 +27,7 @@ namespace Redbean.Firebase
 			if (Application.isPlaying)
 			{
 				// 파이어스토어 앱 설정 체크
-				var appSnapshot = await FirebaseContainer.Firestore.Collection(FirebaseDefine.Config)
+				var appSnapshot = await Extension.Firestore.Collection(FirebaseDefine.Config)
 					.Document(FirebaseDefine.AppConfig)
 					.GetSnapshotAsync();
 				
@@ -56,11 +55,11 @@ namespace Redbean.Firebase
 						// 정상 진입
 						case <= 0:
 						{
-							var tableSnapshot = await FirebaseContainer.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig).GetSnapshotAsync();
+							var tableSnapshot = await Extension.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig).GetSnapshotAsync();
 							if (tableSnapshot.Exists)
 								tableSnapshot.ConvertTo<TableConfigModel>().Publish();
 							
-							var storageSnapshot = await FirebaseContainer.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version).GetSnapshotAsync();
+							var storageSnapshot = await Extension.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version).GetSnapshotAsync();
 							if (storageSnapshot.Exists)
 								storageSnapshot.ConvertTo<StorageFileModel>().Publish();
 							

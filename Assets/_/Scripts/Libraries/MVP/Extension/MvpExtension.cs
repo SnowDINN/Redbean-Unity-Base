@@ -21,19 +21,29 @@ namespace Redbean
 #region Presenter
 		
 		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		public static T GetModel<T>(this IPresenter mvp) where T : IModel => GetModel<T>();
-		
-		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
 		public static T GetSingleton<T>(this IPresenter mvp) where T : ISingleton => GetSingleton<T>();
 		
 		/// <summary>
+		/// 싱글톤 호출
+		/// </summary>
+		public static object GetSingleton(this IPresenter mvp, Type type) => GetSingleton(type);
+		
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
+		public static T GetModel<T>(this IPresenter mvp) where T : IModel => GetModel<T>();
+		
+		/// <summary>
+		/// 모델 호출
+		/// </summary>
+		public static object GetModel(this IPresenter mvp, Type type) => GetModel(type);
+		
+		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupBinder Popup(this IPresenter mvp) => GetSingleton<PopupBinder>();
+		public static PopupSingleton Popup(this IPresenter mvp) => GetSingleton<PopupSingleton>();
 
 		public static T AddTo<T>(this T disposable, IPresenter presenter) where T : IDisposable =>
 			disposable.AddTo(presenter.GetGameObject());
@@ -46,7 +56,7 @@ namespace Redbean
 		/// 모델 데이터 배포
 		/// </summary>
 		public static T Publish<T>(this T model, bool isPlayerPrefs = false) where T : IModel => 
-			GetSingleton<RxModelBinder>().Publish(ModelContainer.Override(model, isPlayerPrefs));
+			GetSingleton<RxModelBinder>().Publish(GetSingleton<MvpSingleton>().Override(model, isPlayerPrefs));
 
 #endregion
 	}

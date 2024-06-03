@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Redbean.ServiceBridge
 {
-	public class Authentication : ISingleton
+	public class AuthenticationSingleton : ISingleton
 	{
 		private readonly Dictionary<AuthenticationType, IAuthentication> authentications = new();
 		
-		public Authentication()
+		public AuthenticationSingleton()
 		{
 			var authentications = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(x => x.GetTypes())

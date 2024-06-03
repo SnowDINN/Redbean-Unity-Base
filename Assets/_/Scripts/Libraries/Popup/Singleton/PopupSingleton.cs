@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace Redbean.Popup
 {
-	public class PopupBinder : ISingleton
+	public class PopupSingleton : ISingleton
 	{
 		private readonly Dictionary<string, PopupBase> popupCollection = new();
 		private readonly Canvas canvas;
@@ -20,7 +20,7 @@ namespace Redbean.Popup
 
 		public PopupBase CurrentPopup => popupCollection.Values.Last();
 
-		public PopupBinder()
+		public PopupSingleton()
 		{
 			var go = new GameObject("[Popup]");
 			canvas = go.AddComponent<Canvas>();
@@ -52,7 +52,7 @@ namespace Redbean.Popup
 
 		public async Task<object> Open(Type type)
 		{
-			var go = await AddressableContainer.GetPopup(type);
+			var go = await SingletonContainer.GetSingleton<AddressableSingleton>().GetPopup(type);
 			var popup = Instantiate(go).GetComponent(type) as PopupBase;
 			
 			while (true)
@@ -79,7 +79,7 @@ namespace Redbean.Popup
 			popupCollection.Remove(id, out var popup);
 			popup.Destroy();
 			
-			AddressableContainer.ReleasePopup(popup.GetType());
+			SingletonContainer.GetSingleton<AddressableSingleton>().ReleasePopup(popup.GetType());
 		}
 
 		public void AllClose()

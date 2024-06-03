@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Redbean.Container;
 using UnityEngine;
 
 namespace Redbean.MVP
@@ -26,7 +25,7 @@ namespace Redbean.MVP
 					switch (attribute)
 					{
 						case ModelAttribute:
-							field.SetValue(this, ModelContainer.Get(field.FieldType));
+							field.SetValue(this, this.GetModel(field.FieldType));
 							break;
 						
 						case ViewAttribute:
@@ -34,7 +33,7 @@ namespace Redbean.MVP
 							break;
 
 						case SingletonAttribute:
-							field.SetValue(this, SingletonContainer.Get(field.FieldType));
+							field.SetValue(this, this.GetSingleton(field.FieldType));
 							break;
 					}
 			}

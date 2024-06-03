@@ -2,8 +2,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
-using Redbean.Container;
-using Redbean.Firebase;
 using Redbean.ServiceBridge;
 
 namespace Redbean.MVP.Content
@@ -17,7 +15,7 @@ namespace Redbean.MVP.Content
 		private SocialAuthenticationView view;
 
 		[Singleton]
-		private Authentication authentication;
+		private AuthenticationSingleton authentication;
 		
 		public override void Setup()
 		{
@@ -37,7 +35,7 @@ namespace Redbean.MVP.Content
 				return;
 
 			var credential = await auth.Login();
-			var user = await FirebaseContainer.Auth.SignInWithCredentialAsync(credential.Credential);
+			var user = await Extension.Auth.SignInWithCredentialAsync(credential.Credential);
 			
 			m_user.Social.Id = user.UserId;
 			m_user.Social.Platform = user.ProviderData.First().ProviderId;
@@ -69,7 +67,7 @@ namespace Redbean.MVP.Content
 					return;
 
 				var credential = await auth.AutoLogin();
-				var user = await FirebaseContainer.Auth.SignInWithCredentialAsync(credential.Credential);
+				var user = await Extension.Auth.SignInWithCredentialAsync(credential.Credential);
 					
 				var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
 				if (isSuccess)

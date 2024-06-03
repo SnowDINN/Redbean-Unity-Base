@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Redbean.Container;
 using Redbean.MVP.Content;
 using UnityEngine.AddressableAssets;
 
@@ -12,7 +11,7 @@ namespace Redbean.Bundle
 
 		public async Task Setup()
 		{
-			var bundles = ModelContainer.Get<StorageFileModel>().Bundle;
+			var bundles = this.GetModel<StorageFileModel>().Bundle;
 			if (!bundles.Any())
 			{
 				Log.Fail("Bundle", "Fail to load to the bundles.");

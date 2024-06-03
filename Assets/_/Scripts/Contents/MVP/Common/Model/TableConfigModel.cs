@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Firebase.Firestore;
+﻿using Firebase.Firestore;
 
 namespace Redbean.MVP.Content
 {

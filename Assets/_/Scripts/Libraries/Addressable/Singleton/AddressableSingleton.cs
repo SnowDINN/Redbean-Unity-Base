@@ -8,23 +8,25 @@ using Object = UnityEngine.Object;
 
 namespace Redbean.Container
 {
-	public class AddressableContainer
+	public class AddressableSingleton : ISingleton
 	{
-		private static readonly Dictionary<string, Object> Bundles = new();
+		private readonly Dictionary<string, Object> Bundles = new();
 		
-		public static async Task<GameObject> GetPopup<T>() =>
+		public async Task<GameObject> GetPopup<T>() =>
 			await LoadBundle($"Popup/{typeof(T).Name}.prefab");
 		
-		public static async Task<GameObject> GetPopup(Type type) =>
+		public async Task<GameObject> GetPopup(Type type) =>
 			await LoadBundle($"Popup/{type.Name}.prefab");
 		
-		public static void ReleasePopup<T>() =>
+		public void ReleasePopup<T>() =>
 			ReleaseBundle($"Popup/{typeof(T).Name}.prefab");
 		
-		public static void ReleasePopup(Type type) =>
+		public void ReleasePopup(Type type) =>
 			ReleaseBundle($"Popup/{type.Name}.prefab");
 
-		private static async Task<GameObject> LoadBundle(string key)
+		public void Dispose() => Bundles.Clear();
+
+		private async Task<GameObject> LoadBundle(string key)
 		{
 			var go = await Addressables.LoadAssetAsync<GameObject>(key).Task;
 			
@@ -44,7 +46,7 @@ namespace Redbean.Container
 			return go;
 		}
 
-		private static void ReleaseBundle(string key)
+		private void ReleaseBundle(string key)
 		{
 			Bundles.Remove(key, out var go);
 			Addressables.Release(go);
