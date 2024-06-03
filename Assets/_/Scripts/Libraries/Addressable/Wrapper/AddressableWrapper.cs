@@ -3,10 +3,6 @@ using Redbean.Bundle;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-#if UNITY_EDITOR
-using TMPro;
-#endif
-
 namespace Redbean.Singleton
 {
 	public class AddressableWrapper
@@ -16,19 +12,6 @@ namespace Redbean.Singleton
 		public static GameObjectBundle LoadGameObjectAsync(string key)
 		{
 			var go = Addressables.LoadAssetAsync<GameObject>(key).WaitForCompletion();
-			
-#if UNITY_EDITOR
-			var uguis = go.GetComponentsInChildren<TextMeshProUGUI>(true);
-			foreach (var ugui in uguis)
-			{
-				ReplaceShader(ugui.material);
-				ReplaceShader(ugui.materialForRendering);
-
-				if (ugui.spriteAsset)
-					ReplaceShader(ugui.spriteAsset.material);
-			}
-#endif
-
 			var bundle = new GameObjectBundle
 			{
 				Value = go,
