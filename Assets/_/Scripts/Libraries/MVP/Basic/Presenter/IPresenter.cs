@@ -14,6 +14,14 @@ namespace Redbean.MVP
 		/// </summary>
 		void BindView(IView view);
 		
+		/// <summary>
+		/// Presenter 생성 시 호출되는 함수
+		/// </summary>
 		void Setup();
+
+		/// <summary>
+		/// Presenter 파괴 시 호출되는 함수
+		/// </summary>
+		void Teardown();
 	}
 }

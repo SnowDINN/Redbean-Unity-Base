@@ -44,7 +44,7 @@ namespace Redbean
 		/// </summary>
 		public static PopupSingleton Popup(this IPresenter mvp) => GetSingleton<PopupSingleton>();
 
-		public static T AddTo<T>(this T disposable, IPresenter presenter) where T : IDisposable =>
+		public static IDisposable AddTo(this IDisposable disposable, IPresenter presenter) =>
 			disposable.AddTo(presenter.GetGameObject());
 
 #endregion

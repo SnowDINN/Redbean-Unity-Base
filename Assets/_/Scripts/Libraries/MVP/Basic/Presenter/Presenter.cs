@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
 namespace Redbean.MVP
 {
-	public class Presenter : IPresenter, IDisposable
+	public class Presenter : IPresenter
 	{
 		private GameObject GameObject;
 
@@ -39,14 +38,8 @@ namespace Redbean.MVP
 			}
 		}
 		
-		/// <summary>
-		/// Presenter 생성 시 호출되는 함수
-		/// </summary>
 		public virtual void Setup() { }
-
-		/// <summary>
-		/// Presenter 파괴 시 호출되는 함수
-		/// </summary>
-		public virtual void Dispose() { }
+		
+		public virtual void Teardown() { }
 	}
 }

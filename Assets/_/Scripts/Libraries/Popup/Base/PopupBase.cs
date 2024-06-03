@@ -20,7 +20,7 @@ namespace Redbean.Popup
 		public void Destroy()
 		{
 			Destroy(gameObject);
-			Bundle.Dispose();
+			Bundle.Release();
 		}
 	}
 }
