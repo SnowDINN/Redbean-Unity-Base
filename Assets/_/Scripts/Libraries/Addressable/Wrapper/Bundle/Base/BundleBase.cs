@@ -8,9 +8,6 @@ namespace Redbean.Bundle
 	{
 		public T Value;
 
-		public void Dispose()
-		{
-			Addressables.Release(Value);
-		}
+		public void Dispose() => Addressables.Release(Value);
 	}
 }

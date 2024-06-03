@@ -14,9 +14,9 @@ namespace Redbean.Singleton
 	{
 		public static string GetPopupPath(Type type) => $"Popup/{type.Name}.prefab";
 
-		public static async Task<GameObjectBundle> LoadGameObjectAsync(string key)
+		public static GameObjectBundle LoadGameObjectAsync(string key)
 		{
-			var go = await Addressables.LoadAssetAsync<GameObject>(key).Task;
+			var go = Addressables.LoadAssetAsync<GameObject>(key).WaitForCompletion();
 			
 #if UNITY_EDITOR
 			var uguis = go.GetComponentsInChildren<TextMeshProUGUI>(true);

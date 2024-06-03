@@ -39,12 +39,12 @@ namespace Redbean
 #endif
 		}
 		
-		private async void OnLogMessageReceived(string condition, string stacktrace, LogType type)
+		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)
 		{
 			if (type != LogType.Exception)
 				return;
 
-			(await this.Popup().Open<PopupException>()).ExceptionMessage.Value = condition;
+			this.Popup().Open<PopupException>().ExceptionMessage.Value = condition;
 		}
 	}
 }

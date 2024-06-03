@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Redbean.Container;
 using Redbean.Popup;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,9 +49,9 @@ namespace Redbean.Singleton
 			canvas.sortingLayerName = "Popup";
 		}
 
-		public async Task<object> Open(Type type)
+		public object Open(Type type)
 		{
-			var bundle = await AddressableWrapper.LoadGameObjectAsync(AddressableWrapper.GetPopupPath(type));
+			var bundle = AddressableWrapper.LoadGameObjectAsync(AddressableWrapper.GetPopupPath(type));
 			var popup = Instantiate(bundle.Value).GetComponent(type) as PopupBase;
 			
 			while (true)
@@ -71,9 +69,9 @@ namespace Redbean.Singleton
 			return popupCollection[popup.Guid];
 		}
 		
-		public async Task<T> Open<T>() where T : PopupBase
+		public T Open<T>() where T : PopupBase
 		{
-			return await Open(typeof(T)) as T;
+			return Open(typeof(T)) as T;
 		}
 		
 		public void Close(string id)
