@@ -1,6 +1,6 @@
 ﻿using System;
-using Redbean.Container;
 using Redbean.MVP;
+using Redbean.Singleton;
 
 namespace Redbean
 {

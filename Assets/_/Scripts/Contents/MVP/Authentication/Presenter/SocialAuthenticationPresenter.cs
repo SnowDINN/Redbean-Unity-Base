@@ -2,7 +2,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
-using Redbean.ServiceBridge;
+using Redbean.Singleton;
 
 namespace Redbean.MVP.Content
 {

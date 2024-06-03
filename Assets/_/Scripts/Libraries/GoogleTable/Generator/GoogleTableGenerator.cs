@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Redbean.Container;
+using Redbean.Singleton;
 
 #if UNITY_EDITOR
 using System.Collections.Generic;

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Redbean.Container;
+using Redbean.Popup;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace Redbean.Popup
+namespace Redbean.Singleton
 {
 	public class PopupSingleton : ISingleton
 	{

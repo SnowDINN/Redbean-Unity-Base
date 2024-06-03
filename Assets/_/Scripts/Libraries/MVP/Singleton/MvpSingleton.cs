@@ -7,7 +7,7 @@ using Redbean.Cryptography;
 using Redbean.MVP;
 using UnityEngine;
 
-namespace Redbean.Container
+namespace Redbean.Singleton
 {
 	public class MvpSingleton : ISingleton
 	{
@@ -25,7 +25,8 @@ namespace Redbean.Container
 				            && !x.IsAbstract)
 				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IModel);
 
-			foreach (var _ in nativeSingletons.Where(model => model != null && models.TryAdd(model.GetType(), model)))
+			foreach (var _ in nativeSingletons
+				         .Where(model => model != null && models.TryAdd(model.GetType(), model)))
 
 #region PlayerPrefs
 

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redbean.ServiceBridge;
 
-namespace Redbean.ServiceBridge
+namespace Redbean.Singleton
 {
 	public class AuthenticationSingleton : ISingleton
 	{
@@ -17,10 +18,9 @@ namespace Redbean.ServiceBridge
 				            && !x.IsInterface
 				            && !x.IsAbstract)
 				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IAuthentication);
-			
-			foreach (var auth in authentications
-				         .Where(authentication => this.authentications.TryAdd(authentication.Type, authentication)))
-				Log.Success("Authentication", $"Initialization succeeded {auth.GetType().FullName}");
+
+			foreach (var _ in authentications
+				         .Where(authentication => authentication != null && this.authentications.TryAdd(authentication.Type, authentication))) ;
 		}
 		
 		public void Dispose()

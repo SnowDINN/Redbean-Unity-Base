@@ -30,6 +30,7 @@ namespace Redbean.Table
 				foreach (var item in skipRows)
 				{
 					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{table}");
+					
 					if (Activator.CreateInstance(type) is IGoogleTable instance)
 						instance.Apply(item);
 				}

@@ -1,9 +1,8 @@
 ﻿using System;
 using R3;
-using Redbean.Container;
 using Redbean.MVP;
-using Redbean.Popup;
 using Redbean.Rx;
+using Redbean.Singleton;
 
 namespace Redbean
 {

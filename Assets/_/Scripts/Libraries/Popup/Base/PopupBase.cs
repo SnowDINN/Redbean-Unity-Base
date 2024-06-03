@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Redbean.Base;
+using Redbean.Singleton;
 using UnityEngine;
 
 namespace Redbean.Popup

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Object = UnityEngine.Object;
 
-namespace Redbean.Container
+namespace Redbean.Singleton
 {
 	public class AddressableSingleton : ISingleton
 	{

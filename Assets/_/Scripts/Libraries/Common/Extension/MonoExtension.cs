@@ -3,7 +3,7 @@ using System.Threading;
 using Redbean.Base;
 using Redbean.Container;
 using Redbean.MVP;
-using Redbean.Popup;
+using Redbean.Singleton;
 using UnityEngine;
 
 #if UNITY_EDITOR
