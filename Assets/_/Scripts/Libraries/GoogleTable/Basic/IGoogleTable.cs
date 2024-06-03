@@ -1,4 +1,4 @@
-﻿namespace Redbean
+﻿namespace Redbean.Table
 {
 	public interface IGoogleTable
 	{

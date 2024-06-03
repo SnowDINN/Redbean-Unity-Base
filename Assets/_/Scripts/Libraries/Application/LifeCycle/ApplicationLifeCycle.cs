@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Redbean.Base;
 using Redbean.Popup.Content;
 using UnityEngine;
 

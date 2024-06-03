@@ -1,6 +1,6 @@
 ﻿using R3;
 
-namespace Redbean.Base
+namespace Redbean.Rx
 {
 	public class RxBase : ISingleton
 	{

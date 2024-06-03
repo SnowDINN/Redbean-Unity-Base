@@ -1,7 +1,7 @@
 ﻿using Redbean.Base;
 using UnityEngine;
 
-namespace Redbean
+namespace Redbean.Table
 {
 	[CreateAssetMenu(fileName = "GoogleTable", menuName = "Redbean/GoogleTable")]
 	public class GoogleTableInstaller : ScriptableObject

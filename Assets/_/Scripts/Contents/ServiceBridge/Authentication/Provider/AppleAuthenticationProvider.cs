@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Redbean.ServiceBridge
+namespace Redbean.Auth
 {
 	public enum AppleAuthErrorCode
 	{

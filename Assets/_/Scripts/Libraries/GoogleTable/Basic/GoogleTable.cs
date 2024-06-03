@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Redbean.Table;
 
-namespace Redbean
+namespace Redbean.Table
 {
 	public class GoogleTable
 	{

@@ -1,6 +1,5 @@
 using System;
 using R3;
-using Redbean.Base;
 using UnityEngine;
 
 namespace Redbean.Rx

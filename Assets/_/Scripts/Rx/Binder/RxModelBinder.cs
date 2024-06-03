@@ -1,5 +1,4 @@
 ﻿using R3;
-using Redbean.Base;
 using Redbean.MVP;
 
 namespace Redbean.Rx

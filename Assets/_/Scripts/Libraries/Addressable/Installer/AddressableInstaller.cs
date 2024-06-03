@@ -1,7 +1,7 @@
 using Redbean.Base;
 using UnityEngine;
 
-namespace Redbean
+namespace Redbean.Bundle
 {
 	[CreateAssetMenu(fileName = "Addressable", menuName = "Redbean/Addressable")]
 	public class AddressableInstaller : ScriptableObject

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace Redbean.Base
+namespace Redbean
 {
 	public class MonoBase : MonoBehaviour, IDisposable
 	{

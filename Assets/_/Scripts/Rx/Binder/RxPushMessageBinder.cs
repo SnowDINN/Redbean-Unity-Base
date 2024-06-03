@@ -1,6 +1,5 @@
 ﻿using Firebase.Messaging;
 using R3;
-using Redbean.Base;
 
 namespace Redbean.Rx
 {

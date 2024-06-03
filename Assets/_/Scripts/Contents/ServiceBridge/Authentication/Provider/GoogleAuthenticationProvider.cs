@@ -2,7 +2,7 @@
 using Firebase.Auth;
 using Google;
 
-namespace Redbean.ServiceBridge
+namespace Redbean.Auth
 {
 	public enum GoogleAuthErrorCode
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Firebase.Auth;
 
-namespace Redbean.ServiceBridge
+namespace Redbean.Auth
 {
 	public interface IAuthentication
 	{
