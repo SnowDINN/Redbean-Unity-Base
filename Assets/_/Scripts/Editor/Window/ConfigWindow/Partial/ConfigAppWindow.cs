@@ -25,9 +25,9 @@ namespace Redbean.Editor
 		private const string TableGroup = "Tabs/Config/Table";
 		private const string VersionGroup = "Tabs/Config/Version";
 
-		private const int BundleOrder = 0;
-		private const int TableOrder = 1;
-		private const int VersionOrder = 2;
+		private const int BundleOrder = 100;
+		private const int TableOrder = 200;
+		private const int VersionOrder = 300;
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(BundleGroup), PropertyOrder(BundleOrder), Button("UPDATE BUNDLE", ButtonSizes.Large)]
 		private async void UpdateBundle()
@@ -91,13 +91,13 @@ namespace Redbean.Editor
 			set => GoogleTableSettings.ItemPath = value;
 		}
 
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large)]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large), PropertySpace]
 		private void OpenTableURL()
 		{
 			Application.OpenURL("https://docs.google.com/spreadsheets/d/1UjQhF5Zhxpa-2bP5hoIH2kVClHT5ZM_QBbrAiE3c3xs/edit#gid=924887524");
 		}
 		
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large)]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large), PropertySpace]
 		private async void UpdateAllTable()
 		{
 			using var container = new ModelContainer();
