@@ -50,25 +50,6 @@ namespace Redbean.Popup
 			canvas.sortingLayerName = "Popup";
 		}
 
-		public async Task<T> Open<T>() where T : PopupBase
-		{
-			var go = await AddressableContainer.GetPopup<T>();
-			var popup = Instantiate(go).GetComponent<T>() as PopupBase;
-			
-			while (true)
-			{
-				var id = $"{Guid.NewGuid()}";
-				if (popupCollection.ContainsKey(id))
-					continue;
-
-				popup.Guid = $"{Guid.NewGuid()}";
-				break;
-			}
-			
-			popupCollection.Add(popup.Guid, popup);
-			return popupCollection[popup.Guid] as T;
-		}
-
 		public async Task<object> Open(Type type)
 		{
 			var go = await AddressableContainer.GetPopup(type);
@@ -87,26 +68,29 @@ namespace Redbean.Popup
 			popupCollection.Add(popup.Guid, popup);
 			return popupCollection[popup.Guid];
 		}
-
-		public void CurrentPopupClose()
+		
+		public async Task<T> Open<T>() where T : PopupBase
 		{
-			var id = CurrentPopup.Guid;
-			
-			CurrentPopup.Destroy();
-			popupCollection.Remove(id);
+			return await Open(typeof(T)) as T;
 		}
 		
 		public void Close(string id)
 		{
-			popupCollection[id].Destroy();
-			popupCollection.Remove(id);
+			popupCollection.Remove(id, out var popup);
+			popup.Destroy();
+			
+			AddressableContainer.ReleasePopup(popup.GetType());
 		}
 
 		public void AllClose()
 		{
 			foreach (var popup in popupCollection.Values)
-				popup.Destroy();
-			popupCollection.Clear();
+				Close(popup.Guid);
+		}
+		
+		public void CurrentPopupClose()
+		{
+			Close(CurrentPopup.Guid);
 		}
 		
 		public T Get<T>(string id) where T : class => popupCollection[id] as T;
