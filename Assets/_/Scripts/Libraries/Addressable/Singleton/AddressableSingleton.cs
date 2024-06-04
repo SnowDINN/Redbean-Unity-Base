@@ -8,7 +8,7 @@ namespace Redbean.Singleton
 {
 	public class AddressableSingleton : ISingleton
 	{
-		private readonly Dictionary<string, AddressableAsset> assetsGroup = new();
+		private Dictionary<string, AddressableAsset> assetsGroup = new();
 
 		public T LoadAsset<T>(string key, Transform parent = null) where T : Object
 		{
@@ -54,24 +54,25 @@ namespace Redbean.Singleton
 
 		public void AutoRelease()
 		{
-			var releaseList = new List<string>();
-			foreach (var asset in assetsGroup)
+			var assetsArray = assetsGroup.ToList();
+			for (var i = 0; i < assetsArray.Count; i++)
 			{
-				var removeList = (from reference in asset.Value.References where !reference.Value select reference.Key).ToArray();
-				foreach (var remove in removeList)
-					asset.Value.References.Remove(remove);
+				var referenceArray = assetsArray[i].Value.References.ToList();
+				for (var j = 0; j < referenceArray.Count; j++)
+				{
+					if (!referenceArray[j].Value)
+						referenceArray.RemoveAt(j);
+				}
 				
-				if (asset.Value.References.Any())
-					return;
-
-				releaseList.Add(asset.Key);
+				assetsArray[i].Value.References = referenceArray.ToDictionary(_ => _.Key, _ => _.Value);
+				if (!assetsArray[i].Value.References.Any())
+				{
+					assetsArray[i].Value.Release();
+					assetsArray.RemoveAt(i);
+				}
 			}
-
-			foreach (var release in releaseList)
-			{
-				if (assetsGroup.Remove(release, out var removeBundle))
-					removeBundle.Release();
-			}
+			
+			assetsGroup = assetsArray.ToDictionary(_ => _.Key, _ => _.Value);
 		}
 		
 
