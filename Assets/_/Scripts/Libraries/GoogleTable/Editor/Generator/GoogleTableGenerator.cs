@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,15 +11,13 @@ using Redbean.Container;
 using Redbean.MVP.Content;
 using Redbean.Singleton;
 using UnityEngine;
-#endif
 
 namespace Redbean.Table
 {
 	public class GoogleTableGenerator
 	{
-		public const string Namespace = "Redbean";
-
-#if UNITY_EDITOR
+		public const string Namespace = nameof(Redbean);
+		
 		private static MvpSingleton mvp => SingletonContainer.GetSingleton<MvpSingleton>();
 		
 		private static string Path =>
@@ -215,6 +212,5 @@ namespace Redbean.Table
 
 			return tsv;
 		}
-#endif
 	}
 }

@@ -6,7 +6,7 @@ namespace Redbean.Table
 	[CreateAssetMenu(fileName = "GoogleTable", menuName = "Redbean/GoogleTable")]
 	public class GoogleTableInstaller : ScriptableObject
 	{
-		[Header("Get table information during runtime")]
+		[Header("Get generation path")]
 		public string Path;
 		public string ItemPath;
 	}
@@ -19,10 +19,7 @@ namespace Redbean.Table
 			set
 			{
 				Installer.Path = value;
-
-#if UNITY_EDITOR
 				Save();
-#endif
 			}
 		}
 
@@ -32,10 +29,7 @@ namespace Redbean.Table
 			set
 			{
 				Installer.ItemPath = value;
-				
-#if UNITY_EDITOR
 				Save();
-#endif
 			}
 		}
 	}

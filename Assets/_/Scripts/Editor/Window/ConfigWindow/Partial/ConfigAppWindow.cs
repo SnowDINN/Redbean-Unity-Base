@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Firebase;
 using Firebase.Firestore;
 using Firebase.Storage;
+using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
@@ -21,13 +22,30 @@ namespace Redbean.Editor
 	{
 		private const string ConfigTab = "Config";
 		
+		private const string ApiGroup = "Tabs/Config/Api";
 		private const string BundleGroup = "Tabs/Config/Bundle";
 		private const string TableGroup = "Tabs/Config/Table";
 		private const string VersionGroup = "Tabs/Config/Version";
 
-		private const int BundleOrder = 100;
-		private const int TableOrder = 200;
-		private const int VersionOrder = 300;
+		private const int ApiOrder = 100;
+		private const int BundleOrder = 200;
+		private const int TableOrder = 300;
+		private const int VersionOrder = 400;
+		
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), LabelText("Get Path"), ShowInInspector, FolderPath]
+		private string ApiGetPath
+		{
+			get => ApiSettings.ProtocolPath;
+			set => ApiSettings.ProtocolPath = value;
+		}
+
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), Button("UPDATE API", ButtonSizes.Large), PropertySpace]
+		private async void UpdateApi()
+		{
+			await ApiGenerator.GetApiAsync();
+			
+			AssetDatabase.Refresh();
+		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(BundleGroup), PropertyOrder(BundleOrder), Button("UPDATE BUNDLE", ButtonSizes.Large)]
 		private async void UpdateBundle()

@@ -29,7 +29,7 @@ namespace Redbean.Table
 				var skipRows = tsv.Skip(2);
 				foreach (var item in skipRows)
 				{
-					var type = Type.GetType($"{GoogleTableGenerator.Namespace}.Table.{table}");
+					var type = Type.GetType($"{nameof(Redbean)}.Table.{table}");
 					
 					if (Activator.CreateInstance(type) is IGoogleTable instance)
 						instance.Apply(item);
