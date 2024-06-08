@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,13 +11,14 @@ namespace Redbean.Api
 		public static async Task<ResponseResult> SendGetRequest(string uri, params string[] parameters)
 		{
 			var format = string.Format(uri, parameters);
-			var apiResult = await GetApi(format);
-			var apiParse = JObject.Parse(apiResult);
+			var apiResponse = await GetApi(format);
+			var apiParse = JObject.Parse(apiResponse);
+			var apiResult = $"{apiParse[nameof(ResponseResult.Result)]}";
 			
 			return new ResponseResult
 			{
 				StatusCode = apiParse[nameof(ResponseResult.StatusCode)].Value<int>(),
-				Result = $"{apiParse[nameof(ResponseResult.Result)]}"
+				Result = apiResult
 			};
 		}
 		
