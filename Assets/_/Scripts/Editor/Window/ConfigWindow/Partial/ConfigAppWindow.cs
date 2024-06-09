@@ -122,36 +122,34 @@ namespace Redbean.Editor
 		{
 			using var firebase = new FirebaseBootstrap();
 			await firebase.Setup();
-			
-			EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
-			
-			// 기존 테이블 제거
-			await ApiDeleteRequest.DeleteTableFilesRequest(ApplicationSettings.Version);
-				
-			var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
-			await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
-			
-			var keys = sheetRaw.Keys.ToArray();
-			var values = sheetRaw.Values.ToArray();
-			for (var i = 0; i < sheetRaw.Count; i++)
-			{
-				EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
-				await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
-					
-				var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(keys[i]));
-				var tsv = $"{string.Join("\r\n", values[i])}";
-				var metadata = new MetadataChange
-				{
-					CacheControl = "no-store",
-				};
-				
-				await storageReference.PutBytesAsync(Encoding.UTF8.GetBytes(tsv), metadata);
-				Log.Notice($"{keys[i]} Table update is complete.");
-			}
 
 			try
 			{
-
+				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
+			
+				// 기존 테이블 제거
+				await ApiDeleteRequest.DeleteTableFilesRequest(ApplicationSettings.Version);
+				
+				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
+				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
+			
+				var keys = sheetRaw.Keys.ToArray();
+				var values = sheetRaw.Values.ToArray();
+				for (var i = 0; i < sheetRaw.Count; i++)
+				{
+					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
+					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
+					
+					var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(keys[i]));
+					var tsv = $"{string.Join("\r\n", values[i])}";
+					var metadata = new MetadataChange
+					{
+						CacheControl = "no-store",
+					};
+				
+					await storageReference.PutBytesAsync(Encoding.UTF8.GetBytes(tsv), metadata);
+					Log.Notice($"{keys[i]} Table update is complete.");
+				}
 			}
 			catch (Exception e)
 			{
@@ -168,50 +166,35 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			using var core = new FirebaseBootstrap();
-			await core.Setup();
-			
-			var config = await GetAppConfig();
-			var before = config.Model.Android.Version;
-			config.Model.Android.Version = version;
-
-			await config.Document.SetAsync(config.Model);
-			
-			FirebaseApp.DefaultInstance.Dispose();
-			
-			Log.Notice($"Android version changed from {before} -> {version}.");
+			// using var core = new FirebaseBootstrap();
+			// await core.Setup();
+			//
+			// var config = await GetAppConfig();
+			// var before = config.Model.Android.Version;
+			// config.Model.Android.Version = version;
+			//
+			// await config.Document.SetAsync(config.Model);
+			//
+			// FirebaseApp.DefaultInstance.Dispose();
+			//
+			// Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			using var core = new FirebaseBootstrap();
-			await core.Setup();
-			
-			var config = await GetAppConfig();
-			var before = config.Model.iOS.Version;
-			config.Model.iOS.Version = version;
-
-			await config.Document.SetAsync(config.Model);
-			
-			FirebaseApp.DefaultInstance.Dispose();
-			
-			Log.Notice($"Android version changed from {before} -> {version}.");
-		}
-
-		private static async Task<(DocumentReference Document, AppConfigModel Model)> GetAppConfig()
-		{
-			var document = Extension.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.AppConfig);
-			var snapshotAsync = await document.GetSnapshotAsync();
-			if (snapshotAsync.Exists)
-				Log.Success("Firebase", "Success to load to the app config.");
-			else
-			{
-				Log.Fail("Firebase", "Failed to load to the app config.");
-				return default;
-			}
-				
-			return (document, snapshotAsync.ConvertTo<AppConfigModel>());
+			// using var core = new FirebaseBootstrap();
+			// await core.Setup();
+			//
+			// var config = await GetAppConfig();
+			// var before = config.Model.iOS.Version;
+			// config.Model.iOS.Version = version;
+			//
+			// await config.Document.SetAsync(config.Model);
+			//
+			// FirebaseApp.DefaultInstance.Dispose();
+			//
+			// Log.Notice($"Android version changed from {before} -> {version}.");
 		}
 		
 		[Serializable]

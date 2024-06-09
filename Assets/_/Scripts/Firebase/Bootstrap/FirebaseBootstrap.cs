@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Firestore;
+using Redbean.Api;
 using Redbean.MVP.Content;
 using UnityEngine;
 
@@ -39,14 +40,19 @@ namespace Redbean.Firebase
 					return;
 				}
 
-				var app = appSnapshot.ConvertTo<AppConfigModel>().Publish();
+				var request = await ApiGetRequest.GetApplicationConfigRequest();
+				var app = new AppConfigModel
+				{
+					Response = request.Convert<AppConfigResponse>()
+				}.Publish();
+				
 				if (app is not null)
 				{
 					var version = string.Empty;
 #if UNITY_ANDROID
-					version = app.Android.Version;
+					version = app.Response.Android.Version;
 #elif UNITY_IOS
-					version = app.iOS.Version;
+					version = app.Response.iOS.Version;
 #endif
 
 					var isAppropriate = CompareVersion(version, Application.version);
