@@ -74,6 +74,7 @@ namespace Redbean.Table
 				sheetDictionary.Add(sheetName, tsvRefined);
 			}
 
+			DeleteFiles($"{GoogleTableSettings.ItemPath}");
 			return sheetDictionary;
 		}
 		
@@ -158,7 +159,6 @@ namespace Redbean.Table
 			if (Directory.Exists(ItemPath))
 				Directory.CreateDirectory(ItemPath);
 			
-			File.Delete($"{ItemPath}/{key}.cs");
 			await File.WriteAllTextAsync($"{ItemPath}/{key}.cs", $"{stringBuilder}");
 		}
 		
@@ -217,6 +217,13 @@ namespace Redbean.Table
 			}
 
 			return tsv;
+		}
+		
+		private static void DeleteFiles(string path)
+		{
+			var directory = new DirectoryInfo(path);
+			foreach (var file in directory.GetFiles())
+				file.Delete();
 		}
 	}
 }

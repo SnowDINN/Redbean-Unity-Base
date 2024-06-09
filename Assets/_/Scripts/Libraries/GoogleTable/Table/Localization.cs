@@ -1,6 +1,6 @@
 namespace Redbean.Table
 {
-	public class Localize : IGoogleTable
+	public class Localization : IGoogleTable
 	{
 		public string Id;
 		public string Kr;
@@ -8,13 +8,13 @@ namespace Redbean.Table
 		public void Apply(string value)
 		{
 			var split = value.Split("\t");
-			var item = new Localize
+			var item = new Localization
 			{
 				Id = split[0],
 				Kr = split[1],
 			};
 
-			GoogleTable.Localize.Add(item.Id, item);
+			GoogleTable.Localization.Add(item.Id, item);
 		}
 	}
 }
