@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Redbean.MVP.Content;
+using Redbean.Api;
 
 namespace Redbean.Table
 {
@@ -12,7 +13,17 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var tables = this.GetModel<StorageFileModel>().Table;
+			var request = new ResponseResult();
+			
+#if UNITY_ANDROID
+			request = await ApiGetRequest.GetAndroidBundleFilesRequest(ApplicationSettings.Version);
+#endif
+			
+#if UNITY_IOS
+			request = await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
+#endif
+			
+			var tables = request.Convert<List<string>>();
 			if (!tables.Any())
 			{
 				Log.Fail("Table", "Fail to load to the Google sheets.");

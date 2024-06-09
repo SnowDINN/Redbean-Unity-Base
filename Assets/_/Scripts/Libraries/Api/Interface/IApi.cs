@@ -4,6 +4,6 @@ namespace Redbean.Api
 {
 	public interface IApi
 	{
-		Task Request(params string[] parameters);
+		Task Request(params object[] parameters);
 	}
 }

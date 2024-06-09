@@ -28,7 +28,7 @@ namespace Redbean.Api
 			var request = UnityWebRequest.Get(uri);
 			await request.SendWebRequest();
 			
-			if (request.isNetworkError || request.isHttpError)
+			if (!string.IsNullOrEmpty(request.error))
 			{
 				Debug.LogError(request.error);
 				return;
@@ -50,7 +50,7 @@ namespace Redbean.Api
 			stringBuilder.AppendLine();
 			stringBuilder.AppendLine($"namespace {Namespace}.Api");
 			stringBuilder.AppendLine("{");
-			stringBuilder.AppendLine($"\tpublic class Api{type}Protocol : {nameof(ApiBase)}");
+			stringBuilder.AppendLine($"\tpublic class Api{type}Request : {nameof(ApiBase)}");
 			stringBuilder.AppendLine("\t{");
 
 			for (var idx = 0; idx < apis.Count; idx++)
@@ -61,12 +61,17 @@ namespace Redbean.Api
 				{
 					var parameterList = parameters.ToObject<List<Dictionary<string, object>>>();
 					for (var i = 0; i < parameterList.Count; i++)
+					{
 						parameter += $"{parameterList[i]["name"]}={{{i}}}";
+
+						if (i < parameterList.Count - 1)
+							parameter += "&";
+					}
 				}
 			
 				var requestUri = $"\"{Uri}{apis[idx].Key}?{parameter}\"";
-				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(ResponseResult)}> {apis[idx].Key.Split('/').Last()}Request(params string[] parameters) =>");
-				stringBuilder.AppendLine($"\t\t\tawait SendGetRequest({requestUri}, parameters);");
+				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(ResponseResult)}> {apis[idx].Key.Split('/').Last()}Request(params object[] parameters) =>");
+				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request({requestUri}, parameters);");
 				
 				if (idx < apis.Count - 1)
 					stringBuilder.AppendLine();
@@ -78,7 +83,7 @@ namespace Redbean.Api
 			if (Directory.Exists(ApiSettings.ProtocolPath))
 				Directory.CreateDirectory(ApiSettings.ProtocolPath);
 				
-			await File.WriteAllTextAsync($"{ApiSettings.ProtocolPath}/Api{type}Protocol.cs", $"{stringBuilder}");
+			await File.WriteAllTextAsync($"{ApiSettings.ProtocolPath}/Api{type}Request.cs", $"{stringBuilder}");
 		}
 
 		private static void DeleteFiles(string path)

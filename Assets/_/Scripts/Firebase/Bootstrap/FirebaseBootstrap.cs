@@ -59,10 +59,6 @@ namespace Redbean.Firebase
 							if (tableSnapshot.Exists)
 								tableSnapshot.ConvertTo<TableConfigModel>().Publish();
 							
-							var storageSnapshot = await Extension.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version).GetSnapshotAsync();
-							if (storageSnapshot.Exists)
-								storageSnapshot.ConvertTo<StorageFileModel>().Publish();
-							
 							Log.Notice($"Application is up to date. [ Latest version : {version}, Current Version : {Application.version}] ");
 							break;	
 						}

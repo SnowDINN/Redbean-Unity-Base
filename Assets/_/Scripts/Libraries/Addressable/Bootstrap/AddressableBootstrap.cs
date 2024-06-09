@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Redbean.MVP.Content;
+using Redbean.Api;
 using UnityEngine.AddressableAssets;
 
 namespace Redbean.Bundle
@@ -11,7 +12,17 @@ namespace Redbean.Bundle
 
 		public async Task Setup()
 		{
-			var bundles = this.GetModel<StorageFileModel>().Bundle;
+			var request = new ResponseResult();
+			
+#if UNITY_ANDROID
+			request = await ApiGetRequest.GetAndroidBundleFilesRequest(ApplicationSettings.Version);
+#endif
+			
+#if UNITY_IOS
+			request = await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
+#endif
+			
+			var bundles = request.Convert<List<string>>();
 			if (!bundles.Any())
 			{
 				Log.Fail("Bundle", "Fail to load to the bundles.");

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
+using Redbean.Api;
 using Redbean.Container;
 using Redbean.MVP.Content;
 using Redbean.Singleton;
@@ -18,23 +19,28 @@ namespace Redbean.Table
 	{
 		public const string Namespace = nameof(Redbean);
 		
-		private static MvpSingleton mvp => SingletonContainer.GetSingleton<MvpSingleton>();
-		
 		private static string Path =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.Path}";
 
 		private static string ItemPath =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.ItemPath}";
-		
-		private static string ClientId => mvp.GetModel<TableConfigModel>().Client.Id;
-		private static string ClientSecret => mvp.GetModel<TableConfigModel>().Client.Secret;
-		private static string SheetId => mvp.GetModel<TableConfigModel>().Sheet.Id;
 
 		/// <summary>
 		/// 테이블 시트 데이터 호출
 		/// </summary>
 		public static async Task<Dictionary<string, string[]>> GetSheetAsync()
 		{
+#region Google Client Settings
+			
+			var request = await ApiGetRequest.GetTableConfigRequest();
+			var response = request.Convert<TableConfigModel>();
+			
+			var ClientId = response.Client.Id;
+			var ClientSecret = response.Client.Secret;
+			var SheetId = response.Sheet.Id;
+
+#endregion
+			
 			var sheetDictionary = new Dictionary<string, string[]>();
 			
 			var client = new ClientSecrets

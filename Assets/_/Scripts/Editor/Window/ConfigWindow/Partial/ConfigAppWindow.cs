@@ -9,7 +9,6 @@ using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
 using Redbean.MVP.Content;
-using Redbean.Singleton;
 using Redbean.Table;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -60,10 +59,16 @@ namespace Redbean.Editor
 			try
 			{
 				EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
+
+#if UNITY_ANDROID
+				// 기존 번들 제거
+				await ApiDeleteRequest.DeleteAndroidBundleFilesRequest(ApplicationSettings.Version);
+#endif
 				
-				var storage = await GetStorageFiles();
-				foreach (var file in storage.Model.Bundle)
-					await Extension.Storage.GetReference(StoragePath.BundleRequest(file)).DeleteAsync();
+#if UNITY_IOS
+				// 기존 번들 제거
+				await ApiDeleteRequest.DeleteiOSBundleFilesRequest(ApplicationSettings.Version);
+#endif
 
 				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
 				for (var i = 0; i < path.Length; i++)
@@ -81,9 +86,6 @@ namespace Redbean.Editor
 				}
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
-			
-				storage.Model.Bundle = path.Select(_ => _.Split('/').Last()).ToArray();
-				await storage.Document.SetAsync(storage.Model);
 			}
 			catch (Exception e)
 			{
@@ -118,44 +120,38 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large), PropertySpace]
 		private async void UpdateAllTable()
 		{
-			using var container = new MvpSingleton();
 			using var firebase = new FirebaseBootstrap();
 			await firebase.Setup();
-
-			var storage = await GetStorageFiles();
-			var config = await GetTableConfig();
 			
-			this.GetSingleton<MvpSingleton>().Override(config.Model);
+			EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
+			
+			// 기존 테이블 제거
+			await ApiDeleteRequest.DeleteTableFilesRequest(ApplicationSettings.Version);
+				
+			var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
+			await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
+			
+			var keys = sheetRaw.Keys.ToArray();
+			var values = sheetRaw.Values.ToArray();
+			for (var i = 0; i < sheetRaw.Count; i++)
+			{
+				EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
+				await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
+					
+				var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(keys[i]));
+				var tsv = $"{string.Join("\r\n", values[i])}";
+				var metadata = new MetadataChange
+				{
+					CacheControl = "no-store",
+				};
+				
+				await storageReference.PutBytesAsync(Encoding.UTF8.GetBytes(tsv), metadata);
+				Log.Notice($"{keys[i]} Table update is complete.");
+			}
+
 			try
 			{
-				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 
-				foreach (var file in storage.Model.Table)
-					await Extension.Storage.GetReference(StoragePath.TableRequest(file)).DeleteAsync();
-				
-				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
-				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
-
-				var keys = sheetRaw.Keys.ToArray();
-				var values = sheetRaw.Values.ToArray();
-				for (var i = 0; i < sheetRaw.Count; i++)
-				{
-					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
-					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
-					
-					var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(keys[i]));
-					var tsv = $"{string.Join("\r\n", values[i])}";
-					var metadata = new MetadataChange
-					{
-						CacheControl = "no-store",
-					};
-				
-					await storageReference.PutBytesAsync(Encoding.UTF8.GetBytes(tsv), metadata);
-					Log.Notice($"{keys[i]} Table update is complete.");
-				}
-
-				storage.Model.Table = keys;
-				await storage.Document.SetAsync(storage.Model);
 			}
 			catch (Exception e)
 			{
@@ -216,38 +212,6 @@ namespace Redbean.Editor
 			}
 				
 			return (document, snapshotAsync.ConvertTo<AppConfigModel>());
-		}
-		
-		private static async Task<(DocumentReference Document, TableConfigModel Model)> GetTableConfig()
-		{
-			var document = Extension.Firestore.Collection(FirebaseDefine.Config).Document(FirebaseDefine.TableConfig);
-			var snapshotAsync = await document.GetSnapshotAsync();
-			if (snapshotAsync.Exists)
-				Log.Success("Firebase", "Success to load to the table config.");
-			else
-			{
-				Log.Fail("Firebase", "Failed to load to the table config.");
-				return default;
-			}
-				
-			return (document, snapshotAsync.ConvertTo<TableConfigModel>());
-		}
-		
-		private static async Task<(DocumentReference Document, StorageFileModel Model)> GetStorageFiles()
-		{
-			var document = Extension.Firestore.Collection(FirebaseDefine.Storage).Document(ApplicationSettings.Version);
-			var snapshotAsync = await document.GetSnapshotAsync();
-			if (snapshotAsync.Exists)
-			{
-				Log.Success("Firebase", "Success to load to the table config.");
-				return (document, snapshotAsync.ConvertTo<StorageFileModel>());
-			}
-			
-			var model = new StorageFileModel();
-			await document.SetAsync(model);
-				
-			Log.Fail("Firebase", "Failed to load to the table config.");
-			return (document, model);
 		}
 		
 		[Serializable]
