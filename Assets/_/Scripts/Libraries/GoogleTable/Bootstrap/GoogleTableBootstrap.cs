@@ -23,7 +23,7 @@ namespace Redbean.Table
 			request = await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
 #endif
 			
-			var tables = request.Convert<List<string>>();
+			var tables = request.ToConvert<List<string>>();
 			if (!tables.Any())
 			{
 				Log.Fail("Table", "Fail to load to the Google sheets.");

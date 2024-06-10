@@ -25,11 +25,14 @@ namespace Redbean.Api
 		public static async Task<ResponseResult> SendPostRequest(string uri, params object[] parameters)
 		{
 			var format = string.Format(uri, parameters);
-			var apiResponse = await DeleteApi(format);
+			var apiResponse = await PostApi(format);
+			var apiParse = JObject.Parse(apiResponse);
+			var apiResult = $"{apiParse[nameof(ResponseResult.Result)]}";
+			
 			return new ResponseResult
 			{
-				StatusCode = apiResponse ? 0 : 1,
-				Result = default
+				StatusCode = apiParse[nameof(ResponseResult.StatusCode)].Value<int>(),
+				Result = apiResult
 			};
 		}
 		

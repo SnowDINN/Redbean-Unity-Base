@@ -12,6 +12,7 @@ namespace Redbean.Api
 	public enum ApiType
 	{
 		Get,
+		Post,
 		Delete,
 	}
 	
@@ -40,6 +41,7 @@ namespace Redbean.Api
 			var apiEndpoints = api["paths"].ToObject<Dictionary<string, JObject>>();
 
 			CreateFiles(ApiType.Get, apiEndpoints.Where(_ => _.Value.ContainsKey("get")).ToArray());
+			CreateFiles(ApiType.Post, apiEndpoints.Where(_ => _.Value.ContainsKey("post")).ToArray());
 			CreateFiles(ApiType.Delete, apiEndpoints.Where(_ => _.Value.ContainsKey("delete")).ToArray());
 		}
 

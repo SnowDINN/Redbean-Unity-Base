@@ -166,35 +166,19 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			// using var core = new FirebaseBootstrap();
-			// await core.Setup();
-			//
-			// var config = await GetAppConfig();
-			// var before = config.Model.Android.Version;
-			// config.Model.Android.Version = version;
-			//
-			// await config.Document.SetAsync(config.Model);
-			//
-			// FirebaseApp.DefaultInstance.Dispose();
-			//
-			// Log.Notice($"Android version changed from {before} -> {version}.");
+			var request = await ApiPostRequest.PostAndroidVersionRequest(version);
+			var response = request.ToConvert<AppVersionResponse>();
+			
+			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			// using var core = new FirebaseBootstrap();
-			// await core.Setup();
-			//
-			// var config = await GetAppConfig();
-			// var before = config.Model.iOS.Version;
-			// config.Model.iOS.Version = version;
-			//
-			// await config.Document.SetAsync(config.Model);
-			//
-			// FirebaseApp.DefaultInstance.Dispose();
-			//
-			// Log.Notice($"Android version changed from {before} -> {version}.");
+			var request = await ApiPostRequest.PostiOSVersionRequest(version);
+			var response = request.ToConvert<AppVersionResponse>();
+			
+			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		
 		[Serializable]

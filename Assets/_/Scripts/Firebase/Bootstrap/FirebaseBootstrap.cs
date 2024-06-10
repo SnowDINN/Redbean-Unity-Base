@@ -43,7 +43,7 @@ namespace Redbean.Firebase
 				var request = await ApiGetRequest.GetApplicationConfigRequest();
 				var app = new AppConfigModel
 				{
-					Response = request.Convert<AppConfigResponse>()
+					Response = request.ToConvert<AppConfigResponse>()
 				}.Publish();
 				
 				if (app is not null)

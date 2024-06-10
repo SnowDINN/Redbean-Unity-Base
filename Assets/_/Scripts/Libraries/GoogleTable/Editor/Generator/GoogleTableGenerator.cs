@@ -33,7 +33,7 @@ namespace Redbean.Table
 #region Google Client Settings
 			
 			var request = await ApiGetRequest.GetTableConfigRequest();
-			var response = request.Convert<TableConfigModel>();
+			var response = request.ToConvert<TableConfigModel>();
 			
 			var ClientId = response.Client.Id;
 			var ClientSecret = response.Client.Secret;

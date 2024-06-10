@@ -22,7 +22,7 @@ namespace Redbean.Bundle
 			request = await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
 #endif
 			
-			var bundles = request.Convert<List<string>>();
+			var bundles = request.ToConvert<List<string>>();
 			if (!bundles.Any())
 			{
 				Log.Fail("Bundle", "Fail to load to the bundles.");
