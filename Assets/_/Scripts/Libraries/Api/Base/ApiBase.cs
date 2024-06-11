@@ -8,9 +8,9 @@ namespace Redbean.Api
 {
 	public class ApiBase
 	{
-		public static async Task<Response> SendGetRequest(string uri, params object[] parameters)
+		public static async Task<Response> SendGetRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, parameters);
+			var format = string.Format(uri, args);
 			var apiResponse = await GetApi(format);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value)]}";
@@ -18,9 +18,9 @@ namespace Redbean.Api
 			return new Response(apiResult, apiParse[nameof(Response.Code)].Value<int>());
 		}
 		
-		public static async Task<Response> SendPostRequest(string uri, params object[] parameters)
+		public static async Task<Response> SendPostRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, parameters);
+			var format = string.Format(uri, args);
 			var apiResponse = await PostApi(format);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value)]}";
@@ -28,9 +28,9 @@ namespace Redbean.Api
 			return new Response(apiResult, apiParse[nameof(Response.Code)].Value<int>());
 		}
 		
-		public static async Task<Response> SendDeleteRequest(string uri, params object[] parameters)
+		public static async Task<Response> SendDeleteRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, parameters);
+			var format = string.Format(uri, args);
 			var apiResponse = await DeleteApi(format);
 			
 			return new Response(default, apiResponse ? 0 : 1);
