@@ -72,7 +72,7 @@ namespace Redbean.Api
 				}
 			
 				var requestUri = $"\"{Uri}{apis[idx].Key}?{parameter}\"";
-				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(ResponseResult)}> {apis[idx].Key.Split('/').Last()}Request(params object[] parameters) =>");
+				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(Response)}> {apis[idx].Key.Split('/').Last()}Request(params object[] parameters) =>");
 				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request({requestUri}, parameters);");
 				
 				if (idx < apis.Count - 1)

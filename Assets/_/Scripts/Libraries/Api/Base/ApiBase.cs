@@ -8,39 +8,39 @@ namespace Redbean.Api
 {
 	public class ApiBase
 	{
-		public static async Task<ResponseResult> SendGetRequest(string uri, params object[] parameters)
+		public static async Task<Response> SendGetRequest(string uri, params object[] parameters)
 		{
 			var format = string.Format(uri, parameters);
 			var apiResponse = await GetApi(format);
 			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(ResponseResult.Result)]}";
+			var apiResult = $"{apiParse[nameof(Response.Result)]}";
 			
-			return new ResponseResult
+			return new Response
 			{
-				StatusCode = apiParse[nameof(ResponseResult.StatusCode)].Value<int>(),
+				StatusCode = apiParse[nameof(Response.StatusCode)].Value<int>(),
 				Result = apiResult
 			};
 		}
 		
-		public static async Task<ResponseResult> SendPostRequest(string uri, params object[] parameters)
+		public static async Task<Response> SendPostRequest(string uri, params object[] parameters)
 		{
 			var format = string.Format(uri, parameters);
 			var apiResponse = await PostApi(format);
 			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(ResponseResult.Result)]}";
+			var apiResult = $"{apiParse[nameof(Response.Result)]}";
 			
-			return new ResponseResult
+			return new Response
 			{
-				StatusCode = apiParse[nameof(ResponseResult.StatusCode)].Value<int>(),
+				StatusCode = apiParse[nameof(Response.StatusCode)].Value<int>(),
 				Result = apiResult
 			};
 		}
 		
-		public static async Task<ResponseResult> SendDeleteRequest(string uri, params object[] parameters)
+		public static async Task<Response> SendDeleteRequest(string uri, params object[] parameters)
 		{
 			var format = string.Format(uri, parameters);
 			var apiResponse = await DeleteApi(format);
-			return new ResponseResult
+			return new Response
 			{
 				StatusCode = apiResponse ? 0 : 1,
 				Result = default

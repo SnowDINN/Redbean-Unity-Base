@@ -13,7 +13,7 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var request = new ResponseResult();
+			var request = new Response();
 			
 #if UNITY_ANDROID
 			request = await ApiGetRequest.GetAndroidBundleFilesRequest(ApplicationSettings.Version);
