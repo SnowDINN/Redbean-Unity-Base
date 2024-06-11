@@ -13,13 +13,9 @@ namespace Redbean.Api
 			var format = string.Format(uri, parameters);
 			var apiResponse = await GetApi(format);
 			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(Response.Result)]}";
+			var apiResult = $"{apiParse[nameof(Response.Value)]}";
 			
-			return new Response
-			{
-				StatusCode = apiParse[nameof(Response.StatusCode)].Value<int>(),
-				Result = apiResult
-			};
+			return new Response(apiResult, apiParse[nameof(Response.Code)].Value<int>());
 		}
 		
 		public static async Task<Response> SendPostRequest(string uri, params object[] parameters)
@@ -27,24 +23,17 @@ namespace Redbean.Api
 			var format = string.Format(uri, parameters);
 			var apiResponse = await PostApi(format);
 			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(Response.Result)]}";
+			var apiResult = $"{apiParse[nameof(Response.Value)]}";
 			
-			return new Response
-			{
-				StatusCode = apiParse[nameof(Response.StatusCode)].Value<int>(),
-				Result = apiResult
-			};
+			return new Response(apiResult, apiParse[nameof(Response.Code)].Value<int>());
 		}
 		
 		public static async Task<Response> SendDeleteRequest(string uri, params object[] parameters)
 		{
 			var format = string.Format(uri, parameters);
 			var apiResponse = await DeleteApi(format);
-			return new Response
-			{
-				StatusCode = apiResponse ? 0 : 1,
-				Result = default
-			};
+			
+			return new Response(default, apiResponse ? 0 : 1);
 		}
 		
 		private static async Task<string> GetApi(string uri)
