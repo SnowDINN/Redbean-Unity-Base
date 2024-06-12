@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Redbean.Api
 {
@@ -20,8 +22,8 @@ namespace Redbean.Api
 		
 		public static async Task<Response> SendPostRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args);
-			var apiResponse = await PostApi(format);
+			var format = string.Format(uri, args.Where( _ => _ is string));
+			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value)]}";
 			
@@ -38,57 +40,65 @@ namespace Redbean.Api
 		
 		private static async Task<string> GetApi(string uri)
 		{
-			var request = UnityWebRequest.Get(uri);
-			await request.SendWebRequest();
-
-			if (!string.IsNullOrEmpty(request.error))
+			using var http = new HttpClient();
+			
+			var request = await http.GetAsync(new Uri(uri));
+			if (request.StatusCode == HttpStatusCode.OK)
 			{
-				var message = request.error;
-				Log.Print(message, Color.red);
-
-				return message;
+				var response = await request.Content.ReadAsStringAsync();
+				request.Dispose();
+				
+				Log.Print(response);
+				return response;
 			}
-			else
-			{
-				var message = request.downloadHandler.text;
-				Log.Print(message);
 
-				return message;
-			}
+			var reasonPhrase = request.ReasonPhrase;
+			request.Dispose();
+			
+			Log.Print(reasonPhrase, Color.red);
+			return reasonPhrase;
 		}
 		
-		private static async Task<string> PostApi(string uri)
+		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
-			var request = UnityWebRequest.Post(uri, new Dictionary<string, string>());
-			await request.SendWebRequest();
-
-			if (!string.IsNullOrEmpty(request.error))
+			using var http = new HttpClient();
+			
+			var request = await http.PostAsync(new Uri(uri), content);
+			if (request.StatusCode == HttpStatusCode.OK)
 			{
-				var message = request.error;
-				Log.Print(message, Color.red);
-
-				return message;
+				var response = await request.Content.ReadAsStringAsync();
+				request.Dispose();
+				
+				Log.Print(response);
+				return response;
 			}
-			else
-			{
-				var message = request.downloadHandler.text;
-				Log.Print(message);
 
-				return message;
-			}
+			var reasonPhrase = request.ReasonPhrase;
+			request.Dispose();
+			
+			Log.Print(reasonPhrase, Color.red);
+			return reasonPhrase;
 		}
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
-			var request = UnityWebRequest.Delete(uri);
-			await request.SendWebRequest();
-
-			if (string.IsNullOrEmpty(request.error))
+			using var http = new HttpClient();
+			
+			var request = await http.DeleteAsync(new Uri(uri));
+			if (request.StatusCode == HttpStatusCode.OK)
+			{
+				var response = await request.Content.ReadAsStringAsync();
+				request.Dispose();
+				
+				Log.Print(response);
 				return true;
+			}
 
-			Log.Print(request.error, Color.red);
+			var reasonPhrase = request.ReasonPhrase;
+			request.Dispose();
+			
+			Log.Print(reasonPhrase, Color.red);
 			return false;
-
 		}
 	}
 }

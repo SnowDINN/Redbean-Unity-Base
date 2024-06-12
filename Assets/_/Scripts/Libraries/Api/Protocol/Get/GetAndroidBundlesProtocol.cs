@@ -5,9 +5,11 @@ namespace Redbean.Api
 {
 	public class GetAndroidBundlesProtocol : IApi
 	{
-		public Task Request(params object[] parameters)
+		public async Task Request(params object[] parameters)
 		{
-			return Task.CompletedTask;
+			var request = await ApiGetRequest.GetAndroidBundleFilesRequest(ApplicationSettings.Version);
+
+			return;
 		}
 	}
 }
