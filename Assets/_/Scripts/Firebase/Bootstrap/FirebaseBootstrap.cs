@@ -39,9 +39,8 @@ namespace Redbean.Firebase
 					Log.Notice("Application config load is fail.", Color.red);
 					return;
 				}
-
-				using var api = new ApiSingleton();
-				var request = await api.RequestApi<GetApplicationConfigProtocol>();
+				
+				var request = await this.RequestApi<GetApplicationConfigProtocol>();
 				var app = new AppConfigModel
 				{
 					Response = request.ToConvert<AppConfigResponse>()

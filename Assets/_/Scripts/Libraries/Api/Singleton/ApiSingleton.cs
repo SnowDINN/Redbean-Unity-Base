@@ -32,5 +32,13 @@ namespace Redbean.Api
 
 		public async Task<Response> RequestApi<T>(params object[] args) where T : IApi =>
 			await apis[typeof(T)].Request(args);
+		
+#if UNITY_EDITOR
+		public static async Task<Response> EditorRequestApi<T>(params object[] args) where T : IApi
+		{
+			using var api = new ApiSingleton();
+			return await api.RequestApi<T>(args);
+		}
+#endif
 	}
 }

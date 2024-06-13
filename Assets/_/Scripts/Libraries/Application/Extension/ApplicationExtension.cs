@@ -19,6 +19,7 @@ namespace Redbean
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static async Task RequestApi<T>(this IApplicationBootstrap bootstrap, params object[] parameters) where T : IApi => await GetSingleton<ApiSingleton>().RequestApi<T>(parameters);
+		public static async Task<Response> RequestApi<T>(this IApplicationBootstrap bootstrap, params object[] parameters) where T : IApi => 
+			await GetSingleton<ApiSingleton>().RequestApi<T>(parameters);
 	}
 }
