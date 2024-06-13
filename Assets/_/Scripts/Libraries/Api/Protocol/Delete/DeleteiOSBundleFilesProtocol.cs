@@ -6,7 +6,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiDeleteRequest.DeleteiOSBundleFilesRequest(ApplicationSettings.Version);
+			return await ApiDeleteRequest.DeleteiOSBundleFileRequest(ApplicationSettings.Version);
 		}
 	}
 }

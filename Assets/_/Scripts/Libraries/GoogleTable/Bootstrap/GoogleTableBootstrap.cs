@@ -13,7 +13,7 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var request = await ApiGetRequest.GetTableFilesRequest(ApplicationSettings.Version);
+			var request = await this.RequestApi<GetTableFilesProtocol>();
 			var response = request.ToConvert<List<string>>();
 			if (!response.Any())
 			{
@@ -23,11 +23,10 @@ namespace Redbean.Table
 			
 			foreach (var table in response)
 			{
-				var request = await this.RequestApi<GeTableProtocol>();
-				var response = request.ToConvert<string[]>();
+				var tableRequest = await this.RequestApi<GeTableProtocol>();
+				var tableResponse = request.ToConvert<byte[]>();
 				
-				var bytes = await request.GetBytesAsync(1024 * 1024 * 1024);
-				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
+				var tsv = Encoding.UTF8.GetString(tableResponse).Split("\r\n");
 				
 				// Skip Name and Type Rows
 				var skipRows = tsv.Skip(2);

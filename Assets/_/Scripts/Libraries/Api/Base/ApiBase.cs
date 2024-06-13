@@ -48,14 +48,14 @@ namespace Redbean.Api
 				var response = await request.Content.ReadAsStringAsync();
 				request.Dispose();
 				
-				Log.Print(response);
+				Log.Success("GET", $"Request success : {response}");
 				return response;
 			}
 
 			var reasonPhrase = request.ReasonPhrase;
 			request.Dispose();
 			
-			Log.Print(reasonPhrase, Color.red);
+			Log.Fail("GET", $"Request fail : {reasonPhrase}");
 			return reasonPhrase;
 		}
 		
@@ -67,14 +67,14 @@ namespace Redbean.Api
 				var response = await request.Content.ReadAsStringAsync();
 				request.Dispose();
 				
-				Log.Print(response);
+				Log.Success("POST", $"Request success : {response}");
 				return response;
 			}
 
 			var reasonPhrase = request.ReasonPhrase;
 			request.Dispose();
 			
-			Log.Print(reasonPhrase, Color.red);
+			Log.Fail("POST", $"Request fail : {reasonPhrase}");
 			return reasonPhrase;
 		}
 		
@@ -86,14 +86,14 @@ namespace Redbean.Api
 				var response = await request.Content.ReadAsStringAsync();
 				request.Dispose();
 				
-				Log.Print(response);
+				Log.Success("DELETE", $"Request success : {response}");
 				return true;
 			}
 
 			var reasonPhrase = request.ReasonPhrase;
 			request.Dispose();
 			
-			Log.Print(reasonPhrase, Color.red);
+			Log.Fail("POST", $"Request fail : {reasonPhrase}");
 			return false;
 		}
 	}

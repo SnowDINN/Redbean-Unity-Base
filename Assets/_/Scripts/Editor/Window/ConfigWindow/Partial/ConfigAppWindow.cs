@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using Firebase;
-using Firebase.Firestore;
-using Firebase.Storage;
 using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
-using Redbean.MVP.Content;
 using Redbean.Table;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -62,16 +56,8 @@ namespace Redbean.Editor
 			try
 			{
 				EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
-				
-#if UNITY_ANDROID
-				// 기존 번들 제거
-				await ApiSingleton.EditorRequestApi<DeleteAndroidBundleFilesProtocol>();
-#endif
-				
-#if UNITY_IOS
-				// 기존 번들 제거
-				await ApiSingleton.EditorRequestApi<DeleteAndroidBundleFilesProtocol>();
-#endif
+
+				var content = new MultipartFormDataContent();
 
 				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
 				for (var i = 0; i < path.Length; i++)
@@ -80,14 +66,16 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
 					
 					var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
-					var content = new MultipartFormDataContent();
-					content.Add(new ByteArrayContent(bytes), "Bundles", filename);
-					
-					var request = await ApiSingleton.EditorRequestApi<PostTableFilesProtocol>(ApplicationSettings.Version, content);
-					var response = request.ToConvert<string>();
-
-					Log.Notice($"{response} Bundle update is complete.");
+					content.Add(new ByteArrayContent(bytes), "bundles", filename);
 				}
+				
+#if UNITY_ANDROID
+				await ApiSingleton.EditorRequestApi<PostAndroidBundleFileProtocol>(content);
+#endif
+					
+#if UNITY_IOS
+				await ApiSingleton.EditorRequestApi<PostiOSBundleFileProtocol>(content);
+#endif
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
@@ -124,15 +112,11 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large), PropertySpace]
 		private async void UpdateAllTable()
 		{
-			using var firebase = new FirebaseBootstrap();
-			await firebase.Setup();
-
 			try
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
-			
-				// 기존 테이블 제거
-				await ApiSingleton.EditorRequestApi<DeleteTableFilesProtocol>();
+
+				var content = new MultipartFormDataContent();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
 				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
@@ -145,14 +129,10 @@ namespace Redbean.Editor
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 
 					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
-					var content = new MultipartFormDataContent();
-					content.Add(new ByteArrayContent(bytes), "Table", keys[i]);
-					
-					var request = await ApiSingleton.EditorRequestApi<PostTableFilesProtocol>(ApplicationSettings.Version, content);
-					var response = request.ToConvert<string>();
-					
-					Log.Notice($"{response} Table update is complete.");
+					content.Add(new ByteArrayContent(bytes), "tables", $"{keys[i]}.tsv");
 				}
+				
+				await ApiSingleton.EditorRequestApi<PostTableFileProtocol>(content);
 			}
 			catch (Exception e)
 			{

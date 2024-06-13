@@ -2,11 +2,11 @@
 
 namespace Redbean.Api
 {
-	public class PostTableFilesProtocol : IApi
+	public class GetTableFilesProtocol : IApi
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiPostRequest.PostTableFilesRequest(args);
+			return await ApiGetRequest.GetTableFilesRequest(ApplicationSettings.Version);
 		}
 	}
 }

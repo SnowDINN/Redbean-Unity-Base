@@ -12,8 +12,6 @@ namespace Redbean.Api
 	
 	public class ApiSettings : SettingsBase<ApiInstaller>
 	{
-		public const string Uri = "https://localhost:44395";
-		
 		public static string ProtocolPath
 		{
 			get => Installer.ProtocolPath;

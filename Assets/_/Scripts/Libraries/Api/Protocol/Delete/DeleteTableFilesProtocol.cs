@@ -6,7 +6,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiDeleteRequest.DeleteTableFilesRequest(ApplicationSettings.Version);
+			return await ApiDeleteRequest.DeleteTableFileRequest(ApplicationSettings.Version);
 		}
 	}
 }
