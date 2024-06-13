@@ -35,6 +35,5 @@
 		}
 		
 		public static string TableRequest(string name) => $"Table/{ApplicationSettings.Version}/{name}.tsv";
-		public static string BundleRequest(string name) => $"Bundle/{ApplicationSettings.Version}/{OS}/{name}";
 	}
 }

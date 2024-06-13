@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -77,14 +78,15 @@ namespace Redbean.Editor
 				{
 					var filename = path[i].Split('/').Last();
 					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
-					var storageReference = Extension.Storage.GetReference(path[i]);
-					var metadata = new MetadataChange
-					{
-						CacheControl = "no-store",
-					};
-				
-					await storageReference.PutFileAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}", metadata);
-					Log.Notice($"{filename} Bundle update is complete.");
+					
+					var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
+					var content = new MultipartFormDataContent();
+					content.Add(new ByteArrayContent(bytes), "Bundles", filename);
+					
+					var request = await ApiSingleton.EditorRequestApi<PostTableFilesProtocol>(ApplicationSettings.Version, content);
+					var response = request.ToConvert<string>();
+
+					Log.Notice($"{response} Bundle update is complete.");
 				}
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
@@ -142,8 +144,9 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
 
+					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
 					var content = new MultipartFormDataContent();
-					content.Add(new ByteArrayContent(Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}")), "Table", keys[i]);
+					content.Add(new ByteArrayContent(bytes), "Table", keys[i]);
 					
 					var request = await ApiSingleton.EditorRequestApi<PostTableFilesProtocol>(ApplicationSettings.Version, content);
 					var response = request.ToConvert<string>();
