@@ -40,7 +40,8 @@ namespace Redbean.Firebase
 					return;
 				}
 
-				var request = await ApiGetRequest.GetApplicationConfigRequest();
+				using var api = new ApiSingleton();
+				var request = await api.RequestApi<GetApplicationConfigProtocol>();
 				var app = new AppConfigModel
 				{
 					Response = request.ToConvert<AppConfigResponse>()

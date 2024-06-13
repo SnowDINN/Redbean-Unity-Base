@@ -27,7 +27,10 @@ namespace Redbean.Api
 			apis.Clear();
 		}
 
-		public async Task RequestApi(Type type, params object[] parameters) => await apis[type].Request(parameters);
-		public async Task RequestApi<T>(params object[] parameters) => await apis[typeof(T)].Request(parameters);
+		public async Task<Response> RequestApi(Type type, params object[] args) => 
+			await apis[type].Request(args);
+
+		public async Task<Response> RequestApi<T>(params object[] args) where T : IApi =>
+			await apis[typeof(T)].Request(args);
 	}
 }

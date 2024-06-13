@@ -31,8 +31,9 @@ namespace Redbean.Table
 		public static async Task<Dictionary<string, string[]>> GetSheetAsync()
 		{
 #region Google Client Settings
-			
-			var request = await ApiGetRequest.GetTableConfigRequest();
+
+			using var api = new ApiSingleton();
+			var request = await api.RequestApi<GetTableConfigProtocol>();
 			var response = request.ToConvert<TableConfigModel>();
 			
 			var ClientId = response.Client.Id;

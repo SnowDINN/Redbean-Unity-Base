@@ -2,11 +2,11 @@
 
 namespace Redbean.Api
 {
-	public class GetIosBundlesProtocol : IApi
+	public class PostiOSVersionProtocol : IApi
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
+			return await ApiPostRequest.PostiOSVersionRequest(args);
 		}
 	}
 }

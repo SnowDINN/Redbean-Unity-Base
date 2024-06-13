@@ -59,15 +59,16 @@ namespace Redbean.Editor
 			try
 			{
 				EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
-
+				using var api = new ApiSingleton();
+				
 #if UNITY_ANDROID
 				// 기존 번들 제거
-				await ApiDeleteRequest.DeleteAndroidBundleFilesRequest(ApplicationSettings.Version);
+				await api.RequestApi<DeleteAndroidBundleFilesProtocol>();
 #endif
 				
 #if UNITY_IOS
 				// 기존 번들 제거
-				await ApiDeleteRequest.DeleteiOSBundleFilesRequest(ApplicationSettings.Version);
+				await api.RequestApi<DeleteAndroidBundleFilesProtocol>();
 #endif
 
 				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
@@ -128,7 +129,8 @@ namespace Redbean.Editor
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 			
 				// 기존 테이블 제거
-				await ApiDeleteRequest.DeleteTableFilesRequest(ApplicationSettings.Version);
+				using var api = new ApiSingleton();
+				await api.RequestApi<DeleteTableFilesProtocol>();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
 				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
@@ -166,7 +168,8 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			var request = await ApiPostRequest.PostAndroidVersionRequest(version);
+			using var api = new ApiSingleton();
+			var request = await api.RequestApi<PostAndroidVersionProtocol>(version);
 			var response = request.ToConvert<AppVersionResponse>();
 			
 			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
@@ -175,7 +178,8 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var request = await ApiPostRequest.PostiOSVersionRequest(version);
+			using var api = new ApiSingleton();
+			var request = await api.RequestApi<PostiOSVersionProtocol>(version);
 			var response = request.ToConvert<AppVersionResponse>();
 			
 			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");

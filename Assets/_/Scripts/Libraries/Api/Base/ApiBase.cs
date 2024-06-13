@@ -10,9 +10,11 @@ namespace Redbean.Api
 {
 	public class ApiBase
 	{
+		private static readonly HttpClient http = new();
+		
 		public static async Task<Response> SendGetRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args);
+			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
 			var apiResponse = await GetApi(format);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value)]}";
@@ -22,7 +24,7 @@ namespace Redbean.Api
 		
 		public static async Task<Response> SendPostRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where( _ => _ is string));
+			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
 			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value)]}";
@@ -32,7 +34,7 @@ namespace Redbean.Api
 		
 		public static async Task<Response> SendDeleteRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args);
+			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
 			var apiResponse = await DeleteApi(format);
 			
 			return new Response(default, apiResponse ? 0 : 1);
@@ -40,8 +42,6 @@ namespace Redbean.Api
 		
 		private static async Task<string> GetApi(string uri)
 		{
-			using var http = new HttpClient();
-			
 			var request = await http.GetAsync(new Uri(uri));
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
@@ -61,8 +61,6 @@ namespace Redbean.Api
 		
 		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
-			using var http = new HttpClient();
-			
 			var request = await http.PostAsync(new Uri(uri), content);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
@@ -82,8 +80,6 @@ namespace Redbean.Api
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
-			using var http = new HttpClient();
-			
 			var request = await http.DeleteAsync(new Uri(uri));
 			if (request.StatusCode == HttpStatusCode.OK)
 			{

@@ -24,11 +24,5 @@ namespace Redbean.Editor
 		{
 			SingletonContainer.GetSingleton<AddressableSingleton>().AutoRelease();
 		}
-		
-		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), Button]
-		private void Api()
-		{
-			ApiGetRequest.GetApplicationConfigRequest();
-		}
 	}
 }

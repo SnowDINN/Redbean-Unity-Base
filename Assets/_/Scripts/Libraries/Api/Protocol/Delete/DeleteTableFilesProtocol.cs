@@ -2,11 +2,11 @@
 
 namespace Redbean.Api
 {
-	public class GetIosBundlesProtocol : IApi
+	public class DeleteTableFilesProtocol : IApi
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
+			return await ApiDeleteRequest.DeleteTableFilesRequest(ApplicationSettings.Version);
 		}
 	}
 }
