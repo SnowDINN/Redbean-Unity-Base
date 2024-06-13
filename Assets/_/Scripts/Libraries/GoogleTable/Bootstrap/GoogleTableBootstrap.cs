@@ -13,27 +13,20 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			Response request;
-			
-#if UNITY_ANDROID
-			request = await ApiGetRequest.GetAndroidBundleFilesRequest(ApplicationSettings.Version);
-#endif
-			
-#if UNITY_IOS
-			request = await ApiGetRequest.GetiOSBundleFilesRequest(ApplicationSettings.Version);
-#endif
-			
-			var tables = request.ToConvert<List<string>>();
-			if (!tables.Any())
+			var request = await ApiGetRequest.GetTableFilesRequest(ApplicationSettings.Version);
+			var response = request.ToConvert<List<string>>();
+			if (!response.Any())
 			{
 				Log.Fail("Table", "Fail to load to the Google sheets.");
 				return;
 			}
 			
-			foreach (var table in tables)
+			foreach (var table in response)
 			{
-				var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(table));
-				var bytes = await storageReference.GetBytesAsync(1024 * 1024 * 1024);
+				var request = await this.RequestApi<GeTableProtocol>();
+				var response = request.ToConvert<string[]>();
+				
+				var bytes = await request.GetBytesAsync(1024 * 1024 * 1024);
 				var tsv = Encoding.UTF8.GetString(bytes).Split("\r\n");
 				
 				// Skip Name and Type Rows

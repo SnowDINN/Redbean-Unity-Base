@@ -17,23 +17,4 @@
 		
 
 	}
-
-	public class StoragePath
-	{
-		private static string OS
-		{
-			get
-			{
-#if UNITY_ANDROID
-				return "Android";
-#endif
-				
-#if UNITY_IOS
-				return "iOS;
-#endif
-			}
-		}
-		
-		public static string TableRequest(string name) => $"Table/{ApplicationSettings.Version}/{name}.tsv";
-	}
 }
