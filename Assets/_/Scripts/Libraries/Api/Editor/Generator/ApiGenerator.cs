@@ -19,12 +19,10 @@ namespace Redbean.Api
 	public class ApiGenerator
 	{
 		public const string Namespace = "Redbean";
-		
-		public const string Uri = "https://localhost:44395";
 
 		public static async Task GetApiAsync()
 		{
-			var uri = $"{Uri}/swagger/v1/swagger.json";
+			var uri = $"{ApiSettings.Uri}/swagger/v1/swagger.json";
 
 			var request = UnityWebRequest.Get(uri);
 			await request.SendWebRequest();
@@ -45,6 +43,10 @@ namespace Redbean.Api
 			CreateFiles(ApiType.Delete, apiEndpoints.Where(_ => _.Value.ContainsKey("delete")).ToArray());
 		}
 
+		
+		/// <summary>
+		/// API C# 스크립트 생성
+		/// </summary>
 		private static async void CreateFiles(ApiType type, IReadOnlyList<KeyValuePair<string, JObject>> apis)
 		{
 			var stringBuilder = new StringBuilder();
@@ -61,6 +63,8 @@ namespace Redbean.Api
 				var jObject = apis[idx].Value[$"{type}".ToLower()].ToObject<JObject>();
 				if (jObject.TryGetValue("parameters", out var parameters))
 				{
+					parameter = "?";
+					
 					var parameterList = parameters.ToObject<List<Dictionary<string, object>>>();
 					for (var i = 0; i < parameterList.Count; i++)
 					{
@@ -71,7 +75,7 @@ namespace Redbean.Api
 					}
 				}
 			
-				var requestUri = $"\"{Uri}{apis[idx].Key}?{parameter}\"";
+				var requestUri = $"$\"{{ApiSettings.Uri}}{apis[idx].Key}{parameter}\"";
 				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(Response)}> {apis[idx].Key.Split('/').Last()}Request(params object[] args) =>");
 				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request({requestUri}, args);");
 				

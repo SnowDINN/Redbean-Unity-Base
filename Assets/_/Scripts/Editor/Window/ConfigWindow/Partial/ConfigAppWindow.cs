@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Firebase;
@@ -139,16 +141,14 @@ namespace Redbean.Editor
 				{
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
 					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
+
+					var content = new MultipartFormDataContent();
+					content.Add(new ByteArrayContent(Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}")), "Table", keys[i]);
 					
-					var storageReference = Extension.Storage.GetReference(StoragePath.TableRequest(keys[i]));
-					var tsv = $"{string.Join("\r\n", values[i])}";
-					var metadata = new MetadataChange
-					{
-						CacheControl = "no-store",
-					};
-				
-					await storageReference.PutBytesAsync(Encoding.UTF8.GetBytes(tsv), metadata);
-					Log.Notice($"{keys[i]} Table update is complete.");
+					var request = await ApiSingleton.EditorRequestApi<PostTableFilesProtocol>(ApplicationSettings.Version, content);
+					var response = request.ToConvert<string>();
+					
+					Log.Notice($"{response} Table update is complete.");
 				}
 			}
 			catch (Exception e)
