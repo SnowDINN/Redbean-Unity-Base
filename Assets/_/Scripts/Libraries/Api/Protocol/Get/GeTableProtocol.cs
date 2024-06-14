@@ -6,7 +6,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiGetRequest.GetTableFilesRequest(ApplicationSettings.Version);
+			return await ApiGetRequest.GetTableFilesRequest(AppSettings.Version);
 		}
 	}
 }

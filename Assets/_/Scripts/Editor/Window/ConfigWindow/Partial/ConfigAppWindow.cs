@@ -69,11 +69,7 @@ namespace Redbean.Editor
 					content.Add(new ByteArrayContent(bytes), "bundles", filename);
 				}
 				
-#if UNITY_ANDROID
-				await ApiSingleton.EditorRequestApi<PostAndroidBundleFileProtocol>(content);
-#elif UNITY_IOS
-				await ApiSingleton.EditorRequestApi<PostiOSBundleFileProtocol>(content);
-#endif
+				await ApiSingleton.EditorRequestApi<PostBundleFilesProtocol>(content);
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
@@ -147,7 +143,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			var request = await ApiSingleton.EditorRequestApi<PostAndroidVersionProtocol>(version);
+			var request = await ApiSingleton.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.Android);
 			var response = request.ToConvert<AppVersionResponse>();
 			
 			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
@@ -156,7 +152,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var request = await ApiSingleton.EditorRequestApi<PostiOSVersionProtocol>(version);
+			var request = await ApiSingleton.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.iOS);
 			var response = request.ToConvert<AppVersionResponse>();
 			
 			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");

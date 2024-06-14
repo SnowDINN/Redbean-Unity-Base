@@ -22,7 +22,7 @@ namespace Redbean.Api
 
 		public static async Task GetApiAsync()
 		{
-			var uri = $"{ApplicationSettings.ApiUri}/swagger/v1/swagger.json";
+			var uri = $"{AppSettings.ApiUri}/swagger/v1/swagger.json";
 
 			var request = UnityWebRequest.Get(uri);
 			await request.SendWebRequest();
@@ -75,7 +75,7 @@ namespace Redbean.Api
 					}
 				}
 			
-				var requestUri = $"{nameof(ApplicationSettings)}.{nameof(ApplicationSettings.ApiUri)} + \"{apis[idx].Key}{parameter}\"";
+				var requestUri = $"\"{apis[idx].Key}{parameter}\"";
 				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(Response)}> {apis[idx].Key.Split('/').Last()}Request(params object[] args) =>");
 				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request({requestUri}, args);");
 				

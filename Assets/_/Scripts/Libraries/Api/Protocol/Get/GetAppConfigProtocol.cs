@@ -2,11 +2,11 @@
 
 namespace Redbean.Api
 {
-	public class PostAndroidVersionProtocol : IApi
+	public class GetAppConfigProtocol : IApi
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiPostRequest.PostAndroidVersionRequest();
+			return await ApiGetRequest.GetAppConfigRequest();
 		}
 	}
 }

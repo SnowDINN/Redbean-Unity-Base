@@ -12,14 +12,7 @@ namespace Redbean.Bundle
 
 		public async Task Setup()
 		{
-			Response request ;
-			
-#if UNITY_ANDROID
-			request = await this.RequestApi<GetAndroidBundlesProtocol>();
-#elif UNITY_IOS
-			request = await this.RequestApi<GetIosBundlesProtocol>();
-#endif
-			
+			var request = await this.RequestApi<GetBundlesProtocol>();
 			var bundles = request.ToConvert<List<string>>();
 			if (!bundles.Any())
 			{

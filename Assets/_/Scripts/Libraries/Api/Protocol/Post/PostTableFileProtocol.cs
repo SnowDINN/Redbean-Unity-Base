@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
@@ -7,7 +6,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			return await ApiPostRequest.PostTableFileRequest(ApplicationSettings.Version, args[0] as HttpContent);
+			return await ApiPostRequest.PostTableFilesRequest(AppSettings.Version, args[0]);
 		}
 	}
 }

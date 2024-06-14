@@ -26,7 +26,7 @@ namespace Redbean.Api
 		
 		public static async Task<Response> SendPostRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
+			var format = string.Format(uri, args.Where( _ => _ is string or int).ToArray());
 			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value)]}";

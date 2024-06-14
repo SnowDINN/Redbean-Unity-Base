@@ -15,7 +15,7 @@ namespace Redbean
 		public string Version;
 	}
 
-	public class ApplicationSettings : SettingsBase<AppInstaller>
+	public class AppSettings : SettingsBase<AppInstaller>
 	{
 		public const string ApiUri = "https://localhost:44395";
 
