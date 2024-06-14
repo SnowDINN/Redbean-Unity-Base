@@ -71,9 +71,7 @@ namespace Redbean.Editor
 				
 #if UNITY_ANDROID
 				await ApiSingleton.EditorRequestApi<PostAndroidBundleFileProtocol>(content);
-#endif
-					
-#if UNITY_IOS
+#elif UNITY_IOS
 				await ApiSingleton.EditorRequestApi<PostiOSBundleFileProtocol>(content);
 #endif
 

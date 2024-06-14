@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Firebase.Auth;
 using Google;
 
@@ -7,7 +8,8 @@ namespace Redbean.Auth
 	public enum GoogleAuthErrorCode
 	{
 		Success = 0,
-		GoogleLoginCancelled = 10000000
+		Error = 10000000,
+		Exception = 19999999
 	}
 	
 	public class GoogleAuthenticationProvider : IAuthentication
@@ -41,34 +43,30 @@ namespace Redbean.Auth
 		public async Task<AuthenticationResult> Login()
 		{
 			var result = new AuthenticationResult();
-			
-			var request = await GoogleSignIn.DefaultInstance.SignIn().AwaitCompleted();
-			if (request.code > 0)
+
+			try
 			{
-				// 로그인 취소
-				if (request.code == 2)
-				{
-					result = new AuthenticationResult
-					{
-						Code = (int)GoogleAuthErrorCode.GoogleLoginCancelled,
-						Message = "Google sign-in has been cancelled."
-					};
-				}
-				else
-				{
-					result = new AuthenticationResult
-					{
-						Code = (int)GoogleAuthErrorCode.GoogleLoginCancelled + request.code,
-						Message = "An unknown error occurred while signing in to Google."
-					};
-				}
-			}
-			else
-			{
+				var user = await GoogleSignIn.DefaultInstance.SignInAsync();
 				result = new AuthenticationResult
 				{
 					Code = (int)GoogleAuthErrorCode.Success,
-					Credential = GoogleAuthProvider.GetCredential(request.user.IdToken, "")
+					Credential = GoogleAuthProvider.GetCredential(user.IdToken, "")
+				};
+			}
+			catch (GoogleSignIn.SignInException e)
+			{
+				result = new AuthenticationResult
+				{
+					Code = (int)GoogleAuthErrorCode.Error + (int)e.Status,
+					Message = "An unknown error occurred while signing in to Google."
+				};
+			}
+			catch (Exception e)
+			{
+				result = new AuthenticationResult
+				{
+					Code = (int)GoogleAuthErrorCode.Exception,
+					Message = "An unknown error occurred while signing in to Google."
 				};
 			}
 
@@ -79,33 +77,29 @@ namespace Redbean.Auth
 		{
 			var result = new AuthenticationResult();
 			
-			var request = await GoogleSignIn.DefaultInstance.SignInSilently().AwaitCompleted();
-			if (request.code > 0)
+			try
 			{
-				// 로그인 취소
-				if (request.code == 2)
-				{
-					result = new AuthenticationResult
-					{
-						Code = (int)GoogleAuthErrorCode.GoogleLoginCancelled,
-						Message = "Google sign-in has been cancelled."
-					};
-				}
-				else
-				{
-					result = new AuthenticationResult
-					{
-						Code = (int)GoogleAuthErrorCode.GoogleLoginCancelled + request.code,
-						Message = "An unknown error occurred while signing in to Google."
-					};
-				}
-			}
-			else
-			{
+				var user = await GoogleSignIn.DefaultInstance.SignInSilentlyAsync();
 				result = new AuthenticationResult
 				{
 					Code = (int)GoogleAuthErrorCode.Success,
-					Credential = GoogleAuthProvider.GetCredential(request.user.IdToken, "")
+					Credential = GoogleAuthProvider.GetCredential(user.IdToken, "")
+				};
+			}
+			catch (GoogleSignIn.SignInException e)
+			{
+				result = new AuthenticationResult
+				{
+					Code = (int)GoogleAuthErrorCode.Error + (int)e.Status,
+					Message = "An unknown error occurred while signing in to Google."
+				};
+			}
+			catch (Exception e)
+			{
+				result = new AuthenticationResult
+				{
+					Code = (int)GoogleAuthErrorCode.Exception,
+					Message = "An unknown error occurred while signing in to Google."
 				};
 			}
 

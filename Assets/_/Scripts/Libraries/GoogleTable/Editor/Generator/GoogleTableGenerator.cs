@@ -8,9 +8,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Redbean.Api;
-using Redbean.Container;
 using Redbean.MVP.Content;
-using Redbean.Singleton;
 using UnityEngine;
 
 namespace Redbean.Table

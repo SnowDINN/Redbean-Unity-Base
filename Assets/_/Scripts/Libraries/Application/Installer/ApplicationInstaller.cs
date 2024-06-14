@@ -1,4 +1,5 @@
-﻿using Redbean.Base;
+﻿using Redbean.Api;
+using Redbean.Base;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -20,5 +21,19 @@ namespace Redbean
 
 		public static string Version =>
 			string.IsNullOrEmpty(Installer.Version) ? Application.version : Installer.Version;
+		
+		public static MobileType MobileType
+		{
+			get
+			{
+#if UNITY_ANDROID
+				return MobileType.Android;
+#elif UNITY_IOS
+				return MobileType.iOS;
+#else
+				return MobileType.None;
+#endif
+			}
+		}
 	}
 }

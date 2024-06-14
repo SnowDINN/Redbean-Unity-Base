@@ -4,13 +4,15 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 
 namespace Redbean.Api
 {
 	public class ApiBase
 	{
-		private static readonly HttpClient http = new();
+		private static readonly HttpClient http = new()
+		{
+			BaseAddress = new Uri("https://localhost:44395")
+		};
 		
 		public static async Task<Response> SendGetRequest(string uri, params object[] args)
 		{
@@ -42,7 +44,7 @@ namespace Redbean.Api
 		
 		private static async Task<string> GetApi(string uri)
 		{
-			var request = await http.GetAsync(new Uri(uri));
+			var request = await http.GetAsync(uri);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
 				var response = await request.Content.ReadAsStringAsync();
@@ -61,7 +63,7 @@ namespace Redbean.Api
 		
 		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
-			var request = await http.PostAsync(new Uri(uri), content);
+			var request = await http.PostAsync(uri, content);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
 				var response = await request.Content.ReadAsStringAsync();
@@ -80,7 +82,7 @@ namespace Redbean.Api
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
-			var request = await http.DeleteAsync(new Uri(uri));
+			var request = await http.DeleteAsync(uri);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
 				var response = await request.Content.ReadAsStringAsync();

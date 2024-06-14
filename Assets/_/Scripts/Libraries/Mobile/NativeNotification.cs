@@ -3,9 +3,8 @@
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
 using UnityEngine.Android;
-#endif
 
-#if UNITY_IOS
+#elif UNITY_IOS
 using Unity.Notifications.iOS;
 #endif
 
@@ -32,9 +31,8 @@ namespace Redbean.Mobile
 				Importance = Importance.Default,
 				Description = "Generic notifications",
 			});
-#endif
 			
-#if UNITY_IOS
+#elif UNITY_IOS
 			using var request = new AuthorizationRequest(AuthorizationOption.Alert | AuthorizationOption.Badge, true);
 			await TaskExtension.WaitUntil(() => request.IsFinished);
 #endif
@@ -58,9 +56,8 @@ namespace Redbean.Mobile
 				AndroidNotificationCenter.UpdateScheduledNotification(form.Id, notification, CHANNEL_ID);	
 			else
 				AndroidNotificationCenter.SendNotificationWithExplicitID(notification, CHANNEL_ID, form.Id);	
-#endif
 		
-#if UNITY_IOS
+#elif UNITY_IOS
 			iOSNotificationCenter.ScheduleNotification(new iOSNotification($"{form.Id}")
 			{
 				Title = form.Title,

@@ -10,7 +10,27 @@ using UnityEditor.iOS.Xcode;
 
 namespace Google
 {
-	public class GoogleSignInPostBuild : IPostprocessBuildWithReport
+	public class GooglePreBuildEditor : IPreprocessBuildWithReport
+	{
+		public int callbackOrder => 10;
+		
+		public void OnPreprocessBuild(BuildReport report)
+		{
+			OnPreProcessBuild(report.summary.platform, report.summary.outputPath);
+		}
+
+		private void OnPreProcessBuild(BuildTarget target, string path)
+		{
+			var installer = Resources.Load<GoogleSdkInstaller>("Google/GoogleSdk");
+			installer.androidClientId = GoogleExtension.GetAndroidClientId();
+			installer.iosClientId = GoogleExtension.GetIosClientId();
+			installer.webClientId = GoogleExtension.GetWebClientId();
+			installer.webSecretId = "";
+			installer.Save();
+		}
+	}
+	
+	public class GooglePostBuildEditor : IPostprocessBuildWithReport
 	{
 		public int callbackOrder => 999;
 
@@ -21,13 +41,6 @@ namespace Google
 
 		private void OnPostProcessBuild(BuildTarget target, string path)
 		{
-			var installer = Resources.Load<GoogleSdkInstaller>("Google/GoogleSdk");
-			installer.androidClientId = GoogleExtension.GetAndroidClientId();
-			installer.iosClientId = GoogleExtension.GetIosClientId();
-			installer.webClientId = GoogleExtension.GetWebClientId();
-			installer.webSecretId = "";
-			installer.Save();
-
 #if UNITY_IOS
 			GoogleServiesPlist(path);
 			InfoPlist(path);

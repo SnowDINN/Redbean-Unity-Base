@@ -16,9 +16,7 @@ namespace Redbean.Bundle
 			
 #if UNITY_ANDROID
 			request = await this.RequestApi<GetAndroidBundlesProtocol>();
-#endif
-			
-#if !UNITY_IOS
+#elif UNITY_IOS
 			request = await this.RequestApi<GetIosBundlesProtocol>();
 #endif
 			
