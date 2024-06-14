@@ -48,22 +48,20 @@ namespace Redbean.Firebase
 						// 정상 진입
 						case <= 0:
 						{
-							Log.Notice($"Application is up to date. [ Latest version : {version}, Current Version : {Application.version}] ");
+							// TODO : 정상 진입 로직
 							break;	
 						}
 						
 						// 업데이트 필요
 						case > 0:
 						{
-							Log.Notice($"Application is not up to date. [ Latest version : {version}, Current Version : {Application.version} ]", Color.red);
+							// TODO : 업데이트 진입 로직
 
 							await TaskExtension.WaitUntil(() => false);
 							break;	
 						}
 					}
 				}
-				
-				Log.Success("Firebase", "Success to load to the Firebase config data.");
 			}
 		}
 

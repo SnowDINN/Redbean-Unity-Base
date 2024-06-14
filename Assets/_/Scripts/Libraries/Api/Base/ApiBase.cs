@@ -11,7 +11,11 @@ namespace Redbean.Api
 	{
 		private static readonly HttpClient http = new()
 		{
-			BaseAddress = new Uri("https://localhost:44395")
+			BaseAddress = new Uri("https://localhost:44395"),
+			DefaultRequestHeaders =
+			{
+				{ "accept", "application/json" },
+			}
 		};
 		
 		public static async Task<Response> SendGetRequest(string uri, params object[] args)
@@ -19,9 +23,9 @@ namespace Redbean.Api
 			var format = string.Format(uri, args.Where( _ => _ is string or int or float).ToArray());
 			var apiResponse = await GetApi(format);
 			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(Response.Value)]}";
-			
-			return new Response(apiResult, apiParse[nameof(Response.Code)].Value<int>());
+			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
+
+			return new Response(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
 		}
 		
 		public static async Task<Response> SendPostRequest(string uri, params object[] args)
@@ -29,9 +33,9 @@ namespace Redbean.Api
 			var format = string.Format(uri, args.Where( _ => _ is string or int or float).ToArray());
 			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
 			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(Response.Value)]}";
+			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
 			
-			return new Response(apiResult, apiParse[nameof(Response.Code)].Value<int>());
+			return new Response(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
 		}
 		
 		public static async Task<Response> SendDeleteRequest(string uri, params object[] args)
@@ -39,7 +43,7 @@ namespace Redbean.Api
 			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
 			var apiResponse = await DeleteApi(format);
 			
-			return new Response(default, apiResponse ? 0 : 1);
+			return new Response(apiResponse ? 0 : 1, default);
 		}
 		
 		private static async Task<string> GetApi(string uri)
