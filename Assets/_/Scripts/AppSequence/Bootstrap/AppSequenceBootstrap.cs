@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
-using Firebase.Firestore;
 using Redbean.Api;
 using Redbean.MVP.Content;
 using UnityEngine;
@@ -70,8 +69,6 @@ namespace Redbean.Firebase
 
 		public void Dispose()
 		{
-			FirebaseFirestore.DefaultInstance.ClearPersistenceAsync();
-			
 			FirebaseAuth.DefaultInstance.Dispose();
 			FirebaseApp.DefaultInstance.Dispose();
 			
