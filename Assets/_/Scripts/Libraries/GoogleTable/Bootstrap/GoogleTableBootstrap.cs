@@ -12,7 +12,7 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var request = await this.RequestApi<GeTableProtocol>();
+			var request = await this.RequestApi<GetTableProtocol>();
 			var response = request.ToConvert<Dictionary<string, string>>();
 			if (!response.Any())
 			{
