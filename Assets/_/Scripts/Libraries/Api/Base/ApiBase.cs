@@ -25,7 +25,7 @@ namespace Redbean.Api
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
 
-			return new Response(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
+			return Response.Return(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
 		}
 		
 		public static async Task<Response> SendPostRequest(string uri, params object[] args)
@@ -35,7 +35,7 @@ namespace Redbean.Api
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
 			
-			return new Response(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
+			return Response.Return(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
 		}
 		
 		public static async Task<Response> SendDeleteRequest(string uri, params object[] args)
@@ -43,7 +43,7 @@ namespace Redbean.Api
 			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
 			var apiResponse = await DeleteApi(format);
 			
-			return new Response(apiResponse ? 0 : 1, default);
+			return Response.Return(apiResponse ? 0 : 1, default);
 		}
 		
 		private static async Task<string> GetApi(string uri)
