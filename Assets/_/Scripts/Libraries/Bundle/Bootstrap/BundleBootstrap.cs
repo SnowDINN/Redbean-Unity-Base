@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Redbean.Api;
+﻿using System.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 
 namespace Redbean.Bundle
@@ -12,14 +9,6 @@ namespace Redbean.Bundle
 
 		public async Task Setup()
 		{
-			var request = await this.RequestApi<GetBundlesProtocol>();
-			var bundles = request.ToConvert<List<string>>();
-			if (!bundles.Any())
-			{
-				Log.Fail("Bundle", "Fail to load to the bundles.");
-				return;
-			}
-			
 			var size = 0L;
 			foreach (var label in AddressableSettings.Labels)
 				size += await Addressables.GetDownloadSizeAsync(label).Task;
@@ -28,9 +17,9 @@ namespace Redbean.Bundle
 			{
 				foreach (var label in AddressableSettings.Labels)
 				{
-					await Addressables.DownloadDependenciesAsync(label).Task;
-					Log.Notice($"{label} bundle load is complete.");
-				}	
+					var download = await Addressables.DownloadDependenciesAsync(label).Task;
+					Addressables.Release(download);
+				}
 			}
 
 			var convert = ConvertDownloadSize(size);

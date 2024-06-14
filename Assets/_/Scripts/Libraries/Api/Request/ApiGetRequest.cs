@@ -13,10 +13,7 @@ namespace Redbean.Api
 		public static async Task<Response> GetTableConfigRequest(params object[] args) =>
 			await SendGetRequest("/Config/GetTableConfig", args);
 
-		public static async Task<Response> GetTableFilesRequest(params object[] args) =>
-			await SendGetRequest("/Storage/GetTableFiles?version={0}", args);
-
-		public static async Task<Response> GetBundleFilesRequest(params object[] args) =>
-			await SendGetRequest("/Storage/GetBundleFiles?version={0}&type={1}", args);
+		public static async Task<Response> GetTableRequest(params object[] args) =>
+			await SendGetRequest("/Storage/GetTable?version={0}", args);
 	}
 }

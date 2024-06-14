@@ -7,7 +7,7 @@ namespace Redbean.MVP.Content
 	{
 		public IRxModel Rx => new UserRxModel();
 		
-		public UserResponse Response;
+		public UserResponse Response = new();
 	}
 	
 	public class UserRxModel : IRxModel

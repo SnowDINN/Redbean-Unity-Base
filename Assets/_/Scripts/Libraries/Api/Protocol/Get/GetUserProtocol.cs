@@ -7,7 +7,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest();
+			var request = await ApiGetRequest.GetUserRequest(args[0]);
 			if (request.Code > 0)
 				return request;
 
@@ -17,7 +17,7 @@ namespace Redbean.Api
 			this.GetModel<UserModel>().Publish().SetPlayerPrefs();
 			this.Publish(request);
 			
-			Log.Print($"Created a new user's data. [ {response.Information.Nickname} | {response.Social.Id} ]");
+			Log.Print($"Login user's data. [ {response.Information.Nickname} | {response.Social.Id} ]");
 			return request;
 		}
 	}

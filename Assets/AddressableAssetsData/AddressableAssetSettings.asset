@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: cd85ae8b35c73e841862cd9ee748a5c5
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 5038d56f24661048753a41cacb24e00c
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 2
-  m_overridePlayerVersion: '[Redbean.ApplicationSettings.Version]'
+  m_overridePlayerVersion: '[Redbean.AppSettings.Version]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 1f95cc4086b449741aa39435cffe2241, type: 2}
   - {fileID: 11400000, guid: cec98c503df699d40a2f7af63129bbec, type: 2}
@@ -78,9 +78,9 @@ MonoBehaviour:
       - m_Id: ef7d3d23bacf8b14299e4bd7f42e2025
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 1657206d5e22e5f4e9efbccc889317d7
-        m_Value: 'Bundle/[Redbean.ApplicationSettings.Version]/[BuildTarget]'
+        m_Value: 'Bundle/[Redbean.AppSettings.Version]/[BuildTarget]'
       - m_Id: 473b3f291c5a3be4086725f62d7ddc68
-        m_Value: 'https://storage.googleapis.com/boonggod-67483.appspot.com/Bundle/[Redbean.ApplicationSettings.Version]/[BuildTarget]'
+        m_Value: 'https://storage.googleapis.com/boonggod-67483.appspot.com/Bundle/[Redbean.AppSettings.Version]/[BuildTarget]'
     - m_InheritedParent: 
       m_Id: cecfae07380729f48b9f605871f6796b
       m_ProfileName: Release

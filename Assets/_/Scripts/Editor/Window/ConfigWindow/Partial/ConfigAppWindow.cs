@@ -53,25 +53,27 @@ namespace Redbean.Editor
 			var buildPath = AddressableAssetSettingsDefaultObject.Settings.RemoteCatalogBuildPath.GetValue(AddressableAssetSettingsDefaultObject.Settings);
 			var buildFiles = result.FileRegistry.GetFilePaths().Where(_ => _.Contains(buildPath)).ToArray();
 
+			EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
+
+			var content = new MultipartFormDataContent();
+
+			var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
+			for (var i = 0; i < path.Length; i++)
+			{
+				var filename = path[i].Split('/').Last();
+				EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
+					
+				var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
+				content.Add(new ByteArrayContent(bytes), "bundles", filename);
+			}
+				
+			await ApiSingleton.EditorRequestApi<PostBundleFilesProtocol>(content);
+
+			AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
+			
 			try
 			{
-				EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
 
-				var content = new MultipartFormDataContent();
-
-				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
-				for (var i = 0; i < path.Length; i++)
-				{
-					var filename = path[i].Split('/').Last();
-					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
-					
-					var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
-					content.Add(new ByteArrayContent(bytes), "bundles", filename);
-				}
-				
-				await ApiSingleton.EditorRequestApi<PostBundleFilesProtocol>(content);
-
-				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
 			catch (Exception e)
 			{
