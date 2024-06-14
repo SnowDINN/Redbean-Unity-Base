@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Firebase.Auth;
 using R3;
+using Redbean.Api;
 using Redbean.Singleton;
 
 namespace Redbean.MVP.Content
@@ -35,31 +37,23 @@ namespace Redbean.MVP.Content
 				return;
 
 			var credential = await auth.Login();
-			var user = await Extension.Auth.SignInWithCredentialAsync(credential.Credential);
+			var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(credential.Credential);
 			
-			m_user.Social.Id = user.UserId;
-			m_user.Social.Platform = user.ProviderData.First().ProviderId;
-			m_user.Information.Nickname = user.ProviderData.First().DisplayName;
+			m_user.Response.Social.Id = user.UserId;
+			m_user.Response.Social.Platform = user.ProviderData.First().ProviderId;
+			m_user.Response.Information.Nickname = user.ProviderData.First().DisplayName;
 
-			var isExist = await m_user.TryGetUserSnapshot(user.UserId);
-			if (isExist)
-				m_user.SetReferenceUser();
-			else
-			{
-				var isCreated = await m_user.UserCreateAsync();
-				if (isCreated)
-					Log.Print($"Created a new user's data. [ {m_user.Information.Nickname} | {m_user.Social.Id} ]");
-			}
+			await this.RequestApi<GetUserProtocol>();
 		}
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
 		{
-			if (!m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
+			if (!m_user.Response.Social.Platform.Contains($"{view.Type}".ToLower()))
 				return;
 			
 			await UniTask.WaitUntil(() => AppLifeCycle.IsReady, cancellationToken: token);
 				
-			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
+			if (m_user.Response.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{
 				var auth = authentication.GetPlatform(view.Type);
 				var isInitialize = await auth.Initialize();
@@ -67,11 +61,9 @@ namespace Redbean.MVP.Content
 					return;
 
 				var credential = await auth.AutoLogin();
-				var user = await Extension.Auth.SignInWithCredentialAsync(credential.Credential);
+				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(credential.Credential);
 					
-				var isSuccess = await m_user.TryGetUserSnapshot(user.UserId);
-				if (isSuccess)
-					m_user.SetReferenceUser();
+				await this.RequestApi<GetUserProtocol>();
 			}
 				
 		}

@@ -82,7 +82,7 @@ namespace Redbean.Singleton
 				targetFields[i].SetValue(modelsGroup[model.GetType()], copyFields[i].GetValue(model));
 
 			if (isPlayerPrefs)
-				model.SetPlayerPrefs(typeof(T).FullName);
+				model.SetPlayerPrefs();
 			
 			return model;
 		}
@@ -90,9 +90,9 @@ namespace Redbean.Singleton
 		/// <summary>
 		/// 로컬 데이터 저장 및 퍼블리싱
 		/// </summary>
-		public T Save<T>(string key, T value)
+		public T Save<T>(T value)
 		{
-			playerPrefsGroup[key] = JsonConvert.SerializeObject(value);
+			playerPrefsGroup[typeof(T).FullName] = JsonConvert.SerializeObject(value);
 			
 			var encryptValue = aes.Encrypt(JsonConvert.SerializeObject(playerPrefsGroup));
 			PlayerPrefs.SetString(Key.GetDataGroup, encryptValue);
@@ -103,9 +103,9 @@ namespace Redbean.Singleton
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
-		public T Load<T>(string key)
+		public T Load<T>()
 		{
-			return playerPrefsGroup.TryGetValue(key, out var value) 
+			return playerPrefsGroup.TryGetValue(typeof(T).FullName, out var value) 
 				? JsonConvert.DeserializeObject<T>(value) 
 				: default;
 		}

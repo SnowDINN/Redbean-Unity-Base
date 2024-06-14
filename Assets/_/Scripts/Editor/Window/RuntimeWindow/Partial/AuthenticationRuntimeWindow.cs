@@ -1,4 +1,6 @@
-﻿using Redbean.MVP.Content;
+﻿using Firebase.Auth;
+using Redbean.Api;
+using Redbean.MVP.Content;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -15,14 +17,12 @@ namespace Redbean.Editor
 		private const int LoginOrder = 100;
 		private const int UserInformationOrder = 200;
 		
-		private bool isExistUser => !string.IsNullOrEmpty(user.Social.Id);
+		private bool isExistUser => !string.IsNullOrEmpty(user.Response.Social.Id);
 		
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
-			var isSuccess = await user.TryGetUserSnapshot(ID);
-			if (isSuccess)
-				user.SetReferenceUser();
+			await this.RequestApi<GetUserProtocol>();
 		}
 
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
@@ -30,11 +30,9 @@ namespace Redbean.Editor
 		{
 			if (!AppLifeCycle.IsReady)
 				return;
-
-			user.SetReferenceUser();
 			
-			await Extension.UserDB.DeleteAsync();
-			await Extension.Auth.CurrentUser.DeleteAsync();
+			// 유저 계정 제거 API 필요
+			await FirebaseAuth.DefaultInstance.CurrentUser.DeleteAsync();
 			
 			PlayerPrefs.DeleteAll();
 			

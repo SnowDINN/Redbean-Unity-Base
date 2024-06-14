@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using R3;
+using Redbean.Api;
 using Redbean.MVP;
 using Redbean.Rx;
 using Redbean.Singleton;
@@ -38,6 +40,12 @@ namespace Redbean
 		/// 모델 호출
 		/// </summary>
 		public static object GetModel(this IPresenter mvp, Type type) => GetModel(type);
+		
+		/// <summary>
+		/// API 호출
+		/// </summary>
+		public static async Task<Response> RequestApi<T>(this IPresenter mvp, params object[] args) where T : IApi => 
+			await GetSingleton<ApiSingleton>().RequestApi<T>(args);
 		
 		/// <summary>
 		/// 팝업 호출

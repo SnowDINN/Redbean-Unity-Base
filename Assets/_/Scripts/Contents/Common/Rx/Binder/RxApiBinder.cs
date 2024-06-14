@@ -9,7 +9,7 @@ namespace Redbean.Rx
 		private readonly Subject<(Type type, Response response)> onApiResponse = new();
 		private Observable<(Type type, Response response)> OnApiResponse => onApiResponse.Share();
 
-		public void OnNext<T>(Response response) where T : IApi
+		public void Publish<T>(Response response) where T : IApi
 		{
 			onApiResponse.OnNext((typeof(T), response));
 		}

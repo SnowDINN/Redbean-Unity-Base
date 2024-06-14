@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
+using Redbean.Api;
 using Redbean.Container;
 using Redbean.MVP;
 using Redbean.Singleton;
 using UnityEngine;
+
 #if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 #endif
@@ -42,6 +45,12 @@ namespace Redbean
 		/// 싱글톤 호출
 		/// </summary>
 		public static T GetSingleton<T>(this OdinEditorWindow editor) where T : ISingleton => GetSingleton<T>();
+		
+		/// <summary>
+		/// API 호출
+		/// </summary>
+		public static async Task<Response> RequestApi<T>(this OdinEditorWindow editor, params object[] args) where T : IApi => 
+			await GetSingleton<ApiSingleton>().RequestApi<T>(args);
 #endif
 		
 		/// <summary>
