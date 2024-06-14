@@ -22,7 +22,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), DisableInEditorMode, Button("Auto Release")]
 		private void AutoRelease()
 		{
-			SingletonContainer.GetSingleton<AddressableSingleton>().AutoRelease();
+			SingletonContainer.GetSingleton<BundleSingleton>().AutoRelease();
 		}
 	}
 }

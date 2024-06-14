@@ -7,7 +7,7 @@ using Redbean.Api;
 
 namespace Redbean.Table
 {
-	public class GoogleTableBootstrap : IApplicationBootstrap
+	public class GoogleTableBootstrap : IAppBootstrap
 	{
 		public int ExecutionOrder => 200;
 

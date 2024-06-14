@@ -57,7 +57,7 @@ namespace Redbean.MVP.Content
 			if (!m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 				return;
 			
-			await UniTask.WaitUntil(() => ApplicationLifeCycle.IsReady, cancellationToken: token);
+			await UniTask.WaitUntil(() => AppLifeCycle.IsReady, cancellationToken: token);
 				
 			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{

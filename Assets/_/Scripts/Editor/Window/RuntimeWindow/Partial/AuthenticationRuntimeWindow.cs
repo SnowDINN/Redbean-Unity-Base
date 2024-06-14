@@ -28,7 +28,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			if (!ApplicationLifeCycle.IsReady)
+			if (!AppLifeCycle.IsReady)
 				return;
 
 			user.SetReferenceUser();
@@ -44,7 +44,7 @@ namespace Redbean.Editor
 		}
 		
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), PropertyOrder(UserInformationOrder), DisableInEditorMode, ShowInInspector]
-		private UserModel user => ApplicationLifeCycle.IsReady
+		private UserModel user => AppLifeCycle.IsReady
 			? this.GetModel<UserModel>()
 			: new UserModel();
 	}

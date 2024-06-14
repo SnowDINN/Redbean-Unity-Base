@@ -31,7 +31,7 @@ namespace Redbean.Table
 #region Google Client Settings
 			
 			var request = await ApiSingleton.EditorRequestApi<GetTableConfigProtocol>();
-			var response = request.ToConvert<TableConfigModel>();
+			var response = request.ToConvert<TableConfigResponse>();
 			
 			var ClientId = response.Client.Id;
 			var ClientSecret = response.Client.Secret;

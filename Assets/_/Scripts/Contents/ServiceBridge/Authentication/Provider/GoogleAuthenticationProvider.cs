@@ -58,7 +58,7 @@ namespace Redbean.Auth
 				result = new AuthenticationResult
 				{
 					Code = (int)GoogleAuthErrorCode.Error + (int)e.Status,
-					Message = "An unknown error occurred while signing in to Google."
+					Message = e.Message
 				};
 			}
 			catch (Exception e)
@@ -66,7 +66,7 @@ namespace Redbean.Auth
 				result = new AuthenticationResult
 				{
 					Code = (int)GoogleAuthErrorCode.Exception,
-					Message = "An unknown error occurred while signing in to Google."
+					Message = e.Message
 				};
 			}
 
@@ -91,7 +91,7 @@ namespace Redbean.Auth
 				result = new AuthenticationResult
 				{
 					Code = (int)GoogleAuthErrorCode.Error + (int)e.Status,
-					Message = "An unknown error occurred while signing in to Google."
+					Message = e.Message
 				};
 			}
 			catch (Exception e)
@@ -99,7 +99,7 @@ namespace Redbean.Auth
 				result = new AuthenticationResult
 				{
 					Code = (int)GoogleAuthErrorCode.Exception,
-					Message = "An unknown error occurred while signing in to Google."
+					Message = e.Message
 				};
 			}
 

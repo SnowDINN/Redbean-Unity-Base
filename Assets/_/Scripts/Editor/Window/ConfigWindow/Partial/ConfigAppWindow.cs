@@ -46,10 +46,10 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(BundleGroup), PropertyOrder(BundleOrder), Button("UPDATE BUNDLE", ButtonSizes.Large)]
 		private async void UpdateBundle()
 		{
-			using var firebase = new FirebaseBootstrap();
+			using var firebase = new AppSequenceBootstrap();
 			await firebase.Setup();
 			
-			var result = AddressableGenerator.TryBuildBundle();
+			var result = BundleGenerator.TryBuildBundle();
 			var buildPath = AddressableAssetSettingsDefaultObject.Settings.RemoteCatalogBuildPath.GetValue(AddressableAssetSettingsDefaultObject.Settings);
 			var buildFiles = result.FileRegistry.GetFilePaths().Where(_ => _.Contains(buildPath)).ToArray();
 
