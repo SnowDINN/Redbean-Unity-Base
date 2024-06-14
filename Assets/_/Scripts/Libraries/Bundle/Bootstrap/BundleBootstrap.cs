@@ -8,7 +8,7 @@ namespace Redbean.Bundle
 {
 	public class BundleBootstrap : IAppBootstrap
 	{
-		public int ExecutionOrder => 300;
+		public int ExecutionOrder => 200;
 
 		public async Task Setup()
 		{

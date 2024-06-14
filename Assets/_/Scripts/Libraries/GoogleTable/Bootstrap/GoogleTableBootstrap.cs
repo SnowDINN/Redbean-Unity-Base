@@ -9,7 +9,7 @@ namespace Redbean.Table
 {
 	public class GoogleTableBootstrap : IAppBootstrap
 	{
-		public int ExecutionOrder => 200;
+		public int ExecutionOrder => 100;
 
 		public async Task Setup()
 		{
