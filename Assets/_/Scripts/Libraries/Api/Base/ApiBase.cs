@@ -9,7 +9,7 @@ namespace Redbean.Api
 {
 	public class ApiBase
 	{
-		private static readonly HttpClient http = new()
+		public static readonly HttpClient Http = new()
 		{
 			BaseAddress = new Uri("https://localhost:44395"),
 			DefaultRequestHeaders =
@@ -48,7 +48,7 @@ namespace Redbean.Api
 		
 		private static async Task<string> GetApi(string uri)
 		{
-			var request = await http.GetAsync(uri);
+			var request = await Http.GetAsync(uri);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
 				var response = await request.Content.ReadAsStringAsync();
@@ -67,7 +67,7 @@ namespace Redbean.Api
 		
 		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
-			var request = await http.PostAsync(uri, content);
+			var request = await Http.PostAsync(uri, content);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
 				var response = await request.Content.ReadAsStringAsync();
@@ -86,7 +86,7 @@ namespace Redbean.Api
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
-			var request = await http.DeleteAsync(uri);
+			var request = await Http.DeleteAsync(uri);
 			if (request.StatusCode == HttpStatusCode.OK)
 			{
 				var response = await request.Content.ReadAsStringAsync();

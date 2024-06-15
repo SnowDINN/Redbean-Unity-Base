@@ -3,11 +3,9 @@ using UnityEngine.AddressableAssets;
 
 namespace Redbean.Bundle
 {
-	public class BundleBootstrap : IAppBootstrap
+	public class BundleBootstrap
 	{
-		public int ExecutionOrder => 200;
-
-		public async Task Setup()
+		public static async Task Setup()
 		{
 			var size = 0L;
 			foreach (var label in AddressableSettings.Labels)
@@ -24,11 +22,6 @@ namespace Redbean.Bundle
 
 			var convert = ConvertDownloadSize(size);
 			Log.Success("Bundle", $"Success to load to the bundles. [ {convert.value}{convert.type} ]");
-		}
-
-		public void Dispose()
-		{
-			Log.System("Bundle has been terminated.");
 		}
 
 		private static (string value, string type) ConvertDownloadSize(long size)
