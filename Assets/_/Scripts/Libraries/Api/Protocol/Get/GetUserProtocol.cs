@@ -11,7 +11,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest(args[0], AppSettings.Version);
+			var request = await ApiGetRequest.GetUserRequest(args[0]);
 			if (request.Code > 0)
 				return request;
 

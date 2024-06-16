@@ -30,11 +30,10 @@ namespace Redbean.Auth
 #endif
 				WebClientId = GoogleExtension.GetWebClientId(),
 				RequestEmail = true,
-				RequestIdToken = true
+				RequestIdToken = true,
+				UseGameSignIn = false,
 			};
 			GoogleSignIn.Configuration = configuration;
-			GoogleSignIn.Configuration.RequestIdToken = true;
-			GoogleSignIn.Configuration.UseGameSignIn = false;
 
 			completionSource.TrySetResult(true);
 			return completionSource.Task;
