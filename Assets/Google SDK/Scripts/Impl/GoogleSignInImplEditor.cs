@@ -58,28 +58,18 @@ namespace Google.Impl
 
     static HttpListener BindLocalHostFirstAvailablePort()
     {
-      var minPort = (ushort)GoogleExtension.GetWebRedirectUrlPort();
-#if UNITY_EDITOR_WIN
-      var listeners = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners();
-      return Enumerable.Range(minPort, ushort.MaxValue - minPort).Where((i) => !listeners.Any((x) => x.Port == i)).Select((port) => {
-#elif UNITY_EDITOR_OSX
-      return Enumerable.Range(minPort, ushort.MaxValue - minPort).Select((port) => {
-#else
-      return Enumerable.Range(0,10).Select((i) => UnityEngine.Random.Range(minPort,ushort.MaxValue)).Select((port) => {
-#endif
-        try
-        {
-          var listener = new HttpListener();
-          listener.Prefixes.Add(GoogleExtension.GetWebRedirectURL());
-          listener.Start();
-          return listener;
-        }
-        catch(System.Exception e)
-        {
-          Debug.LogException(e);
-          return null;
-        }
-      }).FirstOrDefault((listener) => listener != null);
+      try
+      {
+        var listener = new HttpListener();
+        listener.Prefixes.Add(GoogleExtension.GetWebRedirectURL());
+        listener.Start();
+        return listener;
+      }
+      catch(System.Exception e)
+      {
+        Debug.LogException(e);
+        return null;
+      }
     }
 
     void SigningIn()
@@ -160,6 +150,9 @@ namespace Google.Impl
         finally
         {
           Pending = false;
+          
+          httpListener.Stop();
+          httpListener.Close();
         }
       },taskScheduler);
     }

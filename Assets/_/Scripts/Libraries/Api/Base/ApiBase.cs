@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -15,7 +14,9 @@ namespace Redbean.Api
 			DefaultRequestHeaders =
 			{
 				{ "accept", "application/json" },
-			}
+			},
+			Timeout = TimeSpan.FromSeconds(10),
+			
 		};
 		
 		public static async Task<Response> SendGetRequest(string uri, params object[] args)
@@ -48,58 +49,91 @@ namespace Redbean.Api
 		
 		private static async Task<string> GetApi(string uri)
 		{
-			var request = await Http.GetAsync(uri);
-			if (request.IsSuccessStatusCode)
+			HttpResponseMessage request = null;
+			try
 			{
-				var response = await request.Content.ReadAsStringAsync();
-				request.Dispose();
-				
-				Log.Success("GET", $"Request success : {response}");
-				return response;
-			}
+				request = await Http.GetAsync(uri);
+				if (request.IsSuccessStatusCode)
+				{
+					var response = await request.Content.ReadAsStringAsync();
 
-			var reasonPhrase = request.ReasonPhrase;
+					Log.Success("GET", $"Request success : {response}");
+					request.Dispose();
+
+					return response;
+				}
+			}
+			catch (HttpRequestException e)
+			{
+				Log.Fail("GET", $"Request fail : {e.Message}");
+				request?.Dispose();
+
+				throw;
+			}
+			
+			Log.Fail("GET", $"Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
-			Log.Fail("GET", $"Request fail : ({(int)request.StatusCode}) {reasonPhrase}");
-			return reasonPhrase;
+			return string.Empty;
 		}
 		
 		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
-			var request = await Http.PostAsync(uri, content);
-			if (request.IsSuccessStatusCode)
+			HttpResponseMessage request = null;
+			try
 			{
-				var response = await request.Content.ReadAsStringAsync();
-				request.Dispose();
+				request = await Http.PostAsync(uri, content);
+				if (request.IsSuccessStatusCode)
+				{
+					var response = await request.Content.ReadAsStringAsync();
 				
-				Log.Success("POST", $"Request success : {response}");
-				return response;
+					Log.Success("POST", $"Request success : {response}");
+					request.Dispose();
+					
+					return response;
+				}
+			}
+			catch (HttpRequestException e)
+			{
+				Log.Fail("POST", $"Request fail : {e.Message}");
+				request?.Dispose();
+				
+				throw;
 			}
 
-			var reasonPhrase = request.ReasonPhrase;
+			Log.Fail("POST", $"Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
-			Log.Fail("POST", $"Request fail : ({(int)request.StatusCode}) {reasonPhrase}");
-			return reasonPhrase;
+			return string.Empty;
 		}
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
-			var request = await Http.DeleteAsync(uri);
-			if (request.IsSuccessStatusCode)
+			HttpResponseMessage request = null;
+			try
 			{
-				var response = await request.Content.ReadAsStringAsync();
-				request.Dispose();
+				request = await Http.DeleteAsync(uri);
+				if (request.IsSuccessStatusCode)
+				{
+					var response = await request.Content.ReadAsStringAsync();
 				
-				Log.Success("DELETE", $"Request success : {response}");
-				return true;
+					Log.Success("DELETE", $"Request success : {response}");
+					request.Dispose();
+					
+					return true;
+				}
+			}
+			catch (HttpRequestException e)
+			{
+				Log.Fail("DELETE", $"Request fail : {e.Message}");
+				request?.Dispose();
+				
+				throw;
 			}
 
-			var reasonPhrase = request.ReasonPhrase;
+			Log.Fail("DELETE", $"Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
-			Log.Fail("POST", $"Request fail : ({(int)request.StatusCode}) {reasonPhrase}");
 			return false;
 		}
 	}
