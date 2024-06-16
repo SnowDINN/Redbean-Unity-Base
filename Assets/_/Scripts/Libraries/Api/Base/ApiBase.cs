@@ -49,7 +49,7 @@ namespace Redbean.Api
 		private static async Task<string> GetApi(string uri)
 		{
 			var request = await Http.GetAsync(uri);
-			if (request.StatusCode == HttpStatusCode.OK)
+			if (request.IsSuccessStatusCode)
 			{
 				var response = await request.Content.ReadAsStringAsync();
 				request.Dispose();
@@ -61,14 +61,14 @@ namespace Redbean.Api
 			var reasonPhrase = request.ReasonPhrase;
 			request.Dispose();
 			
-			Log.Fail("GET", $"Request fail : {reasonPhrase}");
+			Log.Fail("GET", $"Request fail : ({(int)request.StatusCode}) {reasonPhrase}");
 			return reasonPhrase;
 		}
 		
 		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
 			var request = await Http.PostAsync(uri, content);
-			if (request.StatusCode == HttpStatusCode.OK)
+			if (request.IsSuccessStatusCode)
 			{
 				var response = await request.Content.ReadAsStringAsync();
 				request.Dispose();
@@ -80,14 +80,14 @@ namespace Redbean.Api
 			var reasonPhrase = request.ReasonPhrase;
 			request.Dispose();
 			
-			Log.Fail("POST", $"Request fail : {reasonPhrase}");
+			Log.Fail("POST", $"Request fail : ({(int)request.StatusCode}) {reasonPhrase}");
 			return reasonPhrase;
 		}
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
 			var request = await Http.DeleteAsync(uri);
-			if (request.StatusCode == HttpStatusCode.OK)
+			if (request.IsSuccessStatusCode)
 			{
 				var response = await request.Content.ReadAsStringAsync();
 				request.Dispose();
@@ -99,7 +99,7 @@ namespace Redbean.Api
 			var reasonPhrase = request.ReasonPhrase;
 			request.Dispose();
 			
-			Log.Fail("POST", $"Request fail : {reasonPhrase}");
+			Log.Fail("POST", $"Request fail : ({(int)request.StatusCode}) {reasonPhrase}");
 			return false;
 		}
 	}

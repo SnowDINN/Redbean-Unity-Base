@@ -14,6 +14,8 @@ namespace Redbean.Auth
 	
 	public class GoogleAuthenticationProvider : IAuthentication
 	{
+		public static bool IsInitialize => GoogleSignIn.Configuration is not null;
+		
 		public AuthenticationType Type => AuthenticationType.Google;
 		
 		public Task<bool> Initialize()

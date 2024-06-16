@@ -30,8 +30,10 @@ namespace Redbean.Api
 		{
 			apis.Clear();
 
+#if UNITY_EDITOR
 			if (ApiBase.Http.DefaultRequestHeaders.Contains("Authorization"))
 				ApiBase.Http.DefaultRequestHeaders.Remove("Authorization");
+#endif
 		}
 
 		public async Task<Response> RequestApi(Type type, params object[] args) => 
@@ -51,7 +53,8 @@ namespace Redbean.Api
 			if (string.IsNullOrEmpty(token))
 			{
 				var authenticationProvider = new GoogleAuthenticationProvider();
-				await authenticationProvider.Initialize();
+				if (!GoogleAuthenticationProvider.IsInitialize)
+					await authenticationProvider.Initialize();
 
 				var authenticationResult = await authenticationProvider.Login();
 				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
