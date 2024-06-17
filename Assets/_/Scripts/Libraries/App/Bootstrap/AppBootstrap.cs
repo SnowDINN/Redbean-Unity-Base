@@ -31,7 +31,6 @@ namespace Redbean
 				            && !_.IsInterface
 				            && !_.IsAbstract)
 				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IAppBootstrap)
-				.OrderBy(_ => _.ExecutionOrder)
 				.ToArray();
 
 			var flags = Enum.GetNames(typeof(BootstrapType));
@@ -46,7 +45,8 @@ namespace Redbean
 
 		public static async Task BootstrapSetup(BootstrapType type)
 		{
-			foreach (var bootstrap in Bootstraps[type])
+			var orderBy = Bootstraps[type].OrderBy(_ => _.Order).ToArray();
+			foreach (var bootstrap in orderBy)
 				await bootstrap.Setup();
 		}
 
@@ -56,7 +56,7 @@ namespace Redbean
 			foreach (var bootstraps in Bootstraps.Values)
 				bootstrapGroup.AddRange(bootstraps);
 
-			var orderByDescending = bootstrapGroup.OrderByDescending(_ => _.DisposeOrder).ToArray();
+			var orderByDescending = bootstrapGroup.OrderByDescending(_ => _.Order).ToArray();
 			foreach (var bootstrap in orderByDescending)
 				bootstrap.Dispose();
 		}

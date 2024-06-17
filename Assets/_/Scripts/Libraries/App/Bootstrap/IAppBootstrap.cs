@@ -18,7 +18,7 @@ namespace Redbean
 		/// <summary>
 		/// 메모리 해제 순서
 		/// </summary>
-		int DisposeOrder => (int)ExecutionType + ExecutionOrder;
+		int Order => (int)ExecutionType + ExecutionOrder;
 		
 		/// <summary>
 		/// 앱 시작 시 실행되는 함수
