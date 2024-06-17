@@ -6,6 +6,8 @@ namespace Redbean.Cryptography
 {
 	public class AES128
 	{
+		private const string SecurityKey = "redbean.boongsin";
+		
 		private readonly Aes Aes;
 
 		public AES128()
@@ -22,7 +24,7 @@ namespace Redbean.Cryptography
 			get
 			{
 				var md5 = MD5.Create();
-				var result = md5.ComputeHash(Encoding.UTF8.GetBytes("redbean.boongsin"));
+				var result = md5.ComputeHash(Encoding.UTF8.GetBytes(SecurityKey));
 
 				return Encoding.UTF8.GetString(result);
 			}

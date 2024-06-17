@@ -7,9 +7,15 @@ using Object = UnityEngine.Object;
 
 namespace Redbean
 {
+	public enum AppBootstrapType
+	{
+		Runtime = 0,
+		SignInUser = 100,
+	}
+	
 	public class AppBootstrap
 	{
-		private static readonly Dictionary<BootstrapType, IAppBootstrap[]> Bootstraps = new();
+		private static readonly Dictionary<AppBootstrapType, IAppBootstrap[]> Bootstraps = new();
 		
 		[RuntimeInitializeOnLoadMethod]
 		public static void RuntimeBootstrap()
@@ -33,17 +39,17 @@ namespace Redbean
 				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IAppBootstrap)
 				.ToArray();
 
-			var flags = Enum.GetNames(typeof(BootstrapType));
+			var flags = Enum.GetNames(typeof(AppBootstrapType));
 			foreach (var flag in flags)
 			{
-				var type = Enum.Parse<BootstrapType>(flag);
+				var type = Enum.Parse<AppBootstrapType>(flag);
 				Bootstraps[type] = bootstraps.Where(_ => _.ExecutionType == type).ToArray();
 			}
 
-			await BootstrapSetup(BootstrapType.Runtime);
+			await BootstrapSetup(AppBootstrapType.Runtime);
 		}
 
-		public static async Task BootstrapSetup(BootstrapType type)
+		public static async Task BootstrapSetup(AppBootstrapType type)
 		{
 			var orderBy = Bootstraps[type].OrderBy(_ => _.Order).ToArray();
 			foreach (var bootstrap in orderBy)

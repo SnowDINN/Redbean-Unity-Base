@@ -8,7 +8,7 @@ namespace Redbean.Table
 {
 	public class GoogleTableBootstrap : IAppBootstrap
 	{
-		public BootstrapType ExecutionType => BootstrapType.SignInUser;
+		public AppBootstrapType ExecutionType => AppBootstrapType.SignInUser;
 		public int ExecutionOrder => 100;
 
 		public async Task Setup()

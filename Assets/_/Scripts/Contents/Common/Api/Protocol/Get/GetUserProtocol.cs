@@ -21,12 +21,12 @@ namespace Redbean.Api
 			var user = this.GetModel<UserModel>();
 			var userResponse = JsonConvert.DeserializeObject<UserResponse>(response["user"].ToString());
 			if (userResponse != null)
+			{
 				user.Response = userResponse;
-			
-			user.Publish().SetPlayerPrefs();
-			this.Publish(request);
+				user.ModelPublish().SetPlayerPrefs();
+			}
 
-			await AppBootstrap.BootstrapSetup(BootstrapType.SignInUser);
+			await AppBootstrap.BootstrapSetup(AppBootstrapType.SignInUser);
 			
 			Log.Print($"Login user's data. [ {user.Response.Information.Nickname} | {user.Response.Social.Id} ]");
 			return request;

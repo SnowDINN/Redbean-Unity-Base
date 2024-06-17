@@ -2,21 +2,21 @@
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Sirenix.OdinInspector.Editor;
+using Redbean.Singleton;
 using UnityEngine;
 
 namespace Redbean.Editor
 {
-	internal partial class ApplicationWindow : OdinEditorWindow
+	internal partial class ApplicationWindow : WindowBase
 	{
 		private const string TabGroup = "Tabs";
 		
 		protected override void OnEnable()
 		{
-			if (!PlayerPrefs.HasKey(Key.GetDataGroup))
+			if (!PlayerPrefs.HasKey(MvpSingleton.PLAYER_PREFS_KEY))
 				return;
 
-			var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(Key.GetDataGroup));
+			var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY));
 			var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 			if (dataGroups == null)
 				return;

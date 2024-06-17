@@ -16,7 +16,7 @@ namespace Redbean.Singleton
 	{
 		private static readonly Dictionary<Type, IApi> apiGroup = new();
 
-		public BootstrapType ExecutionType => BootstrapType.Runtime;
+		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
 		public int ExecutionOrder => 20;
 		
 		public Task Setup()
@@ -77,7 +77,7 @@ namespace Redbean.Singleton
 			else
 				await RequestAccessTokenAsync(token);
 
-			return await api.RequestApi<T>(args);
+			return await api.EditorRequestApi<T>(args);
 		}
 		
 		private static async Task RequestAccessTokenAsync(string token)

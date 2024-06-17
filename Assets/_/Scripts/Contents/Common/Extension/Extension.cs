@@ -7,29 +7,15 @@ using Redbean.MVP;
 using Redbean.MVP.Content;
 using Redbean.Singleton;
 
-#if UNITY_EDITOR
-using Sirenix.OdinInspector.Editor;
-#endif
-
 namespace Redbean
 {
 	public static partial class Extension
 	{
 #if UNITY_EDITOR
 		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		public static T GetModel<T>(this OdinEditorWindow editor) where T : IModel => GetModel<T>();
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		public static T GetSingleton<T>(this OdinEditorWindow editor) where T : ISingleton => GetSingleton<T>();
-		
-		/// <summary>
 		/// API 호출
 		/// </summary>
-		public static async Task<Response> RequestApi<T>(this OdinEditorWindow editor, params object[] args) where T : IApi => 
+		public static async Task<Response> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApi => 
 			await ApiContainer.RequestApi<T>(args);
 #endif
 		
@@ -76,9 +62,16 @@ namespace Redbean
 		/// <summary>
 		/// API 호출
 		/// </summary>
-		public static async Task<Response> RequestApi<T>(this IExtension extension, params object[] args) where T : IApi => 
-			await ApiContainer.RequestApi<T>(args);
-		
+		public static async Task<Response> RequestApi<T>(this IExtension extension, params object[] args) where T : IApi
+		{
+			T generic = default;
+			
+			var request = await ApiContainer.RequestApi<T>(args);
+			ApiPublish(generic, request);
+			
+			return request;
+		}
+
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>

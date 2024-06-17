@@ -10,7 +10,7 @@ namespace Redbean.Firebase
 {
 	public class AppSequenceBootstrap : IAppBootstrap
 	{
-		public BootstrapType ExecutionType => BootstrapType.Runtime;
+		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
 		public int ExecutionOrder => 30;
 
 		public async Task Setup()
@@ -32,7 +32,7 @@ namespace Redbean.Firebase
 				var app = new AppConfigModel
 				{
 					Response = request.ToConvert<AppConfigResponse>()
-				}.Publish();
+				}.ModelPublish();
 				
 				if (app is not null)
 				{

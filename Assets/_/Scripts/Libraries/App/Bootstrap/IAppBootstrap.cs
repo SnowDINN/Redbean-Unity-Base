@@ -8,7 +8,7 @@ namespace Redbean
 		/// <summary>
 		/// 실행 타입
 		/// </summary>
-		BootstrapType ExecutionType { get; }
+		AppBootstrapType ExecutionType { get; }
 		
 		/// <summary>
 		/// 실행 순서

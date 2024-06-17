@@ -13,7 +13,7 @@ namespace Redbean.Container
 		private static readonly Dictionary<Type, ISingleton> singletonGroup = new();
 		private GameObject parent;
 
-		public BootstrapType ExecutionType => BootstrapType.Runtime;
+		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
 		public int ExecutionOrder => 10;
 
 		public Task Setup()

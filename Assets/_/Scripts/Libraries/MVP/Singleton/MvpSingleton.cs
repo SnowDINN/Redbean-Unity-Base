@@ -11,6 +11,8 @@ namespace Redbean.Singleton
 {
 	public class MvpSingleton : ISingleton
 	{
+		public const string PLAYER_PREFS_KEY = "PLAYER_PREFS__DATA_GROUP";
+		
 		private readonly Dictionary<string, string> playerPrefsGroup = new();
 		private readonly Dictionary<Type, IModel> modelGroup = new();
 		private readonly AES128 aes = new();
@@ -31,9 +33,9 @@ namespace Redbean.Singleton
 
 #region PlayerPrefs
 
-			if (PlayerPrefs.HasKey(Key.GetDataGroup))
+			if (PlayerPrefs.HasKey(PLAYER_PREFS_KEY))
 			{
-				var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(Key.GetDataGroup));
+				var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(PLAYER_PREFS_KEY));
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				foreach (var dataGroup in dataGroups)
 				{
@@ -88,6 +90,8 @@ namespace Redbean.Singleton
 			return model;
 		}
 		
+#region PlayerPrefs
+		
 		/// <summary>
 		/// 로컬 데이터 저장 및 퍼블리싱
 		/// </summary>
@@ -96,7 +100,7 @@ namespace Redbean.Singleton
 			playerPrefsGroup[typeof(T).FullName] = JsonConvert.SerializeObject(value);
 			
 			var encryptValue = aes.Encrypt(JsonConvert.SerializeObject(playerPrefsGroup));
-			PlayerPrefs.SetString(Key.GetDataGroup, encryptValue);
+			PlayerPrefs.SetString(PLAYER_PREFS_KEY, encryptValue);
 			
 			return value;
 		}
@@ -110,5 +114,7 @@ namespace Redbean.Singleton
 				? JsonConvert.DeserializeObject<T>(value) 
 				: default;
 		}
+		
+#endregion
 	}
 }
