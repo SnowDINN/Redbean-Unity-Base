@@ -101,8 +101,8 @@ namespace Redbean.Table
 			if (Directory.Exists(Path))
 				Directory.CreateDirectory(Path);
 			
-			File.Delete($"{Path}/GoogleTable.cs");
-			await File.WriteAllTextAsync($"{Path}/GoogleTable.cs", $"{stringBuilder}");
+			File.Delete($"{Path}/{ContainerName}.cs");
+			await File.WriteAllTextAsync($"{Path}/{ContainerName}.cs", $"{stringBuilder}");
 		}
 
 		/// <summary>

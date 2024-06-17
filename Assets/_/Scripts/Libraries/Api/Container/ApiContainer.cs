@@ -60,6 +60,7 @@ namespace Redbean.Singleton
 			const string Key = "EDITOR_ACCESS_UID";
 			
 			using var api = new ApiContainer();
+			await api.Setup();
 			
 			var token = PlayerPrefs.GetString(Key);
 			if (string.IsNullOrEmpty(token))
