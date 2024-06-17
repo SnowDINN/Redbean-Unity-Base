@@ -61,10 +61,11 @@ namespace Redbean.MVP.Content
 		private async UniTask SetUserData(AuthenticationResult result)
 		{
 			var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential);
+			var uid = user.UserId.Encrypt();
 			
-			await this.RequestApi<GetUserProtocol>(user.UserId);
+			await this.RequestApi<GetUserProtocol>(uid);
 			
-			m_user.Response.Social.Id = user.UserId;
+			m_user.Response.Social.Id = uid;
 			m_user.Response.Social.Platform = user.ProviderData.First().ProviderId;
 			m_user.Response.Information.Nickname = user.ProviderData.First().DisplayName;
 		}

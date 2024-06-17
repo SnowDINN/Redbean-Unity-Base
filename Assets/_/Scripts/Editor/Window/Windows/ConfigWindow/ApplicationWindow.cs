@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
+using Redbean.Api;
 using Redbean.Singleton;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace Redbean.Editor
 			if (!PlayerPrefs.HasKey(MvpSingleton.PLAYER_PREFS_KEY))
 				return;
 
-			var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY));
+			var dataDecrypt = PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY).Decrypt();
 			var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 			if (dataGroups == null)
 				return;

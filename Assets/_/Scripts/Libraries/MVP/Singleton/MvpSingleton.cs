@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Redbean.Cryptography;
+using Redbean.Api;
 using Redbean.MVP;
 using UnityEngine;
 
@@ -15,7 +15,6 @@ namespace Redbean.Singleton
 		
 		private readonly Dictionary<string, string> playerPrefsGroup = new();
 		private readonly Dictionary<Type, IModel> modelGroup = new();
-		private readonly AES128 aes = new();
 
 		public MvpSingleton()
 		{
@@ -35,7 +34,7 @@ namespace Redbean.Singleton
 
 			if (PlayerPrefs.HasKey(PLAYER_PREFS_KEY))
 			{
-				var dataDecrypt = aes.Decrypt(PlayerPrefs.GetString(PLAYER_PREFS_KEY));
+				var dataDecrypt = PlayerPrefs.GetString(PLAYER_PREFS_KEY).Decrypt();
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				foreach (var dataGroup in dataGroups)
 				{
@@ -99,7 +98,7 @@ namespace Redbean.Singleton
 		{
 			playerPrefsGroup[typeof(T).FullName] = JsonConvert.SerializeObject(value);
 			
-			var encryptValue = aes.Encrypt(JsonConvert.SerializeObject(playerPrefsGroup));
+			var encryptValue = JsonConvert.SerializeObject(playerPrefsGroup).Encrypt();
 			PlayerPrefs.SetString(PLAYER_PREFS_KEY, encryptValue);
 			
 			return value;

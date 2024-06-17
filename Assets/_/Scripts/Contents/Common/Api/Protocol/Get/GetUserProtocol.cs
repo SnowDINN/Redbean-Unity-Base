@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Redbean.Cryptography;
 using Redbean.MVP.Content;
 
 namespace Redbean.Api
@@ -10,9 +9,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			var aes = new AES128();
-			
-			var request = await ApiGetRequest.GetUserRequest(aes.Encrypt($"{args[0]}"));
+			var request = await ApiGetRequest.GetUserRequest($"{args[0]}".Encrypt());
 			if (request.Code > 0)
 				return request;
 
