@@ -1,4 +1,6 @@
-﻿using Firebase.Auth;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Firebase.Auth;
 using Redbean.Api;
 using Redbean.MVP.Content;
 using Sirenix.OdinInspector;
@@ -17,7 +19,7 @@ namespace Redbean.Editor
 		private const int LoginOrder = 100;
 		private const int UserInformationOrder = 200;
 		
-		private bool isExistUser => !string.IsNullOrEmpty(user.Response.Social.Id);
+		private bool isExistUser => user.Any();
 		
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
@@ -40,10 +42,10 @@ namespace Redbean.Editor
 			
 			Log.Notice("User account has been deleted.");
 		}
-		
+
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), PropertyOrder(UserInformationOrder), DisableInEditorMode, ShowInInspector]
-		private UserModel user => AppLifeCycle.IsReady
-			? this.GetModel<UserModel>()
-			: new UserModel();
+		private Dictionary<string, object> user => AppLifeCycle.IsReady
+			? new Dictionary<string, object> { { "User", this.GetModel<UserModel>() } }
+			: new Dictionary<string, object>();
 	}
 }
