@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Redbean.Bundle;
 using Redbean.MVP.Content;
-using Redbean.Table;
 
 namespace Redbean.Api
 {
@@ -28,8 +26,7 @@ namespace Redbean.Api
 			user.Publish().SetPlayerPrefs();
 			this.Publish(request);
 
-			await GoogleTableBootstrap.Setup();
-			await BundleBootstrap.Setup();
+			await AppBootstrap.BootstrapSetup(BootstrapType.SignInUser);
 			
 			Log.Print($"Login user's data. [ {user.Response.Information.Nickname} | {user.Response.Social.Id} ]");
 			return request;

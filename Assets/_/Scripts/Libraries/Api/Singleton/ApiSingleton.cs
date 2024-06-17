@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Firebase.Auth;
-using Google;
+using Redbean.Api;
 using Redbean.Auth;
 using UnityEngine;
 
-namespace Redbean.Api
+namespace Redbean.Singleton
 {
 	public class ApiSingleton : ISingleton
 	{

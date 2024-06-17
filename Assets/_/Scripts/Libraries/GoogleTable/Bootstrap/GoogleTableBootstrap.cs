@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Redbean.Api;
-using Redbean.Container;
 
 namespace Redbean.Table
 {
-	public class GoogleTableBootstrap
+	public class GoogleTableBootstrap : IAppBootstrap
 	{
-		public static async Task Setup()
+		public BootstrapType ExecutionType => BootstrapType.SignInUser;
+		public int ExecutionOrder => 1;
+
+		public async Task Setup()
 		{
-			var request = await SingletonContainer.GetSingleton<ApiSingleton>().RequestApi<GetTableProtocol>();
+			var request = await this.RequestApi<GetTableProtocol>();
 			var response = request.ToConvert<Dictionary<string, string>>();
 			if (!response.Any())
 			{
@@ -35,6 +37,10 @@ namespace Redbean.Table
 			}
 			
 			Log.Success("Table", "Success to load to the tables.");
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }

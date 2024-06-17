@@ -1,5 +1,11 @@
 ﻿namespace Redbean
 {
+	public enum BootstrapType
+	{
+		Runtime,
+		SignInUser
+	}
+	
 	public static class Balance
 	{
 		public const int DoubleButtonPrevention = 200;

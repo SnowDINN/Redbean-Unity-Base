@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Redbean.Api;
 using Redbean.MVP;
+using Redbean.Singleton;
 
 namespace Redbean
 {

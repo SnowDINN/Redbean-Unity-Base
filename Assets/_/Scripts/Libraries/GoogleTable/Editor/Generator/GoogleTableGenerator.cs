@@ -9,6 +9,7 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Redbean.Api;
 using Redbean.MVP.Content;
+using Redbean.Singleton;
 using UnityEngine;
 
 namespace Redbean.Table

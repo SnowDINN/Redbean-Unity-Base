@@ -3,9 +3,12 @@ using UnityEngine.AddressableAssets;
 
 namespace Redbean.Bundle
 {
-	public class BundleBootstrap
+	public class BundleBootstrap : IAppBootstrap
 	{
-		public static async Task Setup()
+		public BootstrapType ExecutionType => BootstrapType.SignInUser;
+		public int ExecutionOrder => 2;
+
+		public async Task Setup()
 		{
 			var size = 0L;
 			foreach (var label in AddressableSettings.Labels)
@@ -37,6 +40,10 @@ namespace Redbean.Bundle
 			
 			value /= 1024;
 			return ($"{value:F1}", "GB");
+		}
+
+		public void Dispose()
+		{
 		}
 	}
 }

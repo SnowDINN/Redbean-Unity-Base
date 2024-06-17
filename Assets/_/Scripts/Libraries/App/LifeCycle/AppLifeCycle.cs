@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Redbean.Popup.Content;
+﻿using Redbean.Popup.Content;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -10,28 +9,20 @@ namespace Redbean
 {
 	public class AppLifeCycle : MonoBase
 	{
-		private List<IAppBootstrap> instances = new();
-
 		public static bool IsReady { get; private set; }
-		
-		public void Bootstrap(List<IAppBootstrap> instances)
+
+		private void Awake()
 		{
 			Application.logMessageReceived += OnLogMessageReceived;
-			
-			this.instances = instances;
-			this.instances.Reverse();
-
 			IsReady = true;
 		}
 
 		public override void OnDestroy()
 		{
 			Application.logMessageReceived -= OnLogMessageReceived;
-			
-			foreach (var instance in instances)
-				instance.Dispose();
-
 			IsReady = false;
+
+			AppBootstrap.BootstrapDispose();
 			
 #if UNITY_EDITOR
 			if (EditorApplication.isPlaying)

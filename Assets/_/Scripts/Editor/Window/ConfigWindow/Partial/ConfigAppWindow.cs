@@ -6,6 +6,7 @@ using System.Text;
 using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
+using Redbean.Singleton;
 using Redbean.Table;
 using Sirenix.OdinInspector;
 using UnityEditor;
