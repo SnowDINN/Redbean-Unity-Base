@@ -12,21 +12,22 @@ namespace Redbean.Singleton
 	public class MvpSingleton : ISingleton
 	{
 		private readonly Dictionary<string, string> playerPrefsGroup = new();
-		private readonly Dictionary<Type, IModel> modelsGroup = new();
+		private readonly Dictionary<Type, IModel> modelGroup = new();
 		private readonly AES128 aes = new();
 
 		public MvpSingleton()
 		{
-			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
+			var models = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(x => x.GetTypes())
 				.Where(x => typeof(IModel).IsAssignableFrom(x)
 				            && !typeof(IRxModel).IsAssignableFrom(x)
 				            && !x.IsInterface
 				            && !x.IsAbstract)
-				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IModel);
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IModel)
+				.ToArray();
 
-			foreach (var _ in nativeSingletons
-				         .Where(model => model != null && modelsGroup.TryAdd(model.GetType(), model)))
+			foreach (var model in models)
+				modelGroup.TryAdd(model.GetType(), model);
 
 #region PlayerPrefs
 
@@ -40,7 +41,7 @@ namespace Redbean.Singleton
 					var value = JsonConvert.DeserializeObject(dataGroup.Value, key);
 
 					if (value is IModel model)
-						modelsGroup[key] = model;
+						modelGroup[key] = model;
 				}
 
 				playerPrefsGroup = dataGroups;
@@ -51,35 +52,35 @@ namespace Redbean.Singleton
 
 		public void Dispose()
 		{
-			modelsGroup.Clear();
+			modelGroup.Clear();
 			playerPrefsGroup.Clear();
 		}
 
 		/// <summary>
 		/// 모델 전부 제거
 		/// </summary>
-		public void Clear() => modelsGroup.Clear();
+		public void Clear() => modelGroup.Clear();
 
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public T GetModel<T>() where T : IModel => (T)modelsGroup[typeof(T)];
+		public T GetModel<T>() where T : IModel => (T)modelGroup[typeof(T)];
 
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		public IModel GetModel(Type type) => modelsGroup[type];
+		public IModel GetModel(Type type) => modelGroup[type];
 
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
 		public T Override<T>(T model, bool isPlayerPrefs = false) where T : IModel
 		{
-			var targetFields = modelsGroup[model.GetType()].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
+			var targetFields = modelGroup[model.GetType()].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
 			var copyFields = model.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
 			
 			for (var i = 0; i < targetFields.Length; i++)
-				targetFields[i].SetValue(modelsGroup[model.GetType()], copyFields[i].GetValue(model));
+				targetFields[i].SetValue(modelGroup[model.GetType()], copyFields[i].GetValue(model));
 
 			if (isPlayerPrefs)
 				model.SetPlayerPrefs();

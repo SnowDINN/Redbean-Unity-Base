@@ -29,7 +29,7 @@ namespace Redbean.Editor
 		private const int TableOrder = 300;
 		private const int VersionOrder = 400;
 		
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), LabelText("Get Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), LabelText("Create Api Script Path"), ShowInInspector, FolderPath]
 		private string ApiGetPath
 		{
 			get => ApiSettings.ProtocolPath;
@@ -53,28 +53,26 @@ namespace Redbean.Editor
 			var result = BundleGenerator.TryBuildBundle();
 			var buildPath = AddressableAssetSettingsDefaultObject.Settings.RemoteCatalogBuildPath.GetValue(AddressableAssetSettingsDefaultObject.Settings);
 			var buildFiles = result.FileRegistry.GetFilePaths().Where(_ => _.Contains(buildPath)).ToArray();
-
-			EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
-
-			var content = new MultipartFormDataContent();
-
-			var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
-			for (var i = 0; i < path.Length; i++)
-			{
-				var filename = path[i].Split('/').Last();
-				EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
-					
-				var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
-				content.Add(new ByteArrayContent(bytes), "bundles", filename);
-			}
-				
-			await ApiSingleton.EditorRequestApi<PostBundleFilesProtocol>(content);
-
-			AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			
 			try
 			{
+				EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
 
+				var content = new MultipartFormDataContent();
+
+				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
+				for (var i = 0; i < path.Length; i++)
+				{
+					var filename = path[i].Split('/').Last();
+					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
+					
+					var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
+					content.Add(new ByteArrayContent(bytes), "bundles", filename);
+				}
+				
+				await ApiContainer.EditorRequestApi<PostBundleFilesProtocol>(content);
+
+				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
 			catch (Exception e)
 			{
@@ -86,14 +84,14 @@ namespace Redbean.Editor
 			EditorUtility.ClearProgressBar();
 		}
 
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Container Script Path"), ShowInInspector, FolderPath]
 		private string TablePath
 		{
 			get => GoogleTableSettings.Path;
 			set => GoogleTableSettings.Path = value;
 		}
 
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Item Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Item Script Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
 			get => GoogleTableSettings.ItemPath;
@@ -116,20 +114,20 @@ namespace Redbean.Editor
 				var content = new MultipartFormDataContent();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
-				await GoogleTableGenerator.GenerateCSharpAsync(sheetRaw);
+				await GoogleTableGenerator.GenerateCSharpTableAsync(sheetRaw);
 			
 				var keys = sheetRaw.Keys.ToArray();
 				var values = sheetRaw.Values.ToArray();
 				for (var i = 0; i < sheetRaw.Count; i++)
 				{
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
-					await GoogleTableGenerator.GenerateItemCSharpAsync(keys[i], values[i]);
+					await GoogleTableGenerator.GenerateCSharpItemAsync(keys[i], values[i]);
 
 					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
 					content.Add(new ByteArrayContent(bytes), "tables", $"{keys[i]}.tsv");
 				}
 				
-				await ApiSingleton.EditorRequestApi<PostTableFileProtocol>(content);
+				await ApiContainer.EditorRequestApi<PostTableFileProtocol>(content);
 			}
 			catch (Exception e)
 			{
@@ -146,7 +144,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			var request = await ApiSingleton.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.Android);
+			var request = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.Android);
 			var response = request.ToConvert<AppVersionResponse>();
 			
 			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
@@ -155,7 +153,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var request = await ApiSingleton.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.iOS);
+			var request = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.iOS);
 			var response = request.ToConvert<AppVersionResponse>();
 			
 			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");

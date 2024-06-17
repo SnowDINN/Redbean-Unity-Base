@@ -14,7 +14,7 @@ namespace Redbean.Table
 				Name = split[1],
 			};
 
-			GoogleTable.Item.Add(item.Id, item);
+			TableContainer.Item.Add(item.Id, item);
 		}
 	}
 }

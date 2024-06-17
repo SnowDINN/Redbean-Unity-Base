@@ -2,7 +2,7 @@
 
 namespace Redbean.MVP
 {
-	public interface IView : IMVP
+	public interface IView : IExtension
 	{
 		GameObject GetGameObject();
 	}

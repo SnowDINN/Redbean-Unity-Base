@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Redbean
 {
-	public interface IAppBootstrap : IDisposable
+	public interface IAppBootstrap : IExtension, IDisposable
 	{
 		/// <summary>
 		/// 실행 타입

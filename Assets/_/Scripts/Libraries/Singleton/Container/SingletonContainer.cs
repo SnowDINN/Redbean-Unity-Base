@@ -10,11 +10,11 @@ namespace Redbean.Container
 {
 	public class SingletonContainer : IAppBootstrap
 	{
-		private static readonly Dictionary<Type, ISingleton> singletons = new();
+		private static readonly Dictionary<Type, ISingleton> singletonGroup = new();
 		private GameObject parent;
 
 		public BootstrapType ExecutionType => BootstrapType.Runtime;
-		public int ExecutionOrder => 1;
+		public int ExecutionOrder => 10;
 
 		public Task Setup()
 		{
@@ -28,9 +28,11 @@ namespace Redbean.Container
 				            && !x.FullName.Equals(typeof(RxBase).FullName)
 				            && !x.IsInterface
 				            && !x.IsAbstract)
-				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton);
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton)
+				.ToArray();
 
-			foreach (var singleton in nativeSingletons.Where(singleton => singleton != null && singletons.TryAdd(singleton.GetType(), singleton)))
+			foreach (var singleton in nativeSingletons
+				         .Where(singleton => singletonGroup.TryAdd(singleton.GetType(), singleton)))
 				Log.System($"Create instance {singleton.GetType().FullName}");
 
 #endregion
@@ -44,7 +46,8 @@ namespace Redbean.Container
 				            && typeof(MonoBehaviour).IsAssignableFrom(x)
 				            && !x.FullName.Equals(typeof(RxBase).FullName)
 				            && !x.IsInterface
-				            && !x.IsAbstract);
+				            && !x.IsAbstract)
+				.ToArray();
 			
 			if (monoSingletons.Any())
 			{
@@ -52,7 +55,8 @@ namespace Redbean.Container
 				Object.DontDestroyOnLoad(parent);
 			}
 			
-			foreach (var singleton in monoSingletons.Where(singleton => singletons.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
+			foreach (var singleton in monoSingletons
+				         .Where(singleton => singletonGroup.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
 				Log.System($"Create instance {singleton.FullName}");
 
 #endregion
@@ -62,7 +66,7 @@ namespace Redbean.Container
 
 		public void Dispose()
 		{
-			foreach (var singleton in singletons.Values)
+			foreach (var singleton in singletonGroup.Values)
 				singleton.Dispose();
 			
 			Log.System("Rx or Event has been terminated.");
@@ -71,16 +75,16 @@ namespace Redbean.Container
 		/// <summary>
 		/// 싱글톤 전부 제거
 		/// </summary>
-		public static void Clear() => singletons.Clear();
+		public static void Clear() => singletonGroup.Clear();
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static ISingleton GetSingleton(Type type) => singletons[type];
+		public static ISingleton GetSingleton(Type type) => singletonGroup[type];
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>() where T : ISingleton => (T)singletons[typeof(T)];
+		public static T GetSingleton<T>() where T : ISingleton => (T)singletonGroup[typeof(T)];
 	}
 }

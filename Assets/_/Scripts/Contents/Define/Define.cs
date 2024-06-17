@@ -7,14 +7,9 @@
 		Apple,
 	}
 	
-	public class DataKey
+	public static class Balance
 	{
-		public const string USER_ID_KEY = "id";
-		public const string USER_INFORMATION_KEY = "information";
-		public const string USER_SOCIAL_KEY = "social";
-		public const string USER_PLATFORM_KEY = "platform";
-		public const string USER_NICKNAME_KEY = "nickname";
-		
-
+		public const int DoubleButtonPrevention = 200;
+		public const int DoubleInputPrevention = 10;
 	}
 }

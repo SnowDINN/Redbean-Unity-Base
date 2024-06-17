@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public interface IApi
+	public interface IApi : IExtension
 	{
 		Task<Response> Request(params object[] args);
 	}

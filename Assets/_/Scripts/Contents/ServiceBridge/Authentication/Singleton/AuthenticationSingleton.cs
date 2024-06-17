@@ -7,27 +7,28 @@ namespace Redbean.Singleton
 {
 	public class AuthenticationSingleton : ISingleton
 	{
-		private readonly Dictionary<AuthenticationType, IAuthentication> authenticationsGroup = new();
+		private readonly Dictionary<AuthenticationType, IAuthentication> authenticationGroup = new();
 		
 		public AuthenticationSingleton()
 		{
 			var authentications = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(x => x.GetTypes())
-				.Where(x => x.FullName != null
-				            && typeof(IAuthentication).IsAssignableFrom(x)
-				            && !x.IsInterface
-				            && !x.IsAbstract)
-				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IAuthentication);
+				.SelectMany(_ => _.GetTypes())
+				.Where(_ => _.FullName != null
+				            && typeof(IAuthentication).IsAssignableFrom(_)
+				            && !_.IsInterface
+				            && !_.IsAbstract)
+				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IAuthentication)
+				.ToArray();
 
-			foreach (var _ in authentications
-				         .Where(authentication => authentication != null && authenticationsGroup.TryAdd(authentication.Type, authentication))) ;
+			foreach (var authentication in authentications)
+				authenticationGroup.TryAdd(authentication.Type, authentication);
 		}
 		
 		public void Dispose()
 		{
-			authenticationsGroup.Clear();
+			authenticationGroup.Clear();
 		}
 
-		public IAuthentication GetPlatform(AuthenticationType type) => authenticationsGroup[type];
+		public IAuthentication GetPlatform(AuthenticationType type) => authenticationGroup[type];
 	}
 }

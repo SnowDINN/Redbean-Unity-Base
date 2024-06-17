@@ -1,6 +1,6 @@
 ﻿namespace Redbean.MVP
 {
-	public interface IModel : IMVP
+	public interface IModel : IExtension
 	{
 	}
 }

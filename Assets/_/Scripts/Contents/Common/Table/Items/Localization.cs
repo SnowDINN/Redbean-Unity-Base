@@ -14,7 +14,7 @@ namespace Redbean.Table
 				Kr = split[1],
 			};
 
-			GoogleTable.Localization.Add(item.Id, item);
+			TableContainer.Localization.Add(item.Id, item);
 		}
 	}
 }

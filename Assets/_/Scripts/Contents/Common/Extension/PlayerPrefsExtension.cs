@@ -32,7 +32,7 @@ namespace Redbean
 		/// <summary>
 		/// 로컬 데이터 호출
 		/// </summary>
-		public static T GetPlayerPrefs<T>(this IMVP mvp) =>
+		public static T GetPlayerPrefs<T>(this IExtension extension) =>
 			GetSingleton<MvpSingleton>().Load<T>();
 	}
 }

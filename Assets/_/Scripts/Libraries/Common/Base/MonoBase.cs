@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Redbean
 {
-	public class MonoBase : MonoBehaviour, IDisposable
+	public class MonoBase : MonoBehaviour, IExtension, IDisposable
 	{
 		private readonly Dictionary<string, CancellationTokenSource> Cancellations = new();
 		public CancellationTokenSource DestroyCancellation = new();

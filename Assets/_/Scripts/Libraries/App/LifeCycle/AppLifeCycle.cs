@@ -11,8 +11,10 @@ namespace Redbean
 	{
 		public static bool IsReady { get; private set; }
 
-		private void Awake()
+		private async void Awake()
 		{
+			await AppBootstrap.BootstrapInitialize();
+			
 			Application.logMessageReceived += OnLogMessageReceived;
 			IsReady = true;
 		}

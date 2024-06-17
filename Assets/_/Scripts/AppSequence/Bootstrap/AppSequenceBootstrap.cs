@@ -11,7 +11,7 @@ namespace Redbean.Firebase
 	public class AppSequenceBootstrap : IAppBootstrap
 	{
 		public BootstrapType ExecutionType => BootstrapType.Runtime;
-		public int ExecutionOrder => 2;
+		public int ExecutionOrder => 30;
 
 		public async Task Setup()
 		{

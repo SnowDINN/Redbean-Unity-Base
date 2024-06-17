@@ -17,6 +17,7 @@ namespace Redbean.Table
 	public class GoogleTableGenerator
 	{
 		public const string Namespace = nameof(Redbean);
+		public const string ContainerName = "TableContainer";
 		
 		private static string Path =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.Path}";
@@ -31,7 +32,7 @@ namespace Redbean.Table
 		{
 #region Google Client Settings
 			
-			var request = await ApiSingleton.EditorRequestApi<GetTableConfigProtocol>();
+			var request = await ApiContainer.EditorRequestApi<GetTableConfigProtocol>();
 			var response = request.ToConvert<TableConfigResponse>();
 			
 			var ClientId = response.Client.Id;
@@ -80,7 +81,7 @@ namespace Redbean.Table
 		/// <summary>
 		/// 테이블 C# 스크립트 생성
 		/// </summary>
-		public static async Task GenerateCSharpAsync(Dictionary<string, string[]> tables)
+		public static async Task GenerateCSharpTableAsync(Dictionary<string, string[]> tables)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("using System.Collections.Generic;");
@@ -88,7 +89,7 @@ namespace Redbean.Table
 			stringBuilder.AppendLine();
 			stringBuilder.AppendLine($"namespace {Namespace}");
 			stringBuilder.AppendLine("{");
-			stringBuilder.AppendLine("\tpublic class GoogleTable");
+			stringBuilder.AppendLine($"\tpublic class {ContainerName}");
 			stringBuilder.AppendLine("\t{");
 
 			foreach (var table in tables)
@@ -107,7 +108,7 @@ namespace Redbean.Table
 		/// <summary>
 		/// 테이블 아이템 C# 스크립트 생성
 		/// </summary>
-		public static async Task GenerateItemCSharpAsync(string key, string[] value)
+		public static async Task GenerateCSharpItemAsync(string key, string[] value)
 		{
 			var variableNames = value[0].Split("\t");
 			var variableTypes = value[1].Split("\t");
@@ -150,7 +151,7 @@ namespace Redbean.Table
 			
 			stringBuilder.AppendLine("\t\t\t};");
 			stringBuilder.AppendLine();
-			stringBuilder.AppendLine($"\t\t\tGoogleTable.{key}.Add(item.Id, item);");
+			stringBuilder.AppendLine($"\t\t\t{ContainerName}.{key}.Add(item.Id, item);");
 			stringBuilder.AppendLine("\t\t}");
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");

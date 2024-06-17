@@ -2,7 +2,7 @@
 
 namespace Redbean.MVP
 {
-	public interface IPresenter : IMVP
+	public interface IPresenter : IExtension
 	{
 		/// <summary>
 		/// 연결되어 있는 게임 오브젝트 호출

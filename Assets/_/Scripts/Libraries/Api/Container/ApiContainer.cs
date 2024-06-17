@@ -2,52 +2,64 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Firebase.Auth;
 using Redbean.Api;
+
+#if UNITY_EDITOR
+using Firebase.Auth;
 using Redbean.Auth;
 using UnityEngine;
+#endif
 
 namespace Redbean.Singleton
 {
-	public class ApiSingleton : ISingleton
+	public class ApiContainer : IAppBootstrap
 	{
-		private static readonly Dictionary<Type, IApi> apis = new();
+		private static readonly Dictionary<Type, IApi> apiGroup = new();
 
-		public ApiSingleton()
+		public BootstrapType ExecutionType => BootstrapType.Runtime;
+		public int ExecutionOrder => 20;
+		
+		public Task Setup()
 		{
 			var apis = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(x => x.GetTypes())
-				.Where(x => x.FullName != null
-				            && typeof(IApi).IsAssignableFrom(x)
-				            && !x.IsInterface
-				            && !x.IsAbstract)
-				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as IApi);
+				.Where(_ => _.FullName != null
+				            && typeof(IApi).IsAssignableFrom(_)
+				            && !_.IsInterface
+				            && !_.IsAbstract)
+				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IApi)
+				.ToArray();
 
-			foreach (var _ in apis.Where(api => api != null && ApiSingleton.apis.TryAdd(api.GetType(), api))) ;
+			foreach (var api in apis)
+				apiGroup.TryAdd(api.GetType(), api);
+			
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()
 		{
-			apis.Clear();
+			apiGroup.Clear();
 
 #if UNITY_EDITOR
 			if (ApiBase.Http.DefaultRequestHeaders.Contains("Authorization"))
 				ApiBase.Http.DefaultRequestHeaders.Remove("Authorization");
 #endif
+			
+			Log.System("Api has been terminated.");
 		}
 
-		public async Task<Response> RequestApi(Type type, params object[] args) => 
-			await apis[type].Request(args);
+		public static async Task<Response> RequestApi(Type type, params object[] args) => 
+			await apiGroup[type].Request(args);
 
-		public async Task<Response> RequestApi<T>(params object[] args) where T : IApi =>
-			await apis[typeof(T)].Request(args);
+		public static async Task<Response> RequestApi<T>(params object[] args) where T : IApi =>
+			await apiGroup[typeof(T)].Request(args);
 		
 #if UNITY_EDITOR
 		public static async Task<Response> EditorRequestApi<T>(params object[] args) where T : IApi
 		{
 			const string Key = "EDITOR_ACCESS_UID";
 			
-			using var api = new ApiSingleton();
+			using var api = new ApiContainer();
 			
 			var token = PlayerPrefs.GetString(Key);
 			if (string.IsNullOrEmpty(token))

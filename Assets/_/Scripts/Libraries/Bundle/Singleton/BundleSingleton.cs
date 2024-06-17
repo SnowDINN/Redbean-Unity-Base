@@ -8,23 +8,23 @@ namespace Redbean.Singleton
 {
 	public class BundleSingleton : ISingleton
 	{
-		private Dictionary<string, BundleAsset> assetsGroup = new();
+		private Dictionary<string, BundleAsset> assetGroup = new();
 
 		public T LoadAsset<T>(string key, Transform parent = null) where T : Object
 		{
 			var bundle = new BundleAsset();
 			
-			if (assetsGroup.TryGetValue(key, out var assetBundle))
+			if (assetGroup.TryGetValue(key, out var assetBundle))
 				bundle = assetBundle;
 			else
 			{
 				bundle = LoadBundle<T>(key);
-				assetsGroup[key] = bundle;
+				assetGroup[key] = bundle;
 			}
 
 
 			var asset = Object.Instantiate(bundle.Asset as T, parent);
-			assetsGroup[key].References[asset.GetInstanceID()] = asset;
+			assetGroup[key].References[asset.GetInstanceID()] = asset;
 			
 			return asset;
 		}
@@ -33,7 +33,7 @@ namespace Redbean.Singleton
 		{
 #region Try Get Asset
 
-			if (!assetsGroup.TryGetValue(key, out var assetBundle))
+			if (!assetGroup.TryGetValue(key, out var assetBundle))
 				return;
 
 			if (assetBundle.References.Remove(instanceId, out var go))
@@ -46,7 +46,7 @@ namespace Redbean.Singleton
 			if (assetBundle.References.Any())
 				return;
 
-			if (assetsGroup.Remove(key, out var removeBundle))
+			if (assetGroup.Remove(key, out var removeBundle))
 				removeBundle.Release();
 
 #endregion
@@ -54,7 +54,7 @@ namespace Redbean.Singleton
 
 		public void AutoRelease()
 		{
-			var assetsArray = assetsGroup.ToList();
+			var assetsArray = assetGroup.ToList();
 			for (var i = 0; i < assetsArray.Count; i++)
 			{
 				var referenceArray = assetsArray[i].Value.References.ToList();
@@ -72,13 +72,13 @@ namespace Redbean.Singleton
 				}
 			}
 			
-			assetsGroup = assetsArray.ToDictionary(_ => _.Key, _ => _.Value);
+			assetGroup = assetsArray.ToDictionary(_ => _.Key, _ => _.Value);
 		}
 		
 
 		public void Dispose()
 		{
-			assetsGroup.Clear();
+			assetGroup.Clear();
 		}
 
 		private BundleAsset LoadBundle<T>(string key) where T : Object

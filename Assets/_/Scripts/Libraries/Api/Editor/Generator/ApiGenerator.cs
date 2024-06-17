@@ -38,16 +38,16 @@ namespace Redbean.Api
 			var api = JObject.Parse(request.downloadHandler.text);
 			var apiEndpoints = api["paths"].ToObject<Dictionary<string, JObject>>();
 
-			CreateFiles(ApiType.Get, apiEndpoints.Where(_ => _.Value.ContainsKey("get")).ToArray());
-			CreateFiles(ApiType.Post, apiEndpoints.Where(_ => _.Value.ContainsKey("post")).ToArray());
-			CreateFiles(ApiType.Delete, apiEndpoints.Where(_ => _.Value.ContainsKey("delete")).ToArray());
+			GenerateCSharpApiAsync(ApiType.Get, apiEndpoints.Where(_ => _.Value.ContainsKey("get")).ToArray());
+			GenerateCSharpApiAsync(ApiType.Post, apiEndpoints.Where(_ => _.Value.ContainsKey("post")).ToArray());
+			GenerateCSharpApiAsync(ApiType.Delete, apiEndpoints.Where(_ => _.Value.ContainsKey("delete")).ToArray());
 		}
 
 		
 		/// <summary>
 		/// API C# 스크립트 생성
 		/// </summary>
-		private static async void CreateFiles(ApiType type, IReadOnlyList<KeyValuePair<string, JObject>> apis)
+		private static async void GenerateCSharpApiAsync(ApiType type, IReadOnlyList<KeyValuePair<string, JObject>> apis)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("using System.Threading.Tasks;");

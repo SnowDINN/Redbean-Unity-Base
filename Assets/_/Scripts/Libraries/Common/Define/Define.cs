@@ -1,15 +1,13 @@
 ﻿namespace Redbean
 {
-	public enum BootstrapType
+	public interface IExtension
 	{
-		Runtime,
-		SignInUser
 	}
 	
-	public static class Balance
+	public enum BootstrapType
 	{
-		public const int DoubleButtonPrevention = 200;
-		public const int DoubleInputPrevention = 10;
+		Runtime = 0,
+		SignInUser = 100,
 	}
 
 	public static class Key

@@ -11,12 +11,20 @@ namespace Redbean
 	{
 		private static readonly Dictionary<BootstrapType, IAppBootstrap[]> Bootstraps = new();
 		
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
-		public static async void RuntimeBootstrap()
+		[RuntimeInitializeOnLoadMethod]
+		public static void RuntimeBootstrap()
 		{
 			Application.runInBackground = true;
 			Application.targetFrameRate = 60;
 			
+			var go = new GameObject("[Application Life Cycle]");
+			go.AddComponent<AppLifeCycle>();
+			
+			Object.DontDestroyOnLoad(go);
+		}
+
+		public static async Task BootstrapInitialize()
+		{
 			var bootstraps = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(_ => _.GetTypes())
 				.Where(_ => typeof(IAppBootstrap).IsAssignableFrom(_)
@@ -24,7 +32,7 @@ namespace Redbean
 				            && !_.IsAbstract)
 				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IAppBootstrap)
 				.OrderBy(_ => _.ExecutionOrder)
-				.ToList();
+				.ToArray();
 
 			var flags = Enum.GetNames(typeof(BootstrapType));
 			foreach (var flag in flags)
@@ -34,11 +42,6 @@ namespace Redbean
 			}
 
 			await BootstrapSetup(BootstrapType.Runtime);
-			
-			var go = new GameObject("[Application Life Cycle]");
-			go.AddComponent<AppLifeCycle>();
-			
-			Object.DontDestroyOnLoad(go);
 		}
 
 		public static async Task BootstrapSetup(BootstrapType type)

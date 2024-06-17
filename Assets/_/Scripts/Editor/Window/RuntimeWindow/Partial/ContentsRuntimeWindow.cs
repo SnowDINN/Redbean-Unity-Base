@@ -28,7 +28,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), Button]
 		private void API()
 		{
-			ApiSingleton.EditorRequestApi<GetAppConfigProtocol>();
+			ApiContainer.EditorRequestApi<GetAppConfigProtocol>();
 		}
 	}
 }
