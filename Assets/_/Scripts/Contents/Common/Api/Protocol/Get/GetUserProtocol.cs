@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using Newtonsoft.Json;
 using Redbean.MVP.Content;
 
@@ -9,7 +10,7 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest($"{args[0]}".Encrypt());
+			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}"));
 			if (request.Code > 0)
 				return request;
 

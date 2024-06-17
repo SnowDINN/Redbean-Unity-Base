@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Redbean.Api;
 
 #if UNITY_EDITOR
+using System.Web;
 using Firebase.Auth;
 using Redbean.Auth;
 using UnityEngine;
@@ -71,9 +72,11 @@ namespace Redbean.Singleton
 
 				var authenticationResult = await authenticationProvider.Login();
 				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
-				await RequestAccessTokenAsync(user.UserId);
+				var uid = user.UserId.Encrypt();
 				
-				PlayerPrefs.SetString(Key, user.UserId);
+				await RequestAccessTokenAsync(uid);
+				
+				PlayerPrefs.SetString(Key, uid);
 			}
 			else
 				await RequestAccessTokenAsync(token);
@@ -83,7 +86,7 @@ namespace Redbean.Singleton
 		
 		private static async Task RequestAccessTokenAsync(string token)
 		{
-			var request = await ApiGetRequest.GetTokenRequest(token);
+			var request = await ApiGetRequest.GetTokenRequest(HttpUtility.UrlEncode(token));
 			var response = request.ToConvert<AccessTokenResponse>();
 
 			ApiBase.Http.DefaultRequestHeaders.Add("Authorization",  $"Bearer {response.AccessToken}");
