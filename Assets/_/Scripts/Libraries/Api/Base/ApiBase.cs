@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -49,6 +50,9 @@ namespace Redbean.Api
 		
 		private static async Task<string> GetApi(string uri)
 		{
+			var stopwatch = Stopwatch.StartNew();
+			var httpUri = uri.Split('?')[0].TrimStart('/');
+			
 			HttpResponseMessage request = null;
 			try
 			{
@@ -57,7 +61,7 @@ namespace Redbean.Api
 				{
 					var response = await request.Content.ReadAsStringAsync();
 
-					Log.Success("GET", $"Request success : {response}");
+					Log.Success("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
 
 					return response;
@@ -65,13 +69,17 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				Log.Fail("GET", $"Request fail : {e.Message}");
+				stopwatch.Stop();
+				
+				Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
 
 				throw;
 			}
 			
-			Log.Fail("GET", $"Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
+			stopwatch.Stop();
+			
+			Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
 			return string.Empty;
@@ -79,6 +87,9 @@ namespace Redbean.Api
 		
 		private static async Task<string> PostApi(string uri, HttpContent content = null)
 		{
+			var stopwatch = Stopwatch.StartNew();
+			var httpUri = uri.Split('?')[0].TrimStart('/');
+			
 			HttpResponseMessage request = null;
 			try
 			{
@@ -87,7 +98,7 @@ namespace Redbean.Api
 				{
 					var response = await request.Content.ReadAsStringAsync();
 				
-					Log.Success("POST", $"Request success : {response}");
+					Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
 					
 					return response;
@@ -95,13 +106,17 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				Log.Fail("POST", $"Request fail : {e.Message}");
+				stopwatch.Stop();
+				
+				Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
 				
 				throw;
 			}
+			
+			stopwatch.Stop();
 
-			Log.Fail("POST", $"Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
+			Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
 			return string.Empty;
@@ -109,6 +124,9 @@ namespace Redbean.Api
 		
 		private static async Task<bool> DeleteApi(string uri)
 		{
+			var stopwatch = Stopwatch.StartNew();
+			var httpUri = uri.Split('?')[0].TrimStart('/');
+			
 			HttpResponseMessage request = null;
 			try
 			{
@@ -117,7 +135,7 @@ namespace Redbean.Api
 				{
 					var response = await request.Content.ReadAsStringAsync();
 				
-					Log.Success("DELETE", $"Request success : {response}");
+					Log.Success("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
 					
 					return true;
@@ -125,13 +143,17 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				Log.Fail("DELETE", $"Request fail : {e.Message}");
+				stopwatch.Stop();
+				
+				Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
 				
 				throw;
 			}
+			
+			stopwatch.Stop();
 
-			Log.Fail("DELETE", $"Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
+			Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
 			return false;
