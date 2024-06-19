@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Redbean.Api;
 
@@ -16,6 +17,17 @@ namespace Redbean.Singleton
 	public class ApiContainer : IAppBootstrap
 	{
 		private static readonly Dictionary<Type, IApi> apiGroup = new();
+		public static readonly HttpClient Http = new()
+		{
+			BaseAddress = new Uri("https://localhost:44395"),
+			DefaultRequestHeaders =
+			{
+				{ "accept", "application/json" },
+			},
+			Timeout = TimeSpan.FromSeconds(10),
+		};
+
+		private const string AuthorizationKey = "Authorization";
 
 		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
 		public int ExecutionOrder => 20;
@@ -39,14 +51,25 @@ namespace Redbean.Singleton
 
 		public void Dispose()
 		{
-			apiGroup.Clear();
-
 #if UNITY_EDITOR
-			if (ApiBase.Http.DefaultRequestHeaders.Contains("Authorization"))
-				ApiBase.Http.DefaultRequestHeaders.Remove("Authorization");
+			RemoveAccessToken();
 #endif
 			
+			apiGroup.Clear();
+			
 			Log.System("Api has been terminated.");
+		}
+
+		public static void RemoveAccessToken()
+		{
+			if (Http.DefaultRequestHeaders.Contains(AuthorizationKey))
+				Http.DefaultRequestHeaders.Remove(AuthorizationKey);
+		}
+
+		public static void SetAccessToken(string token)
+		{
+			RemoveAccessToken();
+			Http.DefaultRequestHeaders.Add(AuthorizationKey, $"Bearer {token}");
 		}
 
 		public static async Task<Response> RequestApi(Type type, params object[] args) => 
@@ -89,7 +112,7 @@ namespace Redbean.Singleton
 			var request = await ApiGetRequest.GetTokenRequest(HttpUtility.UrlEncode(token));
 			var response = request.ToConvert<AccessTokenResponse>();
 
-			ApiBase.Http.DefaultRequestHeaders.Add("Authorization",  $"Bearer {response.AccessToken}");
+			SetAccessToken(response.AccessToken);
 		}
 #endif
 	}

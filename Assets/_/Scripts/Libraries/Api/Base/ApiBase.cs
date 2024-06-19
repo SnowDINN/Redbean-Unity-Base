@@ -1,26 +1,15 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Redbean.Singleton;
 
 namespace Redbean.Api
 {
 	public class ApiBase
 	{
-		public static readonly HttpClient Http = new()
-		{
-			BaseAddress = new Uri("https://localhost:44395"),
-			DefaultRequestHeaders =
-			{
-				{ "accept", "application/json" },
-			},
-			Timeout = TimeSpan.FromSeconds(10),
-			
-		};
-		
-		public static async Task<Response> SendGetRequest(string uri, params object[] args)
+		protected static async Task<Response> SendGetRequest(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where( _ => _ is string or int or float).ToArray());
 			var apiResponse = await GetApi(format);
@@ -30,7 +19,7 @@ namespace Redbean.Api
 			return Response.Return(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
 		}
 		
-		public static async Task<Response> SendPostRequest(string uri, params object[] args)
+		protected static async Task<Response> SendPostRequest(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where( _ => _ is string or int or float).ToArray());
 			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
@@ -40,7 +29,7 @@ namespace Redbean.Api
 			return Response.Return(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
 		}
 		
-		public static async Task<Response> SendDeleteRequest(string uri, params object[] args)
+		protected static async Task<Response> SendDeleteRequest(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
 			var apiResponse = await DeleteApi(format);
@@ -56,7 +45,7 @@ namespace Redbean.Api
 			HttpResponseMessage request = null;
 			try
 			{
-				request = await Http.GetAsync(uri);
+				request = await ApiContainer.Http.GetAsync(uri);
 				if (request.IsSuccessStatusCode)
 				{
 					var response = await request.Content.ReadAsStringAsync();
@@ -93,7 +82,7 @@ namespace Redbean.Api
 			HttpResponseMessage request = null;
 			try
 			{
-				request = await Http.PostAsync(uri, content);
+				request = await ApiContainer.Http.PostAsync(uri, content);
 				if (request.IsSuccessStatusCode)
 				{
 					var response = await request.Content.ReadAsStringAsync();
@@ -130,7 +119,7 @@ namespace Redbean.Api
 			HttpResponseMessage request = null;
 			try
 			{
-				request = await Http.DeleteAsync(uri);
+				request = await ApiContainer.Http.DeleteAsync(uri);
 				if (request.IsSuccessStatusCode)
 				{
 					var response = await request.Content.ReadAsStringAsync();
