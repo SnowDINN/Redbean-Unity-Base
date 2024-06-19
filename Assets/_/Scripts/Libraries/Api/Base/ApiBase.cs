@@ -11,7 +11,12 @@ namespace Redbean.Api
 	{
 		protected static async Task<Response> SendGetRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where( _ => _ is string or int or float).ToArray());
+			if (ApiContainer.IsRefreshTokenExist && ApiContainer.IsAccessTokenExpired)
+			{
+				// TODO: 리프레시 토큰을 통한 액세스 토큰 요청
+			}
+			
+			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
 			var apiResponse = await GetApi(format);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
@@ -21,7 +26,12 @@ namespace Redbean.Api
 		
 		protected static async Task<Response> SendPostRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where( _ => _ is string or int or float).ToArray());
+			if (ApiContainer.IsRefreshTokenExist && ApiContainer.IsAccessTokenExpired)
+			{
+				// TODO: 리프레시 토큰을 통한 액세스 토큰 요청
+			}
+			
+			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
 			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
 			var apiParse = JObject.Parse(apiResponse);
 			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
@@ -31,7 +41,12 @@ namespace Redbean.Api
 		
 		protected static async Task<Response> SendDeleteRequest(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where( _ => _ is string).ToArray());
+			if (ApiContainer.IsRefreshTokenExist && ApiContainer.IsAccessTokenExpired)
+			{
+				// TODO: 리프레시 토큰을 통한 액세스 토큰 요청
+			}
+			
+			var format = string.Format(uri, args.Where(_ => _ is string).ToArray());
 			var apiResponse = await DeleteApi(format);
 			
 			return Response.Return(apiResponse ? 0 : 1, default);

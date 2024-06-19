@@ -16,9 +16,9 @@ namespace Redbean.Api
 				return request;
 
 			var response = request.ToConvert<Dictionary<string, object>>();
-			var tokenResponse = JsonConvert.DeserializeObject<AccessTokenResponse>(response["token"].ToString());
+			var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(response["token"].ToString());
 			if (tokenResponse != null)
-				ApiContainer.SetAccessToken(tokenResponse.AccessToken);
+				ApiContainer.SetAccessToken(tokenResponse);
 
 			var user = this.GetModel<UserModel>();
 			var userResponse = JsonConvert.DeserializeObject<UserResponse>(response["user"].ToString());

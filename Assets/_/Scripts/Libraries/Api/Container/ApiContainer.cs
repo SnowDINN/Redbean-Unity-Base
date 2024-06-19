@@ -16,6 +16,9 @@ namespace Redbean.Singleton
 {
 	public class ApiContainer : IAppBootstrap
 	{
+		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
+		public int ExecutionOrder => 20;
+		
 		private static readonly Dictionary<Type, IApi> apiGroup = new();
 		public static readonly HttpClient Http = new()
 		{
@@ -27,10 +30,10 @@ namespace Redbean.Singleton
 			Timeout = TimeSpan.FromSeconds(10),
 		};
 
-		private const string AuthorizationKey = "Authorization";
-
-		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
-		public int ExecutionOrder => 20;
+		
+		private static TokenResponse currentToken = new();
+		public static bool IsAccessTokenExpired => currentToken.Expires < DateTime.UtcNow;
+		public static bool IsRefreshTokenExist => !string.IsNullOrEmpty(currentToken.RefreshToken);
 		
 		public Task Setup()
 		{
@@ -62,14 +65,16 @@ namespace Redbean.Singleton
 
 		public static void RemoveAccessToken()
 		{
-			if (Http.DefaultRequestHeaders.Contains(AuthorizationKey))
-				Http.DefaultRequestHeaders.Remove(AuthorizationKey);
+			if (Http.DefaultRequestHeaders.Contains("Authorization"))
+				Http.DefaultRequestHeaders.Remove("Authorization");
 		}
 
-		public static void SetAccessToken(string token)
+		public static void SetAccessToken(TokenResponse response)
 		{
+			currentToken = response;
+			
 			RemoveAccessToken();
-			Http.DefaultRequestHeaders.Add(AuthorizationKey, $"Bearer {token}");
+			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
 		}
 
 		public static async Task<Response> RequestApi(Type type, params object[] args) => 
@@ -110,9 +115,9 @@ namespace Redbean.Singleton
 		private static async Task RequestAccessTokenAsync(string token)
 		{
 			var request = await ApiGetRequest.GetTokenRequest(HttpUtility.UrlEncode(token));
-			var response = request.ToConvert<AccessTokenResponse>();
+			var response = request.ToConvert<TokenResponse>();
 
-			SetAccessToken(response.AccessToken);
+			SetAccessToken(response);
 		}
 #endif
 	}
