@@ -12,8 +12,17 @@ using Redbean.Auth;
 using UnityEngine;
 #endif
 
-namespace Redbean.Singleton
+namespace Redbean
 {
+#region Activator
+
+	public interface IApi : IExtension
+	{
+		Task<Response> Request(params object[] args);
+	}
+
+#endregion
+	
 	public class ApiContainer : IAppBootstrap
 	{
 		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;

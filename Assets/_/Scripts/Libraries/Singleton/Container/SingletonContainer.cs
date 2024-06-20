@@ -6,8 +6,16 @@ using Redbean.Rx;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Redbean.Container
+namespace Redbean
 {
+#region Activator
+
+	public interface ISingleton : IDisposable
+	{
+	}	
+
+#endregion
+	
 	public class SingletonContainer : IAppBootstrap
 	{
 		private static readonly Dictionary<Type, ISingleton> singletonGroup = new();
