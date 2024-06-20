@@ -11,7 +11,8 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}"));
+			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encrypt()),
+			                                                 HttpUtility.UrlEncode(AppSettings.Version.Encrypt()));
 			if (request.Code > 0)
 				return request;
 

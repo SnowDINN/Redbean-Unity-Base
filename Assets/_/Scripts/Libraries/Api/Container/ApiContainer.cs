@@ -32,7 +32,8 @@ namespace Redbean.Singleton
 
 		
 		private static TokenResponse currentToken = new();
-		public static bool IsAccessTokenExpired => currentToken.Expires < DateTime.UtcNow;
+		public static bool IsAccessTokenExpired => currentToken.AccessTokenExpire < DateTime.UtcNow;
+		public static bool IsRefreshTokenExpired => currentToken.RefreshTokenExpire < DateTime.UtcNow;
 		public static bool IsRefreshTokenExist => !string.IsNullOrEmpty(currentToken.RefreshToken);
 		
 		public Task Setup()
@@ -91,8 +92,8 @@ namespace Redbean.Singleton
 			using var api = new ApiContainer();
 			await api.Setup();
 			
-			var token = PlayerPrefs.GetString(Key);
-			if (string.IsNullOrEmpty(token))
+			var uid = PlayerPrefs.GetString(Key);
+			if (string.IsNullOrEmpty(uid))
 			{
 				var authenticationProvider = new GoogleAuthenticationProvider();
 				if (!GoogleAuthenticationProvider.IsInitialize)
@@ -100,21 +101,21 @@ namespace Redbean.Singleton
 
 				var authenticationResult = await authenticationProvider.Login();
 				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
-				var uid = user.UserId.Encrypt();
 				
-				await RequestAccessTokenAsync(uid);
+				await RequestAccessTokenAsync(user.UserId);
 				
-				PlayerPrefs.SetString(Key, uid);
+				PlayerPrefs.SetString(Key, user.UserId);
 			}
 			else
-				await RequestAccessTokenAsync(token);
+				await RequestAccessTokenAsync(uid);
 
 			return await api.EditorRequestApi<T>(args);
 		}
 		
-		private static async Task RequestAccessTokenAsync(string token)
+		private static async Task RequestAccessTokenAsync(string uid)
 		{
-			var request = await ApiGetRequest.GetTokenRequest(HttpUtility.UrlEncode(token));
+			var request = await ApiGetRequest.GetTokenRequest(HttpUtility.UrlEncode(uid.Encrypt()),
+			                                                  HttpUtility.UrlEncode(AppSettings.Version.Encrypt()));
 			var response = request.ToConvert<TokenResponse>();
 
 			SetAccessToken(response);
