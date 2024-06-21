@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json;
 using Redbean.MVP.Content;
-using Redbean.Singleton;
 
 namespace Redbean.Api
 {
