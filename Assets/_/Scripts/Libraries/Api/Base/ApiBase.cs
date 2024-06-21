@@ -63,6 +63,7 @@ namespace Redbean.Api
 				if (request.IsSuccessStatusCode)
 				{
 					var response = await request.Content.ReadAsStringAsync();
+					stopwatch.Stop();
 
 					Log.Success("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
@@ -72,15 +73,15 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				stopwatch.Stop();
-				
 				Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
 
 				throw;
 			}
-			
-			stopwatch.Stop();
+			finally
+			{
+				stopwatch.Stop();
+			}
 			
 			Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
@@ -100,6 +101,7 @@ namespace Redbean.Api
 				if (request.IsSuccessStatusCode)
 				{
 					var response = await request.Content.ReadAsStringAsync();
+					stopwatch.Stop();
 				
 					Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
@@ -109,15 +111,15 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				stopwatch.Stop();
-				
 				Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
 				
 				throw;
 			}
-			
-			stopwatch.Stop();
+			finally
+			{
+				stopwatch.Stop();
+			}
 
 			Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
@@ -137,6 +139,7 @@ namespace Redbean.Api
 				if (request.IsSuccessStatusCode)
 				{
 					var response = await request.Content.ReadAsStringAsync();
+					stopwatch.Stop();
 				
 					Log.Success("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
@@ -146,16 +149,16 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				stopwatch.Stop();
-				
 				Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
 				
 				throw;
 			}
-			
-			stopwatch.Stop();
-
+			finally
+			{
+				stopwatch.Stop();
+			}
+	
 			Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
