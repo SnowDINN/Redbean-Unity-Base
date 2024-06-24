@@ -11,12 +11,15 @@ namespace Redbean.Api
 			await SendGetRequest("/Authentication/GetUser?uid={0}&version={1}", args);
 
 		public static async Task<Response> GetAppConfigRequest(params object[] args) =>
-			await SendGetRequest("/Config/GetAppConfig", args);
+			await SendGetRequest("/Common/GetAppConfig", args);
+
+		public static async Task<Response> GetTableRequest(params object[] args) =>
+			await SendGetRequest("/Common/GetTable", args);
 
 		public static async Task<Response> GetTableConfigRequest(params object[] args) =>
 			await SendGetRequest("/Config/GetTableConfig", args);
 
-		public static async Task<Response> GetTableRequest(params object[] args) =>
-			await SendGetRequest("/Storage/GetTable", args);
+		public static async Task<Response> PostUserNicknameRequest(params object[] args) =>
+			await SendGetRequest("/User/PostUserNickname?nickname={0}", args);
 	}
 }

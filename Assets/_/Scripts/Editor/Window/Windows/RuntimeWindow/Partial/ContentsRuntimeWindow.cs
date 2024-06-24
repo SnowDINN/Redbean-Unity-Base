@@ -27,7 +27,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), Button]
 		private void AES(string value)
 		{
-			ApiGetRequest.GetAppConfigRequest();
+			Log.Print(value.Encrypt());
 		}
 	}
 }
