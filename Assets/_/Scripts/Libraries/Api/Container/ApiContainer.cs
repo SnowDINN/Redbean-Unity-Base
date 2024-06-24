@@ -29,7 +29,10 @@ namespace Redbean
 		public int ExecutionOrder => 20;
 		
 		private static readonly Dictionary<Type, IApi> apiGroup = new();
-		public static readonly HttpClient Http = new()
+		public static readonly HttpClient Http = new(new HttpClientHandler
+		{
+			UseProxy = false,
+		})
 		{
 			BaseAddress = new Uri("https://localhost:44395"),
 			DefaultRequestHeaders =
