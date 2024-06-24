@@ -8,7 +8,6 @@ namespace Redbean
 	public class MonoBase : MonoBehaviour, IExtension, IDisposable
 	{
 		private readonly Dictionary<string, CancellationTokenSource> Cancellations = new();
-		public CancellationTokenSource DestroyCancellation = new();
 
 		/// <summary>
 		/// 토큰 갱신
@@ -31,8 +30,6 @@ namespace Redbean
 		{
 			foreach (var cancellation in Cancellations)
 				Cancellations[cancellation.Key].CancelAndDispose();
-			
-			DestroyCancellation?.CancelAndDispose();
 		}
 	}	
 }

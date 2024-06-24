@@ -11,6 +11,6 @@ namespace Redbean.Popup
 		
 		public virtual void Close() => this.GetSingleton<PopupSingleton>().Close(Guid);
 
-		public async Task WaitUntilClose() => await TaskExtension.WaitUntil(() => DestroyCancellation.Token.IsCancellationRequested);
+		public async Task WaitUntilClose() => await TaskExtension.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
 	}
 }

@@ -24,10 +24,10 @@ namespace Redbean.MVP.Content
 		{
 			view.Button.AsButtonObservable().Subscribe(_ =>
 			{
-				UniTask.Void(LoginAsync, view.DestroyCancellation.Token);
+				UniTask.Void(LoginAsync, view.destroyCancellationToken);
 			}).AddTo(this);
 			
-			UniTask.Void(AutoLoginAsync, view.DestroyCancellation.Token);
+			UniTask.Void(AutoLoginAsync, view.destroyCancellationToken);
 		}
 		
 		private async UniTaskVoid LoginAsync(CancellationToken token)
