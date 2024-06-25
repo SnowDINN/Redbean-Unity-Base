@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public class GetAppConfigProtocol : IApi
+	public class GetAppConfigProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{

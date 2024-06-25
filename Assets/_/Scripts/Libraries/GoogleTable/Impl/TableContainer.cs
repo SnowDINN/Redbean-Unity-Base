@@ -6,7 +6,7 @@ using Redbean.Api;
 
 namespace Redbean.Table
 {
-	public class GoogleTableBootstrap : IAppBootstrap
+	public partial class TableContainer : IAppBootstrap
 	{
 		public AppBootstrapType ExecutionType => AppBootstrapType.SignInUser;
 		public int ExecutionOrder => 100;
@@ -31,7 +31,7 @@ namespace Redbean.Table
 				{
 					var type = Type.GetType($"{nameof(Redbean)}.Table.{table.Key}");
 					
-					if (Activator.CreateInstance(type) is IGoogleTable instance)
+					if (Activator.CreateInstance(type) is ITableContainer instance)
 						instance.Apply(item);
 				}
 			}

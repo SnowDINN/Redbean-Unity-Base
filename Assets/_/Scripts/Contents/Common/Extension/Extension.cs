@@ -14,14 +14,14 @@ namespace Redbean
 		/// <summary>
 		/// API 호출
 		/// </summary>
-		public static async Task<Response> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApi => 
+		public static async Task<Response> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer => 
 			await ApiContainer.RequestApi<T>(args);
 #endif
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		private static T GetSingleton<T>() where T : ISingleton => SingletonContainer.GetSingleton<T>();
+		private static T GetSingleton<T>() where T : ISingletonContainer => SingletonContainer.GetSingleton<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
@@ -31,12 +31,12 @@ namespace Redbean
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static T GetModel<T>() where T : IModel => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<T>();
+		private static T GetModel<T>() where T : IModel => SingletonContainer.GetSingleton<MvpSingletonContainer>().GetModel<T>();
 		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static object GetModel(Type type) => SingletonContainer.GetSingleton<MvpSingleton>().GetModel(type);
+		private static object GetModel(Type type) => SingletonContainer.GetSingleton<MvpSingletonContainer>().GetModel(type);
 		
 		/// <summary>
 		/// 모델 호출
@@ -51,7 +51,7 @@ namespace Redbean
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>(this IExtension extension) where T : ISingleton => GetSingleton<T>();
+		public static T GetSingleton<T>(this IExtension extension) where T : ISingletonContainer => GetSingleton<T>();
 		
 		/// <summary>
 		/// 싱글톤 호출
@@ -61,7 +61,7 @@ namespace Redbean
 		/// <summary>
 		/// API 호출
 		/// </summary>
-		public static async Task<Response> RequestApi<T>(this IExtension extension, params object[] args) where T : IApi
+		public static async Task<Response> RequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer
 		{
 			T generic = default;
 			
@@ -74,7 +74,7 @@ namespace Redbean
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupSingleton Popup(this IExtension extension) => GetSingleton<PopupSingleton>();
+		public static PopupSingletonContainer Popup(this IExtension extension) => GetSingleton<PopupSingletonContainer>();
 		
 		/// <summary>
 		/// 유저 데이터 호출

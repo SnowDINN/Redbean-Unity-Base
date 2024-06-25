@@ -121,7 +121,7 @@ namespace Redbean.Editor
 				for (var i = 0; i < sheetRaw.Count; i++)
 				{
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
-					await GoogleTableGenerator.GenerateCSharpItemAsync(keys[i], values[i]);
+					await GoogleTableGenerator.GenerateCSharpSheetAsync(keys[i], values[i]);
 
 					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
 					content.Add(new ByteArrayContent(bytes), "tables", $"{keys[i]}.tsv");

@@ -14,21 +14,12 @@ using UnityEngine;
 
 namespace Redbean
 {
-#region Activator
-
-	public interface IApi : IExtension
-	{
-		Task<Response> Request(params object[] args);
-	}
-
-#endregion
-	
 	public class ApiContainer : IAppBootstrap
 	{
 		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
 		public int ExecutionOrder => 20;
 		
-		private static readonly Dictionary<Type, IApi> apiGroup = new();
+		private static readonly Dictionary<Type, IApiContainer> apiGroup = new();
 		public static readonly HttpClient Http = new(new HttpClientHandler
 		{
 			UseProxy = false,
@@ -53,10 +44,10 @@ namespace Redbean
 			var apis = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(x => x.GetTypes())
 				.Where(_ => _.FullName != null
-				            && typeof(IApi).IsAssignableFrom(_)
+				            && typeof(IApiContainer).IsAssignableFrom(_)
 				            && !_.IsInterface
 				            && !_.IsAbstract)
-				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IApi)
+				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IApiContainer)
 				.ToArray();
 
 			foreach (var api in apis)
@@ -93,11 +84,11 @@ namespace Redbean
 		public static async Task<Response> RequestApi(Type type, params object[] args) => 
 			await apiGroup[type].Request(args);
 
-		public static async Task<Response> RequestApi<T>(params object[] args) where T : IApi =>
+		public static async Task<Response> RequestApi<T>(params object[] args) where T : IApiContainer =>
 			await apiGroup[typeof(T)].Request(args);
 		
 #if UNITY_EDITOR
-		public static async Task<Response> EditorRequestApi<T>(params object[] args) where T : IApi
+		public static async Task<Response> EditorRequestApi<T>(params object[] args) where T : IApiContainer
 		{
 			const string Key = "EDITOR_ACCESS_UID";
 			

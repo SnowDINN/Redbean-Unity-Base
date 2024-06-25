@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 
 namespace Redbean.Singleton
 {
-	public class BundleSingleton : ISingleton
+	public class BundleSingletonContainer : ISingletonContainer
 	{
 		private Dictionary<string, BundleAsset> assetGroup = new();
 

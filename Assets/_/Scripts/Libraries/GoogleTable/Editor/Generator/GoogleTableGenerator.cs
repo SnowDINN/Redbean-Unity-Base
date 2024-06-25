@@ -17,7 +17,6 @@ namespace Redbean.Table
 	public class GoogleTableGenerator
 	{
 		public const string Namespace = nameof(Redbean);
-		public const string ContainerName = "TableContainer";
 		
 		private static string Path =>
 			$"{Application.dataPath.Replace("Assets", "")}{GoogleTableSettings.Path}";
@@ -85,15 +84,14 @@ namespace Redbean.Table
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("using System.Collections.Generic;");
-			stringBuilder.AppendLine($"using {Namespace}.Table;");
 			stringBuilder.AppendLine();
-			stringBuilder.AppendLine($"namespace {Namespace}");
+			stringBuilder.AppendLine($"namespace {Namespace}.Table");
 			stringBuilder.AppendLine("{");
-			stringBuilder.AppendLine($"\tpublic class {ContainerName}");
+			stringBuilder.AppendLine($"\tpublic partial class {nameof(TableContainer)}");
 			stringBuilder.AppendLine("\t{");
 
 			foreach (var table in tables)
-				stringBuilder.AppendLine($"\t\tpublic static Dictionary<{table.Value[1].Split("\t").First()}, {table.Key}> {table.Key} = new();");
+				stringBuilder.AppendLine($"\t\tpublic static Dictionary<{table.Value[1].Split("\t").First()}, T{table.Key}> {table.Key} = new();");
 			
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
@@ -101,32 +99,34 @@ namespace Redbean.Table
 			if (Directory.Exists(Path))
 				Directory.CreateDirectory(Path);
 			
-			File.Delete($"{Path}/{ContainerName}.cs");
-			await File.WriteAllTextAsync($"{Path}/{ContainerName}.cs", $"{stringBuilder}");
+			File.Delete($"{Path}/Table.cs");
+			await File.WriteAllTextAsync($"{Path}/Table.cs", $"{stringBuilder}");
 		}
 
 		/// <summary>
 		/// 테이블 아이템 C# 스크립트 생성
 		/// </summary>
-		public static async Task GenerateCSharpItemAsync(string key, string[] value)
+		public static async Task GenerateCSharpSheetAsync(string key, string[] value)
 		{
+			var classname = $"T{key}";
+			
 			var variableNames = value[0].Split("\t");
 			var variableTypes = value[1].Split("\t");
 
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine($"namespace {Namespace}.Table");
 			stringBuilder.AppendLine("{");
-			stringBuilder.AppendLine($"\tpublic class {key} : {nameof(IGoogleTable)}");
+			stringBuilder.AppendLine($"\tpublic class {classname} : {nameof(ITableContainer)}");
 			stringBuilder.AppendLine("\t{");
 			
 			for (var i = 0; i < variableNames.Length; i++)
 				stringBuilder.AppendLine($"\t\tpublic {variableTypes[i]} {variableNames[i]};");
 			
 			stringBuilder.AppendLine();
-			stringBuilder.AppendLine($"\t\tpublic void {nameof(IGoogleTable.Apply)}(string value)");
+			stringBuilder.AppendLine($"\t\tpublic void {nameof(ITableContainer.Apply)}(string value)");
 			stringBuilder.AppendLine("\t\t{");
 			stringBuilder.AppendLine("\t\t\tvar split = value.Split(\"\\t\");");
-			stringBuilder.AppendLine($"\t\t\tvar item = new {key}");
+			stringBuilder.AppendLine($"\t\t\tvar item = new {classname}");
 			stringBuilder.AppendLine("\t\t\t{");
 
 			for (var i = 0; i < variableNames.Length; i++)
@@ -151,7 +151,7 @@ namespace Redbean.Table
 			
 			stringBuilder.AppendLine("\t\t\t};");
 			stringBuilder.AppendLine();
-			stringBuilder.AppendLine($"\t\t\t{ContainerName}.{key}.Add(item.Id, item);");
+			stringBuilder.AppendLine($"\t\t\t{nameof(TableContainer)}.{key}.Add(item.Id, item);");
 			stringBuilder.AppendLine("\t\t}");
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
@@ -159,7 +159,7 @@ namespace Redbean.Table
 			if (Directory.Exists(ItemPath))
 				Directory.CreateDirectory(ItemPath);
 			
-			await File.WriteAllTextAsync($"{ItemPath}/{key}.cs", $"{stringBuilder}");
+			await File.WriteAllTextAsync($"{ItemPath}/{classname}.cs", $"{stringBuilder}");
 		}
 		
 		private static string ToTSV(IList<IList<object>> rows)

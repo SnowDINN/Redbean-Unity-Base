@@ -1,6 +1,6 @@
 ﻿namespace Redbean.Table
 {
-	public interface IGoogleTable
+	public interface ITableContainer
 	{
 		void Apply(string value);
 	}

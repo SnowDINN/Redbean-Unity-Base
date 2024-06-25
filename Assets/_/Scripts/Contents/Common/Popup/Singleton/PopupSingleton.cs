@@ -10,9 +10,9 @@ using Object = UnityEngine.Object;
 
 namespace Redbean.Singleton
 {
-	public class PopupSingleton : ISingleton
+	public class PopupSingletonContainer : ISingletonContainer
 	{
-		private BundleSingleton Bundle => SingletonContainer.GetSingleton<BundleSingleton>();
+		private BundleSingletonContainer Bundle => SingletonContainer.GetSingleton<BundleSingletonContainer>();
 		
 		private readonly Dictionary<int, PopupBase> popupsGroup = new();
 		private readonly Transform popupParent;
@@ -20,7 +20,7 @@ namespace Redbean.Singleton
 
 		public PopupBase CurrentPopup => popupsGroup.Values.Last();
 
-		public PopupSingleton()
+		public PopupSingletonContainer()
 		{
 			var go = new GameObject("[Popup]");
 			Object.DontDestroyOnLoad(go);

@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public class PostBundleFilesProtocol : IApi
+	public class PostBundleFilesProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{

@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public class GetTableProtocol : IApi
+	public class GetTableProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{

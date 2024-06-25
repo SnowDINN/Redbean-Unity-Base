@@ -1,6 +1,6 @@
 namespace Redbean.Table
 {
-	public class Item : IGoogleTable
+	public class TItem : ITableContainer
 	{
 		public int Id;
 		public string Name;
@@ -8,7 +8,7 @@ namespace Redbean.Table
 		public void Apply(string value)
 		{
 			var split = value.Split("\t");
-			var item = new Item
+			var item = new TItem
 			{
 				Id = int.Parse(split[0]),
 				Name = split[1],

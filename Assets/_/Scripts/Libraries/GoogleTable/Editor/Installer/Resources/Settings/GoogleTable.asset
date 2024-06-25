@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d23a655334a347618e58b120fe99648a, type: 3}
   m_Name: GoogleTable
   m_EditorClassIdentifier: 
-  Path: Assets/_/Scripts/Contents/Common/Table/Container
-  ItemPath: Assets/_/Scripts/Contents/Common/Table/Items
+  Path: Assets/_/Scripts/Contents/Common/Table
+  ItemPath: Assets/_/Scripts/Contents/Common/Table/Sheets

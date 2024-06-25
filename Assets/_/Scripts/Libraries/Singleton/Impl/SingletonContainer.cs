@@ -8,17 +8,9 @@ using Object = UnityEngine.Object;
 
 namespace Redbean
 {
-#region Activator
-
-	public interface ISingleton : IExtension, IDisposable
-	{
-	}	
-
-#endregion
-	
 	public class SingletonContainer : IAppBootstrap
 	{
-		private static readonly Dictionary<Type, ISingleton> singletonGroup = new();
+		private static readonly Dictionary<Type, ISingletonContainer> singletonGroup = new();
 		private GameObject parent;
 
 		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
@@ -31,12 +23,12 @@ namespace Redbean
 			var nativeSingletons = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(x => x.GetTypes())
 				.Where(x => x.FullName != null
-				            && typeof(ISingleton).IsAssignableFrom(x)
+				            && typeof(ISingletonContainer).IsAssignableFrom(x)
 				            && !typeof(MonoBehaviour).IsAssignableFrom(x)
 				            && !x.FullName.Equals(typeof(RxBase).FullName)
 				            && !x.IsInterface
 				            && !x.IsAbstract)
-				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingleton)
+				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingletonContainer)
 				.ToArray();
 
 			foreach (var singleton in nativeSingletons
@@ -50,7 +42,7 @@ namespace Redbean
 			var monoSingletons = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(x => x.GetTypes())
 				.Where(x => x.FullName != null
-				            && typeof(ISingleton).IsAssignableFrom(x)
+				            && typeof(ISingletonContainer).IsAssignableFrom(x)
 				            && typeof(MonoBehaviour).IsAssignableFrom(x)
 				            && !x.FullName.Equals(typeof(RxBase).FullName)
 				            && !x.IsInterface
@@ -64,7 +56,7 @@ namespace Redbean
 			}
 			
 			foreach (var singleton in monoSingletons
-				         .Where(singleton => singletonGroup.TryAdd(singleton, parent.AddComponent(singleton) as ISingleton)))
+				         .Where(singleton => singletonGroup.TryAdd(singleton, parent.AddComponent(singleton) as ISingletonContainer)))
 				Log.System($"Create instance {singleton.FullName}");
 
 #endregion
@@ -88,11 +80,11 @@ namespace Redbean
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static ISingleton GetSingleton(Type type) => singletonGroup[type];
+		public static ISingletonContainer GetSingleton(Type type) => singletonGroup[type];
 		
 		/// <summary>
 		/// 싱글톤 호출
 		/// </summary>
-		public static T GetSingleton<T>() where T : ISingleton => (T)singletonGroup[typeof(T)];
+		public static T GetSingleton<T>() where T : ISingletonContainer => (T)singletonGroup[typeof(T)];
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public class PostAppVersionProtocol : IApi
+	public class PostAppVersionProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{

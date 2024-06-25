@@ -22,7 +22,7 @@ namespace Redbean.Rx
 			await this.RequestApi<GetRefreshAccessTokenProtocol>();
 		}
 
-		public void Publish<T>(Response response) where T : IApi
+		public void Publish<T>(Response response) where T : IApiContainer
 		{
 			onApiResponse.OnNext((typeof(T), response));
 		}

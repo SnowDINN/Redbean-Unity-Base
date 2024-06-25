@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public class GetRefreshAccessTokenProtocol : IApi
+	public class GetRefreshAccessTokenProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{

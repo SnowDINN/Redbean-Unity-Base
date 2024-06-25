@@ -1,6 +1,4 @@
-﻿#if UNITY_EDITOR
-
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Settings;
@@ -34,5 +32,3 @@ namespace Redbean.Bundle
 		}
 	}
 }
-
-#endif

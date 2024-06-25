@@ -9,7 +9,7 @@ namespace Redbean.Popup
 		[HideInInspector]
 		public int Guid;
 		
-		public virtual void Close() => this.GetSingleton<PopupSingleton>().Close(Guid);
+		public virtual void Close() => this.GetSingleton<PopupSingletonContainer>().Close(Guid);
 
 		public async Task WaitUntilClose() => await TaskExtension.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
 	}

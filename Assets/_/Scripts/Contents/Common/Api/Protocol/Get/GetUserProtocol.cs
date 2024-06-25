@@ -6,7 +6,7 @@ using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {
-	public class GetUserProtocol : IApi
+	public class GetUserProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{

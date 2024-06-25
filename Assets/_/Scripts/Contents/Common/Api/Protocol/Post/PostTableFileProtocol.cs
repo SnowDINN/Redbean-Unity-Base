@@ -2,7 +2,7 @@
 
 namespace Redbean.Api
 {
-	public class PostTableFileProtocol : IApi
+	public class PostTableFileProtocol : IApiContainer
 	{
 		public async Task<Response> Request(params object[] args)
 		{
