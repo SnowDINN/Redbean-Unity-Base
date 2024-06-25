@@ -4,11 +4,14 @@ namespace Redbean.Api
 {
 	public class ApiGetRequest : ApiBase
 	{
-		public static async Task<Response> GetTokenRequest(params object[] args) =>
-			await SendGetRequest("/Authentication/GetToken?uid={0}&version={1}", args);
-
 		public static async Task<Response> GetUserRequest(params object[] args) =>
-			await SendGetRequest("/Authentication/GetUser?uid={0}&version={1}", args);
+			await SendGetRequest("/Authentication/GetUser?userId={0}&version={1}", args);
+
+		public static async Task<Response> GetEditorAccessTokenRequest(params object[] args) =>
+			await SendGetRequest("/Authentication/GetEditorAccessToken?userId={0}&version={1}", args);
+
+		public static async Task<Response> GetRefreshAccessTokenRequest(params object[] args) =>
+			await SendGetRequest("/Authentication/GetRefreshAccessToken?refreshToken={0}", args);
 
 		public static async Task<Response> GetAppConfigRequest(params object[] args) =>
 			await SendGetRequest("/Common/GetAppConfig", args);
@@ -18,8 +21,5 @@ namespace Redbean.Api
 
 		public static async Task<Response> GetTableConfigRequest(params object[] args) =>
 			await SendGetRequest("/Config/GetTableConfig", args);
-
-		public static async Task<Response> PostUserNicknameRequest(params object[] args) =>
-			await SendGetRequest("/User/PostUserNickname?nickname={0}", args);
 	}
 }

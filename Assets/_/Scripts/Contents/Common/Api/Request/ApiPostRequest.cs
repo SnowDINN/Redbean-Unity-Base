@@ -12,5 +12,8 @@ namespace Redbean.Api
 
 		public static async Task<Response> PostBundleFilesRequest(params object[] args) =>
 			await SendPostRequest("/Storage/PostBundleFiles?type={0}", args);
+
+		public static async Task<Response> PostUserNicknameRequest(params object[] args) =>
+			await SendPostRequest("/User/PostUserNickname?nickname={0}", args);
 	}
 }
