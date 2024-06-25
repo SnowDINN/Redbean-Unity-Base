@@ -34,7 +34,7 @@ namespace Redbean.Singleton
 
 			if (PlayerPrefs.HasKey(PLAYER_PREFS_KEY))
 			{
-				var dataDecrypt = PlayerPrefs.GetString(PLAYER_PREFS_KEY).Decrypt();
+				var dataDecrypt = PlayerPrefs.GetString(PLAYER_PREFS_KEY).Decryption();
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				foreach (var dataGroup in dataGroups)
 				{
@@ -98,7 +98,7 @@ namespace Redbean.Singleton
 		{
 			playerPrefsGroup[typeof(T).FullName] = JsonConvert.SerializeObject(value);
 			
-			var encryptValue = JsonConvert.SerializeObject(playerPrefsGroup).Encrypt();
+			var encryptValue = JsonConvert.SerializeObject(playerPrefsGroup).Encryption();
 			PlayerPrefs.SetString(PLAYER_PREFS_KEY, encryptValue);
 			
 			return value;

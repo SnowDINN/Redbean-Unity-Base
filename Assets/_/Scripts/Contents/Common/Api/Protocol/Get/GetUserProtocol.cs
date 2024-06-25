@@ -10,8 +10,8 @@ namespace Redbean.Api
 	{
 		public async Task<Response> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encrypt()),
-			                                                 HttpUtility.UrlEncode(AppSettings.Version.Encrypt()));
+			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()),
+			                                                 HttpUtility.UrlEncode(AppSettings.Version.Encryption()));
 			if (request.Code > 0)
 				return request;
 

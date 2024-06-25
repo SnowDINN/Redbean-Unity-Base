@@ -27,7 +27,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), Button]
 		private void AES(string value)
 		{
-			Log.Print(value.Encrypt());
+			Log.Print(value.Encryption());
 		}
 	}
 }

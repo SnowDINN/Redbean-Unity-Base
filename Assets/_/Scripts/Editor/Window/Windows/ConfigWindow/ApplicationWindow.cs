@@ -17,7 +17,7 @@ namespace Redbean.Editor
 			if (!PlayerPrefs.HasKey(MvpSingleton.PLAYER_PREFS_KEY))
 				return;
 
-			var dataDecrypt = PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY).Decrypt();
+			var dataDecrypt = PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY).Decryption();
 			var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 			if (dataGroups == null)
 				return;

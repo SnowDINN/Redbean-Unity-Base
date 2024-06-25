@@ -126,8 +126,8 @@ namespace Redbean
 		
 		private static async Task RequestAccessTokenAsync(string uid)
 		{
-			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(uid.Encrypt()),
-			                                                              HttpUtility.UrlEncode(AppSettings.Version.Encrypt()));
+			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(uid.Encryption()),
+			                                                              HttpUtility.UrlEncode(AppSettings.Version.Encryption()));
 			var response = request.ToConvert<TokenResponse>();
 
 			SetAccessToken(response);
