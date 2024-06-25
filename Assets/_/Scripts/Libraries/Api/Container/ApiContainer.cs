@@ -41,12 +41,12 @@ namespace Redbean
 			},
 			Timeout = TimeSpan.FromSeconds(10),
 		};
-
 		
 		private static TokenResponse currentToken = new();
 		public static bool IsAccessTokenExpired => currentToken.AccessTokenExpire < DateTime.UtcNow;
 		public static bool IsRefreshTokenExpired => currentToken.RefreshTokenExpire < DateTime.UtcNow;
 		public static bool IsRefreshTokenExist => !string.IsNullOrEmpty(currentToken.RefreshToken);
+		public static string RefreshToken => currentToken.RefreshToken;
 		
 		public Task Setup()
 		{

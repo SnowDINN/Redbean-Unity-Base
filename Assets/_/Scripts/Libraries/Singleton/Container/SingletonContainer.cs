@@ -10,7 +10,7 @@ namespace Redbean
 {
 #region Activator
 
-	public interface ISingleton : IDisposable
+	public interface ISingleton : IExtension, IDisposable
 	{
 	}	
 
