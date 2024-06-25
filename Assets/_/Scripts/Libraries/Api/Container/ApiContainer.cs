@@ -39,7 +39,7 @@ namespace Redbean
 			{
 				{ "accept", "application/json" },
 			},
-			Timeout = TimeSpan.FromSeconds(10),
+			Timeout = TimeSpan.FromSeconds(60),
 		};
 		
 		private static TokenResponse currentToken = new();
@@ -114,23 +114,22 @@ namespace Redbean
 				var authenticationResult = await authenticationProvider.Login();
 				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
 				
-				await RequestAccessTokenAsync(user.UserId);
+				await RequestEditorAccessTokenAsync(user.UserId);
 				
 				PlayerPrefs.SetString(Key, user.UserId);
 			}
 			else
-				await RequestAccessTokenAsync(uid);
+				await RequestEditorAccessTokenAsync(uid);
 
 			return await api.EditorRequestApi<T>(args);
 		}
 		
-		private static async Task RequestAccessTokenAsync(string uid)
+		private static async Task RequestEditorAccessTokenAsync(string uid)
 		{
 			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(uid.Encryption()),
 			                                                              HttpUtility.UrlEncode(AppSettings.Version.Encryption()));
-			var response = request.ToConvert<TokenResponse>();
-
-			SetAccessToken(response);
+			
+			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Value}");
 		}
 #endif
 	}
