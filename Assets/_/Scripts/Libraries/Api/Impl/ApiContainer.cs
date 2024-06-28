@@ -81,14 +81,14 @@ namespace Redbean
 			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
 		}
 
-		public static async Task<Response> RequestApi(Type type, params object[] args) => 
+		public static async Task<object> RequestApi(Type type, params object[] args) => 
 			await apiGroup[type].Request(args);
 
-		public static async Task<Response> RequestApi<T>(params object[] args) where T : IApiContainer =>
+		public static async Task<object> RequestApi<T>(params object[] args) where T : IApiContainer =>
 			await apiGroup[typeof(T)].Request(args);
 		
 #if UNITY_EDITOR
-		public static async Task<Response> EditorRequestApi<T>(params object[] args) where T : IApiContainer
+		public static async Task<object> EditorRequestApi<T>(params object[] args) where T : IApiContainer
 		{
 			const string Key = "EDITOR_ACCESS_UID";
 			

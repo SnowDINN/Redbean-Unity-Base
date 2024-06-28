@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Redbean.Api;
@@ -13,17 +12,16 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var request = await this.RequestApi<GetTableProtocol>();
-			var response = request.ToConvert<Dictionary<string, string>>();
-			if (!response.Any())
+			var response = await this.RequestApi<GetTableProtocol>() as DictionaryResponse;
+			if (!response.Value.Any())
 			{
 				Log.Fail("Table", "Fail to load to the Google sheets.");
 				return;
 			}
 			
-			foreach (var table in response)
+			foreach (var table in response.Value)
 			{
-				var tsv = table.Value.Split("\r\n");
+				var tsv = $"{table.Value}".Split("\r\n");
 				
 				// Skip Name and Type Rows
 				var skipRows = tsv.Skip(2);

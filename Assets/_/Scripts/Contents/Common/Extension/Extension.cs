@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Redbean.Api;
 using Redbean.MVP;
 using Redbean.MVP.Content;
 using Redbean.Singleton;
@@ -14,7 +13,7 @@ namespace Redbean
 		/// <summary>
 		/// API 호출
 		/// </summary>
-		public static async Task<Response> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer => 
+		public static async Task<object> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer => 
 			await ApiContainer.RequestApi<T>(args);
 #endif
 		
@@ -61,7 +60,7 @@ namespace Redbean
 		/// <summary>
 		/// API 호출
 		/// </summary>
-		public static async Task<Response> RequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer
+		public static async Task<object> RequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer
 		{
 			T generic = default;
 			

@@ -1,36 +1,37 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
-using Newtonsoft.Json;
 using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {
 	public class GetUserProtocol : IApiContainer
 	{
-		public async Task<Response> Request(params object[] args)
+		public async Task<object> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
-			if (request.Code > 0)
-				return request;
-
-			var response = request.ToConvert<Dictionary<string, object>>();
-			var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(response["token"].ToString());
-			if (tokenResponse != null)
-				ApiContainer.SetAccessToken(tokenResponse);
+			var response = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
+			if (response.ErrorCode > 0)
+				return response;
+			
+			ApiContainer.SetAccessToken(new TokenResponse
+			{
+				AccessToken = response.AccessToken,
+				RefreshToken = response.RefreshToken,
+				AccessTokenExpire = response.AccessTokenExpire,
+				RefreshTokenExpire = response.RefreshTokenExpire
+			});
 
 			var user = this.GetModel<UserModel>();
-			var userResponse = JsonConvert.DeserializeObject<UserResponse>(response["user"].ToString());
-			if (userResponse != null)
+			user.Response = new UserResponse
 			{
-				user.Response = userResponse;
-				user.ModelPublish().SetPlayerPrefs();
-			}
+				Social = response.Social,
+				Information = response.Information
+			};
+			user.ModelPublish().SetPlayerPrefs();
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.SignInUser);
 			
 			Log.Print($"Login user's data. [ {user.Response.Information.Nickname} | {user.Response.Social.Id} ]");
-			return request;
+			return response;
 		}
 	}
 }

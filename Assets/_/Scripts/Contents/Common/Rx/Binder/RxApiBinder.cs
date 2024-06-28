@@ -7,8 +7,8 @@ namespace Redbean.Rx
 {
 	public class RxApiBinder : RxBase
 	{
-		private readonly Subject<(Type type, Response response)> onApiResponse = new();
-		private Observable<(Type type, Response response)> OnApiResponse => onApiResponse.Share();
+		private readonly Subject<(Type type, object response)> onApiResponse = new();
+		private Observable<(Type type, object response)> OnApiResponse => onApiResponse.Share();
 
 		public RxApiBinder()
 		{
@@ -22,7 +22,7 @@ namespace Redbean.Rx
 			await this.RequestApi<GetRefreshAccessTokenProtocol>();
 		}
 
-		public void Publish<T>(Response response) where T : IApiContainer
+		public void Publish<T>(object response) where T : IApiContainer
 		{
 			onApiResponse.OnNext((typeof(T), response));
 		}

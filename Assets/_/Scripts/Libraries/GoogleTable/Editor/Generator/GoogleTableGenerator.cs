@@ -9,7 +9,6 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Redbean.Api;
 using Redbean.MVP.Content;
-using Redbean.Singleton;
 using UnityEngine;
 
 namespace Redbean.Table
@@ -31,9 +30,7 @@ namespace Redbean.Table
 		{
 #region Google Client Settings
 			
-			var request = await ApiContainer.EditorRequestApi<GetTableConfigProtocol>();
-			var response = request.ToConvert<TableConfigResponse>();
-			
+			var response = await ApiContainer.EditorRequestApi<GetTableConfigProtocol>() as TableConfigResponse;
 			var ClientId = response.Client.Id;
 			var ClientSecret = response.Client.Secret;
 			var SheetId = response.Sheet.Id;

@@ -6,7 +6,6 @@ using System.Text;
 using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
-using Redbean.Singleton;
 using Redbean.Table;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -144,18 +143,14 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			var request = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.Android);
-			var response = request.ToConvert<AppVersionResponse>();
-			
+			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.Android) as AppVersionResponse;
 			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var request = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.iOS);
-			var response = request.ToConvert<AppVersionResponse>();
-			
+			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.iOS) as AppVersionResponse;
 			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		

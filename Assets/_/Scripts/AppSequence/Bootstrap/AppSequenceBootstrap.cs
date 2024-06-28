@@ -28,10 +28,10 @@ namespace Redbean.Firebase
 			if (Application.isPlaying)
 			{
 				// 앱 설정 체크
-				var request = await this.RequestApi<GetAppConfigProtocol>();
+				var response = await this.RequestApi<GetAppConfigProtocol>() as AppConfigResponse;
 				var app = new AppConfigModel
 				{
-					Response = request.ToConvert<AppConfigResponse>()
+					Response = response
 				}.ModelPublish();
 				
 				if (app is not null)

@@ -2,38 +2,34 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Redbean.Api
 {
 	public class ApiBase
 	{
-		protected static async Task<Response> SendGetRequest(string uri, params object[] args)
+		protected static async Task<T> SendGetRequest<T>(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
 			var apiResponse = await GetApi(format);
-			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
 
-			return Response.Return(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
+			return JsonConvert.DeserializeObject<T>(apiResponse);
 		}
 		
-		protected static async Task<Response> SendPostRequest(string uri, params object[] args)
+		protected static async Task<T> SendPostRequest<T>(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
 			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
-			var apiParse = JObject.Parse(apiResponse);
-			var apiResult = $"{apiParse[nameof(Response.Value).ToLower()]}";
-			
-			return Response.Return(apiParse[nameof(Response.Code).ToLower()].Value<int>(), apiResult);
+
+			return JsonConvert.DeserializeObject<T>(apiResponse);
 		}
 		
-		protected static async Task<Response> SendDeleteRequest(string uri, params object[] args)
+		protected static async Task<T> SendDeleteRequest<T>(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where(_ => _ is string).ToArray());
 			var apiResponse = await DeleteApi(format);
 			
-			return Response.Return(apiResponse ? 0 : 1, default);
+			return JsonConvert.DeserializeObject<T>(apiResponse);
 		}
 		
 		private static async Task<string> GetApi(string uri)
@@ -112,7 +108,7 @@ namespace Redbean.Api
 			return string.Empty;
 		}
 		
-		private static async Task<bool> DeleteApi(string uri)
+		private static async Task<string> DeleteApi(string uri)
 		{
 			var stopwatch = Stopwatch.StartNew();
 			var httpUri = uri.Split('?')[0].TrimStart('/');
@@ -125,29 +121,29 @@ namespace Redbean.Api
 				{
 					var response = await request.Content.ReadAsStringAsync();
 					stopwatch.Stop();
-				
+
 					Log.Success("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 					request.Dispose();
-					
-					return true;
+
+					return response;
 				}
 			}
 			catch (HttpRequestException e)
 			{
 				Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
 				request?.Dispose();
-				
+
 				throw;
 			}
 			finally
 			{
 				stopwatch.Stop();
 			}
-	
+			
 			Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
-			return false;
+			return string.Empty;
 		}
 	}
 }

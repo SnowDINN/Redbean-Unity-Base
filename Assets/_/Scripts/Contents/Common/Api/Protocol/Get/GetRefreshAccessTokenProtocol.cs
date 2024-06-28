@@ -4,18 +4,16 @@ namespace Redbean.Api
 {
 	public class GetRefreshAccessTokenProtocol : IApiContainer
 	{
-		public async Task<Response> Request(params object[] args)
+		public async Task<object> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetRefreshAccessTokenRequest(ApiContainer.RefreshToken);
-			if (request.Code > 0)
-				return request;
+			var response = await ApiGetRequest.GetRefreshAccessTokenRequest(ApiContainer.RefreshToken);
+			if (response.ErrorCode > 0)
+				return response;
 
-			var tokenResponse = request.ToConvert<TokenResponse>();
-			if (tokenResponse != null)
-				ApiContainer.SetAccessToken(tokenResponse);
+			ApiContainer.SetAccessToken(response);
 			
 			Log.Notice("Access token has been reissued.");
-			return request;
+			return response;
 		}
 	}
 }
