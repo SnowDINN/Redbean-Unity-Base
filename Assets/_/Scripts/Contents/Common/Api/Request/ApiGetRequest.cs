@@ -5,10 +5,10 @@ namespace Redbean.Api
 	public class ApiGetRequest : ApiBase
 	{
 		public static async Task<Response> GetUserRequest(params object[] args) =>
-			await SendGetRequest("/Authentication/GetUser?userId={0}", args);
+			await SendGetRequest("/Authentication/GetUser?id={0}", args);
 
 		public static async Task<Response> GetEditorAccessTokenRequest(params object[] args) =>
-			await SendGetRequest("/Authentication/GetEditorAccessToken?userId={0}", args);
+			await SendGetRequest("/Authentication/GetEditorAccessToken?email={0}", args);
 
 		public static async Task<Response> GetRefreshAccessTokenRequest(params object[] args) =>
 			await SendGetRequest("/Authentication/GetRefreshAccessToken?refreshToken={0}", args);

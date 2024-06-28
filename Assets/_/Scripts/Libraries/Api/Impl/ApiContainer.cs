@@ -95,8 +95,8 @@ namespace Redbean
 			using var api = new ApiContainer();
 			await api.Setup();
 			
-			var uid = PlayerPrefs.GetString(Key);
-			if (string.IsNullOrEmpty(uid))
+			var email = PlayerPrefs.GetString(Key);
+			if (string.IsNullOrEmpty(email))
 			{
 				var authenticationProvider = new GoogleAuthenticationProvider();
 				if (!GoogleAuthenticationProvider.IsInitialize)
@@ -105,19 +105,19 @@ namespace Redbean
 				var authenticationResult = await authenticationProvider.Login();
 				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
 				
-				await RequestEditorAccessTokenAsync(user.UserId);
+				await RequestEditorAccessTokenAsync(user.Email);
 				
-				PlayerPrefs.SetString(Key, user.UserId);
+				PlayerPrefs.SetString(Key, user.Email);
 			}
 			else
-				await RequestEditorAccessTokenAsync(uid);
+				await RequestEditorAccessTokenAsync(email);
 
 			return await api.EditorRequestApi<T>(args);
 		}
 		
-		private static async Task RequestEditorAccessTokenAsync(string uid)
+		private static async Task RequestEditorAccessTokenAsync(string email)
 		{
-			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(uid.Encryption()));
+			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(email.Encryption()));
 			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Value}");
 		}
 #endif
