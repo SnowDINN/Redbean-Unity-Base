@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {

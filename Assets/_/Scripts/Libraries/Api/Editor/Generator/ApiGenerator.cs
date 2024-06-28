@@ -60,6 +60,7 @@ namespace Redbean.Api
 			for (var idx = 0; idx < apis.Count; idx++)
 			{
 				var parameter = "";
+				
 				var jObject = apis[idx].Value[$"{type}".ToLower()].ToObject<JObject>();
 				if (jObject.TryGetValue("parameters", out var parameters))
 				{
@@ -74,10 +75,19 @@ namespace Redbean.Api
 							parameter += "&";
 					}
 				}
+
+				var component = "";
+				if (jObject.TryGetValue("responses", out var responses))
+				{
+					component = responses.SelectToken("200.content.application/json.schema.$ref")
+						.Value<string>()
+						.Split('/')
+						.Last();
+				}
 			
 				var requestUri = $"\"{apis[idx].Key}{parameter}\"";
-				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(Response)}> {apis[idx].Key.Split('/').Last()}Request(params object[] args) =>");
-				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request({requestUri}, args);");
+				stringBuilder.AppendLine($"\t\tpublic static async Task<{component}> {apis[idx].Key.Split('/').Last()}Request(params object[] args) =>");
+				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request<{component}>({requestUri}, args);");
 				
 				if (idx < apis.Count - 1)
 					stringBuilder.AppendLine();
