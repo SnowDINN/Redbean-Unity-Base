@@ -28,7 +28,7 @@ namespace Redbean
 			BaseAddress = new Uri("https://localhost:44395"),
 			DefaultRequestHeaders =
 			{
-				{ "accept", "application/json" },
+				{ "Version", AppSettings.Version },
 			},
 			Timeout = TimeSpan.FromSeconds(60),
 		};
@@ -117,9 +117,7 @@ namespace Redbean
 		
 		private static async Task RequestEditorAccessTokenAsync(string uid)
 		{
-			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(uid.Encryption()),
-			                                                              HttpUtility.UrlEncode(AppSettings.Version.Encryption()));
-			
+			var request = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(uid.Encryption()));
 			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Value}");
 		}
 #endif
