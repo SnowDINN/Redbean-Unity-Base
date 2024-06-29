@@ -6,7 +6,7 @@ namespace Redbean.Api
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			return await ApiPostRequest.PostBundleFilesRequest(AppSettings.PlatformType, args[0]);
+			return (await ApiPostRequest.PostBundleFilesRequest(AppSettings.PlatformType, args[0])).Value;
 		}
 	}
 }

@@ -6,7 +6,7 @@ namespace Redbean.Api
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			return await ApiPostRequest.PostAppVersionRequest(args[0], args[1]);
+			return (await ApiPostRequest.PostAppVersionRequest(args[0], args[1])).Value;
 		}
 	}
 }

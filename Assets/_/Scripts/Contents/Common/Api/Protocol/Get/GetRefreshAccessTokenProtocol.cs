@@ -8,12 +8,12 @@ namespace Redbean.Api
 		{
 			var response = await ApiGetRequest.GetRefreshAccessTokenRequest(ApiContainer.RefreshToken);
 			if (response.ErrorCode > 0)
-				return response;
+				return response.Value;
 
-			ApiContainer.SetAccessToken(response);
+			ApiContainer.SetAccessToken(response.Value);
 			
 			Log.Notice("Access token has been reissued.");
-			return response;
+			return response.Value;
 		}
 	}
 }
