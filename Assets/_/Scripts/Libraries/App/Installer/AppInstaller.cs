@@ -22,16 +22,16 @@ namespace Redbean
 		public static string Version =>
 			string.IsNullOrEmpty(Installer.Version) ? Application.version : Installer.Version;
 		
-		public static int PlatformType
+		public static MobileType PlatformType
 		{
 			get
 			{
 #if UNITY_ANDROID
-				return (int)MobileType.Android;
+				return MobileType.Android;
 #elif UNITY_IOS
-				return (int)MobileType.iOS;
+				return MobileType.iOS;
 #else
-				return (int)MobileType.None;
+				return MobileType.None;
 #endif
 			}
 		}

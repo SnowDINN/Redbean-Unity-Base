@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using NUnit.Framework;
 using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
@@ -57,8 +59,7 @@ namespace Redbean.Editor
 			{
 				EditorUtility.DisplayProgressBar("Bundle Update", "Updating Bundle...", 0);
 
-				var content = new MultipartFormDataContent();
-
+				var requestFiles = new List<RequestFile>();
 				var path = buildFiles.Select(_ => _.Replace("\\", "/")).ToArray();
 				for (var i = 0; i < path.Length; i++)
 				{
@@ -66,10 +67,14 @@ namespace Redbean.Editor
 					EditorUtility.DisplayProgressBar("Bundle Update", $"Updating {filename} Bundle...", (i + 1) / (float)path.Length);
 					
 					var bytes = await File.ReadAllBytesAsync($"{Application.dataPath.Replace("Assets", "")}{path[i]}");
-					content.Add(new ByteArrayContent(bytes), "bundles", filename);
+					requestFiles.Add(new RequestFile
+					{
+						FileName = filename,
+						FileData = bytes
+					});
 				}
 				
-				await ApiContainer.EditorRequestApi<PostBundleFilesProtocol>(content);
+				await ApiContainer.EditorRequestApi<PostBundleFilesProtocol>(requestFiles.ToArray());
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
@@ -109,12 +114,11 @@ namespace Redbean.Editor
 			try
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
-
-				var content = new MultipartFormDataContent();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
 				await GoogleTableGenerator.GenerateCSharpTableAsync(sheetRaw);
 			
+				var requestFiles = new List<RequestFile>();
 				var keys = sheetRaw.Keys.ToArray();
 				var values = sheetRaw.Values.ToArray();
 				for (var i = 0; i < sheetRaw.Count; i++)
@@ -123,10 +127,14 @@ namespace Redbean.Editor
 					await GoogleTableGenerator.GenerateCSharpSheetAsync(keys[i], values[i]);
 
 					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
-					content.Add(new ByteArrayContent(bytes), "tables", $"{keys[i]}.tsv");
+					requestFiles.Add(new RequestFile
+					{
+						FileName = $"{keys[i]}.tsv",
+						FileData = bytes
+					});
 				}
 				
-				await ApiContainer.EditorRequestApi<PostTableFileProtocol>(content);
+				await ApiContainer.EditorRequestApi<PostTableFileProtocol>(requestFiles.ToArray());
 			}
 			catch (Exception e)
 			{

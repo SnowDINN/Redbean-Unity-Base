@@ -21,13 +21,7 @@ namespace Redbean.Api
 		{
 			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
 			var body = args.FirstOrDefault(_ => _ is Request) as Request;
-
-			HttpContent content = body.RequestType switch
-			{
-				RequestType.Json => new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"),
-				RequestType.MultiPart => new MultipartFormDataContent(JsonConvert.SerializeObject(body)),
-				_ => null
-			};
+			var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
 			var apiResponse = await PostApi(format, content);
 
 			return JsonConvert.DeserializeObject<T>(apiResponse);
