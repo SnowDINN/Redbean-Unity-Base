@@ -6,7 +6,11 @@ namespace Redbean.Api
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			return (await ApiPostRequest.PostAppVersionRequest(args[0], args[1])).Value;
+			return (await ApiPostRequest.PostAppVersionRequest(new AppVersionRequest
+			{
+				Type = (MobileType)args[0],
+				Version = $"{args[1]}"
+			})).Value;
 		}
 	}
 }

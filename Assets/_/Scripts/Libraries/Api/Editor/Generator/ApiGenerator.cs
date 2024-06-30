@@ -75,19 +75,40 @@ namespace Redbean.Api
 							parameter += "&";
 					}
 				}
+				
+				var requestType = "params object[] args";
+				if (jObject.TryGetValue("requestBody", out var requests))
+				{
+					var content = requests.SelectToken("content").ToObject<JObject>();
+					if (content.TryGetValue("application/json", out var json))
+					{
+						requestType = json.SelectToken("schema.$ref")
+							.Value<string>()
+							.Split('/')
+							.Last();
 
-				var component = "";
+						requestType += " args";
+					}
+				}
+
+				var responseType = "";
 				if (jObject.TryGetValue("responses", out var responses))
 				{
-					component = responses.SelectToken("200.content.application/json.schema.$ref")
-						.Value<string>()
-						.Split('/')
-						.Last();
+					var content = responses.SelectToken("200.content").ToObject<JObject>();
+					if (content.TryGetValue("application/json", out var json))
+					{
+						responseType = json.SelectToken("schema.$ref")
+							.Value<string>()
+							.Split('/')
+							.Last();
+
+						responseType = $"<{responseType}>";
+					}
 				}
 			
 				var requestUri = $"\"{apis[idx].Key}{parameter}\"";
-				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(Response)}<{component}>> {apis[idx].Key.Split('/').Last()}Request(params object[] args) =>");
-				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request<{nameof(Response)}<{component}>>({requestUri}, args);");
+				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(Response)}{responseType}> {apis[idx].Key.Split('/').Last()}Request({requestType}) =>");
+				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request<{nameof(Response)}{responseType}>({requestUri}, args);");
 				
 				if (idx < apis.Count - 1)
 					stringBuilder.AppendLine();

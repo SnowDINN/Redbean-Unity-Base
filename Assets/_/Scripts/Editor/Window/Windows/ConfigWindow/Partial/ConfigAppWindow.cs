@@ -143,14 +143,14 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.Android) as AppVersionResponse;
+			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version) as AppVersionResponse;
 			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(version, (int)MobileType.iOS) as AppVersionResponse;
+			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version) as AppVersionResponse;
 			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		

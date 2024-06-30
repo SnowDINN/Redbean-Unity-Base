@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -19,7 +20,15 @@ namespace Redbean.Api
 		protected static async Task<T> SendPostRequest<T>(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
-			var apiResponse = await PostApi(format, args.FirstOrDefault(_ => _ is HttpContent) as HttpContent);
+			var body = args.FirstOrDefault(_ => _ is Request) as Request;
+
+			HttpContent content = body.RequestType switch
+			{
+				RequestType.Json => new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json"),
+				RequestType.MultiPart => new MultipartFormDataContent(JsonConvert.SerializeObject(body)),
+				_ => null
+			};
+			var apiResponse = await PostApi(format, content);
 
 			return JsonConvert.DeserializeObject<T>(apiResponse);
 		}
