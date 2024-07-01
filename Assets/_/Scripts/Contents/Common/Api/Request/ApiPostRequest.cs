@@ -10,6 +10,9 @@ namespace Redbean.Api
 		public static async Task<ApiResponse<AppVersionResponse>> PostAppVersionRequest(AppVersionRequest args) =>
 			await SendPostRequest<ApiResponse<AppVersionResponse>>("/Config/PostAppVersion", args);
 
+		public static async Task<ApiResponse<AppConfigResponse>> PostAppMaintenanceRequest(AppMaintenanceRequest args) =>
+			await SendPostRequest<ApiResponse<AppConfigResponse>>("/Config/PostAppMaintenance", args);
+
 		public static async Task<ApiResponse<StringArrayResponse>> PostTableFilesRequest(AppUploadFilesRequest args) =>
 			await SendPostRequest<ApiResponse<StringArrayResponse>>("/Storage/PostTableFiles", args);
 
