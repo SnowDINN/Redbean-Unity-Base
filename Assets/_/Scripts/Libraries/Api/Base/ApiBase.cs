@@ -57,7 +57,7 @@ namespace Redbean.Api
 						if (errorCode == 0)
 							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 						else
-							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail\nErrorCode : {(ApiErrorType)errorCode}");
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {(ApiErrorType)errorCode}");
 					}
 					
 					request.Dispose();
@@ -66,7 +66,7 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
+				Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) {e.Message}");
 				request?.Dispose();
 
 				throw;
@@ -76,7 +76,7 @@ namespace Redbean.Api
 				stopwatch.Stop();
 			}
 			
-			Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
+			Log.Fail("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
 			return string.Empty;
@@ -103,7 +103,7 @@ namespace Redbean.Api
 						if (errorCode == 0)
 							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 						else
-							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail\nErrorCode : {(ApiErrorType)errorCode}");
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {(ApiErrorType)errorCode}");
 					}
 					
 					request.Dispose();
@@ -112,7 +112,7 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
+				Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) {e.Message}");
 				request?.Dispose();
 				
 				throw;
@@ -122,7 +122,7 @@ namespace Redbean.Api
 				stopwatch.Stop();
 			}
 
-			Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
+			Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
 			return string.Empty;
@@ -149,7 +149,7 @@ namespace Redbean.Api
 						if (errorCode == 0)
 							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 						else
-							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail\nErrorCode : {(ApiErrorType)errorCode}");
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {(ApiErrorType)errorCode}");
 					}
 					
 					request.Dispose();
@@ -158,7 +158,7 @@ namespace Redbean.Api
 			}
 			catch (HttpRequestException e)
 			{
-				Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : {e.Message}");
+				Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) {e.Message}");
 				request?.Dispose();
 
 				throw;
@@ -168,7 +168,7 @@ namespace Redbean.Api
 				stopwatch.Stop();
 			}
 			
-			Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail : ({(int)request.StatusCode}) {request.ReasonPhrase}");
+			Log.Fail("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ({(int)request.StatusCode}) {request.ReasonPhrase}");
 			request.Dispose();
 			
 			return string.Empty;
