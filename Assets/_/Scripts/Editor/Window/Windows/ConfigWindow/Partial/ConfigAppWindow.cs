@@ -158,7 +158,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version) as AppVersionResponse;
+			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.iOS, version) as AppVersionResponse;
 			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
 		}
 		

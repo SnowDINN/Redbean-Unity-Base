@@ -4,11 +4,11 @@ using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {
-	public class GetUserProtocol : IApiContainer
+	public class GetAccessTokenAndUserProtocol : IApiContainer
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
+			var request = await ApiGetRequest.GetAccessTokenAndUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
 			if (request.ErrorCode > 0)
 				return request.Response;
 			

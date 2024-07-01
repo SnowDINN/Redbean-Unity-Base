@@ -24,7 +24,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
-			await this.EditorRequestApi<GetUserProtocol>(ID);
+			await this.EditorRequestApi<GetAccessTokenAndUserProtocol>(ID);
 		}
 
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]

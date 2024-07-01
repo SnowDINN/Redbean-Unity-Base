@@ -62,7 +62,7 @@ namespace Redbean.MVP.Content
 		{
 			var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential);
 			
-			await this.RequestApi<GetUserProtocol>(user.UserId);
+			await this.RequestApi<GetAccessTokenAndUserProtocol>(user.UserId);
 			
 			m_user.Response.Social.Id = user.UserId;
 			m_user.Response.Social.Platform = user.ProviderData.First().ProviderId;

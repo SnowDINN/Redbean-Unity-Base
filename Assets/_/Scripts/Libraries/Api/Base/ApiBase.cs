@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Redbean.Api
 {
@@ -49,9 +50,17 @@ namespace Redbean.Api
 					var response = await request.Content.ReadAsStringAsync();
 					stopwatch.Stop();
 
-					Log.Success("GET", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
+					var responseParsing = JObject.Parse(response);
+					if (responseParsing.TryGetValue("errorCode", out var errorCodeToken))
+					{
+						var errorCode = errorCodeToken.Value<int>();
+						if (errorCode == 0)
+							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
+						else
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail\nErrorCode : {(ApiErrorType)errorCode}");
+					}
+					
 					request.Dispose();
-
 					return response;
 				}
 			}
@@ -86,10 +95,18 @@ namespace Redbean.Api
 				{
 					var response = await request.Content.ReadAsStringAsync();
 					stopwatch.Stop();
-				
-					Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
-					request.Dispose();
+
+					var responseParsing = JObject.Parse(response);
+					if (responseParsing.TryGetValue("errorCode", out var errorCodeToken))
+					{
+						var errorCode = errorCodeToken.Value<int>();
+						if (errorCode == 0)
+							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
+						else
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail\nErrorCode : {(ApiErrorType)errorCode}");
+					}
 					
+					request.Dispose();
 					return response;
 				}
 			}
@@ -125,9 +142,17 @@ namespace Redbean.Api
 					var response = await request.Content.ReadAsStringAsync();
 					stopwatch.Stop();
 
-					Log.Success("DELETE", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
+					var responseParsing = JObject.Parse(response);
+					if (responseParsing.TryGetValue("errorCode", out var errorCodeToken))
+					{
+						var errorCode = errorCodeToken.Value<int>();
+						if (errorCode == 0)
+							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
+						else
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request fail\nErrorCode : {(ApiErrorType)errorCode}");
+					}
+					
 					request.Dispose();
-
 					return response;
 				}
 			}

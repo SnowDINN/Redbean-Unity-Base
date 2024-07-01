@@ -38,9 +38,9 @@ namespace Redbean.Firebase
 				{
 					var version = string.Empty;
 #if UNITY_ANDROID
-					version = app.Response.Android.Version;
+					version = app.Response.Version.AndroidVersion;
 #elif UNITY_IOS
-					version = app.Response.iOS.Version;
+					version = app.Response.Version.iOSVersion;
 #endif
 
 					var isAppropriate = CompareVersion(version, Application.version);

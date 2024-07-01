@@ -19,7 +19,7 @@ namespace Redbean.Rx
 
 		private async UniTaskVoid GetRefreshAccessTokenAsync()
 		{
-			await this.RequestApi<GetRefreshAccessTokenProtocol>();
+			await this.RequestApi<GetAccessTokenRefreshProtocol>();
 		}
 
 		public void Publish<T>(object response) where T : IApiContainer
