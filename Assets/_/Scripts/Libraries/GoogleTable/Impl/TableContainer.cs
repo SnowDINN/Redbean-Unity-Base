@@ -12,14 +12,14 @@ namespace Redbean.Table
 
 		public async Task Setup()
 		{
-			var response = await this.RequestApi<GetTableProtocol>() as DictionaryResponse;
-			if (!response.Value.Any())
+			var response = await this.RequestApi<GetTableProtocol>() as TableResponse;
+			if (!response.Table.Any())
 			{
 				Log.Fail("Table", "Fail to load to the Google sheets.");
 				return;
 			}
 			
-			foreach (var table in response.Value)
+			foreach (var table in response.Table)
 			{
 				var tsv = $"{table.Value}".Split("\r\n");
 				

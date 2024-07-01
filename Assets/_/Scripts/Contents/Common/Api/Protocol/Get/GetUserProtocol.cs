@@ -8,30 +8,30 @@ namespace Redbean.Api
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			var response = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
-			if (response.ErrorCode > 0)
-				return response.Response;
+			var request = await ApiGetRequest.GetUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
+			if (request.ErrorCode > 0)
+				return request.Response;
 			
 			ApiContainer.SetAccessToken(new TokenResponse
 			{
-				AccessToken = response.Response.AccessToken,
-				RefreshToken = response.Response.RefreshToken,
-				AccessTokenExpire = response.Response.AccessTokenExpire,
-				RefreshTokenExpire = response.Response.RefreshTokenExpire
+				AccessToken = request.Response.AccessToken,
+				RefreshToken = request.Response.RefreshToken,
+				AccessTokenExpire = request.Response.AccessTokenExpire,
+				RefreshTokenExpire = request.Response.RefreshTokenExpire
 			});
 
 			var user = this.GetModel<UserModel>();
 			user.Response = new UserResponse
 			{
-				Social = response.Response.Social,
-				Information = response.Response.Information
+				Social = request.Response.Social,
+				Information = request.Response.Information
 			};
 			user.ModelPublish().SetPlayerPrefs();
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.SignInUser);
 			
 			Log.Print($"Login user's data. [ {user.Response.Information.Nickname} | {user.Response.Social.Id} ]");
-			return response.Response;
+			return request.Response;
 		}
 	}
 }

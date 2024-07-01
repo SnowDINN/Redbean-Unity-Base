@@ -6,14 +6,14 @@ namespace Redbean.Api
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			var response = await ApiGetRequest.GetRefreshAccessTokenRequest(ApiContainer.RefreshToken);
-			if (response.ErrorCode > 0)
-				return response.Response;
+			var request = await ApiGetRequest.GetRefreshAccessTokenRequest(ApiContainer.RefreshToken);
+			if (request.ErrorCode > 0)
+				return request.Response;
 
-			ApiContainer.SetAccessToken(response.Response);
+			ApiContainer.SetAccessToken(request.Response);
 			
 			Log.Notice("Access token has been reissued.");
-			return response.Response;
+			return request.Response;
 		}
 	}
 }
