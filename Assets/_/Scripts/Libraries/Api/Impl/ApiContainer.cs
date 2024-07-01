@@ -118,7 +118,7 @@ namespace Redbean
 		private static async Task RequestEditorAccessTokenAsync(string email)
 		{
 			var response = await ApiGetRequest.GetEditorAccessTokenRequest(HttpUtility.UrlEncode(email.Encryption()));
-			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.Value.Value}");
+			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.Response.Value}");
 		}
 #endif
 	}

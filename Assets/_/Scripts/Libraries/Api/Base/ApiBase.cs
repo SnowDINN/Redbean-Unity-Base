@@ -20,7 +20,7 @@ namespace Redbean.Api
 		protected static async Task<T> SendPostRequest<T>(string uri, params object[] args)
 		{
 			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
-			var body = args.FirstOrDefault(_ => _ is Request) as Request;
+			var body = args.FirstOrDefault(_ => _ is HttpRequest) as HttpRequest;
 			var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
 			var apiResponse = await PostApi(format, content);
 

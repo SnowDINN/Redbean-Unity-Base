@@ -10,7 +10,7 @@ namespace Redbean.Api
 			{
 				Type = AppSettings.PlatformType,
 				Files = args as RequestFile[]
-			})).Value;
+			})).Response;
 		}
 	}
 }
