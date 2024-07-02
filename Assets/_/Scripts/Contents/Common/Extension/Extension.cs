@@ -30,12 +30,12 @@ namespace Redbean
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static T GetModel<T>() where T : IModel => SingletonContainer.GetSingleton<MvpSingletonContainer>().GetModel<T>();
+		private static T GetModel<T>() where T : IModel => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<T>();
 		
 		/// <summary>
 		/// 모델 호출
 		/// </summary>
-		private static object GetModel(Type type) => SingletonContainer.GetSingleton<MvpSingletonContainer>().GetModel(type);
+		private static object GetModel(Type type) => SingletonContainer.GetSingleton<MvpSingleton>().GetModel(type);
 		
 		/// <summary>
 		/// 모델 호출
@@ -73,7 +73,7 @@ namespace Redbean
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupSingletonContainer Popup(this IExtension extension) => GetSingleton<PopupSingletonContainer>();
+		public static PopupSingleton Popup(this IExtension extension) => GetSingleton<PopupSingleton>();
 		
 		/// <summary>
 		/// 유저 데이터 호출

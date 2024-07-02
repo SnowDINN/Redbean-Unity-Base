@@ -14,10 +14,10 @@ namespace Redbean.Editor
 		
 		protected override void OnEnable()
 		{
-			if (!PlayerPrefs.HasKey(MvpSingletonContainer.PLAYER_PREFS_KEY))
+			if (!PlayerPrefs.HasKey(MvpSingleton.PLAYER_PREFS_KEY))
 				return;
 
-			var dataDecrypt = PlayerPrefs.GetString(MvpSingletonContainer.PLAYER_PREFS_KEY).Decryption();
+			var dataDecrypt = PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY).Decryption();
 			var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 			if (dataGroups == null)
 				return;

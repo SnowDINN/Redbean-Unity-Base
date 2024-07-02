@@ -5,11 +5,11 @@ using Redbean.Auth;
 
 namespace Redbean.Singleton
 {
-	public class AuthenticationSingletonContainer : ISingletonContainer
+	public class AuthenticationSingleton : ISingletonContainer
 	{
 		private readonly Dictionary<AuthenticationType, IAuthentication> authenticationGroup = new();
 		
-		public AuthenticationSingletonContainer()
+		public AuthenticationSingleton()
 		{
 			var authentications = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(_ => _.GetTypes())

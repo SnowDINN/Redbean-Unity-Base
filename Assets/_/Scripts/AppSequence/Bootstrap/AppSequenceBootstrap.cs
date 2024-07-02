@@ -55,15 +55,20 @@ namespace Redbean.Firebase
 						{
 							// TODO : 업데이트 진입 로직
 
-							await TaskExtension.WaitUntil(() => false);
-							break;	
+							AppSettings.IsProcessReady = false;
+							return;
 						}
 					}
 
 					if (!string.IsNullOrEmpty(response.Maintenance.Contents))
 					{
-						this.Popup().Open<PopupMaintenance>();
+						this.Popup().AssetOpen<PopupMaintenance>();
+						
+						AppSettings.IsProcessReady = false;
+						return;
 					}
+					
+					AppSettings.IsProcessReady = true;
 				}
 			}
 		}

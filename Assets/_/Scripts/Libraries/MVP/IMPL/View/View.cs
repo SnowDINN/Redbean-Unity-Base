@@ -35,6 +35,9 @@ namespace Redbean.MVP
 
 		private async Task AwakeAsync()
 		{
+			if (!AppSettings.IsProcessReady)
+				return;
+			
 			if (!AppLifeCycle.IsReady)
 				await TaskExtension.WaitUntil(() => AppLifeCycle.IsReady);
 			

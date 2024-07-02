@@ -18,7 +18,7 @@ namespace Redbean.MVP.Content
 		private SocialAuthenticationView view;
 
 		[Singleton]
-		private AuthenticationSingletonContainer authentication;
+		private AuthenticationSingleton authentication;
 		
 		public override void Setup()
 		{
