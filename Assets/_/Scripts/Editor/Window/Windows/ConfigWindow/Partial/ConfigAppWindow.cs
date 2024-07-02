@@ -151,7 +151,7 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
-		private async void Maintenance(string contents, string startTime, string endTime)
+		private async void Maintenance(string contents, DateTime startTime, DateTime endTime)
 		{
 			var response = await ApiContainer.EditorRequestApi<PostAppMaintenanceProtocol>(contents, startTime, endTime) as AppConfigResponse;
 				Log.Notice($"Set maintenance update < {startTime} -> {endTime} >");

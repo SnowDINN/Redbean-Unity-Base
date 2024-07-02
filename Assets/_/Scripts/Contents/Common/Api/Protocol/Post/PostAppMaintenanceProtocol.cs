@@ -10,8 +10,8 @@ namespace Redbean.Api
 			return (await ApiPostRequest.PostAppMaintenanceRequest(new AppMaintenanceRequest
 			{
 				Contents = $"{args[0]}",
-				StartTime = DateTime.Parse($"{DateTime.Today.Year}-{DateTime.Today.Month}-{DateTime.Today.Day} {args[1]}:00"),
-				EndTime = DateTime.Parse($"{DateTime.Today.Year}-{DateTime.Today.Month}-{DateTime.Today.Day} {args[2]}:00")
+				StartTime = (DateTime)args[1],
+				EndTime = (DateTime)args[2]
 			})).Response;
 		}
 	}
