@@ -8,7 +8,8 @@ namespace Redbean.Popup.Content
 {
 	public class PopupMaintenance : PopupBase
 	{
-		[SerializeField] private TextMeshProUGUI text;
+		[SerializeField]
+		private TextMeshProUGUI text;
 
 		private AppMaintenanceConfig maintenance => 
 			this.GetModel<AppConfigModel>().Maintenance;
