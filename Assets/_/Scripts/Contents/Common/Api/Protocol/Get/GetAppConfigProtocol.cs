@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {
@@ -6,7 +7,10 @@ namespace Redbean.Api
 	{
 		public async Task<object> Request(params object[] args)
 		{
-			return (await ApiGetRequest.GetAppConfigRequest()).Response;
+			var request = await ApiGetRequest.GetAppConfigRequest();
+			new AppConfigModel(request.Response).ModelPublish();
+
+			return request.Response;
 		}
 	}
 }

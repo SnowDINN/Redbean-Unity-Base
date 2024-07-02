@@ -3,11 +3,19 @@ using Redbean.Api;
 
 namespace Redbean.MVP.Content
 {
-	public class UserModel : ISerializeModel
+	public class UserModel : UserResponse, ISerializeModel
 	{
 		public IRxModel Rx => new UserRxModel();
-		
-		public UserResponse Response = new();
+
+		public UserModel()
+		{
+		}
+
+		public UserModel(UserAndTokenResponse response)
+		{
+			Information = response.Information;
+			Social = response.Social;
+		}
 	}
 	
 	public class UserRxModel : IRxModel
@@ -20,8 +28,8 @@ namespace Redbean.MVP.Content
 			if (value is not UserModel model)
 				return;
 			
-			Information.Value = model.Response.Information;
-			Social.Value = model.Response.Social;
+			Information.Value = model.Information;
+			Social.Value = model.Social;
 		}
 	}
 }

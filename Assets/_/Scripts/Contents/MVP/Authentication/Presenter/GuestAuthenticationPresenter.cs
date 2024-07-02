@@ -20,8 +20,8 @@ namespace Redbean.MVP.Content
 
 		private void Login()
 		{
-			if (string.IsNullOrEmpty(m_user.Response.Information.Nickname))
-				m_user.Response.Information.Nickname = "Guest";
+			if (string.IsNullOrEmpty(m_user.Information.Nickname))
+				m_user.Information.Nickname = "Guest";
 			
 			m_user.ModelPublish().SetPlayerPrefs();
 			

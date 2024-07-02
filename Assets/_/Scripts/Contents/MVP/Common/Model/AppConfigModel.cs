@@ -2,8 +2,16 @@
 
 namespace Redbean.MVP.Content
 {
-	public class AppConfigModel : IModel
+	public class AppConfigModel : AppConfigResponse, IModel
 	{
-		public AppConfigResponse Response = new();
+		public AppConfigModel()
+		{
+		}
+		
+		public AppConfigModel(AppConfigResponse response)
+		{
+			Maintenance = response.Maintenance;
+			Version = response.Version;
+		}
 	}
 }

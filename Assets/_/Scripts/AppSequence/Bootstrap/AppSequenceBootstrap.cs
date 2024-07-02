@@ -4,6 +4,7 @@ using Firebase;
 using Firebase.Auth;
 using Redbean.Api;
 using Redbean.MVP.Content;
+using Redbean.Popup.Content;
 using UnityEngine;
 
 namespace Redbean.Firebase
@@ -29,18 +30,14 @@ namespace Redbean.Firebase
 			{
 				// 앱 설정 체크
 				var response = await this.RequestApi<GetAppConfigProtocol>() as AppConfigResponse;
-				var app = new AppConfigModel
-				{
-					Response = response
-				}.ModelPublish();
-				
+				var app = this.GetModel<AppConfigModel>();
 				if (app is not null)
 				{
 					var version = string.Empty;
 #if UNITY_ANDROID
-					version = app.Response.Version.AndroidVersion;
+					version = app.Version.AndroidVersion;
 #elif UNITY_IOS
-					version = app.Response.Version.iOSVersion;
+					version = app.Version.iOSVersion;
 #endif
 
 					var isAppropriate = CompareVersion(version, Application.version);
@@ -61,6 +58,11 @@ namespace Redbean.Firebase
 							await TaskExtension.WaitUntil(() => false);
 							break;	
 						}
+					}
+
+					if (!string.IsNullOrEmpty(response.Maintenance.Contents))
+					{
+						this.Popup().Open<PopupMaintenance>();
 					}
 				}
 			}

@@ -77,8 +77,8 @@ namespace Redbean.Singleton
 		/// </summary>
 		public T Override<T>(T model, bool isPlayerPrefs = false) where T : IModel
 		{
-			var targetFields = modelGroup[model.GetType()].GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
-			var copyFields = model.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(_ => _.CanWrite).ToArray();
+			var targetFields = modelGroup[model.GetType()].GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).ToArray();
+			var copyFields = model.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).ToArray();
 			
 			for (var i = 0; i < targetFields.Length; i++)
 				targetFields[i].SetValue(modelGroup[model.GetType()], copyFields[i].GetValue(model));

@@ -42,12 +42,12 @@ namespace Redbean.MVP.Content
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
 		{
-			if (!m_user.Response.Social.Platform.Contains($"{view.Type}".ToLower()))
+			if (!m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 				return;
 			
 			await UniTask.WaitUntil(() => AppLifeCycle.IsReady, cancellationToken: token);
 				
-			if (m_user.Response.Social.Platform.Contains($"{view.Type}".ToLower()))
+			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{
 				var auth = authentication.GetPlatform(view.Type);
 				var isInitialize = await auth.Initialize();
@@ -64,9 +64,9 @@ namespace Redbean.MVP.Content
 			
 			await this.RequestApi<GetAccessTokenAndUserProtocol>(user.UserId);
 			
-			m_user.Response.Social.Id = user.UserId;
-			m_user.Response.Social.Platform = user.ProviderData.First().ProviderId;
-			m_user.Response.Information.Nickname = user.ProviderData.First().DisplayName;
+			m_user.Social.Id = user.UserId;
+			m_user.Social.Platform = user.ProviderData.First().ProviderId;
+			m_user.Information.Nickname = user.ProviderData.First().DisplayName;
 		}
 	}
 }

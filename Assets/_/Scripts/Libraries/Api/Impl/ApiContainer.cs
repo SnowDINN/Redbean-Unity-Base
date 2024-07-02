@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Redbean.Api;
 
 #if UNITY_EDITOR
-using System.Web;
 using Firebase.Auth;
 using Redbean.Auth;
 using UnityEngine;
@@ -90,7 +89,7 @@ namespace Redbean
 #if UNITY_EDITOR
 		public static async Task<object> EditorRequestApi<T>(params object[] args) where T : IApiContainer
 		{
-			const string Key = "EDITOR_ACCESS_UID";
+			const string Key = "EDITOR_ACCESS_EMAIL";
 			
 			using var api = new ApiContainer();
 			await api.Setup();

@@ -19,18 +19,11 @@ namespace Redbean.Api
 				AccessTokenExpire = request.Response.AccessTokenExpire,
 				RefreshTokenExpire = request.Response.RefreshTokenExpire
 			});
-
-			var user = this.GetModel<UserModel>();
-			user.Response = new UserResponse
-			{
-				Social = request.Response.Social,
-				Information = request.Response.Information
-			};
-			user.ModelPublish().SetPlayerPrefs();
+			var user = new UserModel(request.Response).ModelPublish(true);
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.SignInUser);
 			
-			Log.Print($"Login user's data. [ {user.Response.Information.Nickname} | {user.Response.Social.Id} ]");
+			Log.Print($"Login user's data. [ {user.Information.Nickname} | {user.Social.Id} ]");
 			return request.Response;
 		}
 	}

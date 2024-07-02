@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
-using NUnit.Framework;
 using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Firebase;
@@ -90,14 +88,14 @@ namespace Redbean.Editor
 			EditorUtility.ClearProgressBar();
 		}
 
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Container Script Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Script Path"), ShowInInspector, FolderPath]
 		private string TablePath
 		{
 			get => GoogleTableSettings.Path;
 			set => GoogleTableSettings.Path = value;
 		}
 
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Item Script Path"), ShowInInspector, FolderPath]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Table Script Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
 			get => GoogleTableSettings.ItemPath;
@@ -151,10 +149,10 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
-		private async void Maintenance(string contents, DateTime startTime, DateTime endTime)
+		private async void Maintenance([MultiLineProperty(5)] string contents, DateTime startTime, DateTime endTime)
 		{
 			var response = await ApiContainer.EditorRequestApi<PostAppMaintenanceProtocol>(contents, startTime, endTime) as AppConfigResponse;
-				Log.Notice($"Set maintenance update < {startTime} -> {endTime} >");
+				Log.Notice($"Set maintenance update ({response.Maintenance.Time.StartTime} -> {response.Maintenance.Time.EndTime})");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
