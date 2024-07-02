@@ -31,13 +31,15 @@ namespace Redbean.Popup
 
 		public virtual void Awake()
 		{
-			foreach (var button in buttons)
-				button.AsButtonObservable().Subscribe(_ => { Close(); }).AddTo(this);
+			foreach (var button in buttons) 
+				button.AsButtonObservable().Subscribe(_ => Close()).AddTo(this);
 		}
 
-		public virtual void Close() => this.GetSingleton<PopupSingleton>().Close(Guid);
+		public virtual void Close() => 
+			this.GetSingleton<PopupSingleton>().Close(Guid);
 
-		public async Task WaitUntilClose() => await TaskExtension.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
+		public async Task WaitUntilClose() =>
+			await TaskExtension.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
 	}
 	
 #if UNITY_EDITOR
