@@ -95,27 +95,18 @@ namespace UniLabs.Time
 
         public static void DrawDateTimeField(GUIContent label, DateTime currentValue, Action<DateTime> valueSetter)
         {
-            // var day = currentValue.Day;
-            // var month = currentValue.Month;
-            // var year = currentValue.Year;
-            // var hour = currentValue.Hour;
-            // var min = currentValue.Minute;
-            // var sec = currentValue.Second;
+            var day = currentValue.Day;
+            var month = currentValue.Month;
+            var year = currentValue.Year;
+            var hour = currentValue.Hour;
+            var min = currentValue.Minute;
+            var sec = currentValue.Second;
             // var milliSec = currentValue.Millisecond;
 
             var verticalRect = SirenixEditorGUI.BeginVerticalPropertyLayout(label);
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.BeginHorizontal();
             {
-                // day = SirenixEditorFields.IntField(day);
-                // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "D", SirenixGUIStyles.RightAlignedGreyMiniLabel);
-                // EditorGUILayout.LabelField(".", GUILayout.Width(5));
-                // month = SirenixEditorFields.IntField(month);
-                // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "M", SirenixGUIStyles.RightAlignedGreyMiniLabel);
-                // EditorGUILayout.LabelField(".", GUILayout.Width(5));
-                // year = SirenixEditorFields.IntField(year);
-                // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "Y", SirenixGUIStyles.RightAlignedGreyMiniLabel);
-                
                 var rect = GUILayoutUtility.GetRect(18, 18, SirenixGUIStyles.Button,  GUILayoutOptions.ExpandWidth(false).Width(18));
                 if (SirenixEditorGUI.IconButton(rect, EditorIcons.DayCalendar))
                 {
@@ -126,20 +117,29 @@ namespace UniLabs.Time
                     dateTimePicker.ShowInPopup(rect);
                 }
                 
-                SirenixEditorFields.TextField($"{currentValue}");
+                year = SirenixEditorFields.IntField(year);
+                GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "Y", SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                EditorGUILayout.LabelField("-", GUILayout.Width(5));
+                month = SirenixEditorFields.IntField(month);
+                GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "M", SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                EditorGUILayout.LabelField("-", GUILayout.Width(5));
+                day = SirenixEditorFields.IntField(day);
+                GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "D", SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                
+                EditorGUILayout.LabelField(" ", GUILayout.Width(5));
+                
+                hour = SirenixEditorFields.IntField(hour);
+                GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "h", SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                EditorGUILayout.LabelField(":", GUILayout.Width(5));
+                min = SirenixEditorFields.IntField(min);
+                GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "m", SirenixGUIStyles.RightAlignedGreyMiniLabel);
+                EditorGUILayout.LabelField(":", GUILayout.Width(5));
+                sec = SirenixEditorFields.IntField(sec);
+                GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "s", SirenixGUIStyles.RightAlignedGreyMiniLabel);
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             {
-                // hour = SirenixEditorFields.IntField(hour);
-                // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "h", SirenixGUIStyles.RightAlignedGreyMiniLabel);
-                // EditorGUILayout.LabelField(":", GUILayout.Width(5));
-                // min = SirenixEditorFields.IntField(min);
-                // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "m", SirenixGUIStyles.RightAlignedGreyMiniLabel);
-                // EditorGUILayout.LabelField(":", GUILayout.Width(5));
-                // sec = SirenixEditorFields.IntField(sec);
-                // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "s", SirenixGUIStyles.RightAlignedGreyMiniLabel);
-                // EditorGUILayout.LabelField(".", GUILayout.Width(5));
                 // milliSec = SirenixEditorFields.IntField(milliSec);
                 // GUI.Label(GUILayoutUtility.GetLastRect().HorizontalPadding(0.0f, 8f), "ms", SirenixGUIStyles.RightAlignedGreyMiniLabel);
             }
@@ -149,7 +149,7 @@ namespace UniLabs.Time
             {
                 try
                 {
-                    valueSetter?.Invoke(currentValue /* new DateTime(year, month, day, hour, min, sec, milliSec) */);
+                    valueSetter?.Invoke(new DateTime(year, month, day, hour, min, sec));
                 }
                 catch (Exception e)
                 {
