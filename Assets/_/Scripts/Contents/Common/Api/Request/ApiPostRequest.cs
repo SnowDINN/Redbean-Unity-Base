@@ -4,14 +4,14 @@ namespace Redbean.Api
 {
 	public class ApiPostRequest : ApiBase
 	{
-		public static async Task<ApiResponse<StringResponse>> PostEditorAccessTokenRequest(StringRequest args) =>
-			await SendPostRequest<ApiResponse<StringResponse>>("/EditAccess/PostEditorAccessToken", args);
+		public static async Task<ApiResponse<StringResponse>> PostAppAccessTokenRequest(StringRequest args) =>
+			await SendPostRequest<ApiResponse<StringResponse>>("/EditAccess/PostAppAccessToken", args);
 
-		public static async Task<ApiResponse<AppVersionResponse>> PostAppVersionRequest(AppVersionRequest args) =>
-			await SendPostRequest<ApiResponse<AppVersionResponse>>("/EditConfig/PostAppVersion", args);
+		public static async Task<ApiResponse> PostAppVersionRequest(AppVersionRequest args) =>
+			await SendPostRequest<ApiResponse>("/EditConfig/PostAppVersion", args);
 
-		public static async Task<ApiResponse<AppConfigResponse>> PostAppMaintenanceRequest(AppMaintenanceRequest args) =>
-			await SendPostRequest<ApiResponse<AppConfigResponse>>("/EditConfig/PostAppMaintenance", args);
+		public static async Task<ApiResponse> PostAppMaintenanceRequest(AppMaintenanceRequest args) =>
+			await SendPostRequest<ApiResponse>("/EditConfig/PostAppMaintenance", args);
 
 		public static async Task<ApiResponse<StringArrayResponse>> PostTableFilesRequest(AppUploadFilesRequest args) =>
 			await SendPostRequest<ApiResponse<StringArrayResponse>>("/EditFiles/PostTableFiles", args);

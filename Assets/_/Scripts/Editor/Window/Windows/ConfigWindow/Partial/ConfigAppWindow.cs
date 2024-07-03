@@ -151,22 +151,22 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
 		private async void Maintenance([MultiLineProperty(5)] string contents, DateTime startTime, DateTime endTime)
 		{
-			var response = await ApiContainer.EditorRequestApi<PostAppMaintenanceProtocol>(contents, startTime, endTime) as AppConfigResponse;
-				Log.Notice($"Set maintenance update ({response.Maintenance.Time.StartTime} -> {response.Maintenance.Time.EndTime})");
+			await ApiContainer.EditorRequestApi<PostAppMaintenanceProtocol>(contents, startTime, endTime);
+			Log.Notice($"Set maintenance update [ Start : {startTime} | End : {endTime} ]");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version) as AppVersionResponse;
-			Log.Notice($"Android version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
+			await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version);
+			Log.Notice($"Android version change : {version}");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			var response = await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.iOS, version) as AppVersionResponse;
-			Log.Notice($"iOS version changed from {response.BeforeVersion} -> {response.AfterVersion}.");
+			await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.iOS, version);
+			Log.Notice($"iOS version changed : {version}");
 		}
 		
 		[Serializable]
