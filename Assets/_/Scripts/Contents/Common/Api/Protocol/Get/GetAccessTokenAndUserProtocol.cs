@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
+using Firebase.Auth;
+using Firebase.Messaging;
 using Redbean.MVP.Content;
 
 namespace Redbean.Api
@@ -22,6 +24,7 @@ namespace Redbean.Api
 			var user = new UserModel(request.Response).ModelPublish(true);
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.SignInUser);
+			await FirebaseMessaging.SubscribeAsync(user.Social.Id);
 			
 			Log.Print($"Login user's data. [ {user.Information.Nickname} | {user.Social.Id} ]");
 			return request.Response;

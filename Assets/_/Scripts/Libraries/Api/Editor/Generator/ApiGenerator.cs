@@ -79,25 +79,21 @@ namespace Redbean.Api
 				var requestType = "params object[] args";
 				if (jObject.TryGetValue("requestBody", out var requests))
 				{
-					var content = requests.SelectToken("content").ToObject<JObject>();
-					if (content.TryGetValue("application/json", out var json))
-					{
-						requestType = json.SelectToken("schema.$ref")
-							.Value<string>()
-							.Split('/')
-							.Last();
+					requestType = requests.SelectToken("content.application/json.schema.$ref")
+						.Value<string>()
+						.Split('/')
+						.Last();
 
-						requestType += " args";
-					}
+					requestType += " args";
 				}
 
 				var responseType = "";
 				if (jObject.TryGetValue("responses", out var responses))
 				{
-					var content = responses.SelectToken("200.content").ToObject<JObject>();
-					if (content.TryGetValue("application/json", out var json))
+					var content = responses.SelectToken("200").ToObject<JObject>();
+					if (content.TryGetValue("content", out var json))
 					{
-						responseType = json.SelectToken("schema.$ref")
+						responseType = json.SelectToken("application/json.schema.$ref")
 							.Value<string>()
 							.Split('/')
 							.Last();
