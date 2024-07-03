@@ -9,20 +9,22 @@ namespace Redbean
 {
 	public class AppLifeCycle : MonoBase
 	{
-		public static bool IsReady { get; private set; }
+		public static bool IsAppChecked { get; private set; }
+		public static bool IsAppReady { get; private set; }
+		public static string ExceptionMessage { get; private set; }
 
 		private async void Awake()
 		{
 			await AppBootstrap.BootstrapInitialize();
 			
 			Application.logMessageReceived += OnLogMessageReceived;
-			IsReady = true;
+			IsAppReady = true;
 		}
 
 		public override void OnDestroy()
 		{
 			Application.logMessageReceived -= OnLogMessageReceived;
-			IsReady = false;
+			IsAppReady = false;
 
 			AppBootstrap.BootstrapDispose();
 			
@@ -31,13 +33,23 @@ namespace Redbean
 				EditorApplication.isPlaying = false;
 #endif
 		}
+
+		public static void AppCheckSuccess()
+		{
+			IsAppChecked = true;
+		}
+		
+		public static void AppCheckFail()
+		{
+			IsAppChecked = false;
+		}
 		
 		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)
 		{
 			if (type != LogType.Exception)
 				return;
 
-			AppSettings.ExceptionMessage = condition;
+			ExceptionMessage = condition;
 			
 			this.Popup().AssetOpen<PopupException>();
 		}

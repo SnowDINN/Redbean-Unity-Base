@@ -13,14 +13,15 @@ namespace Redbean.MVP.Content
 
 		public UserModel(UserAndTokenResponse response)
 		{
-			Information = response.Information;
-			Social = response.Social;
+			Information = response.User.Information;
+			Social = response.User.Social;
+			Log = response.User.Log;
 		}
 	}
 	
 	public class UserRxModel : IRxModel
 	{
-		public ReactiveProperty<UserInfo> Information = new();
+		public ReactiveProperty<UserInformation> Information = new();
 		public ReactiveProperty<UserSocial> Social = new();
 		
 		public void Publish(ISerializeModel value)

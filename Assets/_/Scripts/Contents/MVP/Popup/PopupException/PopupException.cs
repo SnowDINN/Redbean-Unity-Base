@@ -12,7 +12,7 @@ namespace Redbean.Popup.Content
 		{
 			base.Awake();
 			
-			text.text = AppSettings.ExceptionMessage;
+			text.text = AppLifeCycle.ExceptionMessage;
 		}
 	}
 }

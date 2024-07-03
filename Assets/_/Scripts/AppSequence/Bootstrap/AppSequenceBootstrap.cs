@@ -55,7 +55,7 @@ namespace Redbean.Firebase
 						{
 							// TODO : 업데이트 진입 로직
 
-							AppSettings.IsProcessReady = false;
+							AppLifeCycle.AppCheckFail();
 							return;
 						}
 					}
@@ -64,11 +64,11 @@ namespace Redbean.Firebase
 					{
 						this.Popup().AssetOpen<PopupMaintenance>();
 						
-						AppSettings.IsProcessReady = false;
+						AppLifeCycle.AppCheckFail();
 						return;
 					}
 					
-					AppSettings.IsProcessReady = true;
+					AppLifeCycle.AppCheckSuccess();
 				}
 			}
 		}

@@ -14,10 +14,10 @@ namespace Redbean.Api
 			
 			ApiContainer.SetAccessToken(new TokenResponse
 			{
-				AccessToken = request.Response.AccessToken,
-				RefreshToken = request.Response.RefreshToken,
-				AccessTokenExpire = request.Response.AccessTokenExpire,
-				RefreshTokenExpire = request.Response.RefreshTokenExpire
+				AccessToken = request.Response.Token.AccessToken,
+				RefreshToken = request.Response.Token.RefreshToken,
+				AccessTokenExpire = request.Response.Token.AccessTokenExpire,
+				RefreshTokenExpire = request.Response.Token.RefreshTokenExpire
 			});
 			var user = new UserModel(request.Response).ModelPublish(true);
 

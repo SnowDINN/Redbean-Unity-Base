@@ -30,7 +30,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			if (!AppLifeCycle.IsReady)
+			if (!AppLifeCycle.IsAppReady)
 				return;
 			
 			// 유저 계정 제거 API 필요
@@ -44,7 +44,7 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), PropertyOrder(UserInformationOrder), DisableInEditorMode, ShowInInspector]
-		private Dictionary<string, object> user => AppLifeCycle.IsReady
+		private Dictionary<string, object> user => AppLifeCycle.IsAppReady
 			? new Dictionary<string, object> { { "User", this.GetModel<UserModel>() } }
 			: new Dictionary<string, object>();
 	}

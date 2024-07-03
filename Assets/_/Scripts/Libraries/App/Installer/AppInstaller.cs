@@ -35,8 +35,5 @@ namespace Redbean
 #endif
 			}
 		}
-
-		public static bool IsProcessReady { get; set; }
-		public static string ExceptionMessage { get; set; }
 	}
 }
