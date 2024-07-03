@@ -35,11 +35,11 @@ namespace Redbean.MVP
 
 		private async Task AwakeAsync()
 		{
-			if (!AppSettings.IsProcessReady)
-				return;
+			if (!AppLifeCycle.IsAppChecked)
+				await TaskExtension.WaitUntil(() => AppLifeCycle.IsAppChecked);
 			
-			if (!AppLifeCycle.IsReady)
-				await TaskExtension.WaitUntil(() => AppLifeCycle.IsReady);
+			if (!AppLifeCycle.IsAppReady)
+				await TaskExtension.WaitUntil(() => AppLifeCycle.IsAppReady);
 			
 			var type = Type.GetType(PresenterFullName);
 			if (type != null)
