@@ -24,20 +24,15 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
-			await this.EditorRequestApi<GetAccessTokenAndUserProtocol>(ID);
+			await this.RequestApi<GetAccessTokenAndUserProtocol>(ID);
 		}
 
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			if (!AppLifeCycle.IsAppReady)
-				return;
-			
-			// 유저 계정 제거 API 필요
-			await FirebaseAuth.DefaultInstance.CurrentUser.DeleteAsync();
+			await this.RequestApi<PostUserWithdrawalProtocol>();
 			
 			PlayerPrefs.DeleteAll();
-			
 			EditorApplication.isPlaying = false;
 			
 			Log.Notice("User account has been deleted.");

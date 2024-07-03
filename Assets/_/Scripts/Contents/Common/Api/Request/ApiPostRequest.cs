@@ -21,5 +21,8 @@ namespace Redbean.Api
 
 		public static async Task<ApiResponse> PostUserNicknameRequest(StringRequest args) =>
 			await SendPostRequest<ApiResponse>("/User/PostUserNickname", args);
+
+		public static async Task<ApiResponse> PostUserWithdrawalRequest(params object[] args) =>
+			await SendPostRequest<ApiResponse>("/User/PostUserWithdrawal", args);
 	}
 }

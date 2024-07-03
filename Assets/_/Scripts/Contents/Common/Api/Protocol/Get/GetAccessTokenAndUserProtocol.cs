@@ -24,9 +24,9 @@ namespace Redbean.Api
 			var user = new UserModel(request.Response).ModelPublish(true);
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.SignInUser);
-			await FirebaseMessaging.SubscribeAsync(user.Social.Id);
+			await FirebaseMessaging.SubscribeAsync(user.Information.Id);
 			
-			Log.Print($"Login user's data. [ {user.Information.Nickname} | {user.Social.Id} ]");
+			Log.Print($"Login user's data. [ {user.Information.Id} | {user.Information.Nickname} ]");
 			return request.Response;
 		}
 	}

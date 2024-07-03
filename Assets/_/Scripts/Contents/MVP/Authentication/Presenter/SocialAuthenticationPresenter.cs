@@ -45,8 +45,6 @@ namespace Redbean.MVP.Content
 			if (!m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 				return;
 			
-			await UniTask.WaitUntil(() => AppLifeCycle.IsAppReady, cancellationToken: token);
-				
 			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{
 				var auth = authentication.GetPlatform(view.Type);
@@ -64,9 +62,9 @@ namespace Redbean.MVP.Content
 			
 			await this.RequestApi<GetAccessTokenAndUserProtocol>(user.UserId);
 			
-			m_user.Social.Id = user.UserId;
-			m_user.Social.Platform = user.ProviderData.First().ProviderId;
+			m_user.Information.Id = user.UserId;
 			m_user.Information.Nickname = user.ProviderData.First().DisplayName;
+			m_user.Social.Platform = user.ProviderData.First().ProviderId;
 		}
 	}
 }

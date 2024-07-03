@@ -40,7 +40,6 @@ namespace Redbean.Api
 
 			GenerateCSharpApiAsync(ApiType.Get, apiEndpoints.Where(_ => _.Value.ContainsKey("get")).ToArray());
 			GenerateCSharpApiAsync(ApiType.Post, apiEndpoints.Where(_ => _.Value.ContainsKey("post")).ToArray());
-			GenerateCSharpApiAsync(ApiType.Delete, apiEndpoints.Where(_ => _.Value.ContainsKey("delete")).ToArray());
 		}
 
 		
@@ -76,6 +75,7 @@ namespace Redbean.Api
 					}
 				}
 				
+				// Request Body 존재할 경우
 				var requestType = "params object[] args";
 				if (jObject.TryGetValue("requestBody", out var requests))
 				{
@@ -87,6 +87,7 @@ namespace Redbean.Api
 					requestType += " args";
 				}
 
+				// Response Type 존재할 경우
 				var responseType = "";
 				if (jObject.TryGetValue("responses", out var responses))
 				{
