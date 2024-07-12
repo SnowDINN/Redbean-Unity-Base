@@ -19,8 +19,8 @@ namespace Google
 		WebClientId,
 	}
 	
-	[CreateAssetMenu(fileName = "GoogleSdk", menuName = "Redbean/GoogleSdk")]
-	public class GoogleSdkInstaller : ScriptableObject
+	[CreateAssetMenu(fileName = "GoogleAuthentication", menuName = "Redbean/GoogleAuthentication")]
+	public class GoogleAuthenticationInstaller : ScriptableObject
 	{
 		[Header("Web")]
 		public string webClientId;

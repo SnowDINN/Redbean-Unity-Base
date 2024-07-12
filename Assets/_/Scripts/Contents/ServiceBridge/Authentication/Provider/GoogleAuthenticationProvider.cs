@@ -28,9 +28,9 @@ namespace Redbean.Auth
 			var configuration = new GoogleSignInConfiguration
 			{
 #if UNITY_EDITOR || UNITY_STANDALONE
-				ClientSecret = GoogleExtension.GetWebSecretId(),
+				ClientSecret = GoogleAuthenticationExtension.GetWebSecretId(),
 #endif
-				WebClientId = GoogleExtension.GetWebClientId(),
+				WebClientId = GoogleAuthenticationExtension.GetWebClientId(),
 				RequestEmail = true,
 				RequestIdToken = true,
 				UseGameSignIn = false,

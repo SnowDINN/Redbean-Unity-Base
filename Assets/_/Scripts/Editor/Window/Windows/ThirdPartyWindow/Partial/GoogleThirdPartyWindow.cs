@@ -13,51 +13,51 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("Android Key"), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
-			get => googleSdk.androidClientId;
+			get => googleAuth.androidClientId;
 			set
 			{
-				googleSdk.androidClientId = value;
-				googleSdk.Save();
+				googleAuth.androidClientId = value;
+				googleAuth.Save();
 			}
 		}
 
 		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
 		private string IosClientKey
 		{
-			get => googleSdk.iosClientId;
+			get => googleAuth.iosClientId;
 			set
 			{
-				googleSdk.iosClientId = value;
-				googleSdk.Save();
+				googleAuth.iosClientId = value;
+				googleAuth.Save();
 			}
 		}
 
 		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
 		private string WebClientKey
 		{
-			get => googleSdk.webClientId;
+			get => googleAuth.webClientId;
 			set
 			{
-				googleSdk.webClientId = value;
-				googleSdk.Save();
+				googleAuth.webClientId = value;
+				googleAuth.Save();
 			}
 		}
 
 		[TabGroup(TabGroup, GoogleTab), TitleGroup(OnlyEditorGroup), LabelText("Web Secret"), ShowInInspector]
 		private string WebSecretKey
 		{
-			get => googleSdk.webClientSecretId;
+			get => googleAuth.webClientSecretId;
 			set
 			{
-				googleSdk.webClientSecretId = value;
-				googleSdk.Save();
+				googleAuth.webClientSecretId = value;
+				googleAuth.Save();
 			}
 		}
 
-		private void GetAosClientKey() => AndroidClientKey = googleSdk.GetClientId(ClientType.AndroidClientId);
+		private void GetAosClientKey() => AndroidClientKey = googleAuth.GetClientId(ClientType.AndroidClientId);
 
-		private void GetIosClientKey() => IosClientKey = googleSdk.GetClientId(ClientType.IosClientId);
+		private void GetIosClientKey() => IosClientKey = googleAuth.GetClientId(ClientType.IosClientId);
 
-		private void GetWebClientKey() => WebClientKey = googleSdk.GetClientId(ClientType.WebClientId);
+		private void GetWebClientKey() => WebClientKey = googleAuth.GetClientId(ClientType.WebClientId);
 	}
 }
