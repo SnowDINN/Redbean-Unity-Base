@@ -1,5 +1,0 @@
-<linker>
-	<assembly fullname="UnityEngine.AndroidJNIModule">
-		<type fullname="UnityEngine.AndroidJNIModule.AndroidJavaObject" preserve="all" />
-	</assembly>
-</linker>
