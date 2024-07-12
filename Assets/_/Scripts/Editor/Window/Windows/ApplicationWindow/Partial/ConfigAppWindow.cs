@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Redbean.Editor
 {
-	internal partial class ApplicationWindow
+	public partial class ApplicationWindow
 	{
 		private const string ConfigTab = "Config";
 		
