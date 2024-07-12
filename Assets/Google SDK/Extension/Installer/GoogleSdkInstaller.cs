@@ -24,16 +24,13 @@ namespace Google
 	{
 		[Header("Web")]
 		public string webClientId;
-		public string webSecretId;
-		public int webRedirectPort;
+		public string webClientSecretId;
 		
 		[Header("Android")]
 		public string androidClientId;
 		
 		[Header("iOS")]
 		public string iosClientId;
-		
-		public string webRedirectUrl => $"http://localhost:{webRedirectPort}/";
 		
 		public string GetClientId(ClientType type)
 		{

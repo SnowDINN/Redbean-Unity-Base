@@ -46,21 +46,10 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, GoogleTab), TitleGroup(OnlyEditorGroup), LabelText("Web Secret"), ShowInInspector]
 		private string WebSecretKey
 		{
-			get => googleSdk.webSecretId;
+			get => googleSdk.webClientSecretId;
 			set
 			{
-				googleSdk.webSecretId = value;
-				googleSdk.Save();
-			}
-		}
-		
-		[TabGroup(TabGroup, GoogleTab), TitleGroup(OnlyEditorGroup), ShowInInspector]
-		private int Port
-		{
-			get => googleSdk.webRedirectPort;
-			set
-			{
-				googleSdk.webRedirectPort = value;
+				googleSdk.webClientSecretId = value;
 				googleSdk.Save();
 			}
 		}

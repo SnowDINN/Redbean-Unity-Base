@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: GoogleSdk
   m_EditorClassIdentifier: 
   webClientId: 517818090277-b4n17aclsf2ie6e2c06e6fqbqhh9d03u.apps.googleusercontent.com
-  webSecretId: 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
-  webRedirectPort: 5000
+  webClientSecretId: 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
   androidClientId: Android Client ID value does not exist that matches the package
     name.
   iosClientId: 517818090277-u8kd216u52ul2558clbeheahm21c9ne5.apps.googleusercontent.com

@@ -11,8 +11,6 @@ namespace Google
 		public static string GetIosClientId() => GoogleSdkInstaller.GetClientId(ClientType.IosClientId);
 		public static string GetIosClientScheme() => GoogleSdkInstaller.GetReverseClientId(ClientType.IosClientId);
 		public static string GetWebClientId() => GoogleSdkInstaller.GetClientId(ClientType.WebClientId);
-		public static string GetWebSecretId() => GoogleSdkInstaller.webSecretId;
-		public static string GetWebRedirectURL() => GoogleSdkInstaller.webRedirectUrl;
-		public static int GetWebRedirectUrlPort() => GoogleSdkInstaller.webRedirectPort;
+		public static string GetWebSecretId() => GoogleSdkInstaller.webClientSecretId;
 	}   
 }

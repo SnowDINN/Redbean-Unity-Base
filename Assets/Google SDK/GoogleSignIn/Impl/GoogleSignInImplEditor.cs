@@ -58,18 +58,28 @@ namespace Google.Impl
 
     static HttpListener BindLocalHostFirstAvailablePort()
     {
-      try
-      {
-        var listener = new HttpListener();
-        listener.Prefixes.Add(GoogleExtension.GetWebRedirectURL());
-        listener.Start();
-        return listener;
-      }
-      catch(System.Exception e)
-      {
-        Debug.LogException(e);
-        return null;
-      }
+      ushort minPort = 49215;
+#if UNITY_EDITOR_WIN
+      var listeners = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners();
+      return Enumerable.Range(minPort, ushort.MaxValue - minPort).Where((i) => !listeners.Any((x) => x.Port == i)).Select((port) => {
+#elif UNITY_EDITOR_OSX
+      return Enumerable.Range(minPort, ushort.MaxValue - minPort).Select((port) => {
+#else
+      return Enumerable.Range(0,10).Select((i) => UnityEngine.Random.Range(minPort,ushort.MaxValue)).Select((port) => {
+#endif
+        try
+        {
+          var listener = new HttpListener();
+          listener.Prefixes.Add($"http://localhost:{port}/");
+          listener.Start();
+          return listener;
+        }
+        catch(System.Exception e)
+        {
+          Debug.LogException(e);
+          return null;
+        }
+      }).FirstOrDefault((listener) => listener != null);
     }
 
     void SigningIn()
@@ -117,23 +127,28 @@ namespace Google.Impl
           var tokenType = (string)jobj.GetValue("token_type");
 
           var user = new GoogleSignInUser();
+          if(configuration.RequestAuthCode)
+            user.AuthCode = code;
+
           if(configuration.RequestIdToken)
             user.IdToken = (string)jobj.GetValue("id_token");
 
-          if(configuration.RequestEmail || configuration.RequestProfile)
-          {
-            var request = HttpWebRequest.CreateHttp("https://openidconnect.googleapis.com/v1/userinfo");
-            request.Method = "GET";
-            request.Headers.Add("Authorization", "Bearer " + accessToken);
+          var request = HttpWebRequest.CreateHttp("https://openidconnect.googleapis.com/v1/userinfo");
+          request.Method = "GET";
+          request.Headers.Add("Authorization", "Bearer " + accessToken);
 
-            var data = await request.GetResponseAsStringAsync().ContinueWith((task) => task.Result,taskScheduler);
-            //  "email_verified": true,"locale": ""
-            var userInfo = JObject.Parse(data);
-            user.UserId = (string)userInfo.GetValue("sub");
-            user.DisplayName = (string)userInfo.GetValue("name");
+          var data = await request.GetResponseAsStringAsync().ContinueWith((task) => task.Result,taskScheduler);
+          var userInfo = JObject.Parse(data);
+          user.UserId = (string)userInfo.GetValue("sub");
+          user.DisplayName = (string)userInfo.GetValue("name");
+
+          if(configuration.RequestEmail)
+            user.Email = (string)userInfo.GetValue("email");
+
+          if(configuration.RequestProfile)
+          {
             user.GivenName = (string)userInfo.GetValue("given_name");
             user.FamilyName = (string)userInfo.GetValue("family_name");
-            user.Email = (string)userInfo.GetValue("email");
             user.ImageUrl = Uri.TryCreate((string)userInfo.GetValue("picture"),UriKind.Absolute,out var url) ? url : null;
           }
 
@@ -150,9 +165,6 @@ namespace Google.Impl
         finally
         {
           Pending = false;
-          
-          httpListener.Stop();
-          httpListener.Close();
         }
       },taskScheduler);
     }

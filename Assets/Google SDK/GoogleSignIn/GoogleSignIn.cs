@@ -1,4 +1,4 @@
-// <copyright file="GoogleSignIn.cs" company="Google Inc.">
+﻿// <copyright file="GoogleSignIn.cs" company="Google Inc.">
 // Copyright (C) 2017 Google Inc. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,9 +69,7 @@ namespace Google {
         if (theInstance == null || theConfiguration == value || theConfiguration == null) {
           theConfiguration = value;
         } else {
-          throw new SignInException(GoogleSignInStatusCode.DEVELOPER_ERROR,
-              "DefaultInstance already created. " +
-              " Cannot change configuration after creation.");
+          throw new SignInException(GoogleSignInStatusCode.DEVELOPER_ERROR,"DefaultInstance already created. Cannot change configuration after creation.");
         }
       }
 
@@ -93,9 +91,7 @@ namespace Google {
           theInstance = new GoogleSignIn(new GoogleSignInImpl(Configuration));
 #else
           theInstance = new GoogleSignIn(null);
-          throw new SignInException(
-              GoogleSignInStatusCode.DeveloperError,
-              "This platform is not supported by GoogleSignIn");
+          throw new SignInException(GoogleSignInStatusCode.DEVELOPER_ERROR,"This platform is not supported by GoogleSignIn");
 #endif
         }
         return theInstance;
@@ -107,7 +103,7 @@ namespace Google {
     }
 
     public void EnableDebugLogging(bool flag) {
-            impl.EnableDebugLogging(flag);
+      impl.EnableDebugLogging(flag);
     }
 
     /// <summary>Starts the authentication process.</summary>
@@ -118,14 +114,13 @@ namespace Google {
     /// </remarks>
     public Task<GoogleSignInUser> SignIn() {
       var tcs = new TaskCompletionSource<GoogleSignInUser>();
-      SignInHelperObject.Instance.StartCoroutine(
-        impl.SignIn().WaitForResult(tcs));
+      SignInHelperObject.Instance.StartCoroutine(impl.SignIn().WaitForResult(tcs));
       return tcs.Task;
     }
 
     public Task<GoogleSignInUser> SignInAsync() {
       var tcs = new TaskCompletionSource<GoogleSignInUser>();
-      impl.SignIn().WaitForResultAsync(tcs);
+      impl.SignIn().WaitForResultAsync(tcs).ContinueWith((task) => {});
       return tcs.Task;
     }
 
@@ -139,14 +134,13 @@ namespace Google {
     /// </remarks>
     public Task<GoogleSignInUser> SignInSilently() {
       var tcs = new TaskCompletionSource<GoogleSignInUser>();
-      SignInHelperObject.Instance.StartCoroutine(
-          impl.SignInSilently().WaitForResult(tcs));
+      SignInHelperObject.Instance.StartCoroutine(impl.SignInSilently().WaitForResult(tcs));
       return tcs.Task;
     }
 
     public Task<GoogleSignInUser> SignInSilentlyAsync() {
       var tcs = new TaskCompletionSource<GoogleSignInUser>();
-      impl.SignInSilently().WaitForResultAsync(tcs);
+      impl.SignIn().WaitForResultAsync(tcs).ContinueWith((task) => {});
       return tcs.Task;
     }
 

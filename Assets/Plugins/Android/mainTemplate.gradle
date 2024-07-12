@@ -4,8 +4,11 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
-    implementation 'com.google.android.gms:play-services-auth:20+' // Assets/Google SDK/Scripts/Editor/GoogleSignInDependencies.xml:10
+    implementation 'androidx.credentials:credentials:1.2.2' // Assets/Google SDK/GoogleSignIn/Editor/GoogleSignInDependencies.xml:6
+    implementation 'androidx.credentials:credentials-play-services-auth:1.2.2' // Assets/Google SDK/GoogleSignIn/Editor/GoogleSignInDependencies.xml:7
+    implementation 'com.google.android.gms:play-services-auth:21.2.0' // Assets/Google SDK/GoogleSignIn/Editor/GoogleSignInDependencies.xml:9
     implementation 'com.google.android.gms:play-services-base:18.4.0' // Assets/Firebase/Editor/AppDependencies.xml:17
+    implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.0' // Assets/Google SDK/GoogleSignIn/Editor/GoogleSignInDependencies.xml:8
     implementation 'com.google.firebase:firebase-analytics:22.0.0' // Assets/Firebase/Editor/MessagingDependencies.xml:15
     implementation 'com.google.firebase:firebase-app-unity:12.0.0' // Assets/Firebase/Editor/AppDependencies.xml:22
     implementation 'com.google.firebase:firebase-auth:23.0.0' // Assets/Firebase/Editor/AuthDependencies.xml:13

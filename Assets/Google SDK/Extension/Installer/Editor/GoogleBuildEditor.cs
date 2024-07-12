@@ -25,7 +25,7 @@ namespace Google
 			installer.androidClientId = GoogleExtension.GetAndroidClientId();
 			installer.iosClientId = GoogleExtension.GetIosClientId();
 			installer.webClientId = GoogleExtension.GetWebClientId();
-			installer.webSecretId = "";
+			installer.webClientSecretId = "";
 			installer.Save();
 		}
 	}
