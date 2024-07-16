@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Redbean.Api;
@@ -10,7 +11,11 @@ using Redbean.MVP;
 using Redbean.Singleton;
 using Sirenix.OdinInspector;
 using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using VHierarchy.Libs;
 using Object = UnityEngine.Object;
 
 namespace Redbean.Editor
@@ -63,11 +68,11 @@ namespace Redbean.Editor
 		}
 
 		[TabGroup(TabGroup, FinderTab), TitleGroup(PresenterGroup)]
-		[PropertyOrder(PresenterOrder), ListDrawerSettings(IsReadOnly = true, ShowPaging = true, NumberOfItemsPerPage = 10), ShowInInspector, HideReferenceObjectPicker, Searchable]
+		[PropertyOrder(PresenterOrder), ListDrawerSettings(IsReadOnly = true, ShowPaging = true, NumberOfItemsPerPage = 10), ShowInInspector, Searchable]
 		private static List<PresenterSearchable> presenterList = new();
 
 		[TabGroup(TabGroup, FinderTab), TitleGroup(PlayerPrefsGroup)]
-		[PropertyOrder(PlayerPrefsOrder), ListDrawerSettings(IsReadOnly = true, ShowPaging = true, NumberOfItemsPerPage = 10), ShowInInspector, HideReferenceObjectPicker, Searchable]
+		[PropertyOrder(PlayerPrefsOrder), ListDrawerSettings(IsReadOnly = true, ShowPaging = true, NumberOfItemsPerPage = 10), ShowInInspector, Searchable]
 		private static List<PlayerPrefsViewer> playerPrefsList = new();
 
 		public static void PresenterAllClear()
@@ -83,6 +88,7 @@ namespace Redbean.Editor
 		}
 	}
 
+	[HideReferenceObjectPicker]
 	public class PresenterSearchable
 	{
 		public PresenterSearchable(string key)
@@ -95,7 +101,7 @@ namespace Redbean.Editor
 		private readonly string Key;
 		
 		[Title("Reference"), ShowIf(nameof(isAny), Value = true), ShowInInspector]
-		private readonly List<Object> Value = new();
+		private readonly Dictionary<Object, List<PresenterItemSearchable>> Value = new();
 
 		private readonly string Name;
 		private bool isAny => Value.Any();
@@ -116,7 +122,37 @@ namespace Redbean.Editor
 				
 				var text = File.ReadAllText(assetPaths[i]);
 				if (text.Contains(Name))
-					Value.Add(AssetDatabase.LoadAssetAtPath<Object>(assetPaths[i]));
+				{
+					var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPaths[i]);
+					Value.Add(asset, new List<PresenterItemSearchable>());
+
+					if (assetPaths[i].EndsWith(".prefab"))
+					{
+						var prefab = PrefabUtility.LoadPrefabContents(assetPaths[i]);
+						var components = prefab.GetComponentsInChildren<View>().Where(_ => _.PresenterFullName.Split('.').Last() == Name).Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false))).ToList();
+						if (components.Any())
+						{
+							Value[asset] = components;
+							// EditorGUIUtility.PingObject(components[0]);
+							// Selection.activeObject = components[0];
+						}
+					}
+					else if (assetPaths[i].EndsWith(".unity"))
+					{
+						var scene = SceneManager.GetSceneByPath(assetPaths[i]);
+						var rootGameObjects = scene.GetRootGameObjects();
+						foreach (var obj in rootGameObjects)
+						{
+							var components = obj.GetComponentsInChildren<View>().Where(_ => _.PresenterFullName.Split('.').Last() == Name).Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false))).ToList();
+							if (components.Any())
+							{
+								Value[asset] = components;
+								// EditorGUIUtility.PingObject(components[0]);
+								// Selection.activeObject = components[0];
+							}
+						}
+					}
+				}
 			}
 			EditorUtility.ClearProgressBar();
 		}
@@ -124,6 +160,42 @@ namespace Redbean.Editor
 		public void Clear() => Value.Clear();
 	}
 	
+	[HideReferenceObjectPicker]
+	public class PresenterItemSearchable
+	{
+		public PresenterItemSearchable(string key, string value)
+		{
+			this.key = key;
+			this.value = value;
+		}
+
+		private readonly string key;
+		
+		[InlineButton(nameof(Search), SdfIconType.Search, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
+		private readonly string value;
+
+		public void Search()
+		{
+			if (key.EndsWith(".prefab"))
+			{
+				var prefab = PrefabStageUtility.OpenPrefab(key).prefabContentsRoot;
+				var component = prefab.GetComponentsInChildren<View>().FirstOrDefault(_ => SearchUtils.GetHierarchyPath(_.gameObject, false).Contains(value));
+				
+				EditorGUIUtility.PingObject(component);
+				Selection.activeObject = component;
+			}
+			else if (key.EndsWith(".unity"))
+			{
+				EditorSceneManager.OpenScene(key);
+				
+				var go = GameObject.Find(value);
+				EditorGUIUtility.PingObject(go);
+				Selection.activeObject = go;
+			}
+		}
+	}
+	
+	[HideReferenceObjectPicker]
 	public class PlayerPrefsViewer
 	{
 		public PlayerPrefsViewer(string key, string value)

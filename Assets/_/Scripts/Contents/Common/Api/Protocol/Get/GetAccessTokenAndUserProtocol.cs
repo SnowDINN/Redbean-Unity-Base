@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System.Web;
-using Firebase.Auth;
 using Firebase.Messaging;
 using Redbean.MVP.Content;
 
