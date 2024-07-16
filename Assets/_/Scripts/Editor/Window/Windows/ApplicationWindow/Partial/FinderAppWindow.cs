@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Redbean.Api;
@@ -15,7 +14,6 @@ using UnityEditor.SceneManagement;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using VHierarchy.Libs;
 using Object = UnityEngine.Object;
 
 namespace Redbean.Editor
@@ -121,36 +119,34 @@ namespace Redbean.Editor
 				EditorUtility.DisplayProgressBar("Searching", $"Searching Presenter...[ {i} / {assetPaths.Length} ]", i / (float)assetPaths.Length);
 				
 				var text = File.ReadAllText(assetPaths[i]);
-				if (text.Contains(Name))
-				{
-					var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPaths[i]);
-					Value.Add(asset, new List<PresenterItemSearchable>());
+				if (!text.Contains(Name))
+					continue;
 
-					if (assetPaths[i].EndsWith(".prefab"))
+				var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPaths[i]);
+				Value.Add(asset, new List<PresenterItemSearchable>());
+
+				if (assetPaths[i].EndsWith(".prefab"))
+				{
+					var prefab = PrefabUtility.LoadPrefabContents(assetPaths[i]);
+					var components = prefab.GetComponentsInChildren<View>()
+						.Where(_ => _.PresenterFullName.Split('.').Last() == Name)
+						.Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false)))
+						.ToList();
+					if (components.Any())
+						Value[asset] = components;
+				}
+				else if (assetPaths[i].EndsWith(".unity"))
+				{
+					var scene = SceneManager.GetSceneByPath(assetPaths[i]);
+					var rootGameObjects = scene.GetRootGameObjects();
+					foreach (var obj in rootGameObjects)
 					{
-						var prefab = PrefabUtility.LoadPrefabContents(assetPaths[i]);
-						var components = prefab.GetComponentsInChildren<View>().Where(_ => _.PresenterFullName.Split('.').Last() == Name).Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false))).ToList();
+						var components = obj.GetComponentsInChildren<View>()
+							.Where(_ => _.PresenterFullName.Split('.').Last() == Name)
+							.Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false)))
+							.ToList();
 						if (components.Any())
-						{
 							Value[asset] = components;
-							// EditorGUIUtility.PingObject(components[0]);
-							// Selection.activeObject = components[0];
-						}
-					}
-					else if (assetPaths[i].EndsWith(".unity"))
-					{
-						var scene = SceneManager.GetSceneByPath(assetPaths[i]);
-						var rootGameObjects = scene.GetRootGameObjects();
-						foreach (var obj in rootGameObjects)
-						{
-							var components = obj.GetComponentsInChildren<View>().Where(_ => _.PresenterFullName.Split('.').Last() == Name).Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false))).ToList();
-							if (components.Any())
-							{
-								Value[asset] = components;
-								// EditorGUIUtility.PingObject(components[0]);
-								// Selection.activeObject = components[0];
-							}
-						}
 					}
 				}
 			}
