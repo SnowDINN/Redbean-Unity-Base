@@ -132,6 +132,7 @@ namespace Redbean.Editor
 						.Where(_ => _.PresenterFullName.Split('.').Last() == Name)
 						.Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false)))
 						.ToList();
+					
 					if (components.Any())
 						Value[asset] = components;
 				}
@@ -145,6 +146,7 @@ namespace Redbean.Editor
 							.Where(_ => _.PresenterFullName.Split('.').Last() == Name)
 							.Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false)))
 							.ToList();
+						
 						if (components.Any())
 							Value[asset] = components;
 					}
