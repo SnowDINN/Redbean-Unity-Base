@@ -13,7 +13,6 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace Redbean.Editor
@@ -138,7 +137,7 @@ namespace Redbean.Editor
 				}
 				else if (assetPaths[i].EndsWith(".unity"))
 				{
-					var scene = SceneManager.GetSceneByPath(assetPaths[i]);
+					var scene = EditorSceneManager.GetSceneByPath(assetPaths[i]);
 					var rootGameObjects = scene.GetRootGameObjects();
 					foreach (var obj in rootGameObjects)
 					{
