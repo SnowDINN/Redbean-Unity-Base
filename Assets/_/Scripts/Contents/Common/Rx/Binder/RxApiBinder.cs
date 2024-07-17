@@ -13,7 +13,7 @@ namespace Redbean.Rx
 		public RxApiBinder()
 		{
 			Observable.Interval(TimeSpan.FromSeconds(60))
-				.Where(_ => ApiContainer.IsRefreshTokenExist && ApiContainer.IsAccessTokenExpired)
+				.Where(_ => ApiAuthentication.IsRefreshTokenExist && ApiAuthentication.IsAccessTokenExpired)
 				.Subscribe(_ => { UniTask.Void(GetRefreshAccessTokenAsync); })
 				.AddTo(disposables);
 		}

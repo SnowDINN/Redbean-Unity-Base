@@ -39,7 +39,7 @@ namespace Redbean.Popup
 			this.GetSingleton<PopupSingleton>().Close(Guid);
 
 		public async Task WaitUntilClose() =>
-			await TaskExtension.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
+			await this.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
 	}
 	
 #if UNITY_EDITOR

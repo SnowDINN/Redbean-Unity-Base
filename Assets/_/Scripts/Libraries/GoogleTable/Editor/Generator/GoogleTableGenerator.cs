@@ -30,7 +30,7 @@ namespace Redbean.Table
 		{
 #region Google Client Settings
 			
-			var response = await ApiContainer.EditorRequestApi<GetTableConfigProtocol>() as TableConfigResponse;
+			var response = await ApiAuthentication.EditorRequestApi<GetTableConfigProtocol>() as TableConfigResponse;
 			var ClientId = response.Client.Id;
 			var ClientSecret = response.Client.Secret;
 			var SheetId = response.Sheet.Id;

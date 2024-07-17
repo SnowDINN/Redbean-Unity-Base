@@ -75,18 +75,18 @@ namespace Redbean.Singleton
 		/// <summary>
 		/// 모델 재정의
 		/// </summary>
-		public T Override<T>(T model, bool isPlayerPrefs = false) where T : IModel
+		public T Override<T>(T value, bool isPlayerPrefs = false) where T : IModel
 		{
-			var targetFields = modelGroup[model.GetType()].GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).ToArray();
-			var copyFields = model.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).ToArray();
+			var targetFields = modelGroup[value.GetType()].GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).ToArray();
+			var copyFields = value.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public).ToArray();
 			
 			for (var i = 0; i < targetFields.Length; i++)
-				targetFields[i].SetValue(modelGroup[model.GetType()], copyFields[i].GetValue(model));
+				targetFields[i].SetValue(modelGroup[value.GetType()], copyFields[i].GetValue(value));
 
 			if (isPlayerPrefs)
-				model.SetPlayerPrefs();
+				Save(value);
 			
-			return model;
+			return value;
 		}
 		
 #region PlayerPrefs

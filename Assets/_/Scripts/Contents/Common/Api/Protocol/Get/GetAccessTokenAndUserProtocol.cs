@@ -13,7 +13,7 @@ namespace Redbean.Api
 			if (request.ErrorCode > 0)
 				return request.Response;
 			
-			ApiContainer.SetAccessToken(new TokenResponse
+			ApiAuthentication.SetAccessToken(new TokenResponse
 			{
 				AccessToken = request.Response.Token.AccessToken,
 				RefreshToken = request.Response.Token.RefreshToken,

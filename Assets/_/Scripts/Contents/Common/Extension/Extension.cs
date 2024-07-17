@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Redbean.MVP;
+﻿using System.Threading.Tasks;
 using Redbean.MVP.Content;
 using Redbean.Singleton;
 
@@ -16,46 +13,6 @@ namespace Redbean
 		public static async Task<object> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer => 
 			await ApiContainer.RequestApi<T>(args);
 #endif
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		private static T GetSingleton<T>() where T : ISingletonContainer => SingletonContainer.GetSingleton<T>();
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		private static object GetSingleton(Type type) => SingletonContainer.GetSingleton(type);
-		
-		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		private static T GetModel<T>() where T : IModel => SingletonContainer.GetSingleton<MvpSingleton>().GetModel<T>();
-		
-		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		private static object GetModel(Type type) => SingletonContainer.GetSingleton<MvpSingleton>().GetModel(type);
-		
-		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		public static T GetModel<T>(this IExtension extension) where T : IModel => GetModel<T>();
-		
-		/// <summary>
-		/// 모델 호출
-		/// </summary>
-		public static object GetModel(this IExtension extension, Type type) => GetModel(type);
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		public static T GetSingleton<T>(this IExtension extension) where T : ISingletonContainer => GetSingleton<T>();
-		
-		/// <summary>
-		/// 싱글톤 호출
-		/// </summary>
-		public static object GetSingleton(this IExtension extension, Type type) => GetSingleton(type);
 		
 		/// <summary>
 		/// API 호출
@@ -84,20 +41,5 @@ namespace Redbean
 		/// 클래스 변환
 		/// </summary>
 		public static T As<T>(this IExtension extension) where T : class => extension as T;
-
-#region CancellationToken
-
-		/// <summary>
-		/// 토큰 취소 및 할당 해제
-		/// </summary>
-		public static void CancelAndDispose(this CancellationTokenSource cancellationTokenSource)
-		{
-			if (!cancellationTokenSource.IsCancellationRequested)
-				cancellationTokenSource.Cancel();
-		
-			cancellationTokenSource.Dispose();
-		}
-
-#endregion
 	}
 }

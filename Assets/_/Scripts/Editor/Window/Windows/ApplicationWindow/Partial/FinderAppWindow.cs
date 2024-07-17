@@ -107,7 +107,7 @@ namespace Redbean.Editor
 		private readonly Dictionary<Object, List<PresenterItemSearchable>> Value;
 		private bool isAny => Value.Any();
 
-		public void Execute() => ExecuteAsync();
+		public async void Execute() => await ExecuteAsync();
 		public void Clear() => Value.Clear();
 
 		private async UniTask ExecuteAsync()

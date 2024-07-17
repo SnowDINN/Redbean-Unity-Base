@@ -3,13 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Redbean.Api;
-
-#if UNITY_EDITOR
-using Firebase.Auth;
-using Redbean.Auth;
-using UnityEngine;
-#endif
 
 namespace Redbean
 {
@@ -32,12 +25,6 @@ namespace Redbean
 			Timeout = TimeSpan.FromSeconds(60),
 		};
 		
-		private static TokenResponse currentToken = new();
-		public static bool IsAccessTokenExpired => currentToken.AccessTokenExpire < DateTime.UtcNow;
-		public static bool IsRefreshTokenExpired => currentToken.RefreshTokenExpire < DateTime.UtcNow;
-		public static bool IsRefreshTokenExist => !string.IsNullOrEmpty(currentToken.RefreshToken);
-		public static string RefreshToken => currentToken.RefreshToken;
-		
 		public Task Setup()
 		{
 			var apis = AppDomain.CurrentDomain.GetAssemblies()
@@ -57,27 +44,9 @@ namespace Redbean
 
 		public void Dispose()
 		{
-#if UNITY_EDITOR
-			RemoveAccessToken();
-#endif
-			
 			apiGroup.Clear();
 			
 			Log.System("Api has been terminated.");
-		}
-
-		public static void RemoveAccessToken()
-		{
-			if (Http.DefaultRequestHeaders.Contains("Authorization"))
-				Http.DefaultRequestHeaders.Remove("Authorization");
-		}
-
-		public static void SetAccessToken(TokenResponse response)
-		{
-			currentToken = response;
-			
-			RemoveAccessToken();
-			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
 		}
 
 		public static async Task<object> RequestApi(Type type, params object[] args) => 
@@ -85,43 +54,5 @@ namespace Redbean
 
 		public static async Task<object> RequestApi<T>(params object[] args) where T : IApiContainer =>
 			await apiGroup[typeof(T)].Request(args);
-		
-#if UNITY_EDITOR
-		public static async Task<object> EditorRequestApi<T>(params object[] args) where T : IApiContainer
-		{
-			const string Key = "EDITOR_ACCESS_EMAIL";
-			
-			using var api = new ApiContainer();
-			await api.Setup();
-			
-			var email = PlayerPrefs.GetString(Key);
-			if (string.IsNullOrEmpty(email))
-			{
-				var authenticationProvider = new GoogleAuthenticationProvider();
-				if (!GoogleAuthenticationProvider.IsInitialize)
-					await authenticationProvider.Initialize();
-
-				var authenticationResult = await authenticationProvider.Login();
-				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
-				
-				await RequestEditorAccessTokenAsync(user.Email);
-				
-				PlayerPrefs.SetString(Key, user.Email);
-			}
-			else
-				await RequestEditorAccessTokenAsync(email);
-
-			return await api.EditorRequestApi<T>(args);
-		}
-		
-		private static async Task RequestEditorAccessTokenAsync(string email)
-		{
-			var request = await ApiPostRequest.PostAppAccessTokenRequest(new StringRequest
-			{
-				Value = email.Encryption()
-			});
-			Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Response.Value}");
-		}
-#endif
 	}
 }

@@ -74,7 +74,7 @@ namespace Redbean.Editor
 					});
 				}
 				
-				await ApiContainer.EditorRequestApi<PostBundleFilesProtocol>(requestFiles.ToArray());
+				await ApiAuthentication.EditorRequestApi<PostBundleFilesProtocol>(requestFiles.ToArray());
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
@@ -134,7 +134,7 @@ namespace Redbean.Editor
 					});
 				}
 				
-				await ApiContainer.EditorRequestApi<PostTableFileProtocol>(requestFiles.ToArray());
+				await ApiAuthentication.EditorRequestApi<PostTableFileProtocol>(requestFiles.ToArray());
 			}
 			catch (Exception e)
 			{
@@ -151,21 +151,21 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
 		private async void Maintenance([MultiLineProperty(5)] string contents, DateTime startTime, DateTime endTime)
 		{
-			await ApiContainer.EditorRequestApi<PostAppMaintenanceProtocol>(contents, startTime, endTime);
+			await ApiAuthentication.EditorRequestApi<PostAppMaintenanceProtocol>(contents, startTime, endTime);
 			Log.Notice($"Set maintenance update [ Start : {startTime} | End : {endTime} ]");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version);
+			await ApiAuthentication.EditorRequestApi<PostAppVersionProtocol>(MobileType.Android, version);
 			Log.Notice($"Android version change : {version}");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			await ApiContainer.EditorRequestApi<PostAppVersionProtocol>(MobileType.iOS, version);
+			await ApiAuthentication.EditorRequestApi<PostAppVersionProtocol>(MobileType.iOS, version);
 			Log.Notice($"iOS version changed : {version}");
 		}
 		
