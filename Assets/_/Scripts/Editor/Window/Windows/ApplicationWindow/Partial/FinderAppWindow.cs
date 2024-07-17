@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Redbean.Api;
 using Redbean.MVP;
 using Redbean.Singleton;
 using Sirenix.OdinInspector;
+using Unity.Jobs;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Search;
@@ -86,7 +88,7 @@ namespace Redbean.Editor
 	}
 
 	[HideReferenceObjectPicker]
-	public readonly struct PresenterSearchable
+	public readonly struct PresenterSearchable : IJob
 	{
 		public PresenterSearchable(string key)
 		{
@@ -98,14 +100,17 @@ namespace Redbean.Editor
 		
 		private readonly string Presenter;
 
-		[InlineButton(nameof(Search), SdfIconType.Search, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
+		[InlineButton(nameof(Execute), SdfIconType.Search, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
 		private readonly string Key;
 		
 		[Title("Reference"), ShowIf(nameof(isAny), Value = true), ShowInInspector]
 		private readonly Dictionary<Object, List<PresenterItemSearchable>> Value;
 		private bool isAny => Value.Any();
 
-		public void Search()
+		public void Execute() => ExecuteAsync();
+		public void Clear() => Value.Clear();
+
+		private async UniTask ExecuteAsync()
 		{
 			ApplicationWindow.PresenterAllClear();
 			Clear();
@@ -120,7 +125,7 @@ namespace Redbean.Editor
 			{
 				EditorUtility.DisplayProgressBar("Searching", $"Searching Presenter...[ {i} / {assetPaths.Length} ]", i / (float)assetPaths.Length);
 				
-				var text = File.ReadAllText(assetPaths[i]);
+				var text = await File.ReadAllTextAsync(assetPaths[i]);
 				if (!text.Contains(Presenter))
 					continue;
 
@@ -156,12 +161,10 @@ namespace Redbean.Editor
 			}
 			EditorUtility.ClearProgressBar();
 		}
-
-		public void Clear() => Value.Clear();
 	}
 	
 	[HideReferenceObjectPicker]
-	public readonly struct PresenterItemSearchable
+	public readonly struct PresenterItemSearchable : IJob
 	{
 		public PresenterItemSearchable(string key, string value)
 		{
@@ -171,10 +174,12 @@ namespace Redbean.Editor
 
 		private readonly string key;
 		
-		[InlineButton(nameof(Search), SdfIconType.Search, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
+		[InlineButton(nameof(Execute), SdfIconType.Search, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
 		private readonly string value;
 
-		public void Search()
+		public void Execute() => ExecuteAsync();
+
+		private UniTask ExecuteAsync()
 		{
 			var presenter = value;
 			
@@ -194,11 +199,13 @@ namespace Redbean.Editor
 				EditorGUIUtility.PingObject(go);
 				Selection.activeObject = go;
 			}
+
+			return UniTask.CompletedTask;
 		}
 	}
 	
 	[HideReferenceObjectPicker]
-	public struct PlayerPrefsViewer
+	public struct PlayerPrefsViewer : IJob
 	{
 		public PlayerPrefsViewer(string key, string value)
 		{
@@ -208,7 +215,7 @@ namespace Redbean.Editor
 			isOpen = false;
 		}
 		
-		[InlineButton(nameof(Detail), SdfIconType.EnvelopeOpen, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
+		[InlineButton(nameof(Execute), SdfIconType.EnvelopeOpen, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
 		private string Key;
 
 		[Title("JSON"), DisplayAsString(Overflow = false), ShowIf(nameof(isOpen), Value = true), ShowInInspector, HideLabel]
@@ -216,7 +223,7 @@ namespace Redbean.Editor
 
 		private bool isOpen;
 
-		public void Detail()
+		public void Execute()
 		{
 			ApplicationWindow.PlayerPrefsAllClear();
 			isOpen = !isOpen;

@@ -10,6 +10,8 @@ namespace Redbean.Editor
 		protected override void OnEnable()
 		{
 			base.OnEnable();
+
+			OnBeginGUI += Repaint;
 			
 			presenterList = presenterArray.Any() ? presenterArray : new List<PresenterSearchable>();
 			playerPrefsList = playerPrefsArray.Any() ? playerPrefsArray : new List<PlayerPrefsViewer>();
@@ -18,6 +20,8 @@ namespace Redbean.Editor
 		protected override void OnDisable()
 		{
 			base.OnDisable();
+			
+			OnBeginGUI -= Repaint;
 			
 			presenterList.Clear();
 			playerPrefsList.Clear();
