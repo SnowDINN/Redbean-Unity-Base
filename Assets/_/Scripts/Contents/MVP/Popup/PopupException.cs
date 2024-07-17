@@ -7,12 +7,10 @@ namespace Redbean.Popup.Content
 	{
 		[SerializeField] 
 		private TextMeshProUGUI text;
-		
-		public override void Awake()
+
+		public string ExceptionMessage
 		{
-			base.Awake();
-			
-			text.text = AppLifeCycle.ExceptionMessage;
+			set => text.text = value;
 		}
 	}
 }

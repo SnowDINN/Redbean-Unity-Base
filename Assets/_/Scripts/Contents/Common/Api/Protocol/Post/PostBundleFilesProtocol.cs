@@ -8,7 +8,13 @@ namespace Redbean.Api
 		{
 			return (await ApiPostRequest.PostBundleFilesRequest(new AppUploadFilesRequest
 			{
-				Type = AppSettings.PlatformType,
+#if UNITY_ANDROID
+				Type = MobileType.Android,
+#elif UNITY_IOS
+				Type = MobileType.iOS,
+#else
+				Type = MobileType.None,
+#endif
 				Files = args as RequestFile[]
 			})).Response;
 		}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Redbean.Rx
 {
-	public class RxInputBinder : RxBase
+	public class RxInputBinder : RxBase, ISingletonContainer
     {
     	private readonly Subject<KeyCode> onKeyInputDetected = new();
     	public Observable<KeyCode> OnKeyInputDetected => 

@@ -3,7 +3,7 @@ using Redbean.MVP;
 
 namespace Redbean.Rx
 {
-	public class RxModelBinder : RxBase
+	public class RxModelBinder : RxBase, ISingletonContainer
 	{
 		private readonly Subject<IModel> onModelChanged = new();
 		public Observable<IModel> OnModelChanged => onModelChanged.Share();

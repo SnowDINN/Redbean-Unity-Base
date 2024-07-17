@@ -5,7 +5,7 @@ using Redbean.Api;
 
 namespace Redbean.Rx
 {
-	public class RxApiBinder : RxBase
+	public class RxApiBinder : RxBase, ISingletonContainer
 	{
 		private readonly Subject<(Type type, object response)> onApiResponse = new();
 		private Observable<(Type type, object response)> OnApiResponse => onApiResponse.Share();
@@ -14,7 +14,8 @@ namespace Redbean.Rx
 		{
 			Observable.Interval(TimeSpan.FromSeconds(60))
 				.Where(_ => ApiContainer.IsRefreshTokenExist && ApiContainer.IsAccessTokenExpired)
-				.Subscribe(_ => { UniTask.Void(GetRefreshAccessTokenAsync); });
+				.Subscribe(_ => { UniTask.Void(GetRefreshAccessTokenAsync); })
+				.AddTo(disposables);
 		}
 
 		private async UniTaskVoid GetRefreshAccessTokenAsync()

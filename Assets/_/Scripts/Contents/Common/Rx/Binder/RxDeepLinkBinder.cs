@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Redbean.Rx
 {
-	public class RxDeepLinkBinder : RxBase
+	public class RxDeepLinkBinder : RxBase, ISingletonContainer
 	{
 		private readonly Subject<Dictionary<string, string>> onDeepLinkReceived = new();
 		public Observable<Dictionary<string, string>> OnDeepLinkReceived => onDeepLinkReceived.Share();

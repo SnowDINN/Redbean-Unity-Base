@@ -16,6 +16,8 @@ namespace Redbean.Firebase
 
 		public async Task Setup()
 		{
+			Application.logMessageReceived += OnLogMessageReceived;
+			
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
 			if (status == DependencyStatus.Available)
@@ -75,10 +77,20 @@ namespace Redbean.Firebase
 
 		public void Dispose()
 		{
+			Application.logMessageReceived -= OnLogMessageReceived;
+			
 			FirebaseAuth.DefaultInstance.Dispose();
 			FirebaseApp.DefaultInstance.Dispose();
 			
 			Log.System("Firebase has been terminated.");
+		}
+		
+		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)
+		{
+			if (type != LogType.Exception)
+				return;
+			
+			this.Popup().AssetOpen<PopupException>().ExceptionMessage = condition;
 		}
 		
 		private static int CompareVersion(string v1, string v2)

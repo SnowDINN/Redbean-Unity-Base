@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Redbean.Rx;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -25,15 +24,13 @@ namespace Redbean
 				.Where(x => x.FullName != null
 				            && typeof(ISingletonContainer).IsAssignableFrom(x)
 				            && !typeof(MonoBehaviour).IsAssignableFrom(x)
-				            && !x.FullName.Equals(typeof(RxBase).FullName)
 				            && !x.IsInterface
 				            && !x.IsAbstract)
 				.Select(x => Activator.CreateInstance(Type.GetType(x.FullName)) as ISingletonContainer)
 				.ToArray();
 
-			foreach (var singleton in nativeSingletons
-				         .Where(singleton => singletonGroup.TryAdd(singleton.GetType(), singleton)))
-				Log.System($"Create instance {singleton.GetType().FullName}");
+			foreach (var nativeSingleton in nativeSingletons)
+				singletonGroup.TryAdd(nativeSingleton.GetType(), nativeSingleton);
 
 #endregion
 
@@ -44,7 +41,6 @@ namespace Redbean
 				.Where(x => x.FullName != null
 				            && typeof(ISingletonContainer).IsAssignableFrom(x)
 				            && typeof(MonoBehaviour).IsAssignableFrom(x)
-				            && !x.FullName.Equals(typeof(RxBase).FullName)
 				            && !x.IsInterface
 				            && !x.IsAbstract)
 				.ToArray();
@@ -54,13 +50,13 @@ namespace Redbean
 				parent = new GameObject("[Singleton Group]");
 				Object.DontDestroyOnLoad(parent);
 			}
-			
-			foreach (var singleton in monoSingletons
-				         .Where(singleton => singletonGroup.TryAdd(singleton, parent.AddComponent(singleton) as ISingletonContainer)))
-				Log.System($"Create instance {singleton.FullName}");
+
+			foreach (var monoSingleton in monoSingletons)
+				singletonGroup.TryAdd(monoSingleton, parent.AddComponent(monoSingleton) as ISingletonContainer);
 
 #endregion
 
+			Log.System("Singleton has been bind.");
 			return Task.CompletedTask;
 		}
 
@@ -69,7 +65,7 @@ namespace Redbean
 			foreach (var singleton in singletonGroup.Values)
 				singleton.Dispose();
 			
-			Log.System("Rx or Event has been terminated.");
+			Log.System("Singleton has been terminated.");
 		}
 
 		/// <summary>

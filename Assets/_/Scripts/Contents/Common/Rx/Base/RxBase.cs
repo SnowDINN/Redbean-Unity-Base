@@ -2,7 +2,7 @@
 
 namespace Redbean.Rx
 {
-	public class RxBase : ISingletonContainer
+	public class RxBase
 	{
 		protected readonly CompositeDisposable disposables = new();
 

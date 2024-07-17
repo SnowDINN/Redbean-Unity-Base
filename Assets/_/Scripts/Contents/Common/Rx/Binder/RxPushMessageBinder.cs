@@ -3,7 +3,7 @@ using R3;
 
 namespace Redbean.Rx
 {
-	public class RxPushMessageBinder : RxBase
+	public class RxPushMessageBinder : RxBase, ISingletonContainer
 	{
 		private readonly Subject<string> onPushTokenReceived = new();
 		public Observable<string> OnPushTokenReceived => onPushTokenReceived.Share();
