@@ -86,28 +86,31 @@ namespace Redbean.Editor
 	}
 
 	[HideReferenceObjectPicker]
-	public class PresenterSearchable
+	public readonly struct PresenterSearchable
 	{
 		public PresenterSearchable(string key)
 		{
+			Presenter = key.Split('.').Last();
+			
 			Key = $"<b>{key.Split('.').Last()}</b>";
-			Name = key.Split('.').Last();
+			Value = new Dictionary<Object, List<PresenterItemSearchable>>();
 		}
+		
+		private readonly string Presenter;
 
 		[InlineButton(nameof(Search), SdfIconType.Search, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
 		private readonly string Key;
 		
 		[Title("Reference"), ShowIf(nameof(isAny), Value = true), ShowInInspector]
-		private readonly Dictionary<Object, List<PresenterItemSearchable>> Value = new();
-
-		private readonly string Name;
+		private readonly Dictionary<Object, List<PresenterItemSearchable>> Value;
 		private bool isAny => Value.Any();
 
 		public void Search()
 		{
 			ApplicationWindow.PresenterAllClear();
 			Clear();
-			
+
+			var presenter = Presenter;
 			var assetPaths = AssetDatabase.GetAllAssetPaths().Where(_ =>
 				                                                        _.EndsWith(".prefab") || 
 				                                                        _.EndsWith(".unity"))
@@ -118,7 +121,7 @@ namespace Redbean.Editor
 				EditorUtility.DisplayProgressBar("Searching", $"Searching Presenter...[ {i} / {assetPaths.Length} ]", i / (float)assetPaths.Length);
 				
 				var text = File.ReadAllText(assetPaths[i]);
-				if (!text.Contains(Name))
+				if (!text.Contains(Presenter))
 					continue;
 
 				var asset = AssetDatabase.LoadAssetAtPath<Object>(assetPaths[i]);
@@ -128,7 +131,7 @@ namespace Redbean.Editor
 				{
 					var prefab = PrefabUtility.LoadPrefabContents(assetPaths[i]);
 					var components = prefab.GetComponentsInChildren<View>()
-						.Where(_ => _.PresenterFullName.Split('.').Last() == Name)
+						.Where(_ => _.PresenterFullName.Split('.').Last() == presenter)
 						.Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false)))
 						.ToList();
 					
@@ -142,7 +145,7 @@ namespace Redbean.Editor
 					foreach (var obj in rootGameObjects)
 					{
 						var components = obj.GetComponentsInChildren<View>()
-							.Where(_ => _.PresenterFullName.Split('.').Last() == Name)
+							.Where(_ => _.PresenterFullName.Split('.').Last() == presenter)
 							.Select(_ => new PresenterItemSearchable(assetPaths[i], SearchUtils.GetHierarchyPath(_.gameObject, false)))
 							.ToList();
 						
@@ -158,7 +161,7 @@ namespace Redbean.Editor
 	}
 	
 	[HideReferenceObjectPicker]
-	public class PresenterItemSearchable
+	public readonly struct PresenterItemSearchable
 	{
 		public PresenterItemSearchable(string key, string value)
 		{
@@ -173,10 +176,12 @@ namespace Redbean.Editor
 
 		public void Search()
 		{
+			var presenter = value;
+			
 			if (key.EndsWith(".prefab"))
 			{
 				var prefab = PrefabStageUtility.OpenPrefab(key).prefabContentsRoot;
-				var component = prefab.GetComponentsInChildren<View>().FirstOrDefault(_ => SearchUtils.GetHierarchyPath(_.gameObject, false).Contains(value));
+				var component = prefab.GetComponentsInChildren<View>().FirstOrDefault(_ => SearchUtils.GetHierarchyPath(_.gameObject, false).Contains(presenter));
 				
 				EditorGUIUtility.PingObject(component);
 				Selection.activeObject = component;
@@ -193,12 +198,14 @@ namespace Redbean.Editor
 	}
 	
 	[HideReferenceObjectPicker]
-	public class PlayerPrefsViewer
+	public struct PlayerPrefsViewer
 	{
 		public PlayerPrefsViewer(string key, string value)
 		{
 			Key = $"<b>{key}</b>";
 			Value = value;
+
+			isOpen = false;
 		}
 		
 		[InlineButton(nameof(Detail), SdfIconType.EnvelopeOpen, ""), DisplayAsString(EnableRichText = true), ShowInInspector, HideLabel]
