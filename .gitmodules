@@ -1,3 +1,6 @@
 [submodule "Assets/_/Scripts/ApiBridge"]
 	path = Assets/_/Scripts/ApiBridge
 	url = https://github.com/SnowDINN/BoongGod-Module.git
+[submodule "Redbean-UnityLibrary-Submodule"]
+	path = Assets/_/Scripts/RedbeanLibrary
+	url = https://github.com/SnowDINN/Redbean-UnityLibrary-Submodule.git
