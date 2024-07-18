@@ -40,7 +40,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), Button("UPDATE API", ButtonSizes.Large), PropertySpace]
 		private async void UpdateApi()
 		{
-			await ApiGenerator.GetApiAsync();
+			await ApiGenerator.GetApiAsync(typeof(ApiResponse));
 			
 			AssetDatabase.Refresh();
 		}

@@ -82,8 +82,6 @@ namespace Redbean.Firebase
 			
 			FirebaseAuth.DefaultInstance.Dispose();
 			FirebaseApp.DefaultInstance.Dispose();
-			
-			Log.System("Firebase has been terminated.");
 		}
 		
 		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)

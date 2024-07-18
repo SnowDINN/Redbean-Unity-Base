@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,8 +20,8 @@ namespace Redbean.Api
 	public class ApiGenerator
 	{
 		public const string Namespace = "Redbean";
-
-		public static async Task GetApiAsync()
+		
+		public static async Task GetApiAsync(Type wrapper)
 		{
 			var uri = $"{AppSettings.ApiUri}/swagger/v1/swagger.json";
 
@@ -38,15 +39,15 @@ namespace Redbean.Api
 			var api = JObject.Parse(request.downloadHandler.text);
 			var apiEndpoints = api["paths"].ToObject<Dictionary<string, JObject>>();
 
-			GenerateCSharpApiAsync(ApiType.Get, apiEndpoints.Where(_ => _.Value.ContainsKey("get")).ToArray());
-			GenerateCSharpApiAsync(ApiType.Post, apiEndpoints.Where(_ => _.Value.ContainsKey("post")).ToArray());
+			GenerateCSharpApiAsync(ApiType.Get, wrapper, apiEndpoints.Where(_ => _.Value.ContainsKey("get")).ToArray());
+			GenerateCSharpApiAsync(ApiType.Post, wrapper, apiEndpoints.Where(_ => _.Value.ContainsKey("post")).ToArray());
 		}
 
 		
 		/// <summary>
 		/// API C# 스크립트 생성
 		/// </summary>
-		private static async void GenerateCSharpApiAsync(ApiType type, IReadOnlyList<KeyValuePair<string, JObject>> apis)
+		private static async void GenerateCSharpApiAsync(ApiType type, Type wrapper, IReadOnlyList<KeyValuePair<string, JObject>> apis)
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.AppendLine("using System.Threading.Tasks;");
@@ -104,8 +105,8 @@ namespace Redbean.Api
 				}
 			
 				var requestUri = $"\"{apis[idx].Key}{parameter}\"";
-				stringBuilder.AppendLine($"\t\tpublic static async Task<{nameof(ApiResponse)}{responseType}> {apis[idx].Key.Split('/').Last()}Request({requestType}) =>");
-				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request<{nameof(ApiResponse)}{responseType}>({requestUri}, args);");
+				stringBuilder.AppendLine($"\t\tpublic static async Task<{wrapper.Name}{responseType}> {apis[idx].Key.Split('/').Last()}Request({requestType}) =>");
+				stringBuilder.AppendLine($"\t\t\tawait Send{type}Request<{wrapper.Name}{responseType}>({requestUri}, args);");
 				
 				if (idx < apis.Count - 1)
 					stringBuilder.AppendLine();

@@ -39,6 +39,8 @@ namespace Redbean
 			foreach (var api in apis)
 				apiGroup.TryAdd(api.GetType(), api);
 			
+			Log.System("Api has been bind.");
+			
 			return Task.CompletedTask;
 		}
 
