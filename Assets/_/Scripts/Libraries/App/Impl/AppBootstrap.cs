@@ -10,7 +10,7 @@ namespace Redbean
 	public enum AppBootstrapType
 	{
 		Runtime = 0,
-		SignInUser = 100,
+		Login = 100,
 	}
 	
 	public class AppBootstrap

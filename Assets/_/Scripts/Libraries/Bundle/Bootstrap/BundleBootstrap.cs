@@ -5,8 +5,8 @@ namespace Redbean.Bundle
 {
 	public class BundleBootstrap : IAppBootstrap
 	{
-		public AppBootstrapType ExecutionType => AppBootstrapType.SignInUser;
-		public int ExecutionOrder => 110;
+		public AppBootstrapType ExecutionType => AppBootstrapType.Login;
+		public int ExecutionOrder => 120;
 
 		public async Task Setup()
 		{

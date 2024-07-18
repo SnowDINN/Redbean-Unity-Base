@@ -1,25 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Redbean.Api;
 
 namespace Redbean.Table
 {
 	public partial class TableContainer : IAppBootstrap
 	{
-		public AppBootstrapType ExecutionType => AppBootstrapType.SignInUser;
-		public int ExecutionOrder => 100;
+		public AppBootstrapType ExecutionType => AppBootstrapType.Login;
+		public int ExecutionOrder => 110;
 
-		public async Task Setup()
+		public static Dictionary<string, string> RawTable = new();
+
+		public Task Setup()
 		{
-			var response = await this.RequestApi<GetTableProtocol>() as TableResponse;
-			if (!response.Table.Any())
-			{
-				Log.Fail("Table", "Fail to load to the Google sheets.");
-				return;
-			}
+			if (RawTable.Any())
+				Parse(RawTable);
 			
-			foreach (var table in response.Table)
+			return Task.CompletedTask;
+		}
+
+		public void Dispose()
+		{
+			RawTable.Clear();
+		}
+
+		private void Parse(Dictionary<string, string> tables)
+		{
+			foreach (var table in tables)
 			{
 				var tsv = $"{table.Value}".Split("\r\n");
 				
@@ -33,12 +41,6 @@ namespace Redbean.Table
 						instance.Apply(item);
 				}
 			}
-			
-			Log.Success("Table", "Success to load to the tables.");
-		}
-
-		public void Dispose()
-		{
 		}
 	}
 }

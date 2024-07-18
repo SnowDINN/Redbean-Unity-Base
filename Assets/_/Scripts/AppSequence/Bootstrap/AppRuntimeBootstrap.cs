@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Redbean.Firebase
 {
-	public class AppSequenceBootstrap : IAppBootstrap
+	public class AppRuntimeBootstrap : IAppBootstrap
 	{
 		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
 		public int ExecutionOrder => 30;
@@ -49,6 +49,7 @@ namespace Redbean.Firebase
 						case <= 0:
 						{
 							// TODO : 정상 진입 로직
+
 							break;	
 						}
 						

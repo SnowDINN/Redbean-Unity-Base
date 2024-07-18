@@ -12,25 +12,23 @@ namespace Redbean.Api
 	{
 		protected static async Task<T> SendGetRequest<T>(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
+			var format = string.Format(uri, args.Where(_ => _ is string or int).ToArray());
 			var apiResponse = await GetApi(format);
 
 			return JsonConvert.DeserializeObject<T>(apiResponse);
 		}
 		
-		protected static async Task<T> SendPostRequest<T>(string uri, params object[] args)
+		protected static async Task<T> SendPostRequest<T>(string uri, object obj)
 		{
-			var format = string.Format(uri, args.Where(_ => _ is string or int or float).ToArray());
-			var body = args.FirstOrDefault(_ => _ is IApiRequest) as IApiRequest;
-			var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
-			var apiResponse = await PostApi(format, content);
+			var content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+			var apiResponse = await PostApi(uri, content);
 
 			return JsonConvert.DeserializeObject<T>(apiResponse);
 		}
 		
 		protected static async Task<T> SendDeleteRequest<T>(string uri, params object[] args)
 		{
-			var format = string.Format(uri, args.Where(_ => _ is string).ToArray());
+			var format = string.Format(uri, args.Where(_ => _ is string or int).ToArray());
 			var apiResponse = await DeleteApi(format);
 			
 			return JsonConvert.DeserializeObject<T>(apiResponse);
@@ -57,7 +55,7 @@ namespace Redbean.Api
 						if (errorCode == 0)
 							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 						else
-							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {(ApiErrorType)errorCode}");
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {errorCode}");
 					}
 					
 					request.Dispose();
@@ -103,7 +101,7 @@ namespace Redbean.Api
 						if (errorCode == 0)
 							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 						else
-							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {(ApiErrorType)errorCode}");
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {errorCode}");
 					}
 					
 					request.Dispose();
@@ -149,7 +147,7 @@ namespace Redbean.Api
 						if (errorCode == 0)
 							Log.Success("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) Request success\n{response}");
 						else
-							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {(ApiErrorType)errorCode}");
+							Log.Fail("POST", $"<{httpUri}> ({stopwatch.ElapsedMilliseconds}ms) ErrorCode : {errorCode}");
 					}
 					
 					request.Dispose();

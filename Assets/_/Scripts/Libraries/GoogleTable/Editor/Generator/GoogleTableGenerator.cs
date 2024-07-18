@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
-using Redbean.Api;
-using Redbean.MVP.Content;
 using UnityEngine;
 
 namespace Redbean.Table
@@ -28,23 +26,12 @@ namespace Redbean.Table
 		/// </summary>
 		public static async Task<Dictionary<string, string[]>> GetSheetAsync()
 		{
-#region Google Client Settings
-			
-			var response = await ApiAuthentication.EditorRequestApi<GetTableConfigProtocol>() as TableConfigResponse;
-			var ClientId = response.Client.Id;
-			var ClientSecret = response.Client.Secret;
-			var SheetId = response.Sheet.Id;
-
-#endregion
-			
 			var sheetDictionary = new Dictionary<string, string[]>();
-			
 			var client = new ClientSecrets
 			{
-				ClientId = ClientId,
-				ClientSecret = ClientSecret
+				ClientId = GoogleTableSettings.ClientId,
+				ClientSecret = GoogleTableSettings.ClientSecretId
 			};
-			
 			var scopes = new[]
 			{
 				SheetsService.Scope.SpreadsheetsReadonly
@@ -55,14 +42,14 @@ namespace Redbean.Table
 			{
 				HttpClientInitializer = credential
 			});
-			var sheets = await service.Spreadsheets.Get(SheetId).ExecuteAsync();
+			var sheets = await service.Spreadsheets.Get(GoogleTableSettings.SheetId).ExecuteAsync();
 			
 			// Skip Summary Sheet
 			var skipSheets = sheets.Sheets.Skip(1);
 			foreach (var sheet in skipSheets)
 			{
 				var sheetName = sheet.Properties.Title;
-				var sheetInfo = await service.Spreadsheets.Values.Get(SheetId, $"{sheetName}!A:Z").ExecuteAsync();
+				var sheetInfo = await service.Spreadsheets.Values.Get(GoogleTableSettings.SheetId, $"{sheetName}!A:Z").ExecuteAsync();
 
 				var tsv = ToTSV(sheetInfo.Values).Split("\r\n");
 				var tsvRefined = TsvRefined(tsv);

@@ -48,7 +48,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(BundleGroup), PropertyOrder(BundleOrder), Button("UPDATE BUNDLE", ButtonSizes.Large)]
 		private async void UpdateBundle()
 		{
-			using var firebase = new AppSequenceBootstrap();
+			using var firebase = new AppRuntimeBootstrap();
 			await firebase.Setup();
 			
 			var result = BundleGenerator.TryBuildBundle();
@@ -114,6 +114,8 @@ namespace Redbean.Editor
 			try
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
+				
+				await ApiAuthentication.EditorRequestApi<GetTableConfigProtocol>();
 				
 				var sheetRaw = await GoogleTableGenerator.GetSheetAsync();
 				await GoogleTableGenerator.GenerateCSharpTableAsync(sheetRaw);

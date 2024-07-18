@@ -22,13 +22,14 @@ namespace Redbean.Base
 			}
 		}
 		
-#if UNITY_EDITOR
+
 		public static void Save()
 		{
+#if UNITY_EDITOR
 			EditorUtility.SetDirty(Installer);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
-		}
 #endif
+		}
 	}
 }

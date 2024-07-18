@@ -32,5 +32,9 @@ namespace Redbean.Table
 				Save();
 			}
 		}
+
+		public static string SheetId;
+		public static string ClientId;
+		public static string ClientSecretId;
 	}
 }
