@@ -22,9 +22,9 @@ namespace Google
 		private void OnPreProcessBuild(BuildTarget target, string path)
 		{
 			var installer = Resources.Load<GoogleAuthenticationInstaller>("Google/GoogleAuthentication");
-			installer.androidClientId = GoogleAuthenticationExtension.GetAndroidClientId();
-			installer.iosClientId = GoogleAuthenticationExtension.GetIosClientId();
-			installer.webClientId = GoogleAuthenticationExtension.GetWebClientId();
+			installer.androidClientId = GoogleAuthenticationClient.GetAndroidClientId();
+			installer.iosClientId = GoogleAuthenticationClient.GetIosClientId();
+			installer.webClientId = GoogleAuthenticationClient.GetWebClientId();
 			installer.webClientSecretId = "";
 			installer.Save();
 		}

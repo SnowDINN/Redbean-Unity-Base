@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-using Firebase.Auth;
-using Redbean.Auth;
+using Google.Apis.Auth.OAuth2;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Redbean.Api
@@ -39,16 +41,28 @@ namespace Redbean.Api
 			var email = PlayerPrefs.GetString(Key);
 			if (string.IsNullOrEmpty(email))
 			{
-				var authenticationProvider = new GoogleAuthenticationProvider();
-				if (!GoogleAuthenticationProvider.IsInitialize)
-					await authenticationProvider.Initialize();
+				var token = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
+				                                                              {
+					                                                              ClientId = "517818090277-dh7nin47elvha6uhn64ihiboij7pv57p.apps.googleusercontent.com",
+					                                                              ClientSecret = "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"
+				                                                              },
+				                                                              new[] { "email", "openid" },
+				                                                              "user",
+				                                                              CancellationToken.None);
 
-				var authenticationResult = await authenticationProvider.Login();
-				var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(authenticationResult.Credential);
+				using var http = new HttpClient
+				{
+					DefaultRequestHeaders =
+					{
+						{ "Authorization", "Bearer " + token.Token.AccessToken }
+					}
+				};
+
+				var request = await http.GetAsync("https://openidconnect.googleapis.com/v1/userinfo");
+				var userInfo = JObject.Parse(await request.Content.ReadAsStringAsync());
+				await RequestEditorAccessTokenAsync($"{userInfo.GetValue("email")}");
 				
-				await RequestEditorAccessTokenAsync(user.Email);
-				
-				PlayerPrefs.SetString(Key, user.Email);
+				PlayerPrefs.SetString(Key, $"{userInfo.GetValue("email")}");
 			}
 			else
 				await RequestEditorAccessTokenAsync(email);
@@ -58,6 +72,8 @@ namespace Redbean.Api
 		
 		private static async Task RequestEditorAccessTokenAsync(string email)
 		{
+			RemoveAccessToken();
+			
 			var request = await ApiPostRequest.PostAppAccessTokenRequest(new StringRequest
 			{
 				Value = email.Encryption()
