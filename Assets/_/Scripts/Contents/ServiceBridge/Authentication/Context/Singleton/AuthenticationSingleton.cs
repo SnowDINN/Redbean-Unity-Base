@@ -17,7 +17,7 @@ namespace Redbean.Singleton
 				            && typeof(IAuthentication).IsAssignableFrom(_)
 				            && !_.IsInterface
 				            && !_.IsAbstract)
-				.Select(_ => Activator.CreateInstance(Type.GetType(_.FullName)) as IAuthentication)
+				.Select(_ => Activator.CreateInstance(_) as IAuthentication)
 				.ToArray();
 
 			foreach (var authentication in authentications)
