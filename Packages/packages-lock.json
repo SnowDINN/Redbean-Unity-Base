@@ -21,7 +21,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "12574c32f658fa23c194357141abc3fc157ea362"
+      "hash": "90fa6db024148d466fe738f58fd4263c7267346b"
     },
     "com.google.external-dependency-manager": {
       "version": "https://github.com/googlesamples/unity-jar-resolver.git?path=upm",
@@ -38,7 +38,7 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.google.external-dependency-manager": "1.2.175"
       },
-      "hash": "17b3fb45b5cdc8eb793f7bda34dbc3c754f3c9e8"
+      "hash": "d4752b8c6ed1e71f20334704f1c77b8bc20a6a8d"
     },
     "com.unity.2d.animation": {
       "version": "10.1.2",

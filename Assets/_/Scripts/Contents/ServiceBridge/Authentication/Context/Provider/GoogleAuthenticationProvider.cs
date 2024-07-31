@@ -35,6 +35,7 @@ namespace Redbean.Auth
 				RequestProfile = true,
 				RequestAuthCode = true,
 				RequestIdToken = true,
+				HidePopups = true
 			};
 			GoogleSignIn.Configuration = configuration;
 
