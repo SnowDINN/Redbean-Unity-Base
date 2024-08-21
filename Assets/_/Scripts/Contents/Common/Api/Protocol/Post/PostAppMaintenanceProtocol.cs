@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class PostAppMaintenanceProtocol : IApiContainer
+	public class PostAppMaintenanceProtocol : ApiProtocol
 	{
-		public async Task<object> Request(params object[] args)
+		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			return (await ApiPostRequest.PostAppMaintenanceRequest(new AppMaintenanceRequest
 			{

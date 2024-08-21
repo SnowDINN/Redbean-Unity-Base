@@ -9,7 +9,7 @@ namespace Redbean
 		/// <summary>
 		/// API 데이터 배포
 		/// </summary>
-		public static void ApiPublish<T>(this T api, object response) where T : IApiContainer =>
+		public static void ApiPublish<T>(this T api, object response) where T : ApiProtocol =>
 			GetSingleton<RxApiBinder>().Publish<T>(response);
 		
 		/// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Redbean.MVP.Content;
 using Redbean.Singleton;
 
@@ -6,27 +7,6 @@ namespace Redbean
 {
 	public static partial class Extension
 	{
-#if UNITY_EDITOR
-		/// <summary>
-		/// API 호출
-		/// </summary>
-		public static async Task<object> EditorRequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer => 
-			await ApiContainer.RequestApi<T>(args);
-#endif
-		
-		/// <summary>
-		/// API 호출
-		/// </summary>
-		public static async Task<object> RequestApi<T>(this IExtension extension, params object[] args) where T : IApiContainer
-		{
-			T generic = default;
-			
-			var request = await ApiContainer.RequestApi<T>(args);
-			ApiPublish(generic, request);
-			
-			return request;
-		}
-
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>

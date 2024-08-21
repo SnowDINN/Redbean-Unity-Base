@@ -18,8 +18,8 @@ namespace Redbean.Api
 		
 		public static void RemoveAccessToken()
 		{
-			if (ApiContainer.Http.DefaultRequestHeaders.Contains("Authorization"))
-				ApiContainer.Http.DefaultRequestHeaders.Remove("Authorization");
+			if (ApiSingleton.Http.DefaultRequestHeaders.Contains("Authorization"))
+				ApiSingleton.Http.DefaultRequestHeaders.Remove("Authorization");
 		}
 
 		public static void SetAccessToken(TokenResponse response)
@@ -27,16 +27,13 @@ namespace Redbean.Api
 			currentToken = response;
 			
 			RemoveAccessToken();
-			ApiContainer.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
+			ApiSingleton.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
 		}
 		
 #if UNITY_EDITOR
-		public static async Task<object> EditorRequestApi<T>(params object[] args) where T : IApiContainer
+		public static async Task<T> EditorRequestApi<T>(CancellationToken cancellationToken = default) where T : ApiProtocol
 		{
 			const string Key = "EDITOR_ACCESS_EMAIL";
-			
-			using var api = new ApiContainer();
-			await api.Setup();
 			
 			var email = PlayerPrefs.GetString(Key);
 			if (string.IsNullOrEmpty(email))
@@ -58,7 +55,7 @@ namespace Redbean.Api
 					}
 				};
 
-				var request = await http.GetAsync("https://openidconnect.googleapis.com/v1/userinfo");
+				var request = await http.GetAsync("https://openidconnect.googleapis.com/v1/userinfo", cancellationToken);
 				var userInfo = JObject.Parse(await request.Content.ReadAsStringAsync());
 				await RequestEditorAccessTokenAsync($"{userInfo.GetValue("email")}");
 				
@@ -67,7 +64,8 @@ namespace Redbean.Api
 			else
 				await RequestEditorAccessTokenAsync(email);
 
-			return await api.EditorRequestApi<T>(args);
+			using var api = new ApiSingleton();
+			return api.EditorGetApi<T>();
 		}
 		
 		private static async Task RequestEditorAccessTokenAsync(string email)
@@ -78,7 +76,7 @@ namespace Redbean.Api
 			{
 				Value = email.Encryption()
 			});
-			ApiContainer.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Response.Value}");
+			ApiSingleton.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Response.Value}");
 		}
 #endif
 		

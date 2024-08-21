@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Redbean.Table;
 
 namespace Redbean.Api
 {
-	public class GetTableConfigProtocol : IApiContainer
+	public class GetTableConfigProtocol : ApiProtocol
 	{
-		public async Task<object> Request(params object[] args)
+		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetTableConfigRequest();
 			if (request.ErrorCode > 0)

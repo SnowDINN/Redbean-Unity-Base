@@ -24,13 +24,13 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), DisableInEditorMode, Button]
 		private async void UserLogin(string ID)
 		{
-			await this.RequestApi<GetAccessTokenAndUserProtocol>(ID);
+			await this.EditorGetApi<GetAccessTokenAndUserProtocol>().Parameter(ID).RequestAsync();
 		}
 
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			await this.RequestApi<PostUserWithdrawalProtocol>();
+			await this.EditorGetApi<PostUserWithdrawalProtocol>().RequestAsync();
 			
 			PlayerPrefs.DeleteAll();
 			EditorApplication.isPlaying = false;

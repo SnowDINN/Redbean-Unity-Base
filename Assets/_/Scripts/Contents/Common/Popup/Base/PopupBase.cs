@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using R3;
 using Redbean.Singleton;
 using UnityEngine;
@@ -39,7 +40,7 @@ namespace Redbean.Popup
 			this.GetSingleton<PopupSingleton>().Close(Guid);
 
 		public async Task WaitUntilClose() =>
-			await this.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
+			await UniTask.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);
 	}
 	
 #if UNITY_EDITOR

@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using Firebase.Messaging;
 using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {
-	public class GetAccessTokenAndUserProtocol : IApiContainer
+	public class GetAccessTokenAndUserProtocol : ApiProtocol
 	{
-		public async Task<object> Request(params object[] args)
+		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetAccessTokenAndUserRequest(HttpUtility.UrlEncode($"{args[0]}".Encryption()));
 			if (request.ErrorCode > 0)

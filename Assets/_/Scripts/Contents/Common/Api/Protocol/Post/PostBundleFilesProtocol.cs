@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class PostBundleFilesProtocol : IApiContainer
+	public class PostBundleFilesProtocol : ApiProtocol
 	{
-		public async Task<object> Request(params object[] args)
+		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			return (await ApiPostRequest.PostBundleFilesRequest(new AppUploadFilesRequest
 			{

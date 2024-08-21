@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class PostAppVersionProtocol : IApiContainer
+	public class PostAppVersionProtocol : ApiProtocol
 	{
-		public async Task<object> Request(params object[] args)
+		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			return (await ApiPostRequest.PostAppVersionRequest(new AppVersionRequest
 			{

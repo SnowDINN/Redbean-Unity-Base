@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class PostTableFileProtocol : IApiContainer
+	public class PostTableFileProtocol : ApiProtocol
 	{
-		public async Task<object> Request(params object[] args)
+		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			return (await ApiPostRequest.PostTableFilesRequest(new AppUploadFilesRequest
 			{

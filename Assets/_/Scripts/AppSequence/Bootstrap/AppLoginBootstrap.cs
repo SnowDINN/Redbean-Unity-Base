@@ -7,7 +7,7 @@ namespace Redbean
 	{
 		public async Task Setup()
 		{
-			await this.RequestApi<GetTableProtocol>();
+			await this.GetApi<GetTableProtocol>().RequestAsync();
 		}
 		
 		public void Dispose()

@@ -28,7 +28,7 @@ namespace Redbean
 			if (Application.isPlaying)
 			{
 				// 앱 설정 체크
-				var response = await this.RequestApi<GetAppConfigProtocol>() as AppConfigResponse;
+				var response = await this.GetApi<GetAppConfigProtocol>().RequestAsync() as AppConfigResponse;
 				var app = this.GetModel<AppConfigModel>();
 				if (app is not null)
 				{
