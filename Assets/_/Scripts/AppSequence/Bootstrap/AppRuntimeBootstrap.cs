@@ -7,13 +7,10 @@ using Redbean.MVP.Content;
 using Redbean.Popup.Content;
 using UnityEngine;
 
-namespace Redbean.Firebase
+namespace Redbean
 {
 	public class AppRuntimeBootstrap : IAppBootstrap
 	{
-		public AppBootstrapType ExecutionType => AppBootstrapType.Runtime;
-		public int ExecutionOrder => 30;
-
 		public async Task Setup()
 		{
 			Application.logMessageReceived += OnLogMessageReceived;

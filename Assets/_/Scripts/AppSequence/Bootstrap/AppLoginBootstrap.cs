@@ -1,13 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Redbean.Api;
 
-namespace Redbean.Firebase
+namespace Redbean
 {
 	public class AppLoginBootstrap : IAppBootstrap
 	{
-		public AppBootstrapType ExecutionType => AppBootstrapType.Login;
-		public int ExecutionOrder => 100;
-		
 		public async Task Setup()
 		{
 			await this.RequestApi<GetTableProtocol>();
