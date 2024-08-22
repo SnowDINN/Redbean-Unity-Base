@@ -5,6 +5,13 @@ namespace Redbean.Api
 {
 	public class ApiPostRequest : ApiBase
 	{
+		public static async Task<ApiResponse> PostUserNicknameRequest(StringRequest args, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse>("/User/PostUserNickname", args, cancellationToken);
+
+		public static async Task<ApiResponse> PostUserWithdrawalRequest(object[] args = default, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse>("/User/PostUserWithdrawal", args, cancellationToken);
+
+#if UNITY_EDITOR
 		public static async Task<ApiResponse<StringResponse>> EditAppAccessTokenRequest(StringRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<StringResponse>>("/EditAccess/EditAppAccessToken", args, cancellationToken);
 
@@ -19,11 +26,6 @@ namespace Redbean.Api
 
 		public static async Task<ApiResponse<StringArrayResponse>> EditBundleFilesRequest(AppUploadFilesRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<StringArrayResponse>>("/EditFiles/EditBundleFiles", args, cancellationToken);
-
-		public static async Task<ApiResponse> PostUserNicknameRequest(StringRequest args, CancellationToken cancellationToken = default) =>
-			await PostRequestAsync<ApiResponse>("/User/PostUserNickname", args, cancellationToken);
-
-		public static async Task<ApiResponse> PostUserWithdrawalRequest(object[] args = default, CancellationToken cancellationToken = default) =>
-			await PostRequestAsync<ApiResponse>("/User/PostUserWithdrawal", args, cancellationToken);
+#endif
 	}
 }

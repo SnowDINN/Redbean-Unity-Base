@@ -19,5 +19,8 @@ namespace Redbean.Api
 
 		public static async Task<ApiResponse<TableResponse>> GetTableRequest(object[] args = default, CancellationToken cancellationToken = default) =>
 			await GetRequestAsync<ApiResponse<TableResponse>>("/GetSetting/GetTable", args, cancellationToken);
+
+#if UNITY_EDITOR
+#endif
 	}
 }
