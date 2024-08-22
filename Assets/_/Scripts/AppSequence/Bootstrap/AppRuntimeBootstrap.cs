@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Redbean.Api;
-using Redbean.MVP.Content;
 using Redbean.Popup.Content;
 using UnityEngine;
 

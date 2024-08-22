@@ -10,7 +10,7 @@ namespace Redbean.Api
 		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetTableRequest(cancellationToken: cancellationToken);
-			if (request.ErrorCode > 0)
+			if (request.ErrorCode != 0)
 				return request.Response;
 			
 			if (request.Response.Table.Any())

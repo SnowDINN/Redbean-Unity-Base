@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class PostAppMaintenanceProtocol : ApiProtocol
+	public class EditAppMaintenanceProtocol : ApiProtocol
 	{
 		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
-			return (await ApiPostRequest.PostAppMaintenanceRequest(new AppMaintenanceRequest
+			return (await ApiPostRequest.EditAppMaintenanceRequest(new AppMaintenanceRequest
 			{
 				Contents = $"{args[0]}",
 				StartTime = (DateTime)args[1],

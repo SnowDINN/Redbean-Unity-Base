@@ -10,9 +10,10 @@ namespace Redbean.Api
 	{
 		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
-			var request = await ApiGetRequest.GetAccessTokenAndUserRequest(new[] { HttpUtility.UrlEncode($"{args[0]}".Encryption()) },
-			                                                               cancellationToken);
-			if (request.ErrorCode > 0)
+			var request = await ApiGetRequest.GetAccessTokenAndUserRequest
+				(new[] { HttpUtility.UrlEncode($"{args[0]}".Encryption()) }, cancellationToken);
+			
+			if (request.ErrorCode != 0)
 				return request.Response;
 			
 			ApiAuthentication.SetAccessToken(new TokenResponse

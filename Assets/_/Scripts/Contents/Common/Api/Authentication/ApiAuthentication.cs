@@ -72,7 +72,7 @@ namespace Redbean.Api
 		{
 			RemoveAccessToken();
 			
-			var request = await ApiPostRequest.PostAppAccessTokenRequest(new StringRequest
+			var request = await ApiPostRequest.EditAppAccessTokenRequest(new StringRequest
 			{
 				Value = email.Encryption()
 			});

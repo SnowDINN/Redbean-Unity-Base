@@ -12,6 +12,9 @@ namespace Redbean.Api
 		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
+			if (request.ErrorCode != 0)
+				return request.Response;
+			
 			var app = new AppConfigModel(request.Response).ModelPublish();
 			if (app is null)
 				return request.Response;

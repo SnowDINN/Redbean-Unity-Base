@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class PostBundleFilesProtocol : ApiProtocol
+	public class EditBundleFilesProtocol : ApiProtocol
 	{
 		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
-			return (await ApiPostRequest.PostBundleFilesRequest(new AppUploadFilesRequest
+			return (await ApiPostRequest.EditBundleFilesRequest(new AppUploadFilesRequest
 			{
 #if UNITY_ANDROID
 				Type = MobileType.Android,
