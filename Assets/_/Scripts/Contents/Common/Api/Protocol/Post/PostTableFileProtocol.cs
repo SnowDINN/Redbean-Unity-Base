@@ -10,7 +10,7 @@ namespace Redbean.Api
 			return (await ApiPostRequest.PostTableFilesRequest(new AppUploadFilesRequest
 			{
 				Files = args as RequestFile[]
-			})).Response;
+			}, cancellationToken)).Response;
 		}
 	}
 }

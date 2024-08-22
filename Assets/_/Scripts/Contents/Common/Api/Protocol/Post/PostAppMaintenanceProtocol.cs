@@ -13,7 +13,7 @@ namespace Redbean.Api
 				Contents = $"{args[0]}",
 				StartTime = (DateTime)args[1],
 				EndTime = (DateTime)args[2]
-			})).Response;
+			}, cancellationToken)).Response;
 		}
 	}
 }

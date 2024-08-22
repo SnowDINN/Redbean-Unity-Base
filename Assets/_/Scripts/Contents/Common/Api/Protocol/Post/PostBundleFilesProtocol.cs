@@ -17,7 +17,7 @@ namespace Redbean.Api
 				Type = MobileType.None,
 #endif
 				Files = args as RequestFile[]
-			})).Response;
+			}, cancellationToken)).Response;
 		}
 	}
 }

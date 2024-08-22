@@ -20,7 +20,7 @@ namespace Redbean.Rx
 
 		private async UniTaskVoid GetRefreshAccessTokenAsync()
 		{
-			await this.GetApi<GetAccessTokenRefreshProtocol>().RequestAsync();
+			await this.GetApi<GetAccessTokenRefreshProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 		}
 
 		public void Publish<T>(object response) where T : ApiProtocol

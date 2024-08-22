@@ -7,7 +7,7 @@ namespace Redbean.Api
 	{
 		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
 		{
-			return (await ApiPostRequest.PostUserWithdrawalRequest()).Response;
+			return (await ApiPostRequest.PostUserWithdrawalRequest(cancellationToken: cancellationToken)).Response;
 		}
 	}
 }

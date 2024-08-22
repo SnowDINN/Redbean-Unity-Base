@@ -11,7 +11,7 @@ namespace Redbean.Api
 			{
 				Type = (MobileType)args[0],
 				Version = $"{args[1]}"
-			})).Response;
+			}, cancellationToken)).Response;
 		}
 	}
 }
