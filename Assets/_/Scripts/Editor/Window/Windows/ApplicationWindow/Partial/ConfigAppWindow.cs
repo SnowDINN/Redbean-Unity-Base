@@ -73,7 +73,9 @@ namespace Redbean.Editor
 					});
 				}
 				
-				(await ApiAuthentication.EditorRequestApi<EditBundleFilesProtocol>()).Parameter(requestFiles.ToArray()).RequestAsync();
+				await (await ApiAuthentication.EditorRequestApi<EditBundleFilesProtocol>())
+					.Parameter(requestFiles.ToArray())
+					.RequestAsync();
 
 				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
@@ -114,7 +116,9 @@ namespace Redbean.Editor
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 				
-				(await ApiAuthentication.EditorRequestApi<GetTableConfigProtocol>()).RequestAsync();
+				await (await ApiAuthentication.EditorRequestApi<GetTableConfigProtocol>())
+					.Parameter()
+					.RequestAsync();
 				
 				var sheetRaw = await TableGenerator.GetSheetAsync();
 				await TableGenerator.GenerateCSharpTableAsync(sheetRaw);
@@ -135,7 +139,9 @@ namespace Redbean.Editor
 					});
 				}
 				
-				(await ApiAuthentication.EditorRequestApi<EditTableFileProtocol>()).Parameter(requestFiles.ToArray()).RequestAsync();
+				await (await ApiAuthentication.EditorRequestApi<EditTableFileProtocol>())
+					.Parameter(requestFiles.ToArray())
+					.RequestAsync();
 			}
 			catch (Exception e)
 			{
@@ -152,21 +158,30 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
 		private async void Maintenance([MultiLineProperty(5)] string contents, DateTime startTime, DateTime endTime)
 		{
-			(await ApiAuthentication.EditorRequestApi<EditAppMaintenanceProtocol>()).Parameter(contents, startTime, endTime).RequestAsync();
+			await (await ApiAuthentication.EditorRequestApi<EditAppMaintenanceProtocol>())
+				.Parameter(contents, startTime, endTime)
+				.RequestAsync();
+			
 			Log.Notice($"Set maintenance update [ Start : {startTime} | End : {endTime} ]");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			(await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>()).Parameter(MobileType.Android, version).RequestAsync();
+			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
+				.Parameter(MobileType.Android, version)
+				.RequestAsync();
+			
 			Log.Notice($"Android version change : {version}");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			(await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>()).Parameter(MobileType.iOS, version).RequestAsync();
+			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
+				.Parameter(MobileType.iOS, version)
+				.RequestAsync();
+			
 			Log.Notice($"iOS version changed : {version}");
 		}
 		

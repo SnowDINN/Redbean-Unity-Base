@@ -1,6 +1,6 @@
 ﻿using System;
 using Redbean.Api;
-using Redbean.Singleton;
+using Redbean.Bundle;
 using Sirenix.OdinInspector;
 
 namespace Redbean.Editor
@@ -21,7 +21,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), DisableInEditorMode, Button("Auto Release")]
 		private void AutoRelease()
 		{
-			SingletonContainer.GetSingleton<BundleSingleton>().AutoRelease();
+			BundleContainer.AutoRelease();
 		}
 		
 		[TabGroup(TabGroup, ContentsTab), TitleGroup(ExampleGroup), PropertyOrder(ExampleOrder), Button]

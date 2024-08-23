@@ -12,8 +12,6 @@ namespace Redbean.Singleton
 {
 	public class PopupSingleton : ISingletonContainer
 	{
-		private BundleSingleton Bundle => SingletonContainer.GetSingleton<BundleSingleton>();
-		
 		private readonly Dictionary<int, PopupBase> popupsGroup = new();
 		private readonly Transform popupParent;
 		private readonly Canvas canvas;
@@ -72,7 +70,7 @@ namespace Redbean.Singleton
 
 		public object BundleOpen(Type type)
 		{
-			var go = Bundle.LoadAsset<GameObject>(AddressableSettings.GetPopupPath(type), popupParent);
+			var go = BundleContainer.LoadAsset<GameObject>(AddressableSettings.GetPopupPath(type), popupParent);
 			var popup = go.GetComponent(type) as PopupBase;
 			popup.Type = PopupType.Bundle;
 			popup.Guid = go.GetInstanceID();
@@ -93,7 +91,7 @@ namespace Redbean.Singleton
 					break;
 				
 				case PopupType.Bundle:
-					Bundle.Release(AddressableSettings.GetPopupPath(popup.GetType()), popup.Guid);
+					BundleContainer.Release(AddressableSettings.GetPopupPath(popup.GetType()), popup.Guid);
 					break;
 			}
 		}

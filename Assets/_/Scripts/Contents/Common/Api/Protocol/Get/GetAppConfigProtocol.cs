@@ -18,12 +18,11 @@ namespace Redbean.Api
 			var app = new AppConfigModel(request.Response).ModelPublish();
 			if (app is null)
 				return request.Response;
-
-			var version = string.Empty;
-#if UNITY_ANDROID
-			version = app.Version.AndroidVersion;
-#elif UNITY_IOS
-			version = app.Version.iOSVersion;
+			
+#if UNITY_EDITOR || UNITY_ANDROID
+			var version = app.Version.AndroidVersion;
+#elif UNITY_EDITOR || UNITY_IOS
+			var version = app.Version.iOSVersion;
 #endif
 
 			var isAppropriate = CompareVersion(version, Application.version);

@@ -60,7 +60,7 @@ namespace Redbean.MVP.Content
 		{
 			var user = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential);
 			
-			await this.GetApi<GetAccessTokenAndUserProtocol>().Parameter(user.UserId).RequestAsync(view.destroyCancellationToken);
+			await this.GetProtocol<GetAccessTokenAndUserProtocol>().Parameter(user.UserId).RequestAsync(view.destroyCancellationToken);
 			
 			m_user.Information.Id = user.UserId;
 			m_user.Information.Nickname = user.ProviderData.First().DisplayName;

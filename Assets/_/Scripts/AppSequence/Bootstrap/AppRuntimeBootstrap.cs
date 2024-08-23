@@ -26,7 +26,7 @@ namespace Redbean
 			if (Application.isPlaying)
 			{
 				// 앱 설정 체크
-				await this.GetApi<GetAppConfigProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
+				await this.GetProtocol<GetAppConfigProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 			}
 		}
 
