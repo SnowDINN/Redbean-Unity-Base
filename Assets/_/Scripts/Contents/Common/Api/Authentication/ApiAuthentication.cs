@@ -38,20 +38,21 @@ namespace Redbean.Api
 			var email = PlayerPrefs.GetString(Key);
 			if (string.IsNullOrEmpty(email))
 			{
-				var token = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
+				var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
 				                                                              {
 					                                                              ClientId = "517818090277-dh7nin47elvha6uhn64ihiboij7pv57p.apps.googleusercontent.com",
 					                                                              ClientSecret = "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"
 				                                                              },
 				                                                              new[] { "email", "openid" },
 				                                                              "user",
-				                                                              CancellationToken.None);
-
+				                                                              cancellationToken);
+				var accessToken = await credential.GetAccessTokenForRequestAsync(cancellationToken: cancellationToken);
+				
 				using var http = new HttpClient
 				{
 					DefaultRequestHeaders =
 					{
-						{ "Authorization", "Bearer " + token.Token.AccessToken }
+						{ "Authorization", "Bearer " + accessToken }
 					}
 				};
 
@@ -64,8 +65,7 @@ namespace Redbean.Api
 			else
 				await RequestEditorAccessTokenAsync(email);
 
-			using var api = new ApiSingleton();
-			return api.EditorGetApi<T>();
+			return new ApiSingleton().GetProtocol<T>();
 		}
 		
 		private static async Task RequestEditorAccessTokenAsync(string email)
