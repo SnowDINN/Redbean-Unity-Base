@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace Redbean.Auth
@@ -16,17 +15,23 @@ namespace Redbean.Auth
 		
 		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
-			throw new NotImplementedException();
+			var completionSource = new TaskCompletionSource<bool>();
+
+			return completionSource.Task;
 		}
 
 		public Task<AuthenticationResult> Login(CancellationToken cancellationToken = default)
 		{
-			throw new NotImplementedException();
+			var completionSource = new TaskCompletionSource<AuthenticationResult>();
+
+			return completionSource.Task;
 		}
 
 		public Task<AuthenticationResult> AutoLogin(CancellationToken cancellationToken = default)
 		{
-			throw new NotImplementedException();
+			var completionSource = new TaskCompletionSource<AuthenticationResult>();
+
+			return completionSource.Task;
 		}
 	}
 }

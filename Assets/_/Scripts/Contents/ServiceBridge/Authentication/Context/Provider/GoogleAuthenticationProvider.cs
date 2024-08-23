@@ -5,10 +5,8 @@ using Firebase.Auth;
 using Google;
 using Google.Apis.Auth.OAuth2;
 
-
 #if UNITY_EDITOR
 using System;
-#else
 #endif
 
 namespace Redbean.Auth

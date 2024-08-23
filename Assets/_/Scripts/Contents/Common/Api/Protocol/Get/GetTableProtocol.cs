@@ -12,9 +12,9 @@ namespace Redbean.Api
 			var request = await ApiGetRequest.GetTableRequest(cancellationToken: cancellationToken);
 			if (request.ErrorCode != 0)
 				return request.Response;
-			
+
 			if (request.Response.Table.Any())
-				TableContainer.RawTable = request.Response.Table;
+				TableContainer.StartParsing(request.Response.Table);
 			
 			return request.Response;
 		}

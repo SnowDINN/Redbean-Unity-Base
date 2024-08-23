@@ -6,11 +6,9 @@ namespace Redbean.Editor
 	internal partial class ThirdPartyWindow
 	{
 		private const string GoogleTab = "Google";
-		
-		private const string ClientGroup = "Tabs/Google/Client key settings";
-		private const string OnlyEditorGroup = "Tabs/Google/Use only in the editor";
+		private const string GoogleGroup = "Tabs/Google/Client key settings";
 
-		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("Android Key"), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(GoogleGroup), LabelText("Android Key"), InlineButton(nameof(GetAosClientKey), "GET"), ShowInInspector]
 		private string AndroidClientKey
 		{
 			get => googleAuth.androidClientId;
@@ -21,7 +19,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(GoogleGroup), LabelText("iOS Key"), InlineButton(nameof(GetIosClientKey), "GET"), ShowInInspector]
 		private string IosClientKey
 		{
 			get => googleAuth.iosClientId;
@@ -32,7 +30,7 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(TabGroup, GoogleTab), TitleGroup(ClientGroup), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
+		[TabGroup(TabGroup, GoogleTab), TitleGroup(GoogleGroup), LabelText("Web Key"), InlineButton(nameof(GetWebClientKey), "GET"), ShowInInspector]
 		private string WebClientKey
 		{
 			get => googleAuth.webClientId;
