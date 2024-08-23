@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Redbean.Auth
@@ -13,17 +14,17 @@ namespace Redbean.Auth
 	{
 		public AuthenticationType Type => AuthenticationType.Apple;
 		
-		public Task<bool> Initialize()
+		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<AuthenticationResult> Login()
+		public Task<AuthenticationResult> Login(CancellationToken cancellationToken = default)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<AuthenticationResult> AutoLogin()
+		public Task<AuthenticationResult> AutoLogin(CancellationToken cancellationToken = default)
 		{
 			throw new NotImplementedException();
 		}

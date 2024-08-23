@@ -10,6 +10,5 @@ namespace Google
 		public static string GetIosClientId() => GoogleAuthInstaller.GetClientId(ClientType.IosClientId);
 		public static string GetIosClientScheme() => GoogleAuthInstaller.GetReverseClientId(ClientType.IosClientId);
 		public static string GetWebClientId() => GoogleAuthInstaller.GetClientId(ClientType.WebClientId);
-		public static string GetWebClientSecretId() => GoogleAuthInstaller.webClientSecretId;
 	}   
 }

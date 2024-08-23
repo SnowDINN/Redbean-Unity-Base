@@ -43,21 +43,8 @@ namespace Redbean.Editor
 			}
 		}
 
-		[TabGroup(TabGroup, GoogleTab), TitleGroup(OnlyEditorGroup), LabelText("Web Secret"), ShowInInspector]
-		private string WebSecretKey
-		{
-			get => googleAuth.webClientSecretId;
-			set
-			{
-				googleAuth.webClientSecretId = value;
-				googleAuth.Save();
-			}
-		}
-
 		private void GetAosClientKey() => AndroidClientKey = googleAuth.GetClientId(ClientType.AndroidClientId);
-
 		private void GetIosClientKey() => IosClientKey = googleAuth.GetClientId(ClientType.IosClientId);
-
 		private void GetWebClientKey() => WebClientKey = googleAuth.GetClientId(ClientType.WebClientId);
 	}
 }

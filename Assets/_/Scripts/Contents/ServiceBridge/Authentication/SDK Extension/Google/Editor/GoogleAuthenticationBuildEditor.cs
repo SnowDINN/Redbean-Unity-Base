@@ -25,7 +25,6 @@ namespace Google
 			installer.androidClientId = GoogleAuthenticationClient.GetAndroidClientId();
 			installer.iosClientId = GoogleAuthenticationClient.GetIosClientId();
 			installer.webClientId = GoogleAuthenticationClient.GetWebClientId();
-			installer.webClientSecretId = "";
 			installer.Save();
 		}
 	}

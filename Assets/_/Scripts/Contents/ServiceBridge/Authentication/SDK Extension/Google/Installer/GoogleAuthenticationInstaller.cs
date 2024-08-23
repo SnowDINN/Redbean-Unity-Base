@@ -24,7 +24,6 @@ namespace Google
 	{
 		[Header("Web")]
 		public string webClientId;
-		public string webClientSecretId;
 		
 		[Header("Android")]
 		public string androidClientId;

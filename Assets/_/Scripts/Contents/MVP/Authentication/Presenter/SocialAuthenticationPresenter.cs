@@ -33,11 +33,11 @@ namespace Redbean.MVP.Content
 		private async UniTaskVoid LoginAsync(CancellationToken token)
 		{
 			var auth = authentication.GetPlatform(view.Type);
-			var isInitialize = await auth.Initialize();
+			var isInitialize = await auth.Initialize(token);
 			if (!isInitialize)
 				return;
 			
-			await SetUserData(await auth.Login());
+			await SetUserData(await auth.Login(token));
 		}
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
@@ -48,11 +48,11 @@ namespace Redbean.MVP.Content
 			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{
 				var auth = authentication.GetPlatform(view.Type);
-				var isInitialize = await auth.Initialize();
+				var isInitialize = await auth.Initialize(token);
 				if (!isInitialize)
 					return;
 				
-				await SetUserData(await auth.AutoLogin());
+				await SetUserData(await auth.AutoLogin(token));
 			}
 		}
 

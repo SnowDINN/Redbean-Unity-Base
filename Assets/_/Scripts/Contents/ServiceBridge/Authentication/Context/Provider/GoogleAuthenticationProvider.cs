@@ -1,7 +1,15 @@
-﻿using System;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Firebase.Auth;
 using Google;
+using Google.Apis.Auth.OAuth2;
+
+
+#if UNITY_EDITOR
+using System;
+#else
+#endif
 
 namespace Redbean.Auth
 {
@@ -18,7 +26,7 @@ namespace Redbean.Auth
 		
 		public AuthenticationType Type => AuthenticationType.Google;
 		
-		public Task<bool> Initialize()
+		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
 			var completionSource = new TaskCompletionSource<bool>();
 			
@@ -27,9 +35,6 @@ namespace Redbean.Auth
 			
 			var configuration = new GoogleSignInConfiguration
 			{
-#if UNITY_EDITOR || UNITY_STANDALONE
-				ClientSecret = GoogleAuthenticationClient.GetWebClientSecretId(),
-#endif
 				WebClientId = GoogleAuthenticationClient.GetWebClientId(),
 				RequestEmail = true,
 				RequestProfile = true,
@@ -43,10 +48,13 @@ namespace Redbean.Auth
 			return completionSource.Task;
 		}
 
-		public async Task<AuthenticationResult> Login()
+		public async Task<AuthenticationResult> Login(CancellationToken cancellationToken = default)
 		{
 			var result = new AuthenticationResult();
-
+			
+#if UNITY_EDITOR
+			result = await UnityEditorLogin(cancellationToken);
+#else
 			try
 			{
 				var user = await GoogleSignIn.DefaultInstance.SignInAsync();
@@ -72,14 +80,17 @@ namespace Redbean.Auth
 					Message = e.Message
 				};
 			}
-
+#endif
 			return result;
 		}
 
-		public async Task<AuthenticationResult> AutoLogin()
+		public async Task<AuthenticationResult> AutoLogin(CancellationToken cancellationToken = default)
 		{
 			var result = new AuthenticationResult();
 			
+#if UNITY_EDITOR
+			result = await UnityEditorLogin(cancellationToken);
+#else
 			try
 			{
 				var user = await GoogleSignIn.DefaultInstance.SignInSilentlyAsync();
@@ -105,8 +116,37 @@ namespace Redbean.Auth
 					Message = e.Message
 				};
 			}
-
+#endif
 			return result;
 		}
+
+#if UNITY_EDITOR
+		private async Task<AuthenticationResult> UnityEditorLogin(CancellationToken cancellationToken = default)
+		{
+			var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
+			                                                                   {
+				                                                                   ClientId = "517818090277-dh7nin47elvha6uhn64ihiboij7pv57p.apps.googleusercontent.com",
+				                                                                   ClientSecret = "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"
+			                                                                   },
+			                                                                   new[] { "email", "openid" },
+			                                                                   "user",
+			                                                                   cancellationToken);
+			var accessToken = await credential.GetAccessTokenForRequestAsync(cancellationToken: cancellationToken);
+				
+			using var http = new HttpClient
+			{
+				DefaultRequestHeaders =
+				{
+					{ "Authorization", "Bearer " + accessToken }
+				}
+			};
+
+			return new AuthenticationResult
+			{
+				Code = (int)GoogleAuthErrorCode.Success,
+				Credential = GoogleAuthProvider.GetCredential(credential.Token.IdToken, "")
+			};
+		}
+#endif
 	}
 }
