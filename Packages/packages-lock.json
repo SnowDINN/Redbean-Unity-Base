@@ -7,28 +7,28 @@
       "dependencies": {
         "com.unity.modules.imgui": "1.0.0"
       },
-      "hash": "0025cec067a0f6c28a40673ac7ef12ad4336e631"
+      "hash": "2eaf201aabbbcb8d84c447cdd29201e457a4472a"
     },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "2e225fb8414e023df2aa3acae2ef225471981316"
+      "hash": "9057452c86079e4265228480b1439442894d5078"
     },
     "com.github-glitchenzo.nugetforunity": {
       "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "90fa6db024148d466fe738f58fd4263c7267346b"
+      "hash": "a011c51ed65c9abc3151a7a408bc70d408352933"
     },
     "com.google.external-dependency-manager": {
       "version": "https://github.com/googlesamples/unity-jar-resolver.git?path=upm",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "8e4659acea42f83d33d34e31e48e4fdbcaa91ea0"
+      "hash": "12cca2d689febf53c9e6ef452eba14e96a0b1aee"
     },
     "com.google.signin": {
       "version": "https://github.com/Thaina/google-signin-unity.git#newmigration",
@@ -38,14 +38,14 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1",
         "com.google.external-dependency-manager": "1.2.175"
       },
-      "hash": "d4752b8c6ed1e71f20334704f1c77b8bc20a6a8d"
+      "hash": "cdb93a3e74fcc39603269c1d84cc4c208c022248"
     },
     "com.unity.2d.animation": {
-      "version": "10.1.2",
+      "version": "10.1.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.2d.common": "9.0.4",
+        "com.unity.2d.common": "9.0.6",
         "com.unity.2d.sprite": "1.0.0",
         "com.unity.collections": "1.2.4",
         "com.unity.modules.animation": "1.0.0",
@@ -54,7 +54,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.2d.common": {
-      "version": "9.0.5",
+      "version": "9.0.6",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -124,7 +124,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ai.navigation": {
-      "version": "2.0.0",
+      "version": "2.0.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
