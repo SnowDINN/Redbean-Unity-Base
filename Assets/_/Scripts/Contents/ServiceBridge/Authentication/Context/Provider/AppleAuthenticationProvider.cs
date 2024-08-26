@@ -11,7 +11,7 @@ using AppleAuth.Interfaces;
 using AppleAuth.Native;
 using Firebase.Auth;
 using R3;
-using UnityEngine;
+using Redbean.Utility;
 
 namespace Redbean.Auth
 {
@@ -30,8 +30,8 @@ namespace Redbean.Auth
 		public const string APPLE_USER_ID = nameof(APPLE_USER_ID);
 		public const string APPLE_USER_ID_TOKEN = nameof(APPLE_USER_ID_TOKEN);
 
-		private string userId => PlayerPrefs.GetString(APPLE_USER_ID);
-		private string userIdToken => PlayerPrefs.GetString(APPLE_USER_ID_TOKEN);
+		private string userId => LocalDatabase.Load<string>(APPLE_USER_ID);
+		private string userIdToken => LocalDatabase.Load<string>(APPLE_USER_ID_TOKEN);
 		
 		private IAppleAuthManager appleAuthManager;
 		private IDisposable disposable;
@@ -61,8 +61,11 @@ namespace Redbean.Auth
 			appleAuthManager.LoginWithAppleId(appleAuthLoginArgs,
 			                                  credential =>
 			                                  {
-				                                  PlayerPrefs.SetString(APPLE_USER_ID, (credential as IAppleIDCredential).User);
-				                                  PlayerPrefs.SetString(APPLE_USER_ID_TOKEN, Encoding.UTF8.GetString((credential as IAppleIDCredential).IdentityToken));
+				                                  var userCredential = credential as IAppleIDCredential;
+				                                  userCredential.User.SetPlayerPrefs(APPLE_USER_ID);
+				                                  Encoding.UTF8
+					                                  .GetString(userCredential.IdentityToken)
+					                                  .SetPlayerPrefs(APPLE_USER_ID_TOKEN);
 
 				                                  result = new AuthenticationResult
 				                                  {

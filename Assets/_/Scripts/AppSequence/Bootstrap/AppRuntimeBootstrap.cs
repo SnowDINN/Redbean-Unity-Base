@@ -28,6 +28,8 @@ namespace Redbean
 				// 앱 설정 체크
 				await this.GetProtocol<GetAppConfigProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 			}
+
+			"ss".SetPlayerPrefs("TEXT");
 		}
 
 		public void Dispose()

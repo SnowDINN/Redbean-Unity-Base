@@ -6,9 +6,9 @@ using System.Reflection;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Redbean.Security;
 using Redbean.MVP;
-using Redbean.Singleton;
+using Redbean.Security;
+using Redbean.Utility;
 using Sirenix.OdinInspector;
 using Unity.Jobs;
 using UnityEditor;
@@ -51,18 +51,16 @@ namespace Redbean.Editor
 		{
 			get
 			{
-				if (!PlayerPrefs.HasKey(MvpContainer.PLAYER_PREFS_KEY))
+				if (!PlayerPrefs.HasKey(LocalDatabase.PLAYER_PREFS_KEY))
 					return new List<PlayerPrefsViewer>();
 
-				var dataDecrypt = PlayerPrefs.GetString(MvpContainer.PLAYER_PREFS_KEY).Decryption();
+				var dataDecrypt = PlayerPrefs.GetString(LocalDatabase.PLAYER_PREFS_KEY).Decryption();
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				if (dataGroups == null)
 					return new List<PlayerPrefsViewer>();
 
-				return (from dataGroup in dataGroups let key = Assembly.Load("Assembly-CSharp")
-					        .GetTypes()
-					        .FirstOrDefault(_ => _.FullName == dataGroup.Key) 
-				        select new PlayerPrefsViewer(key.Name, JToken.Parse(dataGroup.Value).ToString(Formatting.Indented))).ToList();
+				return (from dataGroup in dataGroups
+				        select new PlayerPrefsViewer(dataGroup.Key, JToken.Parse(dataGroup.Value).ToString(Formatting.Indented))).ToList();
 			}
 		}
 

@@ -23,7 +23,7 @@ namespace Redbean.Api
 				AccessTokenExpire = request.Response.Token.AccessTokenExpire,
 				RefreshTokenExpire = request.Response.Token.RefreshTokenExpire
 			});
-			var user = new UserModel(request.Response).ModelPublish(true);
+			var user = new UserModel(request.Response).ModelPublish();
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.Login);
 			await FirebaseMessaging.SubscribeAsync(user.Information.Id);

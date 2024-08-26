@@ -23,7 +23,7 @@ namespace Redbean.MVP.Content
 			if (string.IsNullOrEmpty(m_user.Information.Nickname))
 				m_user.Information.Nickname = "Guest";
 			
-			m_user.ModelPublish().SetPlayerPrefs();
+			m_user.ModelPublish();
 			
 			Log.Print("User logged in as a guest.");
 		}

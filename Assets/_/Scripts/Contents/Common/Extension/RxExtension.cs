@@ -15,7 +15,7 @@ namespace Redbean
 		/// <summary>
 		/// 모델 데이터 배포
 		/// </summary>
-		public static T ModelPublish<T>(this T model, bool isPlayerPrefs = false) where T : IModel => 
-			GetSingleton<RxModelBinder>().Publish(GetSingleton<MvpContainer>().Override(model, isPlayerPrefs));
+		public static T ModelPublish<T>(this T model) where T : IModel => 
+			GetSingleton<RxModelBinder>().Publish(GetSingleton<MvpContainer>().Override(model));
 	}
 }
