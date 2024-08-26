@@ -51,10 +51,10 @@ namespace Redbean.Editor
 		{
 			get
 			{
-				if (!PlayerPrefs.HasKey(MvpSingleton.PLAYER_PREFS_KEY))
+				if (!PlayerPrefs.HasKey(MvpContainer.PLAYER_PREFS_KEY))
 					return new List<PlayerPrefsViewer>();
 
-				var dataDecrypt = PlayerPrefs.GetString(MvpSingleton.PLAYER_PREFS_KEY).Decryption();
+				var dataDecrypt = PlayerPrefs.GetString(MvpContainer.PLAYER_PREFS_KEY).Decryption();
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				if (dataGroups == null)
 					return new List<PlayerPrefsViewer>();

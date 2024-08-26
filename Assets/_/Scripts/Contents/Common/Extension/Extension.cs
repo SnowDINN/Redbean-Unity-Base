@@ -10,7 +10,7 @@ namespace Redbean
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupSingleton Popup(this IExtension extension) => GetSingleton<PopupSingleton>();
+		public static PopupContainer Popup(this IExtension extension) => GetSingleton<PopupContainer>();
 		
 		/// <summary>
 		/// 유저 데이터 호출

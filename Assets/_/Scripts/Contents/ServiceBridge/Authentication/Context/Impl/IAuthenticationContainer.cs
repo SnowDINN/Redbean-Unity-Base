@@ -1,12 +1,14 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Firebase.Auth;
 
 namespace Redbean.Auth
 {
-	public interface IAuthentication
+	public interface IAuthenticationContainer : IDisposable
 	{
 		AuthenticationType Type { get; }
+		bool IsInitialize { get; set; }
 		Task<bool> Initialize(CancellationToken cancellationToken = default);
 		Task<AuthenticationResult> Login(CancellationToken cancellationToken = default);
 		Task<AuthenticationResult> AutoLogin(CancellationToken cancellationToken = default);

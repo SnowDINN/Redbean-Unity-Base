@@ -15,21 +15,18 @@ namespace Redbean.Auth
 	{
 		Success = 0,
 		Error = 10000000,
-		Exception = 19999999
+		Exception = 10999999
 	}
 	
-	public class GoogleAuthenticationProvider : IAuthentication
+	public class GoogleAuthenticationProvider : IAuthenticationContainer
 	{
-		public static bool IsInitialize => GoogleSignIn.Configuration is not null;
-		
 		public AuthenticationType Type => AuthenticationType.Google;
+		public bool IsInitialize { get; set; }
 		
 		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
-			var completionSource = new TaskCompletionSource<bool>();
-			
-			if (GoogleSignIn.Configuration != null)
-				completionSource.TrySetResult(false);
+			if (IsInitialize)
+				Task.FromResult(IsInitialize);
 			
 			var configuration = new GoogleSignInConfiguration
 			{
@@ -42,8 +39,8 @@ namespace Redbean.Auth
 			};
 			GoogleSignIn.Configuration = configuration;
 
-			completionSource.TrySetResult(true);
-			return completionSource.Task;
+			IsInitialize = true;
+			return Task.FromResult(IsInitialize);
 		}
 
 		public async Task<AuthenticationResult> Login(CancellationToken cancellationToken = default)
@@ -146,5 +143,9 @@ namespace Redbean.Auth
 			};
 		}
 #endif
+		public void Dispose()
+		{
+			
+		}
 	}
 }

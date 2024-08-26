@@ -18,7 +18,7 @@ namespace Redbean.MVP.Content
 		private SocialAuthenticationView view;
 
 		[Singleton]
-		private AuthenticationSingleton authentication;
+		private AuthenticationContainer authentication;
 		
 		public override void Setup()
 		{
@@ -33,10 +33,8 @@ namespace Redbean.MVP.Content
 		private async UniTaskVoid LoginAsync(CancellationToken token)
 		{
 			var auth = authentication.GetPlatform(view.Type);
-			var isInitialize = await auth.Initialize(token);
-			if (!isInitialize)
-				return;
 			
+			await auth.Initialize(token);
 			await SetUserData(await auth.Login(token));
 		}
 
@@ -48,10 +46,8 @@ namespace Redbean.MVP.Content
 			if (m_user.Social.Platform.Contains($"{view.Type}".ToLower()))
 			{
 				var auth = authentication.GetPlatform(view.Type);
-				var isInitialize = await auth.Initialize(token);
-				if (!isInitialize)
-					return;
-				
+
+				await auth.Initialize(token);
 				await SetUserData(await auth.AutoLogin(token));
 			}
 		}

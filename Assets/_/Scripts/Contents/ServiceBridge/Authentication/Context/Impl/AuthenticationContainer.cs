@@ -5,19 +5,19 @@ using Redbean.Auth;
 
 namespace Redbean.Singleton
 {
-	public class AuthenticationSingleton : ISingletonContainer
+	public class AuthenticationContainer : ISingletonContainer
 	{
-		private readonly Dictionary<AuthenticationType, IAuthentication> authenticationGroup = new();
+		private readonly Dictionary<AuthenticationType, IAuthenticationContainer> authenticationGroup = new();
 		
-		public AuthenticationSingleton()
+		public AuthenticationContainer()
 		{
 			var authentications = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(_ => _.GetTypes())
 				.Where(_ => _.FullName != null
-				            && typeof(IAuthentication).IsAssignableFrom(_)
+				            && typeof(IAuthenticationContainer).IsAssignableFrom(_)
 				            && !_.IsInterface
 				            && !_.IsAbstract)
-				.Select(_ => Activator.CreateInstance(_) as IAuthentication)
+				.Select(_ => Activator.CreateInstance(_) as IAuthenticationContainer)
 				.ToArray();
 
 			foreach (var authentication in authentications)
@@ -26,9 +26,12 @@ namespace Redbean.Singleton
 		
 		public void Dispose()
 		{
+			foreach (var authentication in authenticationGroup.Values)
+				authentication.Dispose();
+			
 			authenticationGroup.Clear();
 		}
 
-		public IAuthentication GetPlatform(AuthenticationType type) => authenticationGroup[type];
+		public IAuthenticationContainer GetPlatform(AuthenticationType type) => authenticationGroup[type];
 	}
 }

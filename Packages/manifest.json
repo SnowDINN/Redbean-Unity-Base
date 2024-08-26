@@ -5,6 +5,7 @@
     "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.google.external-dependency-manager": "https://github.com/googlesamples/unity-jar-resolver.git?path=upm",
     "com.google.signin": "https://github.com/Thaina/google-signin-unity.git#newmigration",
+    "com.lupidan.apple-signin-unity": "https://github.com/lupidan/apple-signin-unity.git#v1.4.3",
     "com.unity.2d.animation": "10.1.3",
     "com.unity.2d.pixel-perfect": "5.0.3",
     "com.unity.2d.psdimporter": "9.0.3",

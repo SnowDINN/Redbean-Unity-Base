@@ -18,8 +18,8 @@ namespace Redbean.Api
 		
 		public static void RemoveAccessToken()
 		{
-			if (ApiSingleton.Http.DefaultRequestHeaders.Contains("Authorization"))
-				ApiSingleton.Http.DefaultRequestHeaders.Remove("Authorization");
+			if (ApiContainer.Http.DefaultRequestHeaders.Contains("Authorization"))
+				ApiContainer.Http.DefaultRequestHeaders.Remove("Authorization");
 		}
 
 		public static void SetAccessToken(TokenResponse response)
@@ -27,7 +27,7 @@ namespace Redbean.Api
 			currentToken = response;
 			
 			RemoveAccessToken();
-			ApiSingleton.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
+			ApiContainer.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.AccessToken}");
 		}
 		
 #if UNITY_EDITOR
@@ -65,7 +65,7 @@ namespace Redbean.Api
 			else
 				await RequestEditorAccessTokenAsync(email);
 
-			return new ApiSingleton().GetProtocol<T>();
+			return new ApiContainer().GetProtocol<T>();
 		}
 		
 		private static async Task RequestEditorAccessTokenAsync(string email)
@@ -76,7 +76,7 @@ namespace Redbean.Api
 			{
 				Value = email.Encryption()
 			});
-			ApiSingleton.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Response.Value}");
+			ApiContainer.Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {request.Response.Value}");
 		}
 #endif
 		
