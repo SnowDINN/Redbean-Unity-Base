@@ -3,13 +3,15 @@ using Redbean.MVP;
 
 namespace Redbean.Rx
 {
-	public class RxModelBinder : RxBase, ISingletonContainer
+	public class RxModelBinder : RxBase
 	{
-		private readonly Subject<IModel> onModelChanged = new();
-		public Observable<IModel> OnModelChanged => onModelChanged.Share();
-		
-		public RxModelBinder()
+		private static readonly Subject<IModel> onModelChanged = new();
+		public static Observable<IModel> OnModelChanged => onModelChanged.Share();
+
+		public override void Setup()
 		{
+			base.Setup();
+			
 			OnModelChanged.Where(_ => _ is ISerializeModel)
 				.Select(_ => _.As<ISerializeModel>())
 				.Subscribe(_ =>
@@ -18,7 +20,7 @@ namespace Redbean.Rx
 				}).AddTo(disposables);
 		}
 
-		public T Publish<T>(T value) where T : IModel
+		public static T Publish<T>(T value) where T : IModel
 		{
 			onModelChanged.OnNext(value);
 			return value;

@@ -3,20 +3,22 @@ using R3;
 
 namespace Redbean.Rx
 {
-	public class RxPushMessageBinder : RxBase, ISingletonContainer
+	public class RxPushMessageBinder : RxBase
 	{
-		private readonly Subject<string> onPushTokenReceived = new();
-		public Observable<string> OnPushTokenReceived => onPushTokenReceived.Share();
+		private static readonly Subject<string> onPushTokenReceived = new();
+		public static Observable<string> OnPushTokenReceived => onPushTokenReceived.Share();
 		
-		private readonly Subject<FirebaseMessage> onPushMessageReceived = new();
-		public Observable<FirebaseMessage> OnPushMessageReceived => onPushMessageReceived.Share();
-		
-		public RxPushMessageBinder()
+		private static readonly Subject<FirebaseMessage> onPushMessageReceived = new();
+		public static Observable<FirebaseMessage> OnPushMessageReceived => onPushMessageReceived.Share();
+
+		public override void Setup()
 		{
+			base.Setup();
+			
 			FirebaseMessaging.TokenReceived += OnTokenReceived;
 			FirebaseMessaging.MessageReceived += OnMessageReceived;
 		}
-		
+
 		public override void Dispose()
 		{
 			base.Dispose();

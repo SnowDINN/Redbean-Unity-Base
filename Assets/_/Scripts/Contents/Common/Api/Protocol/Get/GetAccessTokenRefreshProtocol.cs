@@ -5,7 +5,7 @@ namespace Redbean.Api
 {
 	public class GetAccessTokenRefreshProtocol : ApiProtocol
 	{
-		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
+		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetAccessTokenRefreshRequest
 					(new[] { ApiAuthentication.RefreshToken }, cancellationToken);

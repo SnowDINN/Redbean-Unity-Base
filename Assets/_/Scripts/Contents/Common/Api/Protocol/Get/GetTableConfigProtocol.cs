@@ -6,7 +6,7 @@ namespace Redbean.Api
 {
 	public class GetTableConfigProtocol : ApiProtocol
 	{
-		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
+		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetTableConfigRequest(cancellationToken: cancellationToken);
 			if (request.ErrorCode != 0)

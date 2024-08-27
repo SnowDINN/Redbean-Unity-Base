@@ -3,19 +3,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using Redbean.MVP.Content;
 using Redbean.Popup.Content;
+using Redbean.Utility;
 using UnityEngine;
 
 namespace Redbean.Api
 {
 	public class GetAppConfigProtocol : ApiProtocol
 	{
-		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
+		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
 			if (request.ErrorCode != 0)
 				return request.Response;
 			
-			var app = new AppConfigModel(request.Response).ModelPublish();
+			var app = new AppConfigModel(request.Response).Override();
 			if (app is null)
 				return request.Response;
 			
@@ -32,7 +33,8 @@ namespace Redbean.Api
 				case <= 0:
 				{
 					// TODO : 정상 진입 로직
-
+					
+					LocalDatabase.Setup();
 					break;	
 				}
 						

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Redbean.MVP.Content
 {
-	public class SocialAuthenticationView : View
+	public class AuthenticationView : View
 	{
 		[SerializeField] private AuthenticationType type;
 		public AuthenticationType Type => type;

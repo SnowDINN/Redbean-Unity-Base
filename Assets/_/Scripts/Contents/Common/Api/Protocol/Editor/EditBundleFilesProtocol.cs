@@ -5,7 +5,7 @@ namespace Redbean.Api
 {
 	public class EditBundleFilesProtocol : ApiProtocol
 	{
-		public override async Task<object> RequestAsync(CancellationToken cancellationToken = default)
+		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{
 			return (await ApiPostRequest.EditBundleFilesRequest(new AppUploadFilesRequest
 			{

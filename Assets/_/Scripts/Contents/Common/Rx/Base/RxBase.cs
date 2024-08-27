@@ -2,9 +2,13 @@
 
 namespace Redbean.Rx
 {
-	public class RxBase
+	public class RxBase : IExtension
 	{
 		protected readonly CompositeDisposable disposables = new();
+
+		public virtual void Setup()
+		{
+		}
 
 		public virtual void Dispose()
 		{
