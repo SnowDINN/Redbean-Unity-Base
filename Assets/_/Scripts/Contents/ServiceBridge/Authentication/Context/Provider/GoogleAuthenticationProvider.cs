@@ -143,9 +143,5 @@ namespace Redbean.Auth
 			};
 		}
 #endif
-		public void Dispose()
-		{
-			
-		}
 	}
 }

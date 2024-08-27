@@ -10,7 +10,7 @@ namespace Redbean.Rx
 		{
 		}
 
-		public virtual void Dispose()
+		public virtual void Teardown()
 		{
 			disposables?.Dispose();
 			disposables?.Clear();

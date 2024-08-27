@@ -9,10 +9,10 @@ namespace Redbean
 		{
 			await this.GetProtocol<GetTableProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 		}
-		
-		public void Dispose()
+
+		public Task Teardown()
 		{
-			
+			return Task.CompletedTask;
 		}
 	}
 }

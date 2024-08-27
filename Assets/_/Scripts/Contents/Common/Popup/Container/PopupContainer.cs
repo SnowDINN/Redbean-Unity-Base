@@ -12,11 +12,11 @@ namespace Redbean.Singleton
 {
 	public class PopupContainer : ISingletonContainer
 	{
-		private readonly Dictionary<int, PopupBase> popupsGroup = new();
+		private readonly Dictionary<int, PopupBase> popupGroup = new();
 		private readonly Transform popupParent;
 		private readonly Canvas canvas;
 
-		public PopupBase CurrentPopup => popupsGroup.Values.Last();
+		public PopupBase CurrentPopup => popupGroup.Values.Last();
 
 		public PopupContainer()
 		{
@@ -64,8 +64,8 @@ namespace Redbean.Singleton
 			popup.Type = PopupType.Asset;
 			popup.Guid = go.GetInstanceID();
 			
-			popupsGroup.Add(popup.Guid, popup);
-			return popupsGroup[popup.Guid];
+			popupGroup.Add(popup.Guid, popup);
+			return popupGroup[popup.Guid];
 		}
 
 		public object BundleOpen(Type type)
@@ -75,13 +75,13 @@ namespace Redbean.Singleton
 			popup.Type = PopupType.Bundle;
 			popup.Guid = go.GetInstanceID();
 			
-			popupsGroup.Add(popup.Guid, popup);
-			return popupsGroup[popup.Guid];
+			popupGroup.Add(popup.Guid, popup);
+			return popupGroup[popup.Guid];
 		}
 		
 		public void Close(int id)
 		{
-			if (!popupsGroup.Remove(id, out var popup))
+			if (!popupGroup.Remove(id, out var popup))
 				return;
 
 			switch (popup.Type)
@@ -98,16 +98,16 @@ namespace Redbean.Singleton
 
 		public void AllClose()
 		{
-			foreach (var popup in popupsGroup.Values)
+			foreach (var popup in popupGroup.Values)
 				Close(popup.Guid);
 		}
 		
 		public T AssetOpen<T>() where T : PopupBase => AssetOpen(typeof(T)) as T;
 		public T BundleOpen<T>() where T : PopupBase => BundleOpen(typeof(T)) as T;
 		
-		public T GetPopup<T>(int id) where T : class => popupsGroup[id] as T;
+		public T GetPopup<T>(int id) where T : class => popupGroup[id] as T;
 		
-		public PopupBase GetPopup(int id) => popupsGroup[id];
+		public PopupBase GetPopup(int id) => popupGroup[id];
 		
 		public void CurrentPopupClose() => Close(CurrentPopup.Guid);
 	}

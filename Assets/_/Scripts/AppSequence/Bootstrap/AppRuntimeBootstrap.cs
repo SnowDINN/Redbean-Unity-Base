@@ -23,19 +23,18 @@ namespace Redbean
 				return;
 			}
 
-			if (Application.isPlaying)
-			{
-				// 앱 설정 체크
-				await this.GetProtocol<GetAppConfigProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
-			}
+			// 앱 설정 체크
+			await this.GetProtocol<GetAppConfigProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 		}
 
-		public void Dispose()
+		public Task Teardown()
 		{
 			Application.logMessageReceived -= OnLogMessageReceived;
 			
 			FirebaseAuth.DefaultInstance.Dispose();
 			FirebaseApp.DefaultInstance.Dispose();
+
+			return Task.CompletedTask;
 		}
 		
 		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)

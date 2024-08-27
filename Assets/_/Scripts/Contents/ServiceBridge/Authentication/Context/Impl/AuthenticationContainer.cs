@@ -26,12 +26,12 @@ namespace Redbean.Singleton
 		
 		public void Dispose()
 		{
-			foreach (var authentication in authenticationGroup.Values)
-				authentication.Dispose();
-			
 			authenticationGroup.Clear();
 		}
 
-		public IAuthenticationContainer GetPlatform(AuthenticationType type) => authenticationGroup[type];
+		public IAuthenticationContainer GetPlatform(AuthenticationType type)
+		{
+			return authenticationGroup[type];
+		}
 	}
 }

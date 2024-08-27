@@ -18,9 +18,9 @@ namespace Redbean.Rx
 			Application.deepLinkActivated += OnDeepLinkActivated;
 		}
 
-		public override void Dispose()
+		public override void Teardown()
 		{
-			base.Dispose();
+			base.Teardown();
 			
 			Application.deepLinkActivated -= OnDeepLinkActivated;
 		}

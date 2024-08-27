@@ -52,9 +52,5 @@ namespace Redbean.Auth
 			
 			return completionSource.Task;
 		}
-		
-		public void Dispose()
-		{
-		}
 	}
 }

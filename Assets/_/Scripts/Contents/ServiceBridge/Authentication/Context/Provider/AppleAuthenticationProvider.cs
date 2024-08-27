@@ -66,6 +66,8 @@ namespace Redbean.Auth
 				                                  Encoding.UTF8
 					                                  .GetString(userCredential.IdentityToken)
 					                                  .SetPlayerPrefs(APPLE_USER_ID_TOKEN);
+				                                  
+				                                  disposable?.Dispose();
 
 				                                  result = new AuthenticationResult
 				                                  {
@@ -76,6 +78,8 @@ namespace Redbean.Auth
 			                                  },
 			                                  error =>
 			                                  {
+				                                  disposable?.Dispose();
+				                                  
 				                                  result = new AuthenticationResult
 				                                  {
 					                                  Code = (int)AppleAuthErrorCode.Error + error.Code,
@@ -95,6 +99,8 @@ namespace Redbean.Auth
 			appleAuthManager.GetCredentialState(userId, 
 			                                    _ =>
 			                                    {
+				                                    disposable?.Dispose();
+				                                    
 				                                    result = new AuthenticationResult
 				                                    {
 					                                    Code = (int)AppleAuthErrorCode.Success,
@@ -104,6 +110,8 @@ namespace Redbean.Auth
 			                                    }, 
 			                                    error =>
 			                                    {
+				                                    disposable?.Dispose();
+				                                    
 				                                    result = new AuthenticationResult
 				                                    {
 					                                    Code = (int)AppleAuthErrorCode.Error + error.Code,
@@ -139,11 +147,6 @@ namespace Redbean.Auth
 			}
 
 			return result;
-		}
-
-		public void Dispose()
-		{
-			disposable?.Dispose();
 		}
 	}
 }

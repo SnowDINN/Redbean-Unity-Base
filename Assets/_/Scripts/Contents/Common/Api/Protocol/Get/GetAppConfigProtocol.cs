@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Redbean.Mobile;
 using Redbean.MVP.Content;
 using Redbean.Popup.Content;
 using Redbean.Utility;
@@ -33,8 +34,9 @@ namespace Redbean.Api
 				case <= 0:
 				{
 					// TODO : 정상 진입 로직
-					
+
 					LocalDatabase.Setup();
+					LocalNotification.Setup();
 					break;	
 				}
 						

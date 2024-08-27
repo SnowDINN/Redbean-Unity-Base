@@ -5,7 +5,7 @@ using Firebase.Auth;
 
 namespace Redbean.Auth
 {
-	public interface IAuthenticationContainer : IDisposable
+	public interface IAuthenticationContainer
 	{
 		AuthenticationType Type { get; }
 		bool IsInitialize { get; set; }

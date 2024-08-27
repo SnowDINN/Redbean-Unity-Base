@@ -19,9 +19,9 @@ namespace Redbean.Rx
 			FirebaseMessaging.MessageReceived += OnMessageReceived;
 		}
 
-		public override void Dispose()
+		public override void Teardown()
 		{
-			base.Dispose();
+			base.Teardown();
 			
 			FirebaseMessaging.TokenReceived -= OnTokenReceived;
 			FirebaseMessaging.MessageReceived -= OnMessageReceived;
