@@ -5,6 +5,12 @@ namespace Redbean.Api
 {
 	public class ApiPostRequest : ApiBase
 	{
+		public static async Task<ApiResponse<UserAndTokenResponse>> PostAccessTokenAndUserRequest(AuthenticationRequest args, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse<UserAndTokenResponse>>("/Authentication/PostAccessTokenAndUser", args, cancellationToken);
+
+		public static async Task<ApiResponse<TokenResponse>> PostAccessTokenRefreshRequest(StringRequest args, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse<TokenResponse>>("/Authentication/PostAccessTokenRefresh", args, cancellationToken);
+
 		public static async Task<ApiResponse> PostUserNicknameRequest(StringRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse>("/User/PostUserNickname", args, cancellationToken);
 

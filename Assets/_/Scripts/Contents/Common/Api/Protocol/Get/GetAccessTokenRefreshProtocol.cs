@@ -7,8 +7,8 @@ namespace Redbean.Api
 	{
 		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{
-			var request = await ApiGetRequest.GetAccessTokenRefreshRequest
-					(new[] { ApiAuthentication.RefreshToken }, cancellationToken);
+			var request = await ApiPostRequest.PostAccessTokenRefreshRequest
+					(new StringRequest(ApiAuthentication.RefreshToken), cancellationToken);
 			
 			if (request.ErrorCode != 0)
 				return request.Response;

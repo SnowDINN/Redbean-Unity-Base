@@ -11,6 +11,7 @@ using AppleAuth.Interfaces;
 using AppleAuth.Native;
 using Firebase.Auth;
 using R3;
+using Redbean.Api;
 using Redbean.Utility;
 
 namespace Redbean.Auth

@@ -1,9 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using Firebase.Auth;
 using Firebase.Messaging;
-using Redbean.Auth;
 using Redbean.MVP.Content;
 
 namespace Redbean.Api
@@ -12,12 +9,10 @@ namespace Redbean.Api
 	{
 		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{
-			var credential = (args[0] as AuthenticationResult).Credential;
-			var firebaseUser = await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(credential);
+			var parameter = args[0] as AuthenticationRequest;
+			parameter.id = parameter.id.Encryption();
 			
-			var request = await ApiGetRequest.GetAccessTokenAndUserRequest
-				(new[] { HttpUtility.UrlEncode($"{firebaseUser.UserId}".Encryption()) }, cancellationToken);
-			
+			var request = await ApiPostRequest.PostAccessTokenAndUserRequest(parameter, cancellationToken);
 			if (request.ErrorCode != 0)
 				return request.Response;
 			

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Firebase.Auth;
 using Google;
 using Google.Apis.Auth.OAuth2;
+using Redbean.Api;
 
 #if UNITY_EDITOR
 using System;

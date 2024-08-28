@@ -1,6 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using Redbean.Api;
 using Redbean.MVP.Content;
+using Redbean.Utility;
 
 namespace Redbean.Auth
 {
@@ -9,6 +12,8 @@ namespace Redbean.Auth
 		public AuthenticationType Type => AuthenticationType.Guest;
 		
 		public bool IsInitialize { get; set; }
+
+		private const string GUEST_USER = nameof(GUEST_USER);
 		
 		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
@@ -22,11 +27,16 @@ namespace Redbean.Auth
 
 			var user = new UserModel
 			{
+				Information =
+				{
+					Id = $"{Guid.NewGuid()}".Replace("-", "")
+				},
 				Social =
 				{
 					Platform = "Guest"
 				}
-			}.Override();
+			};
+			user.Override().SetPlayerPrefs(GUEST_USER);
 			
 			result = new AuthenticationResult
 			{
@@ -42,7 +52,10 @@ namespace Redbean.Auth
 		{
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
-			
+
+			var user = LocalDatabase.Load<UserModel>(GUEST_USER);
+			user?.Override();
+
 			result = new AuthenticationResult
 			{
 				Code = (int)AppleAuthErrorCode.Success,

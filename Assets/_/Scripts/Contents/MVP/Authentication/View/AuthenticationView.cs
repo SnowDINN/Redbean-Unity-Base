@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Redbean.Api;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Redbean.MVP.Content

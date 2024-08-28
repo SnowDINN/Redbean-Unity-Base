@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Redbean.Api;
 using Redbean.Auth;
 
 namespace Redbean.Singleton

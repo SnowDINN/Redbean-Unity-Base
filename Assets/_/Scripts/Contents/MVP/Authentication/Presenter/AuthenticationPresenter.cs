@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using Firebase.Auth;
 using R3;
 using Redbean.Api;
 using Redbean.Auth;
@@ -52,13 +53,17 @@ namespace Redbean.MVP.Content
 
 		private async UniTask SetUserData(AuthenticationResult result)
 		{
-			if (view.Type == AuthenticationType.Guest)
+			var parameter = new AuthenticationRequest
 			{
-				Log.Print($"Login user's data. [ {user.Social.Platform} ]");
-				return;
-			}
-
-			await this.GetProtocol<GetAccessTokenAndUserProtocol>().Parameter(result).RequestAsync(view.destroyCancellationToken);
+				type = view.Type,
+				id = view.Type == AuthenticationType.Guest 
+					? user.Information.Id 
+					: (await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential)).UserId
+			};
+			
+			await this.GetProtocol<GetAccessTokenAndUserProtocol>()
+				.Parameter(parameter)
+				.RequestAsync(view.destroyCancellationToken);
 		}
 	}
 }

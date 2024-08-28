@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Firebase.Auth;
+using Redbean.Api;
 
 namespace Redbean.Auth
 {
