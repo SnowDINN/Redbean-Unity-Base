@@ -61,7 +61,7 @@ namespace Redbean.MVP.Content
 					: (await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential)).UserId
 			};
 			
-			await this.GetProtocol<GetAccessTokenAndUserProtocol>()
+			await this.GetProtocol<PostAccessTokenAndUserProtocol>()
 				.Parameter(parameter)
 				.RequestAsync(view.destroyCancellationToken);
 		}

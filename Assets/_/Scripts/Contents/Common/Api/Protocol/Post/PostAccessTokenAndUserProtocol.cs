@@ -5,7 +5,7 @@ using Redbean.MVP.Content;
 
 namespace Redbean.Api
 {
-	public class GetAccessTokenAndUserProtocol : ApiProtocol
+	public class PostAccessTokenAndUserProtocol : ApiProtocol
 	{
 		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{

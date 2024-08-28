@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Redbean.Api
 {
-	public class GetAccessTokenRefreshProtocol : ApiProtocol
+	public class PostAccessTokenRefreshProtocol : ApiProtocol
 	{
 		protected override async Task<object> Request(CancellationToken cancellationToken = default)
 		{

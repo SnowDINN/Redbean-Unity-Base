@@ -45,7 +45,7 @@ namespace Redbean.Rx
 		
 		private async UniTaskVoid GetRefreshAccessTokenAsync()
 		{
-			await this.GetProtocol<GetAccessTokenRefreshProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
+			await this.GetProtocol<PostAccessTokenRefreshProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 		}
 	}
 }
