@@ -10,10 +10,9 @@ namespace Redbean.Auth
 	public class GuestAuthenticationProvider : IAuthenticationContainer
 	{
 		public AuthenticationType Type => AuthenticationType.Guest;
-		
 		public bool IsInitialize { get; set; }
 
-		private const string GUEST_USER = nameof(GUEST_USER);
+		private const string GUEST_USER_ID = nameof(GUEST_USER_ID);
 		
 		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
@@ -30,13 +29,9 @@ namespace Redbean.Auth
 				Information =
 				{
 					Id = $"{Guid.NewGuid()}".Replace("-", "")
-				},
-				Social =
-				{
-					Platform = "Guest"
 				}
 			};
-			user.Override().SetPlayerPrefs(GUEST_USER);
+			user.Override().SetPlayerPrefs(GUEST_USER_ID);
 			
 			result = new AuthenticationResult
 			{
@@ -53,7 +48,7 @@ namespace Redbean.Auth
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
 
-			var user = LocalDatabase.Load<UserModel>(GUEST_USER);
+			var user = LocalDatabase.Load<UserModel>(GUEST_USER_ID);
 			user?.Override();
 
 			result = new AuthenticationResult

@@ -28,8 +28,8 @@ namespace Redbean.Auth
 		public AuthenticationType Type => AuthenticationType.Apple;
 		public bool IsInitialize { get; set; }
 
-		public const string APPLE_USER_ID = nameof(APPLE_USER_ID);
-		public const string APPLE_USER_ID_TOKEN = nameof(APPLE_USER_ID_TOKEN);
+		private const string APPLE_USER_ID = nameof(APPLE_USER_ID);
+		private const string APPLE_USER_ID_TOKEN = nameof(APPLE_USER_ID_TOKEN);
 
 		private string userId => LocalDatabase.Load<string>(APPLE_USER_ID);
 		private string userIdToken => LocalDatabase.Load<string>(APPLE_USER_ID_TOKEN);
