@@ -12,13 +12,13 @@ namespace Redbean.Api
 	{
 		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var request = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
-			if (request.ErrorCode != 0)
-				return request.Response;
+			var response = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
+			if (response.ErrorCode != 0)
+				return response;
 			
-			var app = new AppConfigModel(request.Response).Override();
+			var app = new AppConfigModel(response.Response).Override();
 			if (app is null)
-				return request.Response;
+				return response;
 			
 #if UNITY_EDITOR || UNITY_ANDROID
 			var version = app.Version.AndroidVersion;
@@ -45,7 +45,7 @@ namespace Redbean.Api
 					// TODO : 업데이트 진입 로직
 
 					AppLifeCycle.AppCheckFail();
-					return request.Response;
+					return response;
 				}
 			}
 
@@ -54,11 +54,11 @@ namespace Redbean.Api
 				this.Popup().AssetOpen<PopupMaintenance>();
 						
 				AppLifeCycle.AppCheckFail();
-				return request.Response;
+				return response;
 			}
 					
 			AppLifeCycle.AppCheckSuccess();
-			return request.Response;
+			return response;
 		}
 		
 		private static int CompareVersion(string v1, string v2)

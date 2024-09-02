@@ -9,14 +9,14 @@ namespace Redbean.Api
 	{
 		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var request = await ApiGetRequest.GetTableRequest(cancellationToken: cancellationToken);
-			if (request.ErrorCode != 0)
-				return request.Response;
+			var response = await ApiGetRequest.GetTableRequest(cancellationToken: cancellationToken);
+			if (response.ErrorCode != 0)
+				return response;
 
-			if (request.Response.Table.Any())
-				TableContainer.StartParsing(request.Response.Table);
+			if (response.Response.Table.Any())
+				TableContainer.StartParsing(response.Response.Table);
 			
-			return request.Response;
+			return response;
 		}
 	}
 }

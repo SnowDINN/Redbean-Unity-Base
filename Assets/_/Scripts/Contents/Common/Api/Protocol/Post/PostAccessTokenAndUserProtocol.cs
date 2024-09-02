@@ -12,24 +12,24 @@ namespace Redbean.Api
 			var parameter = args[0] as AuthenticationRequest;
 			parameter.id = parameter.id.Encryption();
 			
-			var request = await ApiPostRequest.PostAccessTokenAndUserRequest(parameter, cancellationToken);
-			if (request.ErrorCode != 0)
-				return request.Response;
+			var response = await ApiPostRequest.PostAccessTokenAndUserRequest(parameter, cancellationToken);
+			if (response.ErrorCode != 0)
+				return response;
 			
 			ApiAuthentication.SetAccessToken(new TokenResponse
 			{
-				AccessToken = request.Response.Token.AccessToken,
-				RefreshToken = request.Response.Token.RefreshToken,
-				AccessTokenExpire = request.Response.Token.AccessTokenExpire,
-				RefreshTokenExpire = request.Response.Token.RefreshTokenExpire
+				AccessToken = response.Response.Token.AccessToken,
+				RefreshToken = response.Response.Token.RefreshToken,
+				AccessTokenExpire = response.Response.Token.AccessTokenExpire,
+				RefreshTokenExpire = response.Response.Token.RefreshTokenExpire
 			});
-			var user = new UserModel(request.Response).Override();
+			var user = new UserModel(response.Response).Override();
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.Login);
 			await FirebaseMessaging.SubscribeAsync(user.Information.Id);
 			
 			Log.Print($"Login user's data. [ {user.Information.Id} | {user.Information.Nickname} ]");
-			return request.Response;
+			return response;
 		}
 	}
 }

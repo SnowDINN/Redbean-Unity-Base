@@ -8,15 +8,15 @@ namespace Redbean.Api
 	{
 		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var request = await ApiGetRequest.GetTableConfigRequest(cancellationToken: cancellationToken);
-			if (request.ErrorCode != 0)
-				return request.Response;
+			var response = await ApiGetRequest.GetTableConfigRequest(cancellationToken: cancellationToken);
+			if (response.ErrorCode != 0)
+				return response;
 			
-			GoogleTableSettings.SheetId = request.Response.Sheet.Id;
-			GoogleTableSettings.ClientId = request.Response.Client.Id;
-			GoogleTableSettings.ClientSecretId = request.Response.Client.Secret;
+			GoogleTableSettings.SheetId = response.Response.Sheet.Id;
+			GoogleTableSettings.ClientId = response.Response.Client.Id;
+			GoogleTableSettings.ClientSecretId = response.Response.Client.Secret;
 			
-			return request.Response;
+			return response;
 		}
 	}
 }
