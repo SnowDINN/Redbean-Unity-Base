@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Redbean.Api;
 using Redbean.MVP.Content;
@@ -24,13 +23,7 @@ namespace Redbean.Auth
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
 
-			var user = new UserModel
-			{
-				Information =
-				{
-					Id = $"{Guid.NewGuid()}".Replace("-", "")
-				}
-			};
+			var user = new UserModel();
 			user.Override().SetPlayerPrefs(GUEST_USER_ID);
 			
 			result = new AuthenticationResult
