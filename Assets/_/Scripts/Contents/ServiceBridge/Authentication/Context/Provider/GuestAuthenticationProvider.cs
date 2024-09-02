@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Redbean.Api;
 using Redbean.MVP.Content;
@@ -11,8 +10,6 @@ namespace Redbean.Auth
 	{
 		public AuthenticationType Type => AuthenticationType.Guest;
 		public bool IsInitialize { get; set; }
-
-		private const string GUEST_USER_ID = nameof(GUEST_USER_ID);
 		
 		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
@@ -31,7 +28,7 @@ namespace Redbean.Auth
 					Id = "Guest"
 				}
 			};
-			user.Override().SetPlayerPrefs(GUEST_USER_ID);
+			user.Override();
 			
 			result = new AuthenticationResult
 			{
@@ -48,7 +45,7 @@ namespace Redbean.Auth
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
 
-			var user = LocalDatabase.Load<UserModel>(GUEST_USER_ID);
+			var user = LocalDatabase.Load<UserModel>(PlayerPrefsKey.GUEST_USER_ID);
 			user?.Override();
 
 			result = new AuthenticationResult
