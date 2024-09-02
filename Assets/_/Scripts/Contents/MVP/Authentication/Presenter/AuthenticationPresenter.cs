@@ -4,6 +4,7 @@ using Firebase.Auth;
 using R3;
 using Redbean.Api;
 using Redbean.Auth;
+using Redbean.Rx;
 using Redbean.Singleton;
 using Redbean.Utility;
 
@@ -26,10 +27,20 @@ namespace Redbean.MVP.Content
 		
 		public override void Setup()
 		{
-			view.Button.AsButtonObservable().Subscribe(_ =>
-			{
-				UniTask.Void(LoginAsync, view.destroyCancellationToken);
-			}).AddTo(this);
+			view.Button
+				.AsButtonObservable()
+				.Subscribe(_ =>
+				{
+					UniTask.Void(LoginAsync, view.destroyCancellationToken);
+				}).AddTo(this);
+
+			RxApiBinder.OnApiResponse
+				.Where(_ => _.type == typeof(PostAccessTokenAndUserProtocol))
+				.Where(_ => _.response.ErrorCode == 0)
+				.Subscribe(_ =>
+				{
+					$"{view.Type}".SetPlayerPrefs(LAST_LOGIN_HISTORY);
+				}).AddTo(this);
 			
 			UniTask.Void(AutoLoginAsync, view.destroyCancellationToken);
 		}
@@ -38,8 +49,6 @@ namespace Redbean.MVP.Content
 		{
 			await platform.Initialize(token);
 			await SetUserData(await platform.Login(token));
-
-			$"{view.Type}".SetPlayerPrefs(LAST_LOGIN_HISTORY);
 		}
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)

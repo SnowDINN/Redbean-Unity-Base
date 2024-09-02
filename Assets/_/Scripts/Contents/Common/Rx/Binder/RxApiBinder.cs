@@ -10,8 +10,8 @@ namespace Redbean.Rx
 		private static readonly Subject<Type> onApiRequest = new();
 		public static Observable<Type> OnApiRequest => onApiRequest.Share();
 		
-		private static readonly Subject<(Type type, object response)> onApiResponse = new();
-		public static Observable<(Type type, object response)> OnApiResponse => onApiResponse.Share();
+		private static readonly Subject<(Type type, ApiResponse response)> onApiResponse = new();
+		public static Observable<(Type type, ApiResponse response)> OnApiResponse => onApiResponse.Share();
 
 		public override void Setup()
 		{
@@ -33,12 +33,12 @@ namespace Redbean.Rx
 			onApiRequest.OnNext(type);
 		}
 
-		public static void OnResponsePublish<T>(object response) where T : ApiProtocol
+		public static void OnResponsePublish<T>(ApiResponse response) where T : ApiProtocol
 		{
 			onApiResponse.OnNext((typeof(T), response));
 		}
 		
-		public static void OnResponsePublish(Type type, object response)
+		public static void OnResponsePublish(Type type, ApiResponse response)
 		{
 			onApiResponse.OnNext((type, response));
 		}

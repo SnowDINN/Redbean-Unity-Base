@@ -10,7 +10,7 @@ namespace Redbean.Api
 {
 	public class GetAppConfigProtocol : ApiProtocol
 	{
-		protected override async Task<object> Request(CancellationToken cancellationToken = default)
+		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var request = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
 			if (request.ErrorCode != 0)

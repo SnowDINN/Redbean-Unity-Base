@@ -5,9 +5,9 @@ namespace Redbean.Api
 {
 	public class PostUserWithdrawalProtocol : ApiProtocol
 	{
-		protected override async Task<object> Request(CancellationToken cancellationToken = default)
+		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			return (await ApiPostRequest.PostUserWithdrawalRequest(cancellationToken: cancellationToken)).Response;
+			return await ApiPostRequest.PostUserWithdrawalRequest(cancellationToken: cancellationToken);
 		}
 	}
 }

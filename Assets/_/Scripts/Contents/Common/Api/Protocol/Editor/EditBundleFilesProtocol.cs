@@ -5,9 +5,9 @@ namespace Redbean.Api
 {
 	public class EditBundleFilesProtocol : ApiProtocol
 	{
-		protected override async Task<object> Request(CancellationToken cancellationToken = default)
+		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			return (await ApiPostRequest.EditBundleFilesRequest(new AppUploadFilesRequest
+			return await ApiPostRequest.EditBundleFilesRequest(new AppUploadFilesRequest
 			{
 #if UNITY_ANDROID
 				Type = MobileType.Android,
@@ -17,7 +17,7 @@ namespace Redbean.Api
 				Type = MobileType.None,
 #endif
 				Files = args as RequestFile[]
-			}, cancellationToken)).Response;
+			}, cancellationToken);
 		}
 	}
 }

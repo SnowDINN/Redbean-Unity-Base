@@ -7,7 +7,7 @@ namespace Redbean.Api
 {
 	public class PostAccessTokenAndUserProtocol : ApiProtocol
 	{
-		protected override async Task<object> Request(CancellationToken cancellationToken = default)
+		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var parameter = args[0] as AuthenticationRequest;
 			parameter.id = parameter.id.Encryption();
