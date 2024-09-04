@@ -13,18 +13,23 @@ namespace Redbean.Api
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var response = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
-			if (!response.isSuccess)
+			if (!response.IsSuccess)
 				return response;
 			
-			var app = this.GetModel<AppConfigModel>();
-			app.Maintenance = response.Response.Maintenance;
-			app.Version = response.Response.Version;
+			var app = new AppConfigModel
+			{
+				Database =
+				{
+					Maintenance = response.Response.Maintenance,
+					Version = response.Response.Version
+				}
+			};
 			app.Override();
 			
 #if UNITY_EDITOR || UNITY_ANDROID
-			var version = app.Version.AndroidVersion;
+			var version = app.Database.Version.AndroidVersion;
 #elif UNITY_EDITOR || UNITY_IOS
-			var version = app.Version.iOSVersion;
+			var version = app.Database.Version.iOSVersion;
 #endif
 
 			var isAppropriate = CompareVersion(version, Application.version);
@@ -50,7 +55,7 @@ namespace Redbean.Api
 				}
 			}
 
-			if (!string.IsNullOrEmpty(app.Maintenance.Contents))
+			if (!string.IsNullOrEmpty(app.Database.Maintenance.Contents))
 			{
 				this.Popup().AssetOpen<PopupMaintenance>();
 						

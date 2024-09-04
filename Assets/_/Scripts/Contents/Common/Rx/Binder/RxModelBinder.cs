@@ -5,24 +5,12 @@ namespace Redbean.Rx
 {
 	public class RxModelBinder : RxBase
 	{
-		private static readonly Subject<IModel> onModelChanged = new();
-		public static Observable<IModel> OnModelChanged => onModelChanged.Share();
-
-		public override void Setup()
-		{
-			base.Setup();
-			
-			OnModelChanged.Where(_ => _ is ISerializeModel)
-				.Select(_ => _.As<ISerializeModel>())
-				.Subscribe(_ =>
-				{
-					_.Rx.Publish(_);
-				}).AddTo(disposables);
-		}
+		private static readonly Subject<IModel> onChanged = new();
+		public static Observable<IModel> OnChanged => onChanged.Share();
 
 		public static T Publish<T>(T value) where T : IModel
 		{
-			onModelChanged.OnNext(value);
+			onChanged.OnNext(value);
 			return value;
 		}
 	}

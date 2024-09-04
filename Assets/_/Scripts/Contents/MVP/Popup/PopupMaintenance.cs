@@ -1,5 +1,4 @@
 ﻿using System;
-using Redbean.Api;
 using Redbean.MVP.Content;
 using TMPro;
 using UnityEngine;
@@ -11,13 +10,11 @@ namespace Redbean.Popup.Content
 		[SerializeField]
 		private TextMeshProUGUI text;
 
-		private AppMaintenanceConfig maintenance => 
-			this.GetModel<AppConfigModel>().Maintenance;
-
 		public override void Awake()
 		{
 			base.Awake();
-			
+
+			var maintenance = this.GetModel<AppConfigModel>().Database.Maintenance;
 			text.text =
 				$"Server Maintenance\n\n{DateTime.Parse(maintenance.Time.StartTime):hh:mm} ~ {DateTime.Parse(maintenance.Time.EndTime):hh:mm}\n\n{maintenance.Contents}";
 		}

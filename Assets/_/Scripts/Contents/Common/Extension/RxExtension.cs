@@ -11,8 +11,8 @@ namespace Redbean
 		/// <summary>
 		/// 모델 데이터 배포
 		/// </summary>
-		public static T Override<T>(this T model) where T : IModel => 
-			RxModelBinder.Publish(MvpContainer.Override(model));
+		public static T Override<T>(this T value) where T : class, IModel => 
+			RxModelBinder.Publish(MvpContainer.Override(value));
 		
 		public static IDisposable AddTo(this IDisposable disposable, IPresenter presenter) =>
 			disposable.AddTo(presenter.GetGameObject());

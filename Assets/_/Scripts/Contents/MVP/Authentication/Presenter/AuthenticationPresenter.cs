@@ -27,7 +27,7 @@ namespace Redbean.MVP.Content
 				{
 					UniTask.Void(LoginAsync, view.destroyCancellationToken);
 				}).AddTo(this);
-			
+
 			UniTask.Void(AutoLoginAsync, view.destroyCancellationToken);
 		}
 		
@@ -52,7 +52,7 @@ namespace Redbean.MVP.Content
 			{
 				type = view.Type,
 				id = view.Type == AuthenticationType.Guest 
-					? user.Information.Id
+					? user.Database.Information.Id
 					: (await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential)).UserId
 			};
 			
@@ -60,10 +60,10 @@ namespace Redbean.MVP.Content
 				.Parameter(parameter)
 				.RequestAsync(view.destroyCancellationToken);
 
-			if (response.isSuccess)
+			if (response.IsSuccess)
 			{
 				if (view.Type == AuthenticationType.Guest)
-					user.SetPlayerPrefs(PlayerPrefsKey.GUEST_USER_ID);
+					user.Database.Information.Id.SetPlayerPrefs(PlayerPrefsKey.GUEST_USER_ID);
 				
 				$"{view.Type}".SetPlayerPrefs(PlayerPrefsKey.LAST_LOGIN_HISTORY);
 			}

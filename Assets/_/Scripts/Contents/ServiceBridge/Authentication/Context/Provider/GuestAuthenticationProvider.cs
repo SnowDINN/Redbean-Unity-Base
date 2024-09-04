@@ -21,8 +21,16 @@ namespace Redbean.Auth
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
 
-			var user = this.GetModel<UserModel>();
-			user.Information.Id = "Guest";
+			var user = new UserModel
+			{
+				Database =
+				{
+					Information =
+					{
+						Id = "Guest"
+					}
+				}
+			};
 			user.Override();
 			
 			result = new AuthenticationResult
@@ -39,9 +47,18 @@ namespace Redbean.Auth
 		{
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
-
-			var user = LocalDatabase.Load<UserModel>(PlayerPrefsKey.GUEST_USER_ID);
-			user?.Override();
+			
+			var user = new UserModel
+			{
+				Database =
+				{
+					Information =
+					{
+						Id = LocalDatabase.Load<string>(PlayerPrefsKey.GUEST_USER_ID)
+					}
+				}
+			};
+			user.Override();
 
 			result = new AuthenticationResult
 			{

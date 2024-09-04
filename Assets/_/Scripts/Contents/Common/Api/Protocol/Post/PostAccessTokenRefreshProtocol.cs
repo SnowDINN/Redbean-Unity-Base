@@ -10,7 +10,7 @@ namespace Redbean.Api
 			var response = await ApiPostRequest.PostAccessTokenRefreshRequest
 					(new StringRequest(ApiAuthentication.RefreshToken), cancellationToken);
 			
-			if (!response.isSuccess)
+			if (!response.IsSuccess)
 				return response;
 
 			ApiAuthentication.SetAccessToken(response.Response);

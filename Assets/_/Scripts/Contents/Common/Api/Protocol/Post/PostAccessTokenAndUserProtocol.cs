@@ -13,7 +13,7 @@ namespace Redbean.Api
 			parameter.id = parameter.id.Encryption();
 			
 			var response = await ApiPostRequest.PostAccessTokenAndUserRequest(parameter, cancellationToken);
-			if (!response.isSuccess)
+			if (!response.IsSuccess)
 				return response;
 			
 			ApiAuthentication.SetAccessToken(new TokenResponse
@@ -23,16 +23,22 @@ namespace Redbean.Api
 				AccessTokenExpire = response.Response.Token.AccessTokenExpire,
 				RefreshTokenExpire = response.Response.Token.RefreshTokenExpire
 			});
-			var user = this.GetModel<UserModel>();
-			user.Information = response.Response.User.Information;
-			user.Social = response.Response.User.Social;
-			user.Log = response.Response.User.Log;
+			
+			var user = new UserModel
+			{
+				Database =
+				{
+					Information = response.Response.User.Information,
+					Social = response.Response.User.Social,
+					Log = response.Response.User.Log
+				}
+			};
 			user.Override();
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.Login);
-			await FirebaseMessaging.SubscribeAsync(user.Information.Id);
+			await FirebaseMessaging.SubscribeAsync(user.Database.Information.Id);
 			
-			Log.Print($"Login user's data. [ {user.Information.Id} | {user.Information.Nickname} ]");
+			Log.Print($"Login user's data. [ {user.Database.Information.Id} | {user.Database.Information.Nickname} ]");
 			return response;
 		}
 	}

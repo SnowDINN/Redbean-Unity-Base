@@ -7,11 +7,11 @@ namespace Redbean.Rx
 {
 	public class RxApiBinder : RxBase
 	{
-		private static readonly Subject<Type> onApiRequest = new();
-		public static Observable<Type> OnApiRequest => onApiRequest.Share();
+		private static readonly Subject<Type> onRequest = new();
+		public static Observable<Type> OnRequest => onRequest.Share();
 		
-		private static readonly Subject<(Type type, ApiResponse response)> onApiResponse = new();
-		public static Observable<(Type type, ApiResponse response)> OnApiResponse => onApiResponse.Share();
+		private static readonly Subject<(Type type, ApiResponse response)> onResponse = new();
+		public static Observable<(Type type, ApiResponse response)> OnResponse => onResponse.Share();
 
 		public override void Setup()
 		{
@@ -22,21 +22,21 @@ namespace Redbean.Rx
 				.Subscribe(_ => UniTask.Void(GetRefreshAccessTokenAsync))
 				.AddTo(disposables);
 
-			ApiContainer.OnRequest += OnRequest;
-			ApiContainer.OnResponse += OnResponse;
+			ApiContainer.OnRequest += OnApiRequest;
+			ApiContainer.OnResponse += OnApiResponse;
 		}
 
 		public override void Teardown()
 		{
 			base.Teardown();
 			
-			ApiContainer.OnRequest -= OnRequest;
-			ApiContainer.OnResponse -= OnResponse;
+			ApiContainer.OnRequest -= OnApiRequest;
+			ApiContainer.OnResponse -= OnApiResponse;
 		}
 
-		private void OnRequest(Type type) => onApiRequest.OnNext(type);
+		private void OnApiRequest(Type type) => onRequest.OnNext(type);
 
-		private void OnResponse(Type type, ApiResponse response) => onApiResponse.OnNext((type, response));
+		private void OnApiResponse(Type type, ApiResponse response) => onResponse.OnNext((type, response));
 
 		private async UniTaskVoid GetRefreshAccessTokenAsync() => 
 			await this.GetProtocol<PostAccessTokenRefreshProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
