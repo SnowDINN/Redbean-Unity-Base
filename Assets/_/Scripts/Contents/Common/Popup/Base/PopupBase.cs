@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using R3;
-using Redbean.Singleton;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,7 +36,7 @@ namespace Redbean.Popup
 		}
 
 		public virtual void Close() => 
-			this.GetSingleton<PopupContainer>().Close(Guid);
+			this.GetSingleton<PopupManager>().Close(Guid);
 
 		public async Task WaitUntilClose() =>
 			await UniTask.WaitUntil(() => destroyCancellationToken.IsCancellationRequested);

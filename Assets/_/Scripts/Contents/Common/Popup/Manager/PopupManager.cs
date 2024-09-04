@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Redbean.Bundle;
-using Redbean.Popup;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace Redbean.Singleton
+namespace Redbean.Popup
 {
-	public class PopupContainer : ISingleton
+	public class PopupManager : ISingleton
 	{
 		private readonly Dictionary<int, PopupBase> popups = new();
 		private readonly Transform popupParent;
@@ -18,7 +17,7 @@ namespace Redbean.Singleton
 
 		public PopupBase CurrentPopup => popups.Values.Last();
 
-		public PopupContainer()
+		public PopupManager()
 		{
 			var go = new GameObject("[Popup]");
 			Object.DontDestroyOnLoad(go);

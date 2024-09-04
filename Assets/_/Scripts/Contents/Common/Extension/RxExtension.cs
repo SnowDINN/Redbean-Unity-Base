@@ -2,7 +2,6 @@
 using R3;
 using Redbean.MVP;
 using Redbean.Rx;
-using Redbean.Singleton;
 
 namespace Redbean
 {

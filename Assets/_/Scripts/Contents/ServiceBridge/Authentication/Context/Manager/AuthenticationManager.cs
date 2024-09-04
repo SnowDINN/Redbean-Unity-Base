@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Redbean.Api;
-using Redbean.Auth;
 
-namespace Redbean.Singleton
+namespace Redbean.Auth
 {
-	public class AuthenticationContainer
+	public class AuthenticationManager : ISingleton
 	{
-		private static readonly Dictionary<AuthenticationType, IAuthentication> authentications = new();
+		private readonly Dictionary<AuthenticationType, IAuthentication> authentications = new();
 
-		public static IAuthentication GetPlatform(AuthenticationType type)
+		public IAuthentication GetPlatform(AuthenticationType type)
 		{
 			var provider = type switch
 			{
@@ -23,5 +22,7 @@ namespace Redbean.Singleton
 
 			return authentications[type];
 		}
+
+		public void Dispose() => authentications.Clear();
 	}
 }

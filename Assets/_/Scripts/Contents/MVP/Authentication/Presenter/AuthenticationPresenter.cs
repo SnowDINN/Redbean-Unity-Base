@@ -4,7 +4,6 @@ using Firebase.Auth;
 using R3;
 using Redbean.Api;
 using Redbean.Auth;
-using Redbean.Singleton;
 using Redbean.Utility;
 
 namespace Redbean.MVP.Content
@@ -17,7 +16,9 @@ namespace Redbean.MVP.Content
 		[View]
 		private AuthenticationView view;
 		
-		private IAuthentication platform => AuthenticationContainer.GetPlatform(view.Type);
+		[Singleton]
+		private AuthenticationManager authentication;
+		private IAuthentication platform => authentication.GetPlatform(view.Type);
 		
 		public override void Setup()
 		{

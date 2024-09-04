@@ -1,5 +1,5 @@
 ﻿using Redbean.MVP.Content;
-using Redbean.Singleton;
+using Redbean.Popup;
 
 namespace Redbean
 {
@@ -8,7 +8,7 @@ namespace Redbean
 		/// <summary>
 		/// 팝업 호출
 		/// </summary>
-		public static PopupContainer Popup(this IExtension extension) => ExtensionGetSingleton<PopupContainer>();
+		public static PopupManager Popup(this IExtension extension) => ExtensionGetSingleton<PopupManager>();
 		
 		/// <summary>
 		/// 유저 데이터 호출
