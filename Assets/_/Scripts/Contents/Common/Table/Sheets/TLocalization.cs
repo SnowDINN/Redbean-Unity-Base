@@ -1,6 +1,6 @@
 namespace Redbean.Table
 {
-	public class TLocalization : ITableContainer
+	public class TLocalization : ITable
 	{
 		public string Id;
 		public string Kr;

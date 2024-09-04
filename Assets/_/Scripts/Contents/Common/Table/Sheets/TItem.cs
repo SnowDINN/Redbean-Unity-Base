@@ -1,6 +1,6 @@
 namespace Redbean.Table
 {
-	public class TItem : ITableContainer
+	public class TItem : ITable
 	{
 		public int Id;
 		public string Name;

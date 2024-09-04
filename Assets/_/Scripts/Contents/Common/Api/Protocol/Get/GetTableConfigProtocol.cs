@@ -6,10 +6,10 @@ namespace Redbean.Api
 {
 	public class GetTableConfigProtocol : ApiProtocol
 	{
-		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
+		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var response = await ApiGetRequest.GetTableConfigRequest(cancellationToken: cancellationToken);
-			if (response.ErrorCode != 0)
+			if (!response.isSuccess)
 				return response;
 			
 			GoogleTableSettings.SheetId = response.Response.Sheet.Id;

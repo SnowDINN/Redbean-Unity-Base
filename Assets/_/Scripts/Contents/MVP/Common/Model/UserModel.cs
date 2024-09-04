@@ -6,17 +6,6 @@ namespace Redbean.MVP.Content
 	public class UserModel : UserResponse, ISerializeModel
 	{
 		public IRxModel Rx => new UserRxModel();
-
-		public UserModel()
-		{
-		}
-
-		public UserModel(UserAndTokenResponse response)
-		{
-			Information = response.User.Information;
-			Social = response.User.Social;
-			Log = response.User.Log;
-		}
 	}
 	
 	public class UserRxModel : IRxModel

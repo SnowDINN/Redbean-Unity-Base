@@ -19,7 +19,7 @@ namespace Redbean.Auth
 		Exception = 10999999
 	}
 	
-	public class GoogleAuthenticationProvider : IAuthenticationContainer
+	public class GoogleAuthenticationProvider : IAuthentication
 	{
 		public AuthenticationType Type => AuthenticationType.Google;
 		public bool IsInitialize { get; set; }

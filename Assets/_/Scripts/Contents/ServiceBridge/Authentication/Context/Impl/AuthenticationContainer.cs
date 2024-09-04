@@ -1,38 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Redbean.Api;
 using Redbean.Auth;
 
 namespace Redbean.Singleton
 {
-	public class AuthenticationContainer : ISingletonContainer
+	public class AuthenticationContainer
 	{
-		private readonly Dictionary<AuthenticationType, IAuthenticationContainer> authenticationGroup = new();
-		
-		public AuthenticationContainer()
-		{
-			var authentications = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(_ => _.GetTypes())
-				.Where(_ => _.FullName != null
-				            && typeof(IAuthenticationContainer).IsAssignableFrom(_)
-				            && !_.IsInterface
-				            && !_.IsAbstract)
-				.Select(_ => Activator.CreateInstance(_) as IAuthenticationContainer)
-				.ToArray();
+		private static readonly Dictionary<AuthenticationType, IAuthentication> authentications = new();
 
-			foreach (var authentication in authentications)
-				authenticationGroup.TryAdd(authentication.Type, authentication);
-		}
-		
-		public void Dispose()
+		public static IAuthentication GetPlatform(AuthenticationType type)
 		{
-			authenticationGroup.Clear();
-		}
+			var provider = type switch
+			{
+				AuthenticationType.Guest => typeof(GuestAuthenticationProvider),
+				AuthenticationType.Google => typeof(GoogleAuthenticationProvider),
+				AuthenticationType.Apple => typeof(AppleAuthenticationProvider),
+				_ => null
+			};
+			if (!authentications.ContainsKey(type))
+				authentications[type] = Activator.CreateInstance(provider) as IAuthentication;
 
-		public IAuthenticationContainer GetPlatform(AuthenticationType type)
-		{
-			return authenticationGroup[type];
+			return authentications[type];
 		}
 	}
 }

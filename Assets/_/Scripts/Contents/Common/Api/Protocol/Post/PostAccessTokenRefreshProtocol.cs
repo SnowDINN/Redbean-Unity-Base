@@ -5,12 +5,12 @@ namespace Redbean.Api
 {
 	public class PostAccessTokenRefreshProtocol : ApiProtocol
 	{
-		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
+		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var response = await ApiPostRequest.PostAccessTokenRefreshRequest
 					(new StringRequest(ApiAuthentication.RefreshToken), cancellationToken);
 			
-			if (response.ErrorCode != 0)
+			if (!response.isSuccess)
 				return response;
 
 			ApiAuthentication.SetAccessToken(response.Response);

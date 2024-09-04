@@ -7,10 +7,10 @@ namespace Redbean.Api
 {
 	public class GetTableProtocol : ApiProtocol
 	{
-		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
+		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var response = await ApiGetRequest.GetTableRequest(cancellationToken: cancellationToken);
-			if (response.ErrorCode != 0)
+			if (!response.isSuccess)
 				return response;
 
 			if (response.Response.Table.Any())

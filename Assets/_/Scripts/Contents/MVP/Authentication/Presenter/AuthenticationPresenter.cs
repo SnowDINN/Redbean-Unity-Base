@@ -16,10 +16,8 @@ namespace Redbean.MVP.Content
 		
 		[View]
 		private AuthenticationView view;
-
-		[Singleton]
-		private AuthenticationContainer container;
-		private IAuthenticationContainer platform => container.GetPlatform(view.Type);
+		
+		private IAuthentication platform => AuthenticationContainer.GetPlatform(view.Type);
 		
 		public override void Setup()
 		{
@@ -62,7 +60,7 @@ namespace Redbean.MVP.Content
 				.Parameter(parameter)
 				.RequestAsync(view.destroyCancellationToken);
 
-			if (response.ErrorCode == 0)
+			if (response.isSuccess)
 			{
 				if (view.Type == AuthenticationType.Guest)
 					user.SetPlayerPrefs(PlayerPrefsKey.GUEST_USER_ID);

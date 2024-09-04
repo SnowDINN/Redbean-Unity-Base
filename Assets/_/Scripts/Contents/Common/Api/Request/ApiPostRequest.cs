@@ -11,21 +11,21 @@ namespace Redbean.Api
 		public static async Task<ApiResponse<TokenResponse>> PostAccessTokenRefreshRequest(StringRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<TokenResponse>>("/Authentication/PostAccessTokenRefresh", args, cancellationToken);
 
-		public static async Task<ApiResponse> PostUserNicknameRequest(StringRequest args, CancellationToken cancellationToken = default) =>
-			await PostRequestAsync<ApiResponse>("/User/PostUserNickname", args, cancellationToken);
+		public static async Task<ApiResponse<EmptyResponse>> PostUserNicknameRequest(StringRequest args, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse<EmptyResponse>>("/User/PostUserNickname", args, cancellationToken);
 
-		public static async Task<ApiResponse> PostUserWithdrawalRequest(object[] args = default, CancellationToken cancellationToken = default) =>
-			await PostRequestAsync<ApiResponse>("/User/PostUserWithdrawal", args, cancellationToken);
+		public static async Task<ApiResponse<EmptyResponse>> PostUserWithdrawalRequest(object[] args = default, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse<EmptyResponse>>("/User/PostUserWithdrawal", args, cancellationToken);
 
 #if UNITY_EDITOR
 		public static async Task<ApiResponse<StringResponse>> EditAppAccessTokenRequest(StringRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<StringResponse>>("/EditAccess/EditAppAccessToken", args, cancellationToken);
 
-		public static async Task<ApiResponse> EditAppVersionRequest(AppVersionRequest args, CancellationToken cancellationToken = default) =>
-			await PostRequestAsync<ApiResponse>("/EditConfig/EditAppVersion", args, cancellationToken);
+		public static async Task<ApiResponse<EmptyResponse>> EditAppVersionRequest(AppVersionRequest args, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse<EmptyResponse>>("/EditConfig/EditAppVersion", args, cancellationToken);
 
-		public static async Task<ApiResponse> EditAppMaintenanceRequest(AppMaintenanceRequest args, CancellationToken cancellationToken = default) =>
-			await PostRequestAsync<ApiResponse>("/EditConfig/EditAppMaintenance", args, cancellationToken);
+		public static async Task<ApiResponse<EmptyResponse>> EditAppMaintenanceRequest(AppMaintenanceRequest args, CancellationToken cancellationToken = default) =>
+			await PostRequestAsync<ApiResponse<EmptyResponse>>("/EditConfig/EditAppMaintenance", args, cancellationToken);
 
 		public static async Task<ApiResponse<StringArrayResponse>> EditTableFilesRequest(AppUploadFilesRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<StringArrayResponse>>("/EditFiles/EditTableFiles", args, cancellationToken);

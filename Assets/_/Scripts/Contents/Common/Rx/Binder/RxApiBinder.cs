@@ -19,33 +19,26 @@ namespace Redbean.Rx
 			
 			Observable.Interval(TimeSpan.FromSeconds(60))
 				.Where(_ => ApiAuthentication.IsRefreshTokenExist && ApiAuthentication.IsAccessTokenExpired)
-				.Subscribe(_ => { UniTask.Void(GetRefreshAccessTokenAsync); })
+				.Subscribe(_ => UniTask.Void(GetRefreshAccessTokenAsync))
 				.AddTo(disposables);
-		}
-		
-		public static void OnRequestPublish<T>() where T : ApiProtocol
-		{
-			onApiRequest.OnNext(typeof(T));
-		}
-		
-		public static void OnRequestPublish(Type type)
-		{
-			onApiRequest.OnNext(type);
+
+			ApiContainer.OnRequest += OnRequest;
+			ApiContainer.OnResponse += OnResponse;
 		}
 
-		public static void OnResponsePublish<T>(ApiResponse response) where T : ApiProtocol
+		public override void Teardown()
 		{
-			onApiResponse.OnNext((typeof(T), response));
+			base.Teardown();
+			
+			ApiContainer.OnRequest -= OnRequest;
+			ApiContainer.OnResponse -= OnResponse;
 		}
-		
-		public static void OnResponsePublish(Type type, ApiResponse response)
-		{
-			onApiResponse.OnNext((type, response));
-		}
-		
-		private async UniTaskVoid GetRefreshAccessTokenAsync()
-		{
+
+		private void OnRequest(Type type) => onApiRequest.OnNext(type);
+
+		private void OnResponse(Type type, ApiResponse response) => onApiResponse.OnNext((type, response));
+
+		private async UniTaskVoid GetRefreshAccessTokenAsync() => 
 			await this.GetProtocol<PostAccessTokenRefreshProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
-		}
 	}
 }

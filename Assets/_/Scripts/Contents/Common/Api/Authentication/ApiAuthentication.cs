@@ -65,7 +65,7 @@ namespace Redbean.Api
 			else
 				await RequestEditorAccessTokenAsync(email);
 
-			return new ApiContainer().GetProtocol<T>();
+			return ApiContainer.GetProtocol<T>();
 		}
 		
 		private static async Task RequestEditorAccessTokenAsync(string email)

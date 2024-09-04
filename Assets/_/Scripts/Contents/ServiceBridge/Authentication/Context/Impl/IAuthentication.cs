@@ -6,7 +6,7 @@ using Redbean.Api;
 
 namespace Redbean.Auth
 {
-	public interface IAuthenticationContainer
+	public interface IAuthentication : IExtension
 	{
 		AuthenticationType Type { get; }
 		bool IsInitialize { get; set; }

@@ -23,7 +23,7 @@ namespace Redbean.Auth
 		Exception = 11999999
 	}
 	
-	public class AppleAuthenticationProvider : IAuthenticationContainer
+	public class AppleAuthenticationProvider : IAuthentication
 	{
 		public AuthenticationType Type => AuthenticationType.Apple;
 		public bool IsInitialize { get; set; }

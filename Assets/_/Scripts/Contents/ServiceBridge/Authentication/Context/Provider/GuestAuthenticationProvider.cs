@@ -6,7 +6,7 @@ using Redbean.Utility;
 
 namespace Redbean.Auth
 {
-	public class GuestAuthenticationProvider : IAuthenticationContainer
+	public class GuestAuthenticationProvider : IAuthentication
 	{
 		public AuthenticationType Type => AuthenticationType.Guest;
 		public bool IsInitialize { get; set; }
@@ -21,13 +21,8 @@ namespace Redbean.Auth
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
 
-			var user = new UserModel
-			{
-				Information =
-				{
-					Id = "Guest"
-				}
-			};
+			var user = this.GetModel<UserModel>();
+			user.Information.Id = "Guest";
 			user.Override();
 			
 			result = new AuthenticationResult

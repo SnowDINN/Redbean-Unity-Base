@@ -6,7 +6,7 @@ namespace Redbean.Api
 {
 	public class EditAppMaintenanceProtocol : ApiProtocol
 	{
-		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
+		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			return await ApiPostRequest.EditAppMaintenanceRequest(new AppMaintenanceRequest
 			{

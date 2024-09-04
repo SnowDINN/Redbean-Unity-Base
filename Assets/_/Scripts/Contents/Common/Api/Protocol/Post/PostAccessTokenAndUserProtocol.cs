@@ -7,13 +7,13 @@ namespace Redbean.Api
 {
 	public class PostAccessTokenAndUserProtocol : ApiProtocol
 	{
-		protected override async Task<IApiResponse> Request(CancellationToken cancellationToken = default)
+		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var parameter = args[0] as AuthenticationRequest;
 			parameter.id = parameter.id.Encryption();
 			
 			var response = await ApiPostRequest.PostAccessTokenAndUserRequest(parameter, cancellationToken);
-			if (response.ErrorCode != 0)
+			if (!response.isSuccess)
 				return response;
 			
 			ApiAuthentication.SetAccessToken(new TokenResponse
@@ -23,7 +23,11 @@ namespace Redbean.Api
 				AccessTokenExpire = response.Response.Token.AccessTokenExpire,
 				RefreshTokenExpire = response.Response.Token.RefreshTokenExpire
 			});
-			var user = new UserModel(response.Response).Override();
+			var user = this.GetModel<UserModel>();
+			user.Information = response.Response.User.Information;
+			user.Social = response.Response.User.Social;
+			user.Log = response.Response.User.Log;
+			user.Override();
 
 			await AppBootstrap.BootstrapSetup(AppBootstrapType.Login);
 			await FirebaseMessaging.SubscribeAsync(user.Information.Id);
