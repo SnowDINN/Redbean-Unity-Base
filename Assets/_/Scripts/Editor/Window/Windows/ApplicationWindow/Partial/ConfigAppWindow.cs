@@ -78,11 +78,11 @@ namespace Redbean.Editor
 			}
 			catch (Exception e)
 			{
-				Log.Fail("Error", e.Message);
+				Log.Fail("ERROR", e.Message);
 				EditorUtility.ClearProgressBar();
 			}
 			
-			Log.Success("Table", "Success to update to the Bundles.");
+			Log.Success("TABLE", "Success to update to the Bundles.");
 			EditorUtility.ClearProgressBar();
 		}
 
@@ -142,11 +142,11 @@ namespace Redbean.Editor
 			}
 			catch (Exception e)
 			{
-				Log.Fail("Error", e.Message);
+				Log.Fail("ERROR", e.Message);
 				EditorUtility.ClearProgressBar();
 			}
 			
-			Log.Success("Table", "Success to update to the Google sheets.");
+			Log.Success("TABLE", "Success to update to the Google sheets.");
 			EditorUtility.ClearProgressBar();
 			
 			AssetDatabase.Refresh();

@@ -16,10 +16,10 @@ namespace Redbean
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
 			if (status == DependencyStatus.Available)
-				Log.Success("Firebase", "Success to connect to the Firebase server.");
+				Log.Success("FIREBASE", "Success to connect to the Firebase server.");
 			else
 			{
-				Log.Fail("Firebase", "Failed to connect to the Firebase server.");
+				Log.Fail("FIREBASE", "Failed to connect to the Firebase server.");
 				return;
 			}
 

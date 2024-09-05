@@ -14,7 +14,7 @@ namespace Redbean.Api
 				return response;
 
 			if (response.Response.Table.Any())
-				TableContainer.Parse(response.Response.Table);
+				TableContainer.SetTable(response.Response.Table);
 			
 			return response;
 		}
