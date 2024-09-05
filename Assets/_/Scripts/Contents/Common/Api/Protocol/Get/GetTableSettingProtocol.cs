@@ -5,7 +5,7 @@ using Redbean.Table;
 
 namespace Redbean.Api
 {
-	public class GetTableProtocol : ApiProtocol
+	public class GetTableSettingProtocol : ApiProtocol
 	{
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{

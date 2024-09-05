@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Redbean.Api
 {
-	public class GetAppConfigProtocol : ApiProtocol
+	public class GetAppSettingProtocol : ApiProtocol
 	{
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{

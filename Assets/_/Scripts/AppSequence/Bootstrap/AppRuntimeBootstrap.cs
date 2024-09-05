@@ -24,7 +24,8 @@ namespace Redbean
 			}
 
 			// 앱 설정 체크
-			await this.GetProtocol<GetAppConfigProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
+			await this.GetProtocol<GetAppSettingProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
+			await this.GetProtocol<GetTableSettingProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
 		}
 
 		public Task Teardown()

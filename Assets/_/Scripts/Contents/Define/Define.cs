@@ -6,6 +6,12 @@
 		public const int DoubleInputPrevention = 10;
 	}
 
+	public static class BootstrapKey
+	{
+		public const string RUNTIME = nameof(RUNTIME);
+		public const string LOGIN = nameof(LOGIN);
+	}
+
 	public static class PlayerPrefsKey
 	{
 		public const string LAST_LOGIN_HISTORY = nameof(LAST_LOGIN_HISTORY);

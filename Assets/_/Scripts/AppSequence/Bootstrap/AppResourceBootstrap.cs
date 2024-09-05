@@ -5,12 +5,10 @@ using Redbean.Table;
 
 namespace Redbean
 {
-	public class AppLoginBootstrap : IAppBootstrap
+	public class AppResourceBootstrap : IAppBootstrap
 	{
 		public async Task Setup()
 		{
-			await this.GetProtocol<GetTableProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
-
 			await TableContainer.Setup();
 			await BundleContainer.Setup();
 		}
