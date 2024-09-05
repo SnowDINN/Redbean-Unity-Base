@@ -7,10 +7,12 @@ using UnityEngine;
 
 namespace Redbean
 {
-	public class AppRuntimeBootstrap : IAppBootstrap
+	public class AppRuntimeBootstrap : Bootstrap
 	{
-		public async Task Setup()
+		public override async Task Setup()
 		{
+			await base.Setup();
+			
 			Application.logMessageReceived += OnLogMessageReceived;
 			
 			// 파이어베이스 연결 체크
@@ -24,20 +26,20 @@ namespace Redbean
 			}
 
 			// 앱 설정 체크
-			await this.GetProtocol<GetAppSettingProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
-			await this.GetProtocol<GetTableSettingProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
+			await this.GetProtocol<GetAppSettingProtocol>().RequestAsync(cancellationToken);
+			await this.GetProtocol<GetTableSettingProtocol>().RequestAsync(cancellationToken);
 		}
 
-		public Task Teardown()
+		public override void Teardown()
 		{
+			base.Teardown();
+			
 			Application.logMessageReceived -= OnLogMessageReceived;
 			
 			FirebaseAuth.DefaultInstance.Dispose();
 			FirebaseApp.DefaultInstance.Dispose();
-
-			return Task.CompletedTask;
 		}
-		
+
 		private void OnLogMessageReceived(string condition, string stacktrace, LogType type)
 		{
 			if (type != LogType.Exception)

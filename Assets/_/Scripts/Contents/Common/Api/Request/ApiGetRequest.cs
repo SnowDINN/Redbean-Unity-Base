@@ -12,8 +12,8 @@ namespace Redbean.Api
 			await GetRequestAsync<ApiResponse<TableSettingResponse>>("/Setting/GetTableSetting", args, cancellationToken);
 
 #if UNITY_EDITOR
-		public static async Task<ApiResponse<TableAccessKeyResponse>> GetTableAccessKeyRequest(object[] args = default, CancellationToken cancellationToken = default) =>
-			await GetRequestAsync<ApiResponse<TableAccessKeyResponse>>("/EditAccess/GetTableAccessKey", args, cancellationToken);
+		public static async Task<ApiResponse<TableAccessKeyResponse>> EditTableAccessKeyRequest(object[] args = default, CancellationToken cancellationToken = default) =>
+			await GetRequestAsync<ApiResponse<TableAccessKeyResponse>>("/EditAccess/EditTableAccessKey", args, cancellationToken);
 #endif
 	}
 }

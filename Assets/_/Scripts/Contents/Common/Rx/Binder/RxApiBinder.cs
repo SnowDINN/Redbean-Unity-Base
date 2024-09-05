@@ -39,6 +39,6 @@ namespace Redbean.Rx
 		private void OnApiResponse(Type type, ApiResponse response) => onResponse.OnNext((type, response));
 
 		private async UniTaskVoid GetRefreshAccessTokenAsync() => 
-			await this.GetProtocol<PostAccessTokenRefreshProtocol>().RequestAsync(AppLifeCycle.AppCancellationToken);
+			await this.GetProtocol<PostAccessTokenRefreshProtocol>().RequestAsync(cancellationToken);
 	}
 }

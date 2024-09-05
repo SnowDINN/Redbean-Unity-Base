@@ -35,7 +35,7 @@ namespace Redbean.Api
 			};
 			user.Override();
 
-			await AppBootstrap.BootstrapSetup(BootstrapKey.LOGIN);
+			await AppSettings.BootstrapSetup(BootstrapKey.LOGIN);
 			await FirebaseMessaging.SubscribeAsync(user.Database.Information.Id);
 			
 			Log.Print($"Login user's data. [ {user.Database.Information.Id} | {user.Database.Information.Nickname} ]");

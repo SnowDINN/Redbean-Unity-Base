@@ -9,7 +9,13 @@ namespace Redbean.MVP.Content
 		
 		public override void Setup()
 		{
-			view.Text.text = TableContainer.Localization[view.Localization].Kr;
+			if (TableContainer.Localization.TryGetValue(view.Localization, out var value))
+			{
+				view.Text.text = value.Kr;
+				return;
+			}
+
+			view.Text.text = view.Localization;
 		}
 	}
 }

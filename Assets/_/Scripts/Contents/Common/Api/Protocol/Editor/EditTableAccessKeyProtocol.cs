@@ -8,7 +8,7 @@ namespace Redbean.Api
 	{
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var response = await ApiGetRequest.GetTableAccessKeyRequest(cancellationToken: cancellationToken);
+			var response = await ApiGetRequest.EditTableAccessKeyRequest(cancellationToken: cancellationToken);
 			if (!response.IsSuccess)
 				return response;
 			

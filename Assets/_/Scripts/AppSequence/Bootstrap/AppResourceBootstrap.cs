@@ -1,21 +1,17 @@
 ﻿using System.Threading.Tasks;
-using Redbean.Api;
 using Redbean.Bundle;
 using Redbean.Table;
 
 namespace Redbean
 {
-	public class AppResourceBootstrap : IAppBootstrap
+	public class AppResourceBootstrap : Bootstrap
 	{
-		public async Task Setup()
+		public override async Task Setup()
 		{
-			await TableContainer.Setup();
+			await base.Setup();
+			
+			TableContainer.Setup();
 			await BundleContainer.Setup();
-		}
-
-		public Task Teardown()
-		{
-			return Task.CompletedTask;
 		}
 	}
 }
