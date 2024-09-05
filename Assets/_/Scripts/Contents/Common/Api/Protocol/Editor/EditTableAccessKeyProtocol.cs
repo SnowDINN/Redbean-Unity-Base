@@ -4,11 +4,11 @@ using Redbean.Table;
 
 namespace Redbean.Api
 {
-	public class GetTableConfigProtocol : ApiProtocol
+	public class EditTableAccessKeyProtocol : ApiProtocol
 	{
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var response = await ApiGetRequest.GetTableConfigRequest(cancellationToken: cancellationToken);
+			var response = await ApiGetRequest.GetTableAccessKeyRequest(cancellationToken: cancellationToken);
 			if (!response.IsSuccess)
 				return response;
 			

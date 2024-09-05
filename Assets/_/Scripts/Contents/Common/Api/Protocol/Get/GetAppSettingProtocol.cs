@@ -12,11 +12,11 @@ namespace Redbean.Api
 	{
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var response = await ApiGetRequest.GetAppConfigRequest(cancellationToken: cancellationToken);
+			var response = await ApiGetRequest.GetAppSettingRequest(cancellationToken: cancellationToken);
 			if (!response.IsSuccess)
 				return response;
 			
-			var app = new AppConfigModel
+			var app = new AppSettingModel
 			{
 				Database =
 				{

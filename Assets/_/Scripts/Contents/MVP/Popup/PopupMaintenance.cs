@@ -14,7 +14,7 @@ namespace Redbean.Popup.Content
 		{
 			base.Awake();
 
-			var maintenance = this.GetModel<AppConfigModel>().Database.Maintenance;
+			var maintenance = this.GetModel<AppSettingModel>().Database.Maintenance;
 			text.text =
 				$"Server Maintenance\n\n{DateTime.Parse(maintenance.Time.StartTime):hh:mm} ~ {DateTime.Parse(maintenance.Time.EndTime):hh:mm}\n\n{maintenance.Contents}";
 		}

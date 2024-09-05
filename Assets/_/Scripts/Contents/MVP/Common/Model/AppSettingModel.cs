@@ -2,7 +2,7 @@
 
 namespace Redbean.MVP.Content
 {
-	public class AppConfigModel : Model<AppConfigResponse>
+	public class AppSettingModel : Model<AppSettingResponse>
 	{
 	}
 }

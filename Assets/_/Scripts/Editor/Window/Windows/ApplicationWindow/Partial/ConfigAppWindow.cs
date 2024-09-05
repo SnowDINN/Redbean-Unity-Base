@@ -113,7 +113,7 @@ namespace Redbean.Editor
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 				
-				await (await ApiAuthentication.EditorRequestApi<GetTableConfigProtocol>())
+				await (await ApiAuthentication.EditorRequestApi<EditTableAccessKeyProtocol>())
 					.Parameter()
 					.RequestAsync();
 				
