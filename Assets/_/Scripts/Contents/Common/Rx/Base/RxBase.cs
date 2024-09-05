@@ -20,7 +20,6 @@ namespace Redbean.Rx
 			disposables?.Clear();
 			
 			source?.Cancel();
-			source?.Dispose();
 		}
 	}
 }
