@@ -21,13 +21,14 @@ namespace Redbean.Editor
 		
 		private bool isExistUser => user.Any();
 		
-		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), DisableInEditorMode, Button]
+		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(LoginGroup), PropertyOrder(LoginOrder), Button, DisableInEditorMode]
 		private async void UserLogin(string ID)
 		{
 			await this.EditorGetApi<PostAccessTokenAndUserProtocol>().Parameter(ID).RequestAsync();
 		}
 
-		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
+		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), PropertyOrder(UserInformationOrder)]
+		[Button("DELETE", ButtonSizes.Large), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
 			await this.EditorGetApi<PostUserWithdrawalProtocol>()
@@ -39,9 +40,15 @@ namespace Redbean.Editor
 			Log.Notice("User account has been deleted.");
 		}
 
-		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), PropertyOrder(UserInformationOrder), DisableInEditorMode, ShowInInspector]
-		private Dictionary<string, object> user => AppLifeCycle.IsAppReady
-			? new Dictionary<string, object> { { "User", this.GetModel<UserModel>() } }
-			: new Dictionary<string, object>();
+		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), PropertyOrder(UserInformationOrder)]
+		[DictionaryDrawerSettings(IsReadOnly = true), ShowInInspector, DisableInEditorMode]
+		private Dictionary<string, object> user
+		{
+			get => AppLifeCycle.IsAppReady
+				? new Dictionary<string, object> { { "User", this.GetModel<UserModel>() } }
+				: new Dictionary<string, object>();
+			
+			set { }
+		}
 	}
 }

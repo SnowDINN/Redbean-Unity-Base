@@ -172,7 +172,7 @@ namespace Redbean.Editor
 			Log.Notice($"Android version change : {version}");
 		}
 		
-		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS")]
+		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS"), PropertySpace]
 		private async void IosVersion(string version = "0.0.1")
 		{
 			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
