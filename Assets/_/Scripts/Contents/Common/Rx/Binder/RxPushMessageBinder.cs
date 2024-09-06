@@ -11,18 +11,14 @@ namespace Redbean.Rx
 		private static readonly Subject<FirebaseMessage> onPushMessageReceived = new();
 		public static Observable<FirebaseMessage> OnPushMessageReceived => onPushMessageReceived.Share();
 
-		public override void Setup()
+		protected override void Setup()
 		{
-			base.Setup();
-			
 			FirebaseMessaging.TokenReceived += OnTokenReceived;
 			FirebaseMessaging.MessageReceived += OnMessageReceived;
 		}
 
-		public override void Teardown()
+		protected override void Teardown()
 		{
-			base.Teardown();
-			
 			FirebaseMessaging.TokenReceived -= OnTokenReceived;
 			FirebaseMessaging.MessageReceived -= OnMessageReceived;
 		}

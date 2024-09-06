@@ -11,17 +11,13 @@ namespace Redbean.Rx
 		private static readonly Subject<Dictionary<string, string>> onDeepLinkReceived = new();
 		public static Observable<Dictionary<string, string>> OnDeepLinkReceived => onDeepLinkReceived.Share();
 
-		public override void Setup()
+		protected override void Setup()
 		{
-			base.Setup();
-			
 			Application.deepLinkActivated += OnDeepLinkActivated;
 		}
 
-		public override void Teardown()
+		protected override void Teardown()
 		{
-			base.Teardown();
-			
 			Application.deepLinkActivated -= OnDeepLinkActivated;
 		}
 

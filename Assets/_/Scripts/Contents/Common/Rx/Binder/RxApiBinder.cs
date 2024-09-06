@@ -13,10 +13,8 @@ namespace Redbean.Rx
 		private static readonly Subject<(Type type, ApiResponse response)> onResponse = new();
 		public static Observable<(Type type, ApiResponse response)> OnResponse => onResponse.Share();
 
-		public override void Setup()
+		protected override void Setup()
 		{
-			base.Setup();
-			
 			Observable.Interval(TimeSpan.FromSeconds(60))
 				.Where(_ => ApiAuthentication.IsRefreshTokenExist && ApiAuthentication.IsAccessTokenExpired)
 				.Subscribe(_ => UniTask.Void(GetRefreshAccessTokenAsync))
@@ -26,10 +24,8 @@ namespace Redbean.Rx
 			ApiContainer.OnResponse += OnApiResponse;
 		}
 
-		public override void Teardown()
+		protected override void Teardown()
 		{
-			base.Teardown();
-			
 			ApiContainer.OnRequest -= OnApiRequest;
 			ApiContainer.OnResponse -= OnApiResponse;
 		}

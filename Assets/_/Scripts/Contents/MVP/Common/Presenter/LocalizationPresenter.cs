@@ -11,7 +11,7 @@ namespace Redbean.MVP.Content
 		{
 			if (TableContainer.Localization.TryGetValue(view.Localization, out var value))
 			{
-				view.Text.text = value.Kr;
+				view.Text.text = value.KR;
 				return;
 			}
 

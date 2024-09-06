@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Redbean.Api;
 using Redbean.Popup.Content;
+using Redbean.Rx;
 using UnityEngine;
 
 namespace Redbean
@@ -12,6 +15,15 @@ namespace Redbean
 		protected override async Task Setup()
 		{
 			Application.logMessageReceived += OnLogMessageReceived;
+
+			AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(x => x.GetTypes())
+				.Where(x => typeof(RxBase).IsAssignableFrom(x)
+				            && typeof(RxBase).FullName != x.FullName
+				            && !x.IsInterface
+				            && !x.IsAbstract)
+				.ToList()
+				.ForEach(_ => (Activator.CreateInstance(_) as RxBase).Start());
 			
 			// 파이어베이스 연결 체크
 			var status = await FirebaseApp.CheckAndFixDependenciesAsync();

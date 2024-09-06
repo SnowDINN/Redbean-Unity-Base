@@ -17,6 +17,7 @@ namespace Redbean.Auth
 				AuthenticationType.Apple => typeof(AppleAuthenticationProvider),
 				_ => null
 			};
+			
 			if (!authentications.ContainsKey(type))
 				authentications[type] = Activator.CreateInstance(provider) as IAuthentication;
 

@@ -16,10 +16,8 @@ namespace Redbean.Rx
 	    
     	private int mouseCode = -1;
 
-	    public override void Setup()
+	    protected override void Setup()
 	    {
-		    base.Setup();
-		    
 		    Observable.EveryUpdate().Subscribe(_ =>
 		    {
 			    InputDetectingAsync();

@@ -10,16 +10,23 @@ namespace Redbean.Rx
 		
 		protected readonly CompositeDisposable disposables = new();
 
-		public virtual void Setup()
+		public void Start()
 		{
+			AppLifeCycle.OnAppExit += OnAppExit;
+			Setup();
 		}
-
-		public virtual void Teardown()
+		
+		private void OnAppExit()
 		{
+			AppLifeCycle.OnAppExit -= OnAppExit;
+			Teardown();
+			
 			disposables?.Dispose();
 			disposables?.Clear();
-			
 			source?.Cancel();
 		}
+		
+		protected virtual void Setup() { }
+		protected virtual void Teardown() { }
 	}
 }

@@ -39,9 +39,7 @@ namespace Redbean.Editor
 					.Where(x => typeof(IPresenter).IsAssignableFrom(x)
 					            && typeof(Presenter).FullName != x.FullName
 					            && !x.IsInterface
-					            && !x.IsAbstract)
-					.Select(x => x.FullName)
-					.ToList();
+					            && !x.IsAbstract);
 
 				return assemblies.Select(assembly => new PresenterSearchable(assembly)).ToList();
 			}
@@ -88,11 +86,11 @@ namespace Redbean.Editor
 	[HideReferenceObjectPicker]
 	public readonly struct PresenterSearchable : IJob
 	{
-		public PresenterSearchable(string key)
+		public PresenterSearchable(Type type)
 		{
-			Presenter = key.Split('.').Last();
+			Presenter = type.Name;
 			
-			Key = $"<b>{key.Split('.').Last()}</b>";
+			Key = $"<b>{type.Name}</b>";
 			Value = new Dictionary<Object, List<PresenterItemSearchable>>();
 		}
 		
