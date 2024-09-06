@@ -8,11 +8,11 @@ namespace Redbean.Rx
     {
     	private static readonly Subject<KeyCode> onKeyInputDetected = new();
     	public static Observable<KeyCode> OnKeyInputDetected => 
-		    onKeyInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.DoubleInputPrevention));
+		    onKeyInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.InputDetectDelay));
     	
     	private static readonly Subject<(TouchPhase type, Vector3 position)> onMouseAndTouchInputDetected = new();
     	public static Observable<(TouchPhase type, Vector3 position)> OnMouseAndTouchInputDetected => 
-		    onMouseAndTouchInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.DoubleInputPrevention));
+		    onMouseAndTouchInputDetected.Share().ThrottleFirst(TimeSpan.FromMilliseconds(Balance.InputDetectDelay));
 	    
     	private int mouseCode = -1;
 

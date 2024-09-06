@@ -49,24 +49,25 @@ namespace Redbean.MVP.Content
 
 		private async UniTask SetUserData(AuthenticationResult result)
 		{
-			var parameter = new AuthenticationRequest
+			using (new DisableInteraction())
 			{
-				type = view.Type,
-				id = view.Type == AuthenticationType.Guest 
-					? user.Database.Information.Id
-					: (await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential)).UserId
-			};
-			
-			var response = await this.GetProtocol<PostAccessTokenAndUserProtocol>()
-				.Parameter(parameter)
-				.RequestAsync(view.destroyCancellationToken);
+				var response = await this.GetProtocol<PostAccessTokenAndUserProtocol>()
+					.Parameter(new AuthenticationRequest
+					{
+						type = view.Type,
+						id = view.Type == AuthenticationType.Guest
+							? user.Database.Information.Id
+							: (await FirebaseAuth.DefaultInstance.SignInWithCredentialAsync(result.Credential)).UserId
+					})
+					.RequestAsync(view.destroyCancellationToken);
 
-			if (response.IsSuccess)
-			{
-				if (view.Type == AuthenticationType.Guest)
-					user.Database.Information.Id.SetPlayerPrefs(PlayerPrefsKey.GUEST_USER_ID);
+				if (response.IsSuccess)
+				{
+					if (view.Type == AuthenticationType.Guest)
+						user.Database.Information.Id.SetPlayerPrefs(PlayerPrefsKey.GUEST_USER_ID);
 				
-				$"{view.Type}".SetPlayerPrefs(PlayerPrefsKey.LAST_LOGIN_HISTORY);
+					$"{view.Type}".SetPlayerPrefs(PlayerPrefsKey.LAST_LOGIN_HISTORY);
+				}
 			}
 		}
 	}

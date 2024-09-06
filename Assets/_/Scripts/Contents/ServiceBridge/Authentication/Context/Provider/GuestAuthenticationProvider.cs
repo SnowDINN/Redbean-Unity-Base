@@ -13,6 +13,10 @@ namespace Redbean.Auth
 		
 		public Task<bool> Initialize(CancellationToken cancellationToken = default)
 		{
+			if (IsInitialize)
+				Task.FromResult(IsInitialize);
+			
+			IsInitialize = true;
 			return Task.FromResult(true);
 		}
 
@@ -20,17 +24,28 @@ namespace Redbean.Auth
 		{
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
-
-			var user = new UserModel
-			{
-				Database =
+			
+			var user = string.IsNullOrEmpty(LocalDatabase.Load<string>(PlayerPrefsKey.GUEST_USER_ID))
+				? new UserModel
 				{
-					Information =
+					Database =
 					{
-						Id = "Guest"
+						Information =
+						{
+							Id = "Guest"
+						}
 					}
 				}
-			};
+				: new UserModel
+				{
+					Database =
+					{
+						Information =
+						{
+							Id = LocalDatabase.Load<string>(PlayerPrefsKey.GUEST_USER_ID)
+						}
+					}
+				};
 			user.Override();
 			
 			result = new AuthenticationResult

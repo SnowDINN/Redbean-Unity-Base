@@ -13,7 +13,7 @@ namespace Redbean
 		/// <summary>
 		/// UI 버튼 Observable 전환
 		/// </summary>
-		public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = Balance.DoubleButtonPrevention) =>
+		public static Observable<Unit> AsButtonObservable(this Button button, int inputThrottle = Balance.ButtonClickDelay) =>
 			inputThrottle > 0 
 				? button.onClick.AsObservable().Share().ThrottleFirst(TimeSpan.FromMilliseconds(inputThrottle)) 
 				: button.onClick.AsObservable().Share();

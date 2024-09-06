@@ -2,8 +2,8 @@
 {
 	public static class Balance
 	{
-		public const int DoubleButtonPrevention = 200;
-		public const int DoubleInputPrevention = 10;
+		public const int ButtonClickDelay = 200;
+		public const int InputDetectDelay = 10;
 	}
 
 	public static class PlayerPrefsKey
