@@ -8,8 +8,8 @@
 
 	public static class BootstrapKey
 	{
-		public const string RUNTIME = nameof(RUNTIME);
-		public const string LOGIN = nameof(LOGIN);
+		public const string OnStart = nameof(OnStart);
+		public const string OnLogin = nameof(OnLogin);
 	}
 
 	public static class PlayerPrefsKey

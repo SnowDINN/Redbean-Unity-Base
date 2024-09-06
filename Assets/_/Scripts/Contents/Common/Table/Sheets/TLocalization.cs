@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Redbean.Table
 {
 	public class TLocalization : ITable
@@ -5,16 +7,21 @@ namespace Redbean.Table
 		public string Id;
 		public string Kr;
 
-		public void Apply(string value)
+		public void Apply(IEnumerable<string> values)
 		{
-			var split = value.Split("\t");
-			var item = new TLocalization
-			{
-				Id = split[0],
-				Kr = split[1],
-			};
+			TableContainer.Localization.Clear();
 
-			TableContainer.Localization.Add(item.Id, item);
+			foreach (var value in values)
+			{
+				var split = value.Split("\t");
+				var item = new TLocalization
+				{
+					Id = split[0],
+					Kr = split[1],
+				};
+
+				TableContainer.Localization.Add(item.Id, item);
+			}
 		}
 	}
 }
