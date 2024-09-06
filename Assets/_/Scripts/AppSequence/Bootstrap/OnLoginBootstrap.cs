@@ -4,12 +4,10 @@ using Redbean.Table;
 
 namespace Redbean
 {
-	public class AppResourceBootstrap : Bootstrap
+	public class OnLoginBootstrap : Bootstrap
 	{
-		public override async Task Setup()
+		protected override async Task Setup()
 		{
-			await base.Setup();
-			
 			TableContainer.Setup();
 			await BundleContainer.Setup();
 		}

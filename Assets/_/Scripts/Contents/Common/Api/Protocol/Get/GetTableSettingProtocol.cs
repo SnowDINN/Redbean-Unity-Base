@@ -16,7 +16,7 @@ namespace Redbean.Api
 			if (!response.Response.Table.Any())
 				return response;
 
-			TableContainer.SetTable(response.Response.Table);
+			TableContainer.SetRawData(response.Response.Table);
 			TableContainer.Setup(nameof(TLocalization));
 
 			return response;
