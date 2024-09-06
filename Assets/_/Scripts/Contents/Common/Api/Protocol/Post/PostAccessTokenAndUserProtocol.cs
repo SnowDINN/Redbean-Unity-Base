@@ -9,7 +9,7 @@ namespace Redbean.Api
 	{
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
-			var parameter = args[0] as AuthenticationRequest;
+			var parameter = args[0] as UserRequest;
 			parameter.id = parameter.id.Encryption();
 			
 			var response = await ApiPostRequest.PostAccessTokenAndUserRequest(parameter, cancellationToken);

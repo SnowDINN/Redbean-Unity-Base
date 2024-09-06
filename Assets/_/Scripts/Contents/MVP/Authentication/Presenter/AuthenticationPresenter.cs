@@ -52,7 +52,7 @@ namespace Redbean.MVP.Content
 			using (new DisableInteraction())
 			{
 				var response = await this.GetProtocol<PostAccessTokenAndUserProtocol>()
-					.Parameter(new AuthenticationRequest
+					.Parameter(new UserRequest
 					{
 						type = view.Type,
 						id = view.Type == AuthenticationType.Guest

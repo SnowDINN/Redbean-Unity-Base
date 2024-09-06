@@ -5,7 +5,7 @@ namespace Redbean.Api
 {
 	public class ApiPostRequest : ApiBase
 	{
-		public static async Task<ApiResponse<UserAndTokenResponse>> PostAccessTokenAndUserRequest(AuthenticationRequest args, CancellationToken cancellationToken = default) =>
+		public static async Task<ApiResponse<UserAndTokenResponse>> PostAccessTokenAndUserRequest(UserRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<UserAndTokenResponse>>("/Authentication/PostAccessTokenAndUser", args, cancellationToken);
 
 		public static async Task<ApiResponse<TokenResponse>> PostAccessTokenRefreshRequest(StringRequest args, CancellationToken cancellationToken = default) =>
@@ -14,7 +14,7 @@ namespace Redbean.Api
 		public static async Task<ApiResponse<EmptyResponse>> PostUserNicknameRequest(StringRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<EmptyResponse>>("/User/PostUserNickname", args, cancellationToken);
 
-		public static async Task<ApiResponse<EmptyResponse>> PostUserWithdrawalRequest(object[] args = default, CancellationToken cancellationToken = default) =>
+		public static async Task<ApiResponse<EmptyResponse>> PostUserWithdrawalRequest(UserWithdrawalRequest args, CancellationToken cancellationToken = default) =>
 			await PostRequestAsync<ApiResponse<EmptyResponse>>("/User/PostUserWithdrawal", args, cancellationToken);
 
 #if UNITY_EDITOR

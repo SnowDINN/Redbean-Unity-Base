@@ -30,9 +30,10 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, AuthenticationTab), TitleGroup(UserInformationGroup), Button("DELETE", ButtonSizes.Large), PropertyOrder(UserInformationOrder), ShowIf(nameof(isExistUser), Value = true), PropertySpace, DisableInEditorMode]
 		private async void UserDeleteAccount()
 		{
-			await this.EditorGetApi<PostUserWithdrawalProtocol>().RequestAsync();
+			await this.EditorGetApi<PostUserWithdrawalProtocol>()
+				.Parameter(this.GetModel<UserModel>().Database.Social.Platform)
+				.RequestAsync();
 			
-			PlayerPrefs.DeleteAll();
 			EditorApplication.isPlaying = false;
 			
 			Log.Notice("User account has been deleted.");
