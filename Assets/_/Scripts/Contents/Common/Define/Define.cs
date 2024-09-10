@@ -1,5 +1,11 @@
 ﻿namespace Redbean
 {
+	public enum LanguageType
+	{
+		KR,
+		US
+	}
+	
 	public static class Balance
 	{
 		public const int ButtonClickDelay = 200;

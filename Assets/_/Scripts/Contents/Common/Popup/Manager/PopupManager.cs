@@ -15,7 +15,9 @@ namespace Redbean.Popup
 		private readonly Transform popupParent;
 		private readonly Canvas canvas;
 
-		public PopupBase CurrentPopup => popups.Values.Last();
+		public int CurrentPopup => popups.Count > 0 
+			? popups.Values.Last().Guid
+			: default;
 
 		public PopupManager()
 		{
@@ -108,6 +110,6 @@ namespace Redbean.Popup
 		
 		public PopupBase GetPopup(int id) => popups[id];
 		
-		public void CurrentPopupClose() => Close(CurrentPopup.Guid);
+		public void CurrentPopupClose() => Close(CurrentPopup);
 	}
 }
