@@ -73,8 +73,8 @@ namespace Redbean.Popup
 		{
 			var go = BundleContainer.LoadAsset<GameObject>(AddressableSettings.GetPopupPath(type), popupParent);
 			var popup = go.GetComponent(type) as PopupBase;
-			popup.Type = PopupType.Bundle;
 			popup.Guid = go.GetInstanceID();
+			popup.Type = PopupType.Bundle;
 			
 			popups.Add(popup.Guid, popup);
 			return popups[popup.Guid];

@@ -4,6 +4,7 @@ using Firebase.Auth;
 using R3;
 using Redbean.Api;
 using Redbean.Auth;
+using Redbean.Popup.Content;
 using Redbean.Utility;
 
 namespace Redbean.MVP.Content
@@ -49,7 +50,7 @@ namespace Redbean.MVP.Content
 
 		private async UniTask SetUserData(AuthenticationResult result)
 		{
-			using (new DisableInteraction())
+			using (new Indicator())
 			{
 				var response = await this.GetProtocol<PostAccessTokenAndUserProtocol>()
 					.Parameter(new UserRequest

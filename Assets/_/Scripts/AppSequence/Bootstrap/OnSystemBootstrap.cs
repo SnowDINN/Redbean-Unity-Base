@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Firebase;
-using Firebase.Auth;
-using Redbean.Api;
+using Cysharp.Threading.Tasks;
+using R3;
 using Redbean.Popup.Content;
 using Redbean.Rx;
 using UnityEngine;
 
 namespace Redbean
 {
-	public class OnStartBootstrap : Bootstrap
+	public class OnSystemBootstrap : Bootstrap
 	{
-		protected override async Task Setup()
+		private readonly CompositeDisposable disposables = new();
+		
+		protected override Task Setup()
 		{
 			Application.logMessageReceived += OnLogMessageReceived;
 
-			AppDomain.CurrentDomain.GetAssemblies()
+			AppDomain.CurrentDomain
+				.GetAssemblies()
 				.SelectMany(x => x.GetTypes())
 				.Where(x => typeof(RxBase).IsAssignableFrom(x)
 				            && typeof(RxBase).FullName != x.FullName
@@ -24,28 +26,30 @@ namespace Redbean
 				            && !x.IsAbstract)
 				.ToList()
 				.ForEach(_ => (Activator.CreateInstance(_) as RxBase).Start());
-			
-			// 파이어베이스 연결 체크
-			var status = await FirebaseApp.CheckAndFixDependenciesAsync();
-			if (status == DependencyStatus.Available)
-				Log.Success("FIREBASE", "Success to connect to the Firebase server.");
-			else
-			{
-				Log.Fail("FIREBASE", "Failed to connect to the Firebase server.");
-				return;
-			}
 
-			// 앱 설정 체크
-			await this.GetProtocol<GetAppSettingProtocol>().RequestAsync(cancellationToken);
-			await this.GetProtocol<GetTableSettingProtocol>().RequestAsync(cancellationToken);
+			RxApiBinder.OnRequest
+				.Subscribe(_ =>
+				{
+					if (InteractionMono.Interaction)
+						InteractionMono.Interaction.ActiveGameObject(true);
+				}).AddTo(disposables);
+			
+			RxApiBinder.OnResponse
+				.Subscribe(_ =>
+				{
+					if (InteractionMono.Interaction)
+						InteractionMono.Interaction.ActiveGameObject(false);
+				}).AddTo(disposables);
+			
+			return Task.CompletedTask;
 		}
 
 		protected override Task Teardown()
 		{
 			Application.logMessageReceived -= OnLogMessageReceived;
 			
-			FirebaseAuth.DefaultInstance.Dispose();
-			FirebaseApp.DefaultInstance.Dispose();
+			disposables.Clear();
+			disposables.Dispose();
 
 			return Task.CompletedTask;
 		}
@@ -56,6 +60,14 @@ namespace Redbean
 				return;
 			
 			this.Popup().AssetOpen<PopupException>().ExceptionMessage = condition;
+		}
+
+		private async UniTaskVoid TimeoutIndicatorAsync()
+		{
+			if (InteractionMono.Interaction)
+				InteractionMono.Interaction.ActiveGameObject(true);
+
+			await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
 		}
 	}
 }
