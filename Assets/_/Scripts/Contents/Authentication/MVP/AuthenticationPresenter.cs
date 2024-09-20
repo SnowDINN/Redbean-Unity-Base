@@ -4,7 +4,6 @@ using Firebase.Auth;
 using R3;
 using Redbean.Api;
 using Redbean.Auth;
-using Redbean.Popup.Content;
 using Redbean.Utility;
 
 namespace Redbean.MVP.Content

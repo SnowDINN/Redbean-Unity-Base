@@ -16,6 +16,10 @@ namespace Redbean
 		protected override Task Setup()
 		{
 			Application.logMessageReceived += OnLogMessageReceived;
+			
+			AudioMono.OnInitialize();
+			IndicatorMono.OnInitialize();
+			InteractionMono.OnInitialize();
 
 			AppDomain.CurrentDomain
 				.GetAssemblies()
@@ -31,14 +35,14 @@ namespace Redbean
 				.Subscribe(_ =>
 				{
 					if (InteractionMono.Interaction)
-						InteractionMono.Interaction.ActiveGameObject(true);
+						InteractionMono.Interaction.ActiveGameObject(false);
 				}).AddTo(disposables);
 			
 			RxApiBinder.OnResponse
 				.Subscribe(_ =>
 				{
 					if (InteractionMono.Interaction)
-						InteractionMono.Interaction.ActiveGameObject(false);
+						InteractionMono.Interaction.ActiveGameObject(true);
 				}).AddTo(disposables);
 			
 			return Task.CompletedTask;
