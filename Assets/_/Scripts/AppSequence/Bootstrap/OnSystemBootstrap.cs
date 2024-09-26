@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -12,6 +13,8 @@ namespace Redbean
 	public class OnSystemBootstrap : Bootstrap
 	{
 		private readonly CompositeDisposable disposables = new();
+
+		private const int timeout = 3;
 		
 		protected override Task Setup()
 		{
@@ -34,15 +37,13 @@ namespace Redbean
 			RxApiBinder.OnRequest
 				.Subscribe(_ =>
 				{
-					if (InteractionMono.Interaction)
-						InteractionMono.Interaction.ActiveGameObject(false);
+					UniTask.Void(OnRequestTimeoutSequence, cancellationToken);
 				}).AddTo(disposables);
 			
 			RxApiBinder.OnResponse
 				.Subscribe(_ =>
 				{
-					if (InteractionMono.Interaction)
-						InteractionMono.Interaction.ActiveGameObject(true);
+					OnResponseTimeoutSequence();
 				}).AddTo(disposables);
 			
 			return Task.CompletedTask;
@@ -66,12 +67,28 @@ namespace Redbean
 			this.Popup().AssetOpen<PopupException>().ExceptionMessage = condition;
 		}
 
-		private async UniTaskVoid TimeoutIndicatorAsync()
+		private async UniTaskVoid OnRequestTimeoutSequence(CancellationToken cancellationToken)
+		{
+			if (InteractionMono.Interaction)
+				InteractionMono.Interaction.ActiveGameObject(false);
+
+			await UniTask.Delay
+				(TimeSpan.FromSeconds(timeout), cancellationToken: cancellationToken);
+
+			if (!InteractionMono.Interaction.isActiveAndEnabled)
+			{
+				if (IndicatorMono.Indicator)
+					IndicatorMono.Indicator.ActiveGameObject(true);
+			}
+		}
+		
+		private void OnResponseTimeoutSequence()
 		{
 			if (InteractionMono.Interaction)
 				InteractionMono.Interaction.ActiveGameObject(true);
 
-			await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
+			if (IndicatorMono.Indicator)
+				IndicatorMono.Indicator.ActiveGameObject(false);
 		}
 	}
 }
