@@ -13,7 +13,7 @@ namespace Redbean
 		
 		protected override async Task Setup()
 		{
-			TableContainer.Setup();
+			GoogleSheetContainer.Setup();
 			await BundleContainer.Setup();
 
 			RxInputBinder.OnKeyInputDetected

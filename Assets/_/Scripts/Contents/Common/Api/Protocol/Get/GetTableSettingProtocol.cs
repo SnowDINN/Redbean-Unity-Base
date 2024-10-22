@@ -16,8 +16,8 @@ namespace Redbean.Api
 			if (!response.Response.Table.Any())
 				return response;
 
-			TableContainer.SetRawData(response.Response.Table);
-			TableContainer.Setup(nameof(TLocalization));
+			GoogleSheetContainer.SetRawData(response.Response.Table);
+			GoogleSheetContainer.Setup(nameof(TLocalization));
 
 			return response;
 		}

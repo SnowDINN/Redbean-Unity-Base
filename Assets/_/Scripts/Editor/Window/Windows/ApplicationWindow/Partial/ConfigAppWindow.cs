@@ -117,8 +117,8 @@ namespace Redbean.Editor
 					.Parameter()
 					.RequestAsync();
 				
-				var sheetRaw = await TableGenerator.GetSheetAsync();
-				await TableGenerator.GenerateCSharpTableAsync(sheetRaw);
+				var sheetRaw = await GoogleSheetGenerator.GetSheetAsync();
+				await GoogleSheetGenerator.GenerateCSharpTableAsync(sheetRaw);
 			
 				var requestFiles = new List<RequestFile>();
 				var keys = sheetRaw.Keys.ToArray();
@@ -126,7 +126,7 @@ namespace Redbean.Editor
 				for (var i = 0; i < sheetRaw.Count; i++)
 				{
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
-					await TableGenerator.GenerateCSharpSheetAsync(keys[i], values[i]);
+					await GoogleSheetGenerator.GenerateCSharpSheetAsync(keys[i], values[i]);
 
 					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
 					requestFiles.Add(new RequestFile

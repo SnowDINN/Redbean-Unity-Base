@@ -1,6 +1,12 @@
 [submodule "Assets/_/Scripts/ApiBridge"]
 	path = Assets/_/Scripts/ApiBridge
 	url = https://github.com/SnowDINN/Redbean-API-Unity-Bridge.git
-[submodule "Redbean-UnityLibrary-Submodule"]
-	path = Assets/_/Scripts/RedbeanLibrary
-	url = https://github.com/SnowDINN/Redbean-Unity-Library.git
+[submodule "Unity-Submodule-MVP"]
+	path = Assets/_/Submodules/Unity-Submodule-MVP
+	url = https://github.com/SnowDINN/Unity-Submodule-MVP.git
+[submodule "Unity-Submodule-Jenkins"]
+	path = Assets/_/Submodules/Unity-Submodule-Jenkins
+	url = https://github.com/SnowDINN/Unity-Submodule-Jenkins.git
+[submodule "Unity-Submodule-GoogleSheet"]
+	path = Assets/_/Submodules/Unity-Submodule-GoogleSheet
+	url = https://github.com/SnowDINN/Unity-Submodule-GoogleSheet.git
