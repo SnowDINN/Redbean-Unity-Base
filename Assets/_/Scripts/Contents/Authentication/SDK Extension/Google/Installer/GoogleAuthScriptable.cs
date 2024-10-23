@@ -19,7 +19,7 @@ namespace Google
 		WebClientId,
 	}
 	
-	[CreateAssetMenu(fileName = "GoogleAuthenticationScriptable", menuName = "Redbean/GoogleAuthenticationScriptable")]
+	[CreateAssetMenu(fileName = "GoogleAuthenticationScriptable", menuName = "Redbean/GoogleAuthScriptable")]
 	public class GoogleAuthScriptable : ScriptableObject
 	{
 		[Header("Web")]

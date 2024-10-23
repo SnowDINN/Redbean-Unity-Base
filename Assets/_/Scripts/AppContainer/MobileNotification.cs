@@ -10,7 +10,7 @@ using Unity.Notifications.iOS;
 
 namespace Redbean.Utility
 {
-	public class LocalNotification
+	public class MobileNotification
 	{
 		private const string ANDROID_PUSH_PERMISSION = "android.permission.POST_NOTIFICATIONS";
 		private const string CHANNEL_ID = "REDBEAN_BoongGOD_PUSH_CHANNEL";

@@ -21,7 +21,7 @@ namespace Google
 
 		private void OnPreProcessBuild(BuildTarget target, string path)
 		{
-			var installer = Resources.Load<GoogleAuthScriptable>("GoogleAuthenticationScriptable");
+			var installer = Resources.Load<GoogleAuthScriptable>("GoogleAuthScriptable");
 			installer.androidClientId = GoogleAuthClient.GetAndroidClientId();
 			installer.iosClientId = GoogleAuthClient.GetIosClientId();
 			installer.webClientId = GoogleAuthClient.GetWebClientId();

@@ -25,7 +25,7 @@ namespace Redbean.Auth
 			var completionSource = new TaskCompletionSource<AuthenticationResult>();
 			var result = new AuthenticationResult();
 			
-			var user = string.IsNullOrEmpty(LocalDatabase.Load<string>(PlayerPrefsKey.GUEST_USER_ID))
+			var user = string.IsNullOrEmpty(Database.Load<string>(PlayerPrefsKey.GUEST_USER_ID))
 				? new UserModel
 				{
 					Database =
@@ -42,7 +42,7 @@ namespace Redbean.Auth
 					{
 						Information =
 						{
-							Id = LocalDatabase.Load<string>(PlayerPrefsKey.GUEST_USER_ID)
+							Id = Database.Load<string>(PlayerPrefsKey.GUEST_USER_ID)
 						}
 					}
 				};
@@ -69,7 +69,7 @@ namespace Redbean.Auth
 				{
 					Information =
 					{
-						Id = LocalDatabase.Load<string>(PlayerPrefsKey.GUEST_USER_ID)
+						Id = Database.Load<string>(PlayerPrefsKey.GUEST_USER_ID)
 					}
 				}
 			};

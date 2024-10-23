@@ -31,8 +31,8 @@ namespace Redbean.Auth
 		private const string APPLE_USER_ID = nameof(APPLE_USER_ID);
 		private const string APPLE_USER_ID_TOKEN = nameof(APPLE_USER_ID_TOKEN);
 
-		private string userId => LocalDatabase.Load<string>(APPLE_USER_ID);
-		private string userIdToken => LocalDatabase.Load<string>(APPLE_USER_ID_TOKEN);
+		private string userId => Database.Load<string>(APPLE_USER_ID);
+		private string userIdToken => Database.Load<string>(APPLE_USER_ID_TOKEN);
 		
 		private IAppleAuthManager appleAuthManager;
 		private IDisposable disposable;

@@ -49,10 +49,10 @@ namespace Redbean.Editor
 		{
 			get
 			{
-				if (!PlayerPrefs.HasKey(LocalDatabase.PLAYER_PREFS_KEY))
+				if (!PlayerPrefs.HasKey(Database.PLAYER_PREFS_KEY))
 					return new List<PlayerPrefsViewer>();
 
-				var dataDecrypt = PlayerPrefs.GetString(LocalDatabase.PLAYER_PREFS_KEY).Decryption();
+				var dataDecrypt = PlayerPrefs.GetString(Database.PLAYER_PREFS_KEY).Decryption();
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				if (dataGroups == null)
 					return new List<PlayerPrefsViewer>();

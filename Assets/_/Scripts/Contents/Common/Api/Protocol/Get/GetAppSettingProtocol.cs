@@ -40,8 +40,8 @@ namespace Redbean.Api
 				{
 					// TODO : 정상 진입 로직
 
-					LocalDatabase.Setup();
-					LocalNotification.Setup();
+					Database.Setup();
+					MobileNotification.Setup();
 					break;	
 				}
 						

@@ -20,9 +20,9 @@ namespace Redbean
 		{
 			Application.logMessageReceived += OnLogMessageReceived;
 			
-			AudioMono.OnInitialize();
-			IndicatorMono.OnInitialize();
-			InteractionMono.OnInitialize();
+			AudioSystem.OnInitialize();
+			IndicatorSystem.OnInitialize();
+			InteractionSystem.OnInitialize();
 
 			AppDomain.CurrentDomain
 				.GetAssemblies()
@@ -69,26 +69,26 @@ namespace Redbean
 
 		private async UniTaskVoid OnRequestTimeoutSequence(CancellationToken cancellationToken)
 		{
-			if (InteractionMono.Interaction)
-				InteractionMono.Interaction.ActiveGameObject(false);
+			if (InteractionSystem.Interaction)
+				InteractionSystem.Interaction.ActiveGameObject(false);
 
 			await UniTask.Delay
 				(TimeSpan.FromSeconds(timeout), cancellationToken: cancellationToken);
 
-			if (!InteractionMono.Interaction.isActiveAndEnabled)
+			if (!InteractionSystem.Interaction.isActiveAndEnabled)
 			{
-				if (IndicatorMono.Indicator)
-					IndicatorMono.Indicator.ActiveGameObject(true);
+				if (IndicatorSystem.Indicator)
+					IndicatorSystem.Indicator.ActiveGameObject(true);
 			}
 		}
 		
 		private void OnResponseTimeoutSequence()
 		{
-			if (InteractionMono.Interaction)
-				InteractionMono.Interaction.ActiveGameObject(true);
+			if (InteractionSystem.Interaction)
+				InteractionSystem.Interaction.ActiveGameObject(true);
 
-			if (IndicatorMono.Indicator)
-				IndicatorMono.Indicator.ActiveGameObject(false);
+			if (IndicatorSystem.Indicator)
+				IndicatorSystem.Indicator.ActiveGameObject(false);
 		}
 	}
 }

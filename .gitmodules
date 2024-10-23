@@ -7,6 +7,6 @@
 [submodule "Unity-Submodule-Jenkins"]
 	path = Assets/_/Submodules/Unity-Submodule-Jenkins
 	url = https://github.com/SnowDINN/Unity-Submodule-Jenkins.git
-[submodule "Unity-Submodule-GoogleSheet"]
-	path = Assets/_/Submodules/Unity-Submodule-GoogleSheet
-	url = https://github.com/SnowDINN/Unity-Submodule-GoogleSheet.git
+[submodule "Unity-Submodule-Utility"]
+	path = Assets/_/Submodules/Unity-Submodule-Utility
+	url = https://github.com/SnowDINN/Unity-Submodule-Utility.git
