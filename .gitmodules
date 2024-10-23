@@ -1,5 +1,5 @@
 [submodule "Assets/_/Scripts/ApiBridge"]
-	path = Assets/_/Scripts/ApiBridge
+	path = Assets/_/Submodules/ApiBridge
 	url = https://github.com/SnowDINN/Redbean-API-Unity-Bridge.git
 [submodule "Unity-Submodule-MVP"]
 	path = Assets/_/Submodules/Unity-Submodule-MVP

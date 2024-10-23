@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e217b7e2f517e2140828a41d3eedddf3, type: 3}
   m_Name: ApiScriptable
   m_EditorClassIdentifier: 
-  ProtocolPath: Assets/_/Scripts/Contents/Common/Api/Request
+  ProtocolPath: Assets/_/Scripts/Api/Request
