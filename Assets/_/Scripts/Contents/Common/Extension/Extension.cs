@@ -77,7 +77,6 @@ namespace Redbean
 				.GetValue(value);
 			
 			return string.Format($"{field}", args);
-
 		}
 		
 		/// <summary>
