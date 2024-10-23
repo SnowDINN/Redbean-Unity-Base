@@ -10,12 +10,12 @@ namespace Redbean.Bundle
 		public static async Task Setup()
 		{
 			var size = 0L;
-			foreach (var label in AddressableSettings.Labels)
+			foreach (var label in BundleReferencer.Labels)
 				size += await Addressables.GetDownloadSizeAsync(label).Task;
 
 			if (size > 0)
 			{
-				foreach (var label in AddressableSettings.Labels)
+				foreach (var label in BundleReferencer.Labels)
 				{
 					var download = await Addressables.DownloadDependenciesAsync(label).Task;
 					Addressables.Release(download);

@@ -73,7 +73,7 @@ namespace Redbean
 				return key;
 
 			var field = value.GetType().GetFields()
-				.FirstOrDefault(_ => _.Name == $"{GameConfigureSetting.LanguageType}")
+				.FirstOrDefault(_ => _.Name == $"{GameConfigureReferencer.LanguageType}")
 				.GetValue(value);
 			
 			return string.Format($"{field}", args);

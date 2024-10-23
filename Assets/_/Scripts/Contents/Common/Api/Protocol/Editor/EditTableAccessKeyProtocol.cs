@@ -12,9 +12,9 @@ namespace Redbean.Api
 			if (!response.IsSuccess)
 				return response;
 			
-			GoogleTableSettings.SheetId = response.Response.Sheet.Id;
-			GoogleTableSettings.ClientId = response.Response.Client.Id;
-			GoogleTableSettings.ClientSecretId = response.Response.Client.Secret;
+			GoogleSheetReferencer.SheetId = response.Response.Sheet.Id;
+			GoogleSheetReferencer.ClientId = response.Response.Client.Id;
+			GoogleSheetReferencer.ClientSecretId = response.Response.Client.Secret;
 			
 			return response;
 		}

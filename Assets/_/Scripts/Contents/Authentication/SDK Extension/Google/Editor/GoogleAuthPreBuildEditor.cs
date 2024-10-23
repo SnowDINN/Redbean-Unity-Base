@@ -10,7 +10,7 @@ using UnityEditor.iOS.Xcode;
 
 namespace Google
 {
-	public class GoogleAuthenticationPreBuildEditor : IPreprocessBuildWithReport
+	public class GoogleAuthPreBuildEditor : IPreprocessBuildWithReport
 	{
 		public int callbackOrder => 10;
 		
@@ -21,10 +21,10 @@ namespace Google
 
 		private void OnPreProcessBuild(BuildTarget target, string path)
 		{
-			var installer = Resources.Load<GoogleAuthenticationInstaller>("Google/GoogleAuthentication");
-			installer.androidClientId = GoogleAuthenticationClient.GetAndroidClientId();
-			installer.iosClientId = GoogleAuthenticationClient.GetIosClientId();
-			installer.webClientId = GoogleAuthenticationClient.GetWebClientId();
+			var installer = Resources.Load<GoogleAuthScriptable>("GoogleAuthenticationScriptable");
+			installer.androidClientId = GoogleAuthClient.GetAndroidClientId();
+			installer.iosClientId = GoogleAuthClient.GetIosClientId();
+			installer.webClientId = GoogleAuthClient.GetWebClientId();
 			installer.Save();
 		}
 	}

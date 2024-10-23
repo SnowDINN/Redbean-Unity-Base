@@ -4,23 +4,23 @@ using UnityEngine;
 
 namespace Redbean.Bundle
 {
-	[CreateAssetMenu(fileName = "Bundle", menuName = "Redbean/Library/Bundle")]
-	public class BundleInstaller : ScriptableObject
+	[CreateAssetMenu(fileName = "BundleScriptable", menuName = "Redbean/Library/BundleScriptable")]
+	public class BundleScriptable : ScriptableObject
 	{
 		[Header("Get addressable information during runtime")]
 		public string[] Labels;
 	}
 
-	public class AddressableSettings : SettingsBase<BundleInstaller>
+	public class BundleReferencer : ScriptableBase<BundleScriptable>
 	{
 		public static string GetPopupPath(Type type) => $"Popup/{type.Name}.prefab";
 		
 		public static string[] Labels
 		{
-			get => Installer.Labels;
+			get => Scriptable.Labels;
 			set
 			{
-				Installer.Labels = value;
+				Scriptable.Labels = value;
 				
 #if UNITY_EDITOR
 				Save();

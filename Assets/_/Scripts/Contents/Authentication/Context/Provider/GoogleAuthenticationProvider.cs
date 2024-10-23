@@ -32,7 +32,7 @@ namespace Redbean.Auth
 			
 			var configuration = new GoogleSignInConfiguration
 			{
-				WebClientId = GoogleAuthenticationClient.GetWebClientId(),
+				WebClientId = GoogleAuthClient.GetWebClientId(),
 				RequestEmail = true,
 				RequestProfile = true,
 				RequestAuthCode = true,

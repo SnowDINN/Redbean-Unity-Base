@@ -17,10 +17,10 @@ namespace Redbean
 			UseProxy = false,
 		})
 		{
-			BaseAddress = new Uri(ApiSettings.ApiUri),
+			BaseAddress = new Uri(ApiReferencer.ApiUri),
 			DefaultRequestHeaders =
 			{
-				{ "Version", AppSettings.Version },
+				{ "Version", ApplicationReferencer.Version },
 			},
 			Timeout = TimeSpan.FromSeconds(60),
 		};

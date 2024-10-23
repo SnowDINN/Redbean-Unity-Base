@@ -32,8 +32,8 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), LabelText("Create Api Script Path"), ShowInInspector, FolderPath]
 		private string ApiGetPath
 		{
-			get => ApiSettings.ProtocolPath;
-			set => ApiSettings.ProtocolPath = value;
+			get => ApiReferencer.ProtocolPath;
+			set => ApiReferencer.ProtocolPath = value;
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), Button("UPDATE API", ButtonSizes.Large), PropertySpace]
@@ -74,7 +74,7 @@ namespace Redbean.Editor
 					.Parameter(requestFiles.ToArray())
 					.RequestAsync();
 
-				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
+				BundleReferencer.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
 			}
 			catch (Exception e)
 			{
@@ -89,15 +89,15 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Script Path"), ShowInInspector, FolderPath]
 		private string TablePath
 		{
-			get => GoogleTableSettings.Path;
-			set => GoogleTableSettings.Path = value;
+			get => GoogleSheetReferencer.Path;
+			set => GoogleSheetReferencer.Path = value;
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Table Script Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
-			get => GoogleTableSettings.ItemPath;
-			set => GoogleTableSettings.ItemPath = value;
+			get => GoogleSheetReferencer.ItemPath;
+			set => GoogleSheetReferencer.ItemPath = value;
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large), PropertySpace]

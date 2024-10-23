@@ -7,11 +7,11 @@ namespace Redbean.Editor
 	{
 		private const string TabGroup = "Tabs";
 		
-		private GoogleAuthenticationInstaller googleAuth;
+		private GoogleAuthScriptable googleAuth;
 		
 		protected override void OnEnable()
 		{
-			googleAuth = Resources.Load<GoogleAuthenticationInstaller>("Google/GoogleAuthentication");
+			googleAuth = Resources.Load<GoogleAuthScriptable>("Google/GoogleAuthentication");
 		}
 	}
 }

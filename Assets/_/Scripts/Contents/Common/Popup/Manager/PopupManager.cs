@@ -71,7 +71,7 @@ namespace Redbean.Popup
 
 		public object BundleOpen(Type type)
 		{
-			var go = BundleContainer.LoadAsset<GameObject>(AddressableSettings.GetPopupPath(type), popupParent);
+			var go = BundleContainer.LoadAsset<GameObject>(BundleReferencer.GetPopupPath(type), popupParent);
 			var popup = go.GetComponent(type) as PopupBase;
 			popup.Guid = go.GetInstanceID();
 			popup.Type = PopupType.Bundle;
@@ -92,7 +92,7 @@ namespace Redbean.Popup
 					break;
 				
 				case PopupType.Bundle:
-					BundleContainer.Release(AddressableSettings.GetPopupPath(popup.GetType()), popup.Guid);
+					BundleContainer.Release(BundleReferencer.GetPopupPath(popup.GetType()), popup.Guid);
 					break;
 			}
 		}

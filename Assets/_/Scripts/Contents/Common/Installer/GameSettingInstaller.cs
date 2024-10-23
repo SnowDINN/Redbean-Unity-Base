@@ -5,29 +5,29 @@ using UnityEngine;
 
 namespace Redbean
 {
-	[CreateAssetMenu(fileName = "GameConfigure", menuName = "Redbean/Game/GameConfigure")]
-	public class GameConfigureInstaller : ScriptableObject
+	[CreateAssetMenu(fileName = "GameConfigureScriptable", menuName = "Redbean/Game/GameConfigureScriptable")]
+	public class GameConfigureScriptable : ScriptableObject
 	{
-		private LanguageType m_LanguageType;
+		private LanguageType languageType;
 
 		[ShowInInspector]
 		public LanguageType LanguageType
 		{
-			get => m_LanguageType;
+			get => languageType;
 			set
 			{
-				m_LanguageType = value;
+				languageType = value;
 				RxLocalizationBinder.Publish(value);
 			}
 		}
 	}
 	
-	public class GameConfigureSetting : SettingsBase<GameConfigureInstaller>
+	public class GameConfigureReferencer : ScriptableBase<GameConfigureScriptable>
 	{
 		public static LanguageType LanguageType
 		{
-			get => Installer.LanguageType;
-			set => Installer.LanguageType = value;
+			get => Scriptable.LanguageType;
+			set => Scriptable.LanguageType = value;
 		}
 	}
 }
