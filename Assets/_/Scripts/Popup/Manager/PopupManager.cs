@@ -14,7 +14,7 @@ namespace Redbean.Popup
 		private readonly Dictionary<int, PopupBase> popups = new();
 		private readonly Transform popupParent;
 		private readonly Canvas canvas;
-
+		
 		public int CurrentPopup => popups.Count > 0 
 			? popups.Values.Last().Guid
 			: default;
@@ -48,8 +48,8 @@ namespace Redbean.Popup
 		}
 
 		private void OnActiveSceneChanged(Scene before, Scene after) => SetPopupCanvasParameter();
-
 		private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1) => SetPopupCanvasParameter();
+		private string GetPopupPath(Type type) => $"Popup/{type.Name}.prefab";
 
 		private void SetPopupCanvasParameter()
 		{
@@ -71,7 +71,7 @@ namespace Redbean.Popup
 
 		public object BundleOpen(Type type)
 		{
-			var go = BundleContainer.LoadAsset<GameObject>(BundleReferencer.GetPopupPath(type), popupParent);
+			var go = BundleContainer.LoadAsset<GameObject>(GetPopupPath(type), popupParent);
 			var popup = go.GetComponent(type) as PopupBase;
 			popup.Guid = go.GetInstanceID();
 			popup.Type = PopupType.Bundle;
@@ -92,7 +92,7 @@ namespace Redbean.Popup
 					break;
 				
 				case PopupType.Bundle:
-					BundleContainer.Release(BundleReferencer.GetPopupPath(popup.GetType()), popup.Guid);
+					BundleContainer.Release(GetPopupPath(popup.GetType()), popup.Guid);
 					break;
 			}
 		}

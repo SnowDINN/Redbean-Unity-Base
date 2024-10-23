@@ -7,15 +7,18 @@ namespace Redbean.Bundle
 {
 	public class BundleContainer : Container<string, BundleAsset>
 	{
+		private static BundleScriptable bundleScriptable =>
+			ApplicationLoader.GetScriptable<BundleScriptable>();
+		
 		public static async Task Setup()
 		{
 			var size = 0L;
-			foreach (var label in BundleReferencer.Labels)
+			foreach (var label in bundleScriptable.Labels)
 				size += await Addressables.GetDownloadSizeAsync(label).Task;
 
 			if (size > 0)
 			{
-				foreach (var label in BundleReferencer.Labels)
+				foreach (var label in bundleScriptable.Labels)
 				{
 					var download = await Addressables.DownloadDependenciesAsync(label).Task;
 					Addressables.Release(download);

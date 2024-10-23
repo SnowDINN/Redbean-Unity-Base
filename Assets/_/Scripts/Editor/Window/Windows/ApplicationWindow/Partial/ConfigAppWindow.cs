@@ -29,11 +29,24 @@ namespace Redbean.Editor
 		private const int MaintenanceOrder = 400;
 		private const int VersionOrder = 500;
 		
+		private ApiScriptable apiScriptable =>
+			ApplicationLoader.GetScriptable<ApiScriptable>();
+		
+		private BundleScriptable bundleScriptable =>
+			ApplicationLoader.GetScriptable<BundleScriptable>();
+		
+		private GoogleSheetScriptable googleSheetScriptable =>
+			ApplicationLoader.GetScriptable<GoogleSheetScriptable>();
+		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), LabelText("Create Api Script Path"), ShowInInspector, FolderPath]
 		private string ApiGetPath
 		{
-			get => ApiReferencer.ProtocolPath;
-			set => ApiReferencer.ProtocolPath = value;
+			get => apiScriptable.ProtocolPath;
+			set
+			{
+				apiScriptable.ProtocolPath = value;
+				apiScriptable.Save();
+			}
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), Button("UPDATE API", ButtonSizes.Large), PropertySpace]
@@ -74,7 +87,9 @@ namespace Redbean.Editor
 					.Parameter(requestFiles.ToArray())
 					.RequestAsync();
 
-				BundleReferencer.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
+
+				bundleScriptable.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
+				bundleScriptable.Save();
 			}
 			catch (Exception e)
 			{
@@ -89,15 +104,23 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Script Path"), ShowInInspector, FolderPath]
 		private string TablePath
 		{
-			get => GoogleSheetReferencer.Path;
-			set => GoogleSheetReferencer.Path = value;
+			get => googleSheetScriptable.ContainerPath;
+			set
+			{
+				googleSheetScriptable.ContainerPath = value;
+				googleSheetScriptable.Save();
+			}
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Table Script Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
-			get => GoogleSheetReferencer.ItemPath;
-			set => GoogleSheetReferencer.ItemPath = value;
+			get => googleSheetScriptable.ItemPath;
+			set
+			{
+				googleSheetScriptable.ItemPath = value;
+				googleSheetScriptable.Save();
+			}
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large), PropertySpace]

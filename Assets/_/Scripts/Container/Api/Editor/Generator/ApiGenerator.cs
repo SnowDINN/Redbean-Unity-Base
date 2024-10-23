@@ -22,9 +22,12 @@ namespace Redbean.Api
 	{
 		public const string Namespace = "Redbean";
 		
+		private static ApiScriptable apiScriptable =>
+			ApplicationLoader.GetScriptable<ApiScriptable>();
+		
 		public static async Task GetApiAsync(Type wrapper)
 		{
-			var uri = $"{ApiReferencer.ApiUri}/swagger/v1/swagger.json";
+			var uri = $"{apiScriptable.ApiUri}/swagger/v1/swagger.json";
 
 			var request = UnityWebRequest.Get(uri);
 			await request.SendWebRequest();
@@ -35,7 +38,7 @@ namespace Redbean.Api
 				return;
 			}
 
-			DeleteFiles($"{ApiReferencer.ProtocolPath}");
+			DeleteFiles($"{apiScriptable.ProtocolPath}");
 			
 			var api = JObject.Parse(request.downloadHandler.text);
 			var apiEndpoints = api["paths"].ToObject<Dictionary<string, JObject>>();
@@ -72,10 +75,10 @@ namespace Redbean.Api
 			stringBuilder.AppendLine("\t}");
 			stringBuilder.AppendLine("}");
 			
-			if (Directory.Exists(ApiReferencer.ProtocolPath))
-				Directory.CreateDirectory(ApiReferencer.ProtocolPath);
+			if (Directory.Exists(apiScriptable.ProtocolPath))
+				Directory.CreateDirectory(apiScriptable.ProtocolPath);
 				
-			await File.WriteAllTextAsync($"{ApiReferencer.ProtocolPath}/Api{type}Request.cs", $"{stringBuilder}");
+			await File.WriteAllTextAsync($"{apiScriptable.ProtocolPath}/Api{type}Request.cs", $"{stringBuilder}");
 		}
 
 		private static string GenerateCSharpMethod(ApiType type, Type wrapper, IReadOnlyList<KeyValuePair<string, JObject>> apis)

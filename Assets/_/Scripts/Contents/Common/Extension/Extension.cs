@@ -72,8 +72,9 @@ namespace Redbean
 			if (!TableContainer.Localization.TryGetValue(key, out var value))
 				return key;
 
+			var gameScriptable = ApplicationLoader.GetScriptable<GameConfigureScriptable>();
 			var field = value.GetType().GetFields()
-				.FirstOrDefault(_ => _.Name == $"{GameConfigureReferencer.LanguageType}")
+				.FirstOrDefault(_ => _.Name == $"{gameScriptable.LanguageType}")
 				.GetValue(value);
 			
 			return string.Format($"{field}", args);

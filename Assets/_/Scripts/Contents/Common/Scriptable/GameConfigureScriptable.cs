@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Redbean
 {
 	[CreateAssetMenu(fileName = "GameConfigureScriptable", menuName = "Redbean/Game/GameConfigureScriptable")]
-	public class GameConfigureScriptable : ScriptableObject
+	public class GameConfigureScriptable : ScriptableBase
 	{
 		private LanguageType languageType;
 
@@ -19,15 +19,6 @@ namespace Redbean
 				languageType = value;
 				RxLocalizationBinder.Publish(value);
 			}
-		}
-	}
-	
-	public class GameConfigureReferencer : ScriptableBase<GameConfigureScriptable>
-	{
-		public static LanguageType LanguageType
-		{
-			get => Scriptable.LanguageType;
-			set => Scriptable.LanguageType = value;
 		}
 	}
 }

@@ -6,6 +6,9 @@ namespace Redbean
 {
 	public class ApiContainer : Container<Type, IApiProtocol>
 	{
+		private static ApiScriptable apiScriptable => 
+			ApplicationLoader.GetScriptable<ApiScriptable>();
+		
 		public delegate void onRequest(Type Type);
 		public static event onRequest OnRequest;
 		
@@ -17,10 +20,10 @@ namespace Redbean
 			UseProxy = false,
 		})
 		{
-			BaseAddress = new Uri(ApiReferencer.ApiUri),
+			BaseAddress = new Uri(apiScriptable.ApiUri),
 			DefaultRequestHeaders =
 			{
-				{ "Version", ApplicationReferencer.Version },
+				{ "Version", ApplicationLoader.GetVersion() },
 			},
 			Timeout = TimeSpan.FromSeconds(60),
 		};

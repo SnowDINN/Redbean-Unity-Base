@@ -11,10 +11,11 @@ namespace Redbean.Api
 			var response = await ApiGetRequest.EditTableAccessKeyRequest(cancellationToken: cancellationToken);
 			if (!response.IsSuccess)
 				return response;
-			
-			GoogleSheetReferencer.SheetId = response.Response.Sheet.Id;
-			GoogleSheetReferencer.ClientId = response.Response.Client.Id;
-			GoogleSheetReferencer.ClientSecretId = response.Response.Client.Secret;
+
+			var googleSheetScriptable = ApplicationLoader.GetScriptable<GoogleSheetScriptable>();
+			googleSheetScriptable.GoogleSheetId = response.Response.Sheet.Id;
+			googleSheetScriptable.GoogleClientId = response.Response.Client.Id;
+			googleSheetScriptable.GoogleSecretId = response.Response.Client.Secret;
 			
 			return response;
 		}
