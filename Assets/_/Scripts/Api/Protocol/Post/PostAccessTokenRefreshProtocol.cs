@@ -8,12 +8,12 @@ namespace Redbean.Api
 		protected override async Task<ApiResponse> Request(CancellationToken cancellationToken = default)
 		{
 			var response = await ApiPostRequest.PostAccessTokenRefreshRequest
-					(new StringRequest(ApiAuthentication.RefreshToken), cancellationToken);
+					(new StringRequest(ApiToken.RefreshToken), cancellationToken);
 			
 			if (!response.IsSuccess)
 				return response;
 
-			ApiAuthentication.SetAccessToken(response.Response);
+			ApiToken.SetAccessToken(response.Response);
 			
 			Log.Notice("Access token has been reissued.");
 			return response;

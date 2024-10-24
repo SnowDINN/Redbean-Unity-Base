@@ -16,7 +16,7 @@ namespace Redbean.Rx
 		protected override void Setup()
 		{
 			Observable.Interval(TimeSpan.FromSeconds(60))
-				.Where(_ => ApiAuthentication.IsRefreshTokenExist && ApiAuthentication.IsAccessTokenExpired)
+				.Where(_ => ApiToken.IsRefreshTokenExist && ApiToken.IsAccessTokenExpired)
 				.Subscribe(_ => UniTask.Void(GetRefreshAccessTokenAsync))
 				.AddTo(disposables);
 

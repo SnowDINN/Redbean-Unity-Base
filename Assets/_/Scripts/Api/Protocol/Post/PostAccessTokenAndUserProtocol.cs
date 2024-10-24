@@ -16,7 +16,7 @@ namespace Redbean.Api
 			if (!response.IsSuccess)
 				return response;
 			
-			ApiAuthentication.SetAccessToken(new TokenResponse
+			ApiToken.SetAccessToken(new TokenResponse
 			{
 				AccessToken = response.Response.Token.AccessToken,
 				RefreshToken = response.Response.Token.RefreshToken,

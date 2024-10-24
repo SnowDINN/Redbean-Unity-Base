@@ -49,7 +49,8 @@ namespace Redbean.Popup
 
 		private void OnActiveSceneChanged(Scene before, Scene after) => SetPopupCanvasParameter();
 		private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1) => SetPopupCanvasParameter();
-		private string GetPopupPath(Type type) => $"Popup/{type.Name}.prefab";
+		private string GetBundlePath(Type type) => $"Popup/{type.Name}.prefab";
+		private string GetResourcePath(Type type) => $"{type.Name}";
 
 		private void SetPopupCanvasParameter()
 		{
@@ -59,7 +60,7 @@ namespace Redbean.Popup
 		
 		public object AssetOpen(Type type)
 		{
-			var resource = Resources.Load<GameObject>($"Popup/{type.Name}");
+			var resource = Resources.Load<GameObject>(GetResourcePath(type));
 			var go = GameObject.Instantiate(resource, popupParent);
 			var popup = go.GetComponent(type) as PopupBase;
 			popup.Type = PopupType.Asset;
@@ -71,7 +72,7 @@ namespace Redbean.Popup
 
 		public object BundleOpen(Type type)
 		{
-			var go = BundleContainer.LoadAsset<GameObject>(GetPopupPath(type), popupParent);
+			var go = BundleContainer.LoadAsset<GameObject>(GetBundlePath(type), popupParent);
 			var popup = go.GetComponent(type) as PopupBase;
 			popup.Guid = go.GetInstanceID();
 			popup.Type = PopupType.Bundle;
@@ -92,7 +93,7 @@ namespace Redbean.Popup
 					break;
 				
 				case PopupType.Bundle:
-					BundleContainer.Release(GetPopupPath(popup.GetType()), popup.Guid);
+					BundleContainer.Release(GetBundlePath(popup.GetType()), popup.Guid);
 					break;
 			}
 		}

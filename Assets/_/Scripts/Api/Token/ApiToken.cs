@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Redbean.Api
 {
-	public class ApiAuthentication
+	public class ApiToken
 	{
 		private static TokenResponse currentToken = new();
 		public static bool IsAccessTokenExpired => currentToken.AccessTokenExpire < DateTime.UtcNow;

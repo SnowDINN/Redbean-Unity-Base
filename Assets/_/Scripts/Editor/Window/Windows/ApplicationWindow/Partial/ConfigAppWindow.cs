@@ -83,7 +83,7 @@ namespace Redbean.Editor
 					});
 				}
 				
-				await (await ApiAuthentication.EditorRequestApi<EditBundleFilesProtocol>())
+				await (await ApiToken.EditorRequestApi<EditBundleFilesProtocol>())
 					.Parameter(requestFiles.ToArray())
 					.RequestAsync();
 
@@ -136,7 +136,7 @@ namespace Redbean.Editor
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 				
-				await (await ApiAuthentication.EditorRequestApi<EditTableAccessKeyProtocol>())
+				await (await ApiToken.EditorRequestApi<EditTableAccessKeyProtocol>())
 					.Parameter()
 					.RequestAsync();
 				
@@ -159,7 +159,7 @@ namespace Redbean.Editor
 					});
 				}
 				
-				await (await ApiAuthentication.EditorRequestApi<EditTableFileProtocol>())
+				await (await ApiToken.EditorRequestApi<EditTableFileProtocol>())
 					.Parameter(requestFiles.ToArray())
 					.RequestAsync();
 			}
@@ -178,7 +178,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
 		private async void Maintenance([MultiLineProperty(5)] string contents, DateTime startTime, DateTime endTime)
 		{
-			await (await ApiAuthentication.EditorRequestApi<EditAppMaintenanceProtocol>())
+			await (await ApiToken.EditorRequestApi<EditAppMaintenanceProtocol>())
 				.Parameter(contents, startTime, endTime)
 				.RequestAsync();
 			
@@ -188,7 +188,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
+			await (await ApiToken.EditorRequestApi<EditAppVersionProtocol>())
 				.Parameter(MobileType.Android, version)
 				.RequestAsync();
 			
@@ -198,7 +198,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS"), PropertySpace]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
+			await (await ApiToken.EditorRequestApi<EditAppVersionProtocol>())
 				.Parameter(MobileType.iOS, version)
 				.RequestAsync();
 			
