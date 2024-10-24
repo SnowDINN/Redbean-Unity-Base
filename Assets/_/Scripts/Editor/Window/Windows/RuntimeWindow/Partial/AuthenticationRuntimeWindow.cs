@@ -44,7 +44,7 @@ namespace Redbean.Editor
 		[DictionaryDrawerSettings(IsReadOnly = true), ShowInInspector, DisableInEditorMode]
 		private Dictionary<string, object> user
 		{
-			get => AppLifeCycle.IsAppReady
+			get => ApplicationLifeCycle.IsAppReady
 				? new Dictionary<string, object> { { "User", this.GetModel<UserModel>() } }
 				: new Dictionary<string, object>();
 			

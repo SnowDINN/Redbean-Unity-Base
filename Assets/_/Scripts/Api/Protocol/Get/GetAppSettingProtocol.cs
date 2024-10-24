@@ -50,7 +50,7 @@ namespace Redbean.Api
 				{
 					// TODO : 업데이트 진입 로직
 
-					AppLifeCycle.AppCheckFail();
+					ApplicationLifeCycle.AppCheckFail();
 					return response;
 				}
 			}
@@ -59,11 +59,11 @@ namespace Redbean.Api
 			{
 				this.Popup().AssetOpen<PopupMaintenance>();
 						
-				AppLifeCycle.AppCheckFail();
+				ApplicationLifeCycle.AppCheckFail();
 				return response;
 			}
 					
-			AppLifeCycle.AppCheckSuccess();
+			ApplicationLifeCycle.AppCheckSuccess();
 			return response;
 		}
 		

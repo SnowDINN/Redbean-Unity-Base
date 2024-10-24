@@ -12,13 +12,13 @@ namespace Redbean.Rx
 
 		public void Start()
 		{
-			AppLifeCycle.OnAppExit += OnAppExit;
+			ApplicationLifeCycle.OnApplicationExit += OnApplicationExit;
 			Setup();
 		}
 		
-		private void OnAppExit()
+		private void OnApplicationExit()
 		{
-			AppLifeCycle.OnAppExit -= OnAppExit;
+			ApplicationLifeCycle.OnApplicationExit -= OnApplicationExit;
 			Teardown();
 			
 			disposables?.Dispose();
