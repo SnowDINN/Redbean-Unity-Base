@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Redbean.MVP;
-using Redbean.Security;
-using Redbean.Utility;
 using Sirenix.OdinInspector;
 using Unity.Jobs;
 using UnityEditor;
@@ -49,10 +46,10 @@ namespace Redbean.Editor
 		{
 			get
 			{
-				if (!PlayerPrefs.HasKey(LocalDatabase.PLAYER_PREFS_KEY))
+				if (!PlayerPrefs.HasKey(Database.PLAYER_PREFS_KEY))
 					return new List<PlayerPrefsViewer>();
 
-				var dataDecrypt = PlayerPrefs.GetString(LocalDatabase.PLAYER_PREFS_KEY).Decryption();
+				var dataDecrypt = PlayerPrefs.GetString(Database.PLAYER_PREFS_KEY).Decryption();
 				var dataGroups = JsonConvert.DeserializeObject<Dictionary<string, string>>(dataDecrypt);
 				if (dataGroups == null)
 					return new List<PlayerPrefsViewer>();

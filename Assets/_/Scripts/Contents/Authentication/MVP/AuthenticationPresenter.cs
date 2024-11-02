@@ -40,7 +40,7 @@ namespace Redbean.MVP.Content
 
 		private async UniTaskVoid AutoLoginAsync(CancellationToken token)
 		{
-			if (LocalDatabase.Load<string>(PlayerPrefsKey.LAST_LOGIN_HISTORY) != $"{view.Type}")
+			if (Database.Load<string>(PlayerPrefsKey.LAST_LOGIN_HISTORY) != $"{view.Type}")
 				return;
 
 			await platform.Initialize(token);
@@ -49,7 +49,7 @@ namespace Redbean.MVP.Content
 
 		private async UniTask SetUserData(AuthenticationResult result)
 		{
-			using (new Indicator())
+			using (new IndicatorScope())
 			{
 				var response = await this.GetProtocol<PostAccessTokenAndUserProtocol>()
 					.Parameter(new UserRequest

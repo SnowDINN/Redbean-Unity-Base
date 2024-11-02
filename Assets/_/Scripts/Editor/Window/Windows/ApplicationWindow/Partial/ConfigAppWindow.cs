@@ -29,11 +29,24 @@ namespace Redbean.Editor
 		private const int MaintenanceOrder = 400;
 		private const int VersionOrder = 500;
 		
+		private ApiScriptable apiScriptable =>
+			ApplicationLoader.GetScriptable<ApiScriptable>();
+		
+		private BundleScriptable bundleScriptable =>
+			ApplicationLoader.GetScriptable<BundleScriptable>();
+		
+		private GoogleSheetScriptable googleSheetScriptable =>
+			ApplicationLoader.GetScriptable<GoogleSheetScriptable>();
+		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), LabelText("Create Api Script Path"), ShowInInspector, FolderPath]
 		private string ApiGetPath
 		{
-			get => ApiSettings.ProtocolPath;
-			set => ApiSettings.ProtocolPath = value;
+			get => apiScriptable.ProtocolPath;
+			set
+			{
+				apiScriptable.ProtocolPath = value;
+				apiScriptable.Save();
+			}
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(ApiGroup), PropertyOrder(ApiOrder), Button("UPDATE API", ButtonSizes.Large), PropertySpace]
@@ -70,11 +83,13 @@ namespace Redbean.Editor
 					});
 				}
 				
-				await (await ApiAuthentication.EditorRequestApi<EditBundleFilesProtocol>())
+				await (await ApiToken.EditorRequestApi<EditBundleFilesProtocol>())
 					.Parameter(requestFiles.ToArray())
 					.RequestAsync();
 
-				AddressableSettings.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
+
+				bundleScriptable.Labels = AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
+				bundleScriptable.Save();
 			}
 			catch (Exception e)
 			{
@@ -89,15 +104,23 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Script Path"), ShowInInspector, FolderPath]
 		private string TablePath
 		{
-			get => GoogleTableSettings.Path;
-			set => GoogleTableSettings.Path = value;
+			get => googleSheetScriptable.ContainerPath;
+			set
+			{
+				googleSheetScriptable.ContainerPath = value;
+				googleSheetScriptable.Save();
+			}
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), PropertyOrder(TableOrder), LabelText("Create Table Script Path"), ShowInInspector, FolderPath]
 		private string TableItemPath
 		{
-			get => GoogleTableSettings.ItemPath;
-			set => GoogleTableSettings.ItemPath = value;
+			get => googleSheetScriptable.ItemPath;
+			set
+			{
+				googleSheetScriptable.ItemPath = value;
+				googleSheetScriptable.Save();
+			}
 		}
 
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large), PropertySpace]
@@ -113,12 +136,12 @@ namespace Redbean.Editor
 			{
 				EditorUtility.DisplayProgressBar("Table Update", "Updating Table...", 0);
 				
-				await (await ApiAuthentication.EditorRequestApi<EditTableAccessKeyProtocol>())
+				await (await ApiToken.EditorRequestApi<EditTableAccessKeyProtocol>())
 					.Parameter()
 					.RequestAsync();
 				
-				var sheetRaw = await TableGenerator.GetSheetAsync();
-				await TableGenerator.GenerateCSharpTableAsync(sheetRaw);
+				var sheetRaw = await GoogleSheetGenerator.GetSheetAsync();
+				await GoogleSheetGenerator.GenerateCSharpTableAsync(sheetRaw);
 			
 				var requestFiles = new List<RequestFile>();
 				var keys = sheetRaw.Keys.ToArray();
@@ -126,7 +149,7 @@ namespace Redbean.Editor
 				for (var i = 0; i < sheetRaw.Count; i++)
 				{
 					EditorUtility.DisplayProgressBar("Table Update", $"Updating {keys[i]} Table...", (i + 1) / (float)sheetRaw.Count);
-					await TableGenerator.GenerateCSharpSheetAsync(keys[i], values[i]);
+					await GoogleSheetGenerator.GenerateCSharpSheetAsync(keys[i], values[i]);
 
 					var bytes = Encoding.UTF8.GetBytes($"{string.Join("\r\n", values[i])}");
 					requestFiles.Add(new RequestFile
@@ -136,7 +159,7 @@ namespace Redbean.Editor
 					});
 				}
 				
-				await (await ApiAuthentication.EditorRequestApi<EditTableFileProtocol>())
+				await (await ApiToken.EditorRequestApi<EditTableFileProtocol>())
 					.Parameter(requestFiles.ToArray())
 					.RequestAsync();
 			}
@@ -155,7 +178,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(MaintenanceGroup), PropertyOrder(MaintenanceOrder), Button("Maintenance")]
 		private async void Maintenance([MultiLineProperty(5)] string contents, DateTime startTime, DateTime endTime)
 		{
-			await (await ApiAuthentication.EditorRequestApi<EditAppMaintenanceProtocol>())
+			await (await ApiToken.EditorRequestApi<EditAppMaintenanceProtocol>())
 				.Parameter(contents, startTime, endTime)
 				.RequestAsync();
 			
@@ -165,7 +188,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("Android")]
 		private async void AndroidVersion(string version = "0.0.1")
 		{
-			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
+			await (await ApiToken.EditorRequestApi<EditAppVersionProtocol>())
 				.Parameter(MobileType.Android, version)
 				.RequestAsync();
 			
@@ -175,7 +198,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(VersionGroup), PropertyOrder(VersionOrder), Button("iOS"), PropertySpace]
 		private async void IosVersion(string version = "0.0.1")
 		{
-			await (await ApiAuthentication.EditorRequestApi<EditAppVersionProtocol>())
+			await (await ApiToken.EditorRequestApi<EditAppVersionProtocol>())
 				.Parameter(MobileType.iOS, version)
 				.RequestAsync();
 			
