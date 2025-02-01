@@ -126,7 +126,7 @@ namespace Redbean.Editor
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("OPEN TABLE", ButtonSizes.Large), PropertySpace]
 		private void OpenTableURL()
 		{
-			Application.OpenURL("https://docs.google.com/spreadsheets/d/1UjQhF5Zhxpa-2bP5hoIH2kVClHT5ZM_QBbrAiE3c3xs/edit#gid=924887524");
+			Application.OpenURL("https://docs.google.com");
 		}
 		
 		[TabGroup(TabGroup, ConfigTab), TitleGroup(TableGroup), HorizontalGroup("Tabs/Config/Table/Horizontal"), PropertyOrder(TableOrder), Button("UPDATE ALL TABLE", ButtonSizes.Large), PropertySpace]

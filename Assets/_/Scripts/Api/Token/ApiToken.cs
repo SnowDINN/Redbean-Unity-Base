@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Google;
 using Google.Apis.Auth.OAuth2;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -38,10 +39,11 @@ namespace Redbean.Api
 			var email = PlayerPrefs.GetString(Key);
 			if (string.IsNullOrEmpty(email))
 			{
+				var settings = Resources.Load<GoogleAuthScriptable>(nameof(GoogleAuthScriptable));
 				var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
 				                                                              {
-					                                                              ClientId = "517818090277-dh7nin47elvha6uhn64ihiboij7pv57p.apps.googleusercontent.com",
-					                                                              ClientSecret = "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"
+					                                                              ClientId = settings.desktopClientId,
+					                                                              ClientSecret = settings.desktopClientSecret
 				                                                              },
 				                                                              new[] { "email", "openid" },
 				                                                              "user",

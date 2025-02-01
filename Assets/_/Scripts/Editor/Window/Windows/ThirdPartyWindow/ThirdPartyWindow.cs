@@ -1,4 +1,5 @@
 ﻿using Google;
+using Redbean.Table;
 using UnityEngine;
 
 namespace Redbean.Editor
@@ -8,10 +9,12 @@ namespace Redbean.Editor
 		private const string TabGroup = "Tabs";
 		
 		private GoogleAuthScriptable googleAuth;
+		private GoogleSheetScriptable googleSheet;
 		
 		protected override void OnEnable()
 		{
-			googleAuth = Resources.Load<GoogleAuthScriptable>("Google/GoogleAuthentication");
+			googleAuth = Resources.Load<GoogleAuthScriptable>(nameof(GoogleAuthScriptable));
+			googleSheet = ApplicationLoader.GetScriptable<GoogleSheetScriptable>();
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Firebase.Auth;
 using Google;
 using Google.Apis.Auth.OAuth2;
 using Redbean.Api;
+using UnityEngine;
 
 #if UNITY_EDITOR
 #else
@@ -120,10 +121,11 @@ namespace Redbean.Auth
 #if UNITY_EDITOR
 		private async Task<AuthenticationResult> UnityEditorLogin(CancellationToken cancellationToken = default)
 		{
+			var settings = Resources.Load<GoogleAuthScriptable>(nameof(GoogleAuthScriptable));
 			var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(new ClientSecrets
 			                                                                   {
-				                                                                   ClientId = "517818090277-dh7nin47elvha6uhn64ihiboij7pv57p.apps.googleusercontent.com",
-				                                                                   ClientSecret = "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"
+				                                                                   ClientId = settings.desktopClientId,
+				                                                                   ClientSecret = settings.desktopClientSecret
 			                                                                   },
 			                                                                   new[] { "email", "openid" },
 			                                                                   "user",
