@@ -31,6 +31,11 @@ namespace Google
 		[Header("iOS")]
 		public string iosClientId;
 		
+			
+		[Header("Desktop (Only Editor)")]
+		public string desktopClientId;
+		public string desktopClientSecret;
+		
 		public string GetClientId(ClientType type)
 		{
 			var id = string.Empty;

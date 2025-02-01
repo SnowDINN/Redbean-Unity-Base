@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a60c6ac76c58f054fab398e5db5ea0e8, type: 3}
+  m_Script: {fileID: 11500000, guid: e84984043cac3a04c853759e997d0989, type: 3}
   m_Name: GoogleSheetScriptable
   m_EditorClassIdentifier: 
-  ContainerPath: Assets/_/Scripts/Table
-  ItemPath: Assets/_/Scripts/Table/Item
+  GoogleSheetId: 
+  GoogleClientId: 
+  GoogleSecretId: 
+  ContainerPath: Assets/_/Scripts/Api/Request
+  ItemPath: Assets/_/Scripts/Api/Request

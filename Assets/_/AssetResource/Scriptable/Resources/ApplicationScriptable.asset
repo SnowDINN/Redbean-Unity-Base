@@ -9,12 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd269eb2fc6b6a34e86f40d9964fd24f, type: 3}
+  m_Script: {fileID: 11500000, guid: 04e69b1f54f30ec40b650dc562731d87, type: 3}
   m_Name: ApplicationScriptable
   m_EditorClassIdentifier: 
-  SetupBootstraps:
-  - FullName: Redbean.OnSystemBootstrap
-  - FullName: Redbean.OnValidationBootstrap
+  SetupBootstraps: []
   ScriptableObjects:
   - {fileID: 11400000, guid: fd4a1670e79657d458229c484ba7472d, type: 2}
   - {fileID: 11400000, guid: 67d7c9908535c4a498c5dbae066506d8, type: 2}
